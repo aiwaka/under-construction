@@ -1,9 +1,11 @@
 <script lang="ts">
-  import SiteHeader from "./SiteHeader.svelte";
+  import SiteFooter from "@/SiteFooter.svelte";
+  import SiteHeader from "@/SiteHeader.svelte";
 </script>
 
 <SiteHeader />
 <slot />
+<SiteFooter />
 
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Noto+Serif+JP&display=swap");

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import PageLink from "../PageLink.svelte";
+  import PageLink from "@/PageLink.svelte";
 </script>
 
 <div id="website-header">
