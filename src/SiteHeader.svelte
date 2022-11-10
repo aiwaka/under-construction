@@ -1,17 +1,28 @@
 <script lang="ts">
   import PageLink from "@/PageLink.svelte";
+
+  interface NavLink {
+    name: string;
+    href: string;
+  }
+  // 表示名とリンクを並べる
+  const navLinkList: NavLink[] = [
+    { name: "About", href: "#about" },
+    { name: "Works", href: "#works" }
+  ];
 </script>
 
 <div id="website-header">
   <div class="title-block">
     <h1 class="title">
-      <a href="/">Profile Page</a>
+      <a href="/">Under Construction</a>
     </h1>
   </div>
   <nav>
     <div class="nav-link-wrapper">
-      <PageLink href="/">Home</PageLink>
-      <PageLink href="/about">About</PageLink>
+      {#each navLinkList as navLink}
+        <PageLink href={navLink.href}>{navLink.name}</PageLink>
+      {/each}
     </div>
   </nav>
 </div>
@@ -28,13 +39,13 @@
     left: 0;
     right: 0;
     top: 0;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(20, 20, 75, 0.3);
     backdrop-filter: blur(3rem);
   }
   @media (max-width: 1024px) {
     #website-header {
       flex-direction: column;
-      height: 11rem;
+      height: calc(8rem + 3rem);
       /* border-bottom: 1px solid #888; */
     }
   }
@@ -60,8 +71,9 @@
     }
   } */
   #website-header .title {
-    font-family: "Noto Serif JP", serif;
-    font-size: 5rem;
+    /* font-family: "Noto Serif JP", serif; */
+    color: darkslateblue;
+    font-size: 3.6rem;
     line-height: 8rem;
   }
 

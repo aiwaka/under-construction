@@ -18,8 +18,9 @@
     display: block;
     position: relative;
     margin: 0 1rem;
-    font-size: 1.8rem;
+    font-size: 2rem;
     line-height: 8rem;
+    color: darkslateblue;
   }
   @media (max-width: 1024px) {
     .page-link {
