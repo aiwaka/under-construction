@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Noto+Serif+JP&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&family=Noto+Serif+JP:wght@200;400;700;900&display=swap');
 
 *,
 *::before,
@@ -26,7 +26,7 @@ html {
 /* Set core body defaults */
 body {
   min-height: 100vh;
-  color: darkslategray;
+  color: darkslateblue;
   background: brown;
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
