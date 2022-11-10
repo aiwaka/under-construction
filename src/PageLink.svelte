@@ -2,12 +2,11 @@
   import { page } from "$app/stores";
   export let href: string;
 
-  $: activePage = $page.route.id === href;
-  $: linkClass = "page-link " + (activePage ? "current-page" : "");
+  $: currentPage = $page.route.id === href;
 </script>
 
 <div class="page-link__container">
-  <a class={linkClass} {href}>
+  <a class:current-page={currentPage} class="page-link" {href}>
     <slot />
   </a>
 </div>
@@ -20,7 +19,7 @@
     margin: 0 1rem;
     font-size: 2rem;
     line-height: 8rem;
-    color: darkslateblue;
+    color: cornflowerblue;
   }
   @media (max-width: 1024px) {
     .page-link {
