@@ -19,7 +19,7 @@
     margin: 0 1rem;
     font-size: 2rem;
     line-height: 8rem;
-    color: cornflowerblue;
+    color: azure;
   }
   @media (max-width: 1024px) {
     .page-link {

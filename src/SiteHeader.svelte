@@ -15,7 +15,7 @@
 <div id="website-header">
   <div class="title-block">
     <h1 class="title">
-      <a href="/">Under Construction</a>
+      <a href="/">UNDER CONSTRUCTION</a>
     </h1>
   </div>
   <nav>
@@ -39,8 +39,8 @@
     left: 0;
     right: 0;
     top: 0;
-    background-color: rgba(20, 20, 75, 0.3);
-    backdrop-filter: blur(3rem);
+    background-color: rgba(36, 30, 90, 0.8);
+    backdrop-filter: blur(1rem);
   }
   @media (max-width: 1024px) {
     #website-header {
@@ -71,11 +71,10 @@
     }
   } */
   #website-header .title {
-    /* font-family: "Noto Serif JP", serif; */
-    color: darkslateblue;
+    color: azure;
     font-size: 3.6rem;
-    font-weight: 800;
     line-height: 8rem;
+    font-weight: bold;
   }
   @media (max-width: 1024px) {
     #website-header .title {
