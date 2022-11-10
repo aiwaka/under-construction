@@ -7,7 +7,7 @@
   }
   // 表示名とリンクを並べる
   const navLinkList: NavLink[] = [
-    { name: "About", href: "#about" },
+    { name: "Profile", href: "#profile" },
     { name: "Works", href: "#works" }
   ];
 </script>
@@ -74,7 +74,13 @@
     /* font-family: "Noto Serif JP", serif; */
     color: darkslateblue;
     font-size: 3.6rem;
+    font-weight: 800;
     line-height: 8rem;
+  }
+  @media (max-width: 1024px) {
+    #website-header .title {
+      font-size: 2.2rem;
+    }
   }
 
   @media (max-width: 1024px) {
