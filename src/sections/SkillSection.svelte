@@ -256,7 +256,7 @@
       { name: "Language", href: "#skill-lang" },
       { name: "Framework", href: "#skill-framework" },
       { name: "DB", href: "#skill-db" },
-      { name: "tools", href: "#skill-tools" }
+      { name: "Tools", href: "#skill-tools" }
     ]}
   />
   <h3 id="skill-lang">Language</h3>

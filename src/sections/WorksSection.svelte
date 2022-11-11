@@ -112,7 +112,7 @@
   <AppItem langList={["rust"]} href={"https://github.com/littleIkawa/bem_laplace_eq_rust"}>
     <svelte:fragment slot="title">Laplace問題の数値計算</svelte:fragment>
     <svelte:fragment slot="work-period">2022年2月</svelte:fragment>
-    <p>卒論が終わって余裕ができたので、境界要素法による数値計算をRustで試してみたものです。</p>
+    <p>卒業論文が終わって余裕ができたので、境界要素法による数値計算をRustで試してみたものです。</p>
   </AppItem>
   <AppItem langList={["rust"]} href={"https://github.com/littleIkawa/block_golf"}>
     <svelte:fragment slot="title">Block Golf （仮）</svelte:fragment>

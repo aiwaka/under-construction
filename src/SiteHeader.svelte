@@ -95,6 +95,7 @@
     display: flex;
     justify-content: space-between;
     margin: 0 1.4rem;
+    margin-right: 3.4rem;
     width: fit-content;
   }
   @media (max-width: 1024px) {

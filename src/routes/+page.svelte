@@ -22,8 +22,8 @@
       <SkillSection />
       <WorksSection />
       <ContactSection />
-      <SiteFooter />
     </div>
+    <SiteFooter />
   </main>
 </div>
 
@@ -73,7 +73,9 @@
     height: fit-content;
     width: 100vw;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
   }
   .contents-container {
     position: sticky;
