@@ -2,7 +2,7 @@
   import type { AllowedName } from "@/components/allowdServiceName";
 
   export let name: AllowedName;
-  export let size = "4rem";
+  export let size = "normal";
 
   const getSvgUrl = (serviceName: AllowedName) => {
     switch (serviceName) {
@@ -63,11 +63,31 @@
     }
   };
 
+  const getSize = (sizeStr: string) => {
+    switch (sizeStr) {
+      case "normal":
+        return "4rem";
+      case "small":
+        return "2rem";
+      case "large":
+        return "7rem";
+      default:
+        return sizeStr;
+    }
+  };
+
   $: svgUrl = getSvgUrl(name);
+  $: computedSize = getSize(size);
 </script>
 
 <div class="language-icon">
-  <img class="icon-img" src={svgUrl} style:width={size} style:height={size} alt={`icon-${name}`} />
+  <img
+    class="icon-img"
+    src={svgUrl}
+    style:width={computedSize}
+    style:height={computedSize}
+    alt={`icon-${name}`}
+  />
 </div>
 
 <style>

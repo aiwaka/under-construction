@@ -1,7 +1,9 @@
 <script>
-  import ProfileSection from "@/ProfileSection.svelte";
+  import ProfileSection from "@/sections/ProfileSection.svelte";
   import SiteFooter from "@/SiteFooter.svelte";
   import SiteHeader from "@/SiteHeader.svelte";
+  import WorksSection from "@/sections/WorksSection.svelte";
+  import SkillSection from "@/sections/SkillSection.svelte";
 </script>
 
 <SiteHeader />
@@ -16,6 +18,8 @@
   <main class="main-container">
     <div class="contents-container">
       <ProfileSection />
+      <WorksSection />
+      <SkillSection />
       <SiteFooter />
     </div>
   </main>
@@ -72,5 +76,9 @@
   .contents-container {
     position: sticky;
     width: 70%;
+  }
+
+  :global(.section-item) {
+    margin: 8rem auto;
   }
 </style>

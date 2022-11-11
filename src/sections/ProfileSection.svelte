@@ -1,10 +1,11 @@
-<section class="profile-section">
-  <h2 id="profile">Aiwaka</h2>
+<section class="profile-section section-item">
+  <h2 id="profile">Profile</h2>
   <div class="my-icon-col">
     <img class="icon" src="my-icon.png" alt="Aiwaka icon" />
   </div>
   <div class="text-col">
     <ul class="profile-data">
+      <li>Nickname: Aiwaka</li>
       <li>Location: Japan, Nara</li>
       <li>Education: Graduate School of Informatics, Kyoto University</li>
     </ul>
