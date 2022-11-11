@@ -365,7 +365,7 @@
   .contents-link-wrapper {
     display: flex;
     justify-content: space-evenly;
-    margin: 1rem 1.4rem;
+    margin: 4rem 1.4rem;
     background-image: -webkit-linear-gradient(
       left,
       transparent,
@@ -378,7 +378,7 @@
   }
   @media (max-width: 1024px) {
     .contents-link-wrapper {
-      margin: 1rem 0;
+      margin: 2rem 0;
       position: relative;
       bottom: 0;
       height: 3rem;
