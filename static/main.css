@@ -31,8 +31,8 @@ body {
   background: brown;
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
-  /* font-family: "Noto Sans JP", sans-serif; */
-  font-family: 'Noto Serif JP', serif;
+  font-family: "Noto Sans JP", sans-serif;
+  /* font-family: 'Noto Serif JP', serif; */
   font-size: 1.5em; /* 14px. Chromeのバグ対策でここだけemを使うらしいがもう治ったかも */
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

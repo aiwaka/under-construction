@@ -41,18 +41,20 @@
     top: 0;
     background-color: rgba(36, 30, 90, 0.8);
     backdrop-filter: blur(1rem);
+    border-bottom: 2px solid darkslateblue;
   }
   @media (max-width: 1024px) {
     #website-header {
       flex-direction: column;
       height: calc(8rem + 3rem);
-      /* border-bottom: 1px solid #888; */
+      border-bottom: 2px solid slateblue;
     }
   }
 
   #website-header .title-block {
     display: flex;
     margin: 0.2rem 2rem;
+    font-family: "Noto Serif JP", serif;
   }
   @media (max-width: 1024px) {
     #website-header .title-block {

@@ -28,7 +28,7 @@
     top: 0;
     height: 100vh;
     width: 100vw;
-    mix-blend-mode: difference;
+    mix-blend-mode: exclusion;
   }
   .title-card {
     position: sticky;
