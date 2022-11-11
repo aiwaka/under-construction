@@ -35,7 +35,7 @@
     flex-direction: row;
     width: 100%;
     height: 8rem;
-    position: sticky;
+    position: fixed;
     left: 0;
     right: 0;
     top: 0;
