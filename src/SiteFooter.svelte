@@ -9,7 +9,8 @@
     top: 100vh;
     text-align: center;
     font-family: "Noto Serif JP", serif;
-    margin: 2.5rem 0;
+    margin: 6rem 0;
+    margin-top: 8rem;
   }
   .site-footer p {
     display: inline-block;
