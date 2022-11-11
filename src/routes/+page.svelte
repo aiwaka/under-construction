@@ -5,6 +5,9 @@
   import WorksSection from "@/sections/WorksSection.svelte";
   import SkillSection from "@/sections/SkillSection.svelte";
   import ContactSection from "@/sections/ContactSection.svelte";
+
+  // 変数でパスを指定する. cssで直接指定するとビルドの際に解決がおかしくなる
+  const bgImagePath = "img/blue_2.png";
 </script>
 
 <SiteHeader />
@@ -15,7 +18,7 @@
   </div>
 </div>
 <div class="contents">
-  <div class="bg-image" />
+  <div class="bg-image" style:background-image={`url(${bgImagePath})`} />
   <main class="main-container">
     <div class="contents-container">
       <ProfileSection />
@@ -58,7 +61,6 @@
   .bg-image {
     top: 0;
     position: sticky;
-    background-image: url("img/blue_2.png");
     background-repeat: no-repeat;
     background-position: center 70%;
     background-size: cover;
