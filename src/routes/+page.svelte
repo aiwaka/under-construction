@@ -4,6 +4,7 @@
   import SiteHeader from "@/SiteHeader.svelte";
   import WorksSection from "@/sections/WorksSection.svelte";
   import SkillSection from "@/sections/SkillSection.svelte";
+  import ContactSection from "@/sections/ContactSection.svelte";
 </script>
 
 <SiteHeader />
@@ -20,6 +21,7 @@
       <ProfileSection />
       <SkillSection />
       <WorksSection />
+      <ContactSection />
       <SiteFooter />
     </div>
   </main>

@@ -60,6 +60,8 @@
         return "svg-porn-icon/aws-ec2.svg";
       case "fortran":
         return "svg-porn-icon/fortran.svg";
+      case "gmail":
+        return "svg-porn-icon/google-gmail.svg";
       case "mariadb":
         return "svg-porn-icon/mariadb.svg";
       case "postcss":

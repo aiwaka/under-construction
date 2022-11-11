@@ -10,6 +10,7 @@ export type AllowedName =
   | "flask"
   | "fortran"
   | "github"
+  | "gmail"
   | "html"
   | "js"
   | "latex"
