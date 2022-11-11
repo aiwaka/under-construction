@@ -8,6 +8,7 @@
   // 表示名とリンクを並べる
   const navLinkList: NavLink[] = [
     { name: "Profile", href: "#profile" },
+    { name: "Skill", href: "#skill" },
     { name: "Works", href: "#works" }
   ];
 </script>

@@ -18,8 +18,8 @@
   <main class="main-container">
     <div class="contents-container">
       <ProfileSection />
-      <WorksSection />
       <SkillSection />
+      <WorksSection />
       <SiteFooter />
     </div>
   </main>
@@ -76,6 +76,11 @@
   .contents-container {
     position: sticky;
     width: 70%;
+  }
+  @media (max-width: 1024px) {
+    .contents-container {
+      width: 80%;
+    }
   }
 
   :global(.section-item) {

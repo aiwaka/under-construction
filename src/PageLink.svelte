@@ -1,12 +1,17 @@
 <script lang="ts">
   import { page } from "$app/stores";
   export let href: string;
+  export let height = "8rem";
+  export let mobileHeight = "3rem";
 
+  $: windowWidth = 0;
+  $: resultHeight = windowWidth < 1024 ? mobileHeight : height;
   $: currentPage = $page.route.id === href;
 </script>
 
+<svelte:window bind:innerWidth={windowWidth} />
 <div class="page-link__container">
-  <a class:current-page={currentPage} class="page-link" {href}>
+  <a class:current-page={currentPage} class="page-link" style:line-height={resultHeight} {href}>
     <slot />
   </a>
 </div>
@@ -18,13 +23,11 @@
     position: relative;
     margin: 0 1rem;
     font-size: 2rem;
-    line-height: 8rem;
     color: azure;
   }
   @media (max-width: 1024px) {
     .page-link {
       font-size: 1.4rem;
-      line-height: 3rem;
     }
   }
 

@@ -10,6 +10,8 @@
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg";
       case "c++":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg";
+      case "css":
+        return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original-wordmark.svg";
       case "docker":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain.svg";
       case "express":
@@ -20,6 +22,8 @@
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg";
       case "github":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg";
+      case "html":
+        return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original-wordmark.svg";
       case "js":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg";
       case "latex":
@@ -32,6 +36,8 @@
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg";
       case "numpy":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg";
+      case "nuxt":
+        return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nuxtjs/nuxtjs-original.svg";
       case "psql":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-plain.svg";
       case "python":
@@ -40,6 +46,8 @@
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg";
       case "sass":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg";
+      case "shell":
+        return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg";
       case "svelte":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg";
       case "ts":
@@ -68,9 +76,9 @@
       case "normal":
         return "4rem";
       case "small":
-        return "2rem";
+        return "3rem";
       case "large":
-        return "7rem";
+        return "6rem";
       default:
         return sizeStr;
     }
