@@ -1,35 +1,8 @@
 <script lang="ts">
-  // このアプリでアイコンを提供する名前セットを定義する
-  type AllowedName =
-    | "aws-ec2"
-    | "c"
-    | "c++"
-    | "docker"
-    | "express"
-    | "firebase"
-    | "flask"
-    | "fortran"
-    | "github"
-    | "js"
-    | "latex"
-    | "mariadb"
-    | "mysql"
-    | "nginx"
-    | "node"
-    | "numpy"
-    | "postcss"
-    | "psql"
-    | "python"
-    | "sass"
-    | "svelte"
-    | "rust"
-    | "ts"
-    | "twitter"
-    | "vite"
-    | "vue";
+  import type { AllowedName } from "@/components/allowdServiceName";
 
   export let name: AllowedName;
-  export let size = "2rem";
+  export let size = "4rem";
 
   const getSvgUrl = (serviceName: AllowedName) => {
     switch (serviceName) {
@@ -57,6 +30,8 @@
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg";
       case "node":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg";
+      case "numpy":
+        return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/numpy/numpy-original.svg";
       case "psql":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-plain.svg";
       case "python":
@@ -74,15 +49,15 @@
       case "vue":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg";
       case "aws-ec2":
-        return "/img/svg-porn/aws-ec2.svg";
+        return "svg-porn-icon/aws-ec2.svg";
       case "fortran":
-        return "/img/svg-porn/fortran.svg";
+        return "svg-porn-icon/fortran.svg";
       case "mariadb":
-        return "/img/svg-porn/mariadb.svg";
+        return "svg-porn-icon/mariadb.svg";
       case "postcss":
-        return "/img/svg-porn/postcss.svg";
+        return "svg-porn-icon/postcss.svg";
       case "vite":
-        return "/img/svg-porn/vitejs.svg";
+        return "svg-porn-icon/vitejs.svg";
       default:
         return "";
     }
