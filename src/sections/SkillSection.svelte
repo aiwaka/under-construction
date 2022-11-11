@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { AllowedName } from "@/components/allowdServiceName";
   import ServiceIcon from "@/components/ServiceIcon.svelte";
-  import PageLink from "@/PageLink.svelte";
+  import IndexBar from "@/IndexBar.svelte";
 
   interface SkillData {
     name: string;
@@ -251,12 +251,14 @@
 <section class="skill-section section-item">
   <h2 id="skill">Skill</h2>
 
-  <div class="contents-link-wrapper">
-    <PageLink href={"#skill-lang"} height={"3rem"}>Language</PageLink>
-    <PageLink href={"#skill-framework"} height={"3rem"}>Framework</PageLink>
-    <PageLink href={"#skill-db"} height={"3rem"}>DB</PageLink>
-    <PageLink href={"#skill-tools"} height={"3rem"}>Tools</PageLink>
-  </div>
+  <IndexBar
+    indexList={[
+      { name: "Language", href: "#skill-lang" },
+      { name: "Framework", href: "#skill-framework" },
+      { name: "DB", href: "#skill-db" },
+      { name: "tools", href: "#skill-tools" }
+    ]}
+  />
   <h3 id="skill-lang">Language</h3>
   <table class="lang-table">
     <tbody>
@@ -362,28 +364,6 @@
 </section>
 
 <style>
-  .contents-link-wrapper {
-    display: flex;
-    justify-content: space-evenly;
-    margin: 4rem 1.4rem;
-    background-image: -webkit-linear-gradient(
-      left,
-      transparent,
-      rgba(72, 61, 139, 0.7) 8%,
-      rgba(72, 61, 139, 0.7) 92%,
-      transparent
-    );
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  @media (max-width: 1024px) {
-    .contents-link-wrapper {
-      margin: 2rem 0;
-      position: relative;
-      bottom: 0;
-      height: 3rem;
-    }
-  }
   table {
     margin: 2rem 3rem;
     border-collapse: collapse;
