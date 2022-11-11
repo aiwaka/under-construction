@@ -249,7 +249,7 @@
 <svelte:window bind:innerWidth={windowWidth} />
 
 <section class="skill-section section-item">
-  <h2 id="skill">Skill</h2>
+  <h2 id="skill">Programming Skill</h2>
 
   <IndexBar
     indexList={[

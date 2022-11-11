@@ -1,5 +1,5 @@
 <footer class="site-footer">
-  <p id="footer-copyright">Copyright &copy; Aiwaka 2022</p>
+  <p id="footer-copyright">&copy;Aiwaka 2022</p>
 </footer>
 
 <style>
@@ -8,7 +8,7 @@
     position: sticky;
     top: 100vh;
     text-align: center;
-    font-family: "Noto Serif JP", serif;
+    /* font-family: "Noto Serif JP", serif; */
     margin: 6rem 0;
     margin-top: 8rem;
   }
