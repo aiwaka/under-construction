@@ -11,7 +11,7 @@ const config = {
 
   kit: {
     paths: {
-      base: production ? "/aiwaka_profile_website" : ""
+      base: production ? "/under-construction" : ""
     },
     adapter: adapter({
       pages: "docs",
