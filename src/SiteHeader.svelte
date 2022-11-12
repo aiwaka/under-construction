@@ -1,5 +1,6 @@
 <script lang="ts">
   import PageLink from "@/PageLink.svelte";
+  import { base } from "$app/paths";
 
   interface NavLink {
     name: string;
@@ -17,7 +18,7 @@
 <div id="website-header">
   <div class="title-block">
     <h1 class="title">
-      <a href="/">UNDER CONSTRUCTION</a>
+      <a href={base}>UNDER CONSTRUCTION</a>
     </h1>
   </div>
   <nav>

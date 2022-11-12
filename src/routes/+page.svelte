@@ -5,9 +5,10 @@
   import WorksSection from "@/sections/WorksSection.svelte";
   import SkillSection from "@/sections/SkillSection.svelte";
   import ContactSection from "@/sections/ContactSection.svelte";
+  import { base } from "$app/paths";
 
   // 変数でパスを指定する. cssで直接指定するとビルドの際に解決がおかしくなる
-  const bgImagePath = "img/blue_2.png";
+  const bgImagePath = `${base}/img/blue_2.png`;
 </script>
 
 <SiteHeader />

@@ -1,5 +1,7 @@
-import adapter from '@sveltejs/adapter-auto';
-import preprocess from 'svelte-preprocess';
+// import adapter from '@sveltejs/adapter-auto';
+import adapter from "@sveltejs/adapter-static";
+import preprocess from "svelte-preprocess";
+const production = process.env.NODE_ENV === "production";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -8,7 +10,15 @@ const config = {
   preprocess: preprocess(),
 
   kit: {
-    adapter: adapter()
+    paths: {
+      base: production ? "/aiwaka_profile_website" : ""
+    },
+    adapter: adapter({
+      pages: "doc",
+      fallback: null,
+      precompress: false
+    }),
+    trailingSlash: "always"
   }
 };
 
