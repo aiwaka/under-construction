@@ -14,7 +14,7 @@ const config = {
       base: production ? "/aiwaka_profile_website" : ""
     },
     adapter: adapter({
-      pages: "doc",
+      pages: "docs",
       fallback: null,
       precompress: false
     }),
