@@ -1,5 +1,5 @@
 // import adapter from '@sveltejs/adapter-auto';
-import adapter from "@sveltejs/adapter-static";
+import staticAdapter from "@sveltejs/adapter-static";
 import preprocess from "svelte-preprocess";
 const production = process.env.NODE_ENV === "production";
 
@@ -13,7 +13,7 @@ const config = {
     paths: {
       base: production ? "/under-construction" : ""
     },
-    adapter: adapter({
+    adapter: staticAdapter({
       pages: "docs",
       fallback: null,
       precompress: false
