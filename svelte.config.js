@@ -14,7 +14,6 @@ const config = {
       base: production ? "/under-construction" : ""
     },
     adapter: staticAdapter({
-      pages: "docs",
       fallback: null,
       precompress: false
     }),
