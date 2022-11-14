@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700;900&family=Noto+Serif+JP:wght@200;400;700;900&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 11rem;
+  -webkit-text-size-adjust: 100%;
+  word-break: normal;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  font-size: 62.5%; /* ルートのフォントサイズを10pxとしてremで指定できるようにする */
+}
+@media (max-width: 512px) {
+  html {
+    font-size: 2.66vw; /* 10/375*100 */
+    scroll-padding-top: 13rem;
+  }
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  color: darkslateblue;
+  background: brown;
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.6;
+  font-family: "Noto Sans JP", sans-serif;
+  /* font-family: 'Noto Serif JP', serif; */
+  font-size: 1.5em; /* 14px. Chromeのバグ対策でここだけemを使うらしいがもう治ったかも */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* モバイルでも崩れない背景設定のためこのような手法を取る */
+body::before {
+  content: "";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -50;
+  width: 100%;
+  height: 100vh;
+  background-color: black;
+  background-image: url("./my-icon.png");
+  background-repeat: no-repeat;
+  /* background-position: center 70%; */
+  background-position: 100% 0%;
+  background-size: contain  ;
+}
+@media (max-width: 1024px) {
+  body::before {
+    background-position: center 0%;
+    background-size: cover;
+  }
+}
+ul[class],
+ol[class] {
+  list-style: none;
+}
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+img:not([alt]) {
+  filter: blur(10px);
+}
+
+#app {
+  position: relative;
+  /* height: fit-content; */
+  min-height: 100vh;
+}
