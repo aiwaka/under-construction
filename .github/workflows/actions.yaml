@@ -1,17 +1,20 @@
 name: deploy_pages
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
-    types:
-      - closed
+    # types:
+      # - closed
 
 jobs:
   deploy:
     runs-on: ubuntu-22.04
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
-    if: github.event.pull-request.merged == true
+    # if: github.event.pull-request.merged == true
 
     steps:
       - uses: actions/checkout@v3
