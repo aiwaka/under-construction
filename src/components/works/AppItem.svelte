@@ -46,12 +46,6 @@
   .app-title-row .app-title {
     flex-grow: 1;
   }
-  .app-title-row .app-link {
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 0.6rem;
-    padding: 0.2rem 0.8rem;
-    margin-right: 1rem;
-  }
   .work-period {
     margin: 1rem auto;
   }
