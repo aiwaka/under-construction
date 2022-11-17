@@ -1,4 +1,6 @@
 <script lang="ts">
+  import SiteHeader from "@/SiteHeader.svelte";
+  import SiteFooter from "@/SiteFooter.svelte";
   import { base } from "$app/paths";
 
   const cssPath = `${base}/main.css`;
@@ -9,4 +11,6 @@
   <link rel="stylesheet" href={cssPath} />
 </svelte:head>
 
+<SiteHeader />
 <slot />
+<SiteFooter />
