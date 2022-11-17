@@ -4,6 +4,8 @@
 
 <style>
   .site-footer {
+    position: sticky;
+    top: 100vh;
     width: 100%;
     text-align: center;
     margin: 0;
