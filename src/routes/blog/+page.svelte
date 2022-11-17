@@ -14,6 +14,13 @@
   <h1>Blog</h1>
   <div class="contents-container">
     <ArticleCard
+      id="test"
+      title="test__"
+      thumbnailFilename="blue_square.png"
+      date={new Date()}
+      tagList={["a", "i"]}
+    />
+    <ArticleCard
       id="test-page"
       title="test"
       thumbnailFilename="blue_square.png"
