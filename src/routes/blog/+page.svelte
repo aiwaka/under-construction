@@ -9,22 +9,36 @@
   <link rel="stylesheet" href={bgCssPath} />
 </svelte:head>
 
-<div class="contents">
-  <main class="main-container">
-    <div class="contents-container">
-      <ArticleCard
-        title="test"
-        thumbnailFilename="blue_square.png"
-        date={new Date()}
-        overview="testtest"
-        tag={["a", "i"]}
-      />
-    </div>
-  </main>
-</div>
+<div class="header-margin" />
+<main class="main-container">
+  <h1>Blog</h1>
+  <div class="contents-container">
+    <ArticleCard
+      id="test-page"
+      title="test"
+      thumbnailFilename="blue_square.png"
+      date={new Date()}
+      overview="testtest"
+      tagList={["a", "i"]}
+    />
+  </div>
+</main>
 
 <style>
-  body::before {
-    background-image: url("./img/blue_2.png");
+  .header-margin {
+    height: 10rem;
+  }
+  .main-container {
+    width: 70%;
+    margin: auto;
+  }
+  @media (max-width: 1024px) {
+    .main-container {
+      width: 95%;
+    }
+  }
+  .contents-container {
+    margin: 2rem auto;
+    display: flex;
   }
 </style>
