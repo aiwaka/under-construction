@@ -9,6 +9,10 @@
   const bgImagePath = `${base}/img/blue_2.png`;
 </script>
 
+<svelte:head>
+  <title>Under Construction</title>
+</svelte:head>
+
 <div class="title-container">
   <div class="title-card">
     <h1 class="title">UNDER CONSTRUCTION</h1>
