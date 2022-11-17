@@ -6,7 +6,6 @@
   export let title: string;
   export let thumbnailFilename: string;
   export let date: Date;
-  export let overview: string;
   export let tagList: string[];
 
   const thumbnailPath = `${base}/blog/thumb/${thumbnailFilename}`;
@@ -14,7 +13,7 @@
   const dateText = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 </script>
 
-<a href={`/blog/${id}`}>
+<a class="article-link" href={`/blog/${id}`}>
   <div class="article-card">
     <div class="img-container">
       <img src={thumbnailPath} alt="thumbnail" />
@@ -22,7 +21,6 @@
     <div class="card-contents">
       <h2>{title}</h2>
       <span>{dateText}</span>
-      <p>{overview}</p>
       <div class="tag-container">
         {#each tagList as tag}
           <ArticleTag {tag} />
@@ -33,14 +31,20 @@
 </a>
 
 <style>
-  .article-card {
+  .article-link {
+    display: block;
+    width: 90%;
+    height: 40rem;
     border: 1px solid darkslateblue;
     border-radius: 5px;
     background-color: rgba(240, 255, 255, 0.6);
-    position: relative;
+    margin: 0 auto;
+  }
+  .article-card {
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 100%;
+    height: 100%;
   }
   .article-card:hover {
     background-color: darkslateblue;
@@ -50,8 +54,10 @@
     border: 4px solid darkslateblue;
     width: 100%;
     height: 50%;
+    clip: rect(0, 0, 0, 0);
   }
   .img-container > img {
+    object-fit: cover;
     width: 100%;
     height: 100%;
   }

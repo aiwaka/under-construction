@@ -18,7 +18,13 @@
       title="test"
       thumbnailFilename="blue_square.png"
       date={new Date()}
-      overview="testtest"
+      tagList={["a", "i"]}
+    />
+    <ArticleCard
+      id="test-page2"
+      title="test2"
+      thumbnailFilename="img2.PNG"
+      date={new Date(2022, 10, 17)}
       tagList={["a", "i"]}
     />
   </div>
@@ -39,6 +45,12 @@
   }
   .contents-container {
     margin: 2rem auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 1024px) {
+    .contents-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 </style>
