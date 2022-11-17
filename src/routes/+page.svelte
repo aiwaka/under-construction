@@ -7,10 +7,12 @@
 
   // 変数でパスを指定する. cssで直接指定するとビルドの際に解決がおかしくなる
   const bgImagePath = `${base}/img/blue_2.png`;
+  const bgCssPath = `${base}/style/bg1.css`;
 </script>
 
 <svelte:head>
   <title>Under Construction</title>
+  <link rel="stylesheet" href={bgCssPath} />
 </svelte:head>
 
 <div class="title-container">

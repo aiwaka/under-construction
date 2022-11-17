@@ -3,7 +3,7 @@
   import SiteFooter from "@/SiteFooter.svelte";
   import { base } from "$app/paths";
 
-  const cssPath = `${base}/main.css`;
+  const cssPath = `${base}/style/main.css`;
 </script>
 
 <!-- layoutを使っているが現状意味があまりない. 複数ページになったときのため残す -->
