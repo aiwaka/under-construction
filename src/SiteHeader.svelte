@@ -19,7 +19,7 @@
 <div id="website-header">
   <div class="title-block">
     <h1 class="title">
-      <a href={base}>UNDER CONSTRUCTION</a>
+      <a href={base + "/"}>UNDER CONSTRUCTION</a>
     </h1>
   </div>
   <nav>
