@@ -12,7 +12,7 @@ const config = {
 
   kit: {
     paths: {
-      // base: production ? "/under-construction" : ""
+      base: production ? "/under-construction" : ""
     },
     adapter: staticAdapter({
       fallback: null,
