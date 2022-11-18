@@ -38,9 +38,6 @@
 </main>
 
 <style>
-  .header-margin {
-    height: 10rem;
-  }
   .main-container {
     width: 70%;
     margin: auto;
