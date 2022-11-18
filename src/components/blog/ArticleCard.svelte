@@ -12,7 +12,7 @@
   const dateText = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 </script>
 
-<a class="article-link" href={`/blog/${id}`}>
+<a class="article-link" href={`${base}/blog/${id}`}>
   <div class="article-card">
     <div class="img-container">
       <img src={thumbnailPath} alt="thumbnail" />
