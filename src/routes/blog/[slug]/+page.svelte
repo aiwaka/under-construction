@@ -13,13 +13,24 @@
 </svelte:head>
 
 <div class="header-margin" />
-<div>
-  <h1>{data.post.meta}</h1>
-  <div>{@html data.post.body}</div>
-</div>
+<main class="main-container">
+  <div>
+    <h1>{data.post.meta}</h1>
+    <div>{@html data.post.body}</div>
+  </div>
+</main>
 
 <style>
   .header-margin {
     height: 10rem;
+  }
+  .main-container {
+    width: 70%;
+    margin: auto;
+  }
+  @media (max-width: 1024px) {
+    .main-container {
+      width: 95%;
+    }
   }
 </style>
