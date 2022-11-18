@@ -2,7 +2,6 @@
   import { base } from "$app/paths";
   import type { PageData } from "./$types";
   import ArticleCard from "@/components/blog/ArticleCard.svelte";
-  import { attr } from "svelte/internal";
   const bgCssPath = `${base}/style/bg2.css`;
 
   export let data: PageData;
@@ -17,36 +16,9 @@
 <main class="main-container">
   <h1>Blog</h1>
   <div class="contents-container">
-    {#each data.post as attr}
-      <ArticleCard
-        id={attr.id}
-        title={attr.title}
-        thumbnailFilename={attr.thumbnail}
-        date={attr.date}
-        tagList={attr.tags}
-      />
+    {#each data.post as metadata}
+      <ArticleCard {metadata} />
     {/each}
-    <!-- <ArticleCard
-      id="test"
-      title="test__"
-      thumbnailFilename="blue_square.png"
-      date={new Date()}
-      tagList={["a", "i"]}
-    />
-    <ArticleCard
-      id="test-page"
-      title="test"
-      thumbnailFilename="blue_square.png"
-      date={new Date()}
-      tagList={["a", "i"]}
-    />
-    <ArticleCard
-      id="test-page2"
-      title="test2"
-      thumbnailFilename="img2.PNG"
-      date={new Date(2022, 10, 17)}
-      tagList={["a", "i"]}
-    /> -->
   </div>
 </main>
 
