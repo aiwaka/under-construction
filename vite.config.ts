@@ -1,5 +1,6 @@
 import { sveltekit } from "@sveltejs/kit/vite";
 import { fileURLToPath } from "node:url";
+// import { plugin as mdPlugin, Mode } from "vite-plugin-markdown";
 import type { UserConfig } from "vite";
 
 const config: UserConfig = {
@@ -12,6 +13,7 @@ const config: UserConfig = {
       "@": fileURLToPath(new URL("./src", import.meta.url))
     }
   },
+  // plugins: [sveltekit(), mdPlugin({ mode: [Mode.HTML] })]
   plugins: [sveltekit()]
 };
 
