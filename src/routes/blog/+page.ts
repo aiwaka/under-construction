@@ -14,11 +14,14 @@ export const load: PageLoad = async () => {
 
   const attributeList: ArticleAttribute[] = [];
   for (const modulePath in mdModules) {
-    const markdown = await import(modulePath);
-    const attributes = markdown.attributes;
+    // パスからファイル名を取得
+    const filename = modulePath.split("/").reverse()[0].split(".")[0];
+    // https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#limitations
+    // に従い, ファイル名パターンや拡張子を含み, 相対パス指定を行う形式でimportする.
+    const markdown = await import(`./contents/${filename}.md`);
+    const attributes = markdown.metadata;
     const newData = new ArticleAttribute(
-      // パスからファイル名を取得
-      modulePath.split("/").reverse()[0].split(".")[0],
+      filename,
       attributes.title,
       attributes.thumbnail,
       new Date(),

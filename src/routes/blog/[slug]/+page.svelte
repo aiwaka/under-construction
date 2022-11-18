@@ -16,7 +16,8 @@
 <main class="main-container">
   <div>
     <h1>{data.post.meta}</h1>
-    <div>{@html data.post.body}</div>
+    <!-- <div>{@html data.post.body}</div> -->
+    <svelte:component this={data.post.body} />
   </div>
 </main>
 
