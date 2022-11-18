@@ -1,14 +1,13 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import type { ArticleAttribute } from "@/routes/blog/article";
   import ArticleTag from "./ArticleTag.svelte";
 
-  export let id: string;
-  export let title: string;
-  export let thumbnailFilename: string;
-  export let date: Date;
-  export let tagList: string[];
+  export let metadata: ArticleAttribute;
 
-  const thumbnailPath = `${base}/blog/thumb/${thumbnailFilename}`;
+  const { id, title, thumbnail, date, tags } = metadata;
+
+  const thumbnailPath = `${base}/blog/thumb/${thumbnail}`;
 
   const dateText = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 </script>
@@ -22,7 +21,7 @@
       <h2>{title}</h2>
       <span>{dateText}</span>
       <div class="tag-container">
-        {#each tagList as tag}
+        {#each tags as tag}
           <ArticleTag {tag} />
         {/each}
       </div>
