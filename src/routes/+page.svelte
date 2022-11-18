@@ -1,7 +1,5 @@
 <script>
   import ProfileSection from "@/sections/ProfileSection.svelte";
-  import SiteFooter from "@/SiteFooter.svelte";
-  import SiteHeader from "@/SiteHeader.svelte";
   import WorksSection from "@/sections/WorksSection.svelte";
   import SkillSection from "@/sections/SkillSection.svelte";
   import ContactSection from "@/sections/ContactSection.svelte";
@@ -9,9 +7,14 @@
 
   // 変数でパスを指定する. cssで直接指定するとビルドの際に解決がおかしくなる
   const bgImagePath = `${base}/img/blue_2.png`;
+  const bgCssPath = `${base}/style/bg1.css`;
 </script>
 
-<SiteHeader />
+<svelte:head>
+  <title>Under Construction</title>
+  <link rel="stylesheet" href={bgCssPath} />
+</svelte:head>
+
 <div class="title-container">
   <div class="title-card">
     <h1 class="title">UNDER CONSTRUCTION</h1>
@@ -27,7 +30,6 @@
       <WorksSection />
       <ContactSection />
     </div>
-    <SiteFooter />
   </main>
 </div>
 
