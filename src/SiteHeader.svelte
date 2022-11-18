@@ -25,7 +25,7 @@
   <nav>
     <div class="nav-link-wrapper">
       {#each navLinkList as navLink}
-        <PageLink href={navLink.href}>{navLink.name}</PageLink>
+        <PageLink href={base + navLink.href}>{navLink.name}</PageLink>
       {/each}
     </div>
   </nav>
