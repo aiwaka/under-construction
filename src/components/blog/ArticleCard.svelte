@@ -32,12 +32,11 @@
 <style>
   .article-link {
     display: block;
-    width: 90%;
+    width: 100%;
     height: 40rem;
     border: 1px solid darkslateblue;
     border-radius: 5px;
     background-color: rgba(240, 255, 255, 0.6);
-    margin: 0 auto;
   }
   .article-card {
     display: flex;
