@@ -5,6 +5,9 @@
   const bgCssPath = `${base}/style/bg2.css`;
 
   export let data: PageData;
+
+  $: tag = data.tag;
+  $: posts = data.posts;
 </script>
 
 <svelte:head>
@@ -15,10 +18,15 @@
 <div class="header-margin" />
 <main class="main-container">
   <h1>Blog</h1>
+  <h2>#{tag}の検索結果</h2>
   <div class="contents-container">
-    {#each data.post as metadata}
-      <ArticleCard {metadata} />
-    {/each}
+    {#if posts.length === 0}
+      <p>見つかりませんでした。</p>
+    {:else}
+      {#each posts as metadata}
+        <ArticleCard {metadata} />
+      {/each}
+    {/if}
   </div>
 </main>
 
