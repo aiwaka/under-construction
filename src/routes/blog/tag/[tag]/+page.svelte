@@ -6,7 +6,8 @@
 
   export let data: PageData;
 
-  const { tag, posts } = data;
+  $: tag = data.tag;
+  $: posts = data.posts;
 </script>
 
 <svelte:head>
