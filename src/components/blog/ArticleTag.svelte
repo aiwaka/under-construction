@@ -23,4 +23,8 @@
   .article-tag:first-child {
     margin-left: 0;
   }
+  .article-tag:hover {
+    background-color: azure;
+    color: darkslateblue;
+  }
 </style>
