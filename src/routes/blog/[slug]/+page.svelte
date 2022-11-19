@@ -7,16 +7,7 @@
 
   export let data: PageData;
 
-  const undefObj = {
-    title: "Not Found",
-    thumbnail: "img2.PNG",
-    date: new Date(),
-    tags: []
-  };
-
-  // Not Foundの場合data.postがundefinedなので, 結局レンダリングされないので意味はないがそれを解決する
-  const { title, thumbnail, date, tags } = data.post ? data.post.attr : undefObj;
-  const body = data.post ? data.post.body : "";
+  const { title, thumbnail, date, tags } = data.post.attr;
 
   const thumbnailPath = `${base}/blog/thumb/${thumbnail}`;
 
@@ -42,18 +33,13 @@
     <div class="img-container">
       <img src={thumbnailPath} alt="thumbnail" />
     </div>
-    <svelte:component this={body} />
+    <svelte:component this={data.post.body} />
   </div>
 </main>
 
 <style>
-  :global(.header-margin) {
+  .header-margin {
     height: 10rem;
-  }
-  @media (max-width: 1024px) {
-    :global(.header-margin) {
-      height: 13rem;
-    }
   }
   .main-container {
     width: 70%;
