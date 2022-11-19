@@ -26,23 +26,29 @@
   .header-margin {
     height: 10rem;
   }
+  @media (max-width: 1024px) {
+    .header-margin {
+      height: 13rem;
+    }
+  }
   .main-container {
     width: 70%;
     margin: auto;
   }
   @media (max-width: 1024px) {
     .main-container {
-      width: 95%;
+      width: 85%;
     }
   }
   .contents-container {
     margin: 2rem auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: 5%;
   }
   @media (max-width: 1024px) {
     .contents-container {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(1, 1fr);
     }
   }
 </style>
