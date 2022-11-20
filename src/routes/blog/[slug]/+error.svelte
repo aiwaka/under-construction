@@ -26,8 +26,11 @@
     color: azure;
   }
   @media (max-width: 1024px) {
+    .header-margin {
+      height: 13rem;
+    }
     .main-container {
-      width: 95%;
+      width: 85%;
     }
   }
 </style>
