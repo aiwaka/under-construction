@@ -46,15 +46,18 @@
     margin: auto;
   }
   @media (max-width: 1024px) {
+    .header-margin {
+      height: 13rem;
+    }
     .main-container {
-      width: 95%;
+      width: 85%;
     }
   }
 
   .img-container {
     border: 4px solid darkslateblue;
     width: 100%;
-    height: 50%;
+    height: 40vh;
     clip: rect(0, 0, 0, 0);
   }
   .img-container > img {
