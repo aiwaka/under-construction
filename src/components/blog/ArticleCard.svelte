@@ -37,6 +37,7 @@
     border: 1px solid darkslateblue;
     border-radius: 5px;
     background-color: rgba(240, 255, 255, 0.6);
+    overflow: hidden;
   }
   .article-card {
     display: flex;
