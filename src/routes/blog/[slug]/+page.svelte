@@ -8,18 +8,34 @@
 
   export let data: PageData;
 
-  const { title, thumbnail, date, tags } = data.post.attr;
+  const { id, description, title, thumbnail, date, tags } = data.post.attr;
   const Content = data.post.body;
 
   const thumbnailPath = `${base}/blog/thumb/${thumbnail}`;
 
   const dateText = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+
+  const ogp = {
+    url: `https://littleikawa.github.io/under-construction/blog/${id}/`,
+    type: "article",
+    title,
+    description,
+    siteName: "Under Construction",
+    // githubでデプロイするとここに保存されているようなのでこのようにする.
+    image: `https://littleikawa.github.io/under-construction/blog/thumb/${thumbnail}`
+  };
 </script>
 
 <svelte:head>
   <title>{title}</title>
   <link rel="stylesheet" href={bgCssPath} />
   <link rel="stylesheet" href={blogCssPath} />
+  <meta property="og:url" content={ogp.url} />
+  <meta property="og:type" content={ogp.type} />
+  <meta property="og:title" content={ogp.title} />
+  <meta property="og:description" content={ogp.description} />
+  <meta property="og:site_name" content={ogp.siteName} />
+  <meta property="og:image" content={ogp.image} />
 </svelte:head>
 
 <div class="header-margin" />
