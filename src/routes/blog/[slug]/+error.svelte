@@ -1,7 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
 
-  const bgCssPath = `${base}/style/bg2.css`;
+  const bgCssPath = `${base}/style/bg1.css`;
 </script>
 
 <svelte:head>
@@ -23,6 +23,7 @@
   .main-container {
     width: 70%;
     margin: auto;
+    color: azure;
   }
   @media (max-width: 1024px) {
     .main-container {
