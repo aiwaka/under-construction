@@ -16,6 +16,7 @@ export const load: PageLoad = async () => {
     const newData = new ArticleAttribute(
       filename,
       meta.title,
+      meta.description,
       meta.thumbnail,
       new Date(meta.date),
       meta.tags
