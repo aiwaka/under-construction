@@ -26,16 +26,14 @@
   .header-margin {
     height: 10rem;
   }
-  @media (max-width: 1024px) {
-    .header-margin {
-      height: 13rem;
-    }
-  }
   .main-container {
     width: 70%;
     margin: auto;
   }
   @media (max-width: 1024px) {
+    .header-margin {
+      height: 13rem;
+    }
     .main-container {
       width: 85%;
     }
