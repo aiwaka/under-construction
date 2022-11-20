@@ -1,10 +1,14 @@
 <script lang="ts">
+  import { base } from "$app/paths";
+
   export let tag: string;
 </script>
 
-<div class="article-tag">
-  #{tag}
-</div>
+<a href={`${base}/blog/tag/${tag}`}>
+  <div class="article-tag">
+    #{tag}
+  </div>
+</a>
 
 <style>
   .article-tag {
@@ -18,5 +22,9 @@
   }
   .article-tag:first-child {
     margin-left: 0;
+  }
+  .article-tag:hover {
+    background-color: azure;
+    color: darkslateblue;
   }
 </style>
