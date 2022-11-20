@@ -1,6 +1,6 @@
 ---
 title: ブログを作ってみました
-description: ""
+description: ごあいさつ
 thumbnail: blue_square.png
 date: 2022-11-20
 tags:

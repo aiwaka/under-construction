@@ -12,12 +12,14 @@ export const load: PageLoad = async ({ params: { slug } }) => {
   const markdown = await import(`../contents/${slug}.md`);
   const meta = markdown.metadata;
   const attr: ArticleAttribute = new ArticleAttribute(
-    meta.id,
+    slug,
     meta.title,
+    meta.description,
     meta.thumbnail,
     new Date(meta.date),
     meta.tags
   );
+  console.log(attr);
   const post = {
     attr,
     body: markdown.default
