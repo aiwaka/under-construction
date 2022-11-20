@@ -13,7 +13,7 @@
 <style>
   .article-tag {
     background-color: slateblue;
-    border: 3px solid darkslateblue;
+    border: 2px solid darkslateblue;
     border-radius: 4px;
     color: azure;
     width: fit-content;
