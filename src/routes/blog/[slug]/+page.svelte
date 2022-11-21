@@ -36,6 +36,7 @@
   <meta property="og:description" content={ogp.description} />
   <meta property="og:site_name" content={ogp.siteName} />
   <meta property="og:image" content={ogp.image} />
+  <meta name="twitter:card" content="summary_large_image" />
 </svelte:head>
 
 <div class="header-margin" />
