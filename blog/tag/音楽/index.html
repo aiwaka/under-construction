@@ -24,12 +24,12 @@
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/stores-21c7c2c5.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/_layout.ts-b8ee4d7c.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_layout-1daba58d.js">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/components/pages/blog/_page.svelte-bee1b6d1.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/components/pages/blog/tag/_tag_/_page.svelte-c9231ef6.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/ArticleCard-f1bbd7d0.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/ArticleTag-d2c70cf2.js">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/blog/_page.ts-116b778b.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/blog/tag/_tag_/_page.ts-0379181c.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/article-953853e4.js">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_page-14f03c1f.js"><title>Under Construction | Blog</title><!-- HEAD_svelte-qvwuyt_START --><link rel="stylesheet" href="/under-construction/style/main.css"><!-- HEAD_svelte-qvwuyt_END --><!-- HEAD_svelte-mp0q4o_START --><link rel="stylesheet" href="/under-construction/style/bg2.css"><!-- HEAD_svelte-mp0q4o_END -->
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_page-1a1c5d67.js"><title>Under Construction | Blog | #音楽の検索結果</title><!-- HEAD_svelte-qvwuyt_START --><link rel="stylesheet" href="/under-construction/style/main.css"><!-- HEAD_svelte-qvwuyt_END --><!-- HEAD_svelte-fs3a5f_START --><link rel="stylesheet" href="/under-construction/style/bg2.css"><!-- HEAD_svelte-fs3a5f_END -->
     </head>
     <body>
         <div id="app">
@@ -55,17 +55,12 @@
 
 <div class="header-margin svelte-aesi38"></div>
 <main class="main-container svelte-aesi38"><h1>Blog</h1>
+  <h2>#音楽の検索結果</h2>
   <div class="contents-container svelte-aesi38"><a class="article-link svelte-auji3" href="/under-construction/blog/20221121-autoseeker"><div class="article-card svelte-auji3"><div class="img-container svelte-auji3"><img src="/under-construction/blog/thumb/autoseeker.jpeg" alt="thumbnail" class="svelte-auji3"></div>
     <div class="card-contents svelte-auji3"><h2>3回作った曲のこと</h2>
       <span>2022-11-21</span>
       <div class="tag-container svelte-auji3"><a href="/under-construction/blog/tag/雑記"><div class="article-tag svelte-15y67jq">#雑記</div>
 </a><a href="/under-construction/blog/tag/音楽"><div class="article-tag svelte-15y67jq">#音楽</div>
-</a></div></div></div>
-</a><a class="article-link svelte-auji3" href="/under-construction/blog/first-message"><div class="article-card svelte-auji3"><div class="img-container svelte-auji3"><img src="/under-construction/blog/thumb/blue_square.png" alt="thumbnail" class="svelte-auji3"></div>
-    <div class="card-contents svelte-auji3"><h2>ブログを作ってみました</h2>
-      <span>2022-11-20</span>
-      <div class="tag-container svelte-auji3"><a href="/under-construction/blog/tag/雑記"><div class="article-tag svelte-15y67jq">#雑記</div>
-</a><a href="/under-construction/blog/tag/プログラミング"><div class="article-tag svelte-15y67jq">#プログラミング</div>
 </a></div></div></div>
 </a></div>
 </main>
@@ -73,7 +68,7 @@
 </footer>
 
 
-		<script type="module" data-sveltekit-hydrate="6t36nz">
+		<script type="module" data-sveltekit-hydrate="1egdziz">
 			import { start } from "/under-construction/_app/immutable/start-8ebff208.js";
 
 			start({
@@ -81,14 +76,14 @@
 				hydrate: {
 					status: 200,
 					error: null,
-					node_ids: [0, 4],
-					params: {},
-					route: {"id":"/blog"},
+					node_ids: [0, 6],
+					params: {tag:"音楽"},
+					route: {"id":"/blog/tag/[tag]"},
 					data: [null,null],
 					form: null
 				},
 				paths: {"base":"/under-construction","assets":"/under-construction"},
-				target: document.querySelector('[data-sveltekit-hydrate="6t36nz"]').parentNode,
+				target: document.querySelector('[data-sveltekit-hydrate="1egdziz"]').parentNode,
 				trailing_slash: "always"
 			});
 		</script>
