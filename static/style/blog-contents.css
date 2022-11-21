@@ -1,6 +1,12 @@
 .blog-article-content-container {
   line-height: 2.8rem;
 }
+.blog-article-content-container a {
+  color: darkgoldenrod;
+}
+.blog-article-content-container a:hover {
+  color: orangered;
+}
 .blog-article-content-container h2 {
   margin-top: 6rem;
   margin-bottom: 3rem;
