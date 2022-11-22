@@ -1,5 +1,5 @@
 import type { PageLoad } from "@/../.svelte-kit/types/src/routes/blog/tag/[tag]/$types.d";
-import { ArticleAttribute } from "../../article";
+import { ArticleAttribute } from "$lib/articles";
 
 export const load: PageLoad = async ({ params: { tag } }) => {
   // contentsフォルダのmdファイル一覧をモジュールとして取得する
