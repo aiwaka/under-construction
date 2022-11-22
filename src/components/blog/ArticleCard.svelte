@@ -1,6 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
-  import type { ArticleAttribute } from "@/routes/blog/article";
+  import type { ArticleAttribute } from "$lib/articles";
   import ArticleTag from "./ArticleTag.svelte";
 
   export let metadata: ArticleAttribute;
