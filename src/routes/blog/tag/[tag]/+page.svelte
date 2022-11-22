@@ -20,7 +20,7 @@
     <p>一致するものはありませんでした。</p>
   {:else}
     <div class="contents-container">
-      {#each data.post as metadata}
+      {#each data.post as metadata (metadata.id)}
         <ArticleCard {metadata} />
       {/each}
     </div>
