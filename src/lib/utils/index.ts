@@ -1,4 +1,4 @@
-import { ArticleAttribute } from "$lib/articles";
+import { ArticleAttributeJson } from "$lib/articles";
 
 export interface FetchOptions {
   tag?: string;
@@ -6,13 +6,14 @@ export interface FetchOptions {
 
 /**
  * contentsディレクトリのmarkdownファイルを読み取って情報の一覧を返す.
+ * そのままjsonに変換できるように日付は文字列で保持したデータ形式とする.
  * @param options 取得オプションを含むオブジェクト.
  */
 export const fetchMarkdownArticles = async (options: FetchOptions = {}) => {
   // contentsフォルダのmdファイル一覧をモジュールとして取得する
   const mdModules = import.meta.glob("../../routes/blog/contents/*.md");
 
-  const attributeList: ArticleAttribute[] = [];
+  const attributeList: ArticleAttributeJson[] = [];
   for (const modulePath in mdModules) {
     // パスからファイル名を取得
     const filename = modulePath.split("/").reverse()[0].split(".")[0];
@@ -23,12 +24,12 @@ export const fetchMarkdownArticles = async (options: FetchOptions = {}) => {
     if (options.tag && !meta.tags.includes(options.tag)) {
       continue;
     }
-    const newData = new ArticleAttribute(
+    const newData = new ArticleAttributeJson(
       filename,
       meta.title,
       meta.description,
       meta.thumbnail,
-      new Date(meta.date),
+      meta.date,
       meta.tags
     );
     attributeList.push(newData);
