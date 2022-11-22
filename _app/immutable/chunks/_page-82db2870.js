@@ -1,0 +1,1 @@
+import{b as r}from"./paths-6cd3a76e.js";import{A as a}from"./index-feb84583.js";const i=async({fetch:s,params:{tag:t}})=>{const e=(await(await s(`${r}/api/articles`)).json()).map(a.fromJson).filter(o=>o.tags.includes(t));return{tag:t,post:e}},b=Object.freeze(Object.defineProperty({__proto__:null,load:i},Symbol.toStringTag,{value:"Module"}));export{b as _,i as l};
