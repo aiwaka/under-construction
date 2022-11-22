@@ -1,4 +1,4 @@
-import { ArticleAttribute } from "./article";
+import { ArticleAttribute } from "$lib/articles";
 import type { PageLoad } from "@/../.svelte-kit/types/src/routes/blog/$types.d";
 
 export const load: PageLoad = async () => {
