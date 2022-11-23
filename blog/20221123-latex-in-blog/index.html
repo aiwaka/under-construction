@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="/under-construction/favicon.ico" />
+        <!-- アイコン用svg -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+        <meta name="viewport" content="width=device-width" />
+        <meta http-equiv="content-security-policy" content="">
+		<link href="/under-construction/_app/immutable/assets/_layout-cc200483.css" rel="stylesheet">
+		<link href="/under-construction/_app/immutable/assets/PageLink-86b1915c.css" rel="stylesheet">
+		<link href="/under-construction/_app/immutable/assets/_page-22c65053.css" rel="stylesheet">
+		<link href="/under-construction/_app/immutable/assets/ArticleTag-3905d2f5.css" rel="stylesheet">
+		<link href="/under-construction/_app/immutable/assets/SoundcloudItem-dece3084.css" rel="stylesheet">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/start-d1f3ac26.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/index-e570fda5.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/singletons-fa2090a9.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/paths-6cd3a76e.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/control-41f7de37.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/components/pages/_layout.svelte-6878d576.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/PageLink-3a560f2f.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/stores-52e48ec9.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/_layout.ts-b8ee4d7c.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_layout-1daba58d.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/components/pages/blog/_slug_/_page.svelte-854570b5.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/ArticleTag-9acaa73a.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/blog/_slug_/_page.ts-9ac70594.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_page-08593d3a.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/index-feb84583.js"><title>LaTeXを記事中で使う</title><!-- HEAD_svelte-qvwuyt_START --><link rel="stylesheet" href="/under-construction/style/main.css"><!-- HEAD_svelte-qvwuyt_END --><!-- HEAD_svelte-bhokwk_START --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css" crossorigin="anonymous"><link href="/under-construction/style/prism/prism-vs.css" rel="stylesheet"><link rel="stylesheet" href="/under-construction/style/bg2.css"><link rel="stylesheet" href="/under-construction/style/blog-contents.css"><meta property="og:url" content="https://littleikawa.github.io/under-construction/blog/20221123-latex-in-blog/"><meta property="og:type" content="article"><meta property="og:title" content="LaTeXを記事中で使う"><meta property="og:description" content="報告と設定備忘録など"><meta property="og:site_name" content="Under Construction"><meta property="og:image" content="https://littleikawa.github.io/under-construction/blog/thumb/latex.png"><meta name="twitter:card" content="summary_large_image"><!-- HEAD_svelte-bhokwk_END -->
+    </head>
+    <body>
+        <div id="app">
+
+
+
+
+
+<div id="website-header" class="svelte-1csm9lc"><div class="title-block svelte-1csm9lc"><h1 class="title svelte-1csm9lc"><a href="/under-construction/">UNDER CONSTRUCTION</a></h1></div>
+  <nav class="svelte-1csm9lc"><div class="nav-link-wrapper svelte-1csm9lc">
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/#profile" style="line-height: 3rem;">PROFILE</a>
+</div>
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/#skill" style="line-height: 3rem;">SKILL</a>
+</div>
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/#works" style="line-height: 3rem;">WORKS</a>
+</div>
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/#contact" style="line-height: 3rem;">CONTACT</a>
+</div>
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/blog" style="line-height: 3rem;">BLOG</a>
+</div></div></nav>
+</div>
+
+
+<div class="header-margin svelte-1p1t82p"></div>
+<main class="main-container svelte-1p1t82p"><h1>LaTeXを記事中で使う</h1>
+  
+  <div class="date-block"><span>2022-11-23</span></div>
+  <div class="tag-container svelte-1p1t82p"><a href="/under-construction/blog/tag/プログラミング"><div class="article-tag svelte-18ohktq">#プログラミング</div>
+</a><a href="/under-construction/blog/tag/Node"><div class="article-tag svelte-18ohktq">#Node</div>
+</a><a href="/under-construction/blog/tag/LaTeX"><div class="article-tag svelte-18ohktq">#LaTeX</div>
+</a></div>
+  <div class="img-container svelte-1p1t82p"><img src="/under-construction/blog/thumb/latex.png" alt="thumbnail" class="svelte-1p1t82p"></div>
+  
+  <div class="blog-article-content-container"><p>タイトルの通りです.</p>
+<p>ちょっと前言及したところで調べてみたところできそうだったので<span class="math math-inline"><!-- HTML_TAG_START --><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LaTeX</mtext></mrow><annotation encoding="application/x-tex">\LaTeX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8988em;vertical-align:-0.2155em;"></span><span class="mord text"><span class="mord textrm">L</span><span class="mspace" style="margin-right:-0.36em;"></span><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.905em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord"><span class="mord textrm mtight sizing reset-size6 size3">A</span></span></span></span></span></span><span class="mspace" style="margin-right:-0.15em;"></span><span class="mord text"><span class="mord textrm">T</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4678em;"><span style="top:-2.7845em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord textrm">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2155em;"><span></span></span></span></span><span class="mspace" style="margin-right:-0.125em;"></span><span class="mord textrm">X</span></span></span></span></span></span><!-- HTML_TAG_END --></span>を書けるようにしました.</p>
+<p>めちゃくちゃ簡単で, 便利な世の中だと思いました（小並感）.</p>
+<p>せっかくなのでやったことだけ書いておこうと思います.</p>
+<h2>使用したライブラリ</h2>
+<p>とりあえず, 順番に列挙していこうと思います.</p>
+<h3>KaTeX</h3>
+<p>ウェブ上でLaTeXを書きたいときにはMathJaxが有名と思いますが, おそらく後発のKaTeXというものもあります.
+Qiitaとかでも使われているらしいです.
+高速, 見た目の質, 依存性のなさ等で優れているようです.</p>
+<h3>remark</h3>
+<p><a href="https://github.com/remarkjs/remark" rel="nofollow">Remark</a>はMarkdownプロセッサであり, <a href="https://github.com/unifiedjs/unified" rel="nofollow">unified</a>というプロジェクトの一部という位置づけのようです.</p>
+<p>この辺のプロジェクトの全体像はOSSとしては今までに触れたことがないくらい混沌としていたのであまり詳しく調べたわけではないです.
+<del>（フロントエンド関連のヤバい側面のように見える）</del></p>
+<p>unifiedはテキストと抽象構文木を関連付けて操作するライブラリ全般を扱うようです.
+その中で, Markdownの文法に対応したものがremarkだと理解しました.</p>
+<p>関連ライブラリが様々にあるようで, 処理自体に影響を与えるもの, 構造要素に色々味付けができるもの, 他の構造化文書に変換するものなど多岐にわたります.</p>
+<h3>rehype</h3>
+<p>これもunifiedプロジェクトの一部です.</p>
+<p>こちらはHTML処理を担当するようで, 思想はremarkと似ています.
+remarkと組み合わせて美味しいことができそうな感じがします.
+こちらも大量に関連ライブラリがあります.</p>
+<h3>mdsvex</h3>
+<p>このブログはどうしてもmarkdownで書きたかったので, Svelte用にmarkdownを処理してくれるライブラリを用いています.
+それが<code>mdsvex</code>です（読み方がわからん. React用のMDXというやつが由来らしいです）.
+これをSvelteのConfigファイルでプリプロセッサとして書いてあげると, ビルド時にマークダウンファイルをよしなにSvelteの要素として扱ってくれます.</p>
+<p>この<code>mdsvex</code>, 上記の<code>remark</code>や<code>rehype</code>をさらに中で走らせることができます.
+つまり, markdownを読みこんだときにremarkで処理したり, 処理したhtmlをrehypeで処理したりできます.
+好きな機能を選んで使えることになります.</p>
+<h3>結局使ったもの</h3>
+<p>というわけでその中で使ったのが以下です.</p>
+<ul><li><a href="https://github.com/remarkjs/remark-math" rel="nofollow"><code>remark-math</code></a></li>
+<li><a href="https://github.com/kwshi/rehype-katex-svelte" rel="nofollow"><code>rehype-katex-svelte</code></a></li></ul>
+<p><code>remark-math</code>は, markdown中の<span class="math math-inline"><!-- HTML_TAG_START --><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LaTeX</mtext></mrow><annotation encoding="application/x-tex">\LaTeX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8988em;vertical-align:-0.2155em;"></span><span class="mord text"><span class="mord textrm">L</span><span class="mspace" style="margin-right:-0.36em;"></span><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.905em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord"><span class="mord textrm mtight sizing reset-size6 size3">A</span></span></span></span></span></span><span class="mspace" style="margin-right:-0.15em;"></span><span class="mord text"><span class="mord textrm">T</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4678em;"><span style="top:-2.7845em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord textrm">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2155em;"><span></span></span></span></span><span class="mspace" style="margin-right:-0.125em;"></span><span class="mord textrm">X</span></span></span></span></span></span><!-- HTML_TAG_END --></span>構文をunifiedで扱える構造に置き換えるものです（だと思っています）.
+<code>rehype-katex-svelte</code>は, <a href="https://github.com/remarkjs/remark-math/tree/HEAD/packages/rehype-katex" rel="nofollow"><code>rehype-katex</code></a>というプラグインをSvelteで扱えるようにチューニングされたものです（公式のrehypeプラグインとはなっていないようです）.
+<code>rehype-katex</code>は適当なunified構造を<code>KaTeX</code>を用いてマークアップするものです.</p>
+<p>ここまでで, できそうな気がしてきました.</p>
+<h2>Svelteにおける設定</h2>
+<p>あとはほとんど用意してもらった構造を使うだけです.</p>
+<p><code>svelte.config.js</code>を以下のようにセットします.</p>
+<pre class="language-js"><!-- HTML_TAG_START --><code class="language-js"><span class="token keyword">import</span> <span class="token punctuation">&#123;</span> mdsvex <span class="token punctuation">&#125;</span> <span class="token keyword">from</span> <span class="token string">"mdsvex"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> rehypeKatexSvelte <span class="token keyword">from</span> <span class="token string">"rehype-katex-svelte"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> remarkMath <span class="token keyword">from</span> <span class="token string">"remark-math"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> config <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">preprocess</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token function">preprocess</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">mdsvex</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">extensions</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">".md"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">remarkPlugins</span><span class="token operator">:</span> <span class="token punctuation">[</span>remarkMath<span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">rehypePlugins</span><span class="token operator">:</span> <span class="token punctuation">[</span>rehypeKatexSvelte<span class="token punctuation">]</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token operator">...</span>
+<span class="token punctuation">&#125;</span></code><!-- HTML_TAG_END --></pre>
+<p>のようにします.
+これで, markdown中に<code>$\LaTeX$</code>と書けば<span class="math math-inline"><!-- HTML_TAG_START --><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LaTeX</mtext></mrow><annotation encoding="application/x-tex">\LaTeX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8988em;vertical-align:-0.2155em;"></span><span class="mord text"><span class="mord textrm">L</span><span class="mspace" style="margin-right:-0.36em;"></span><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6833em;"><span style="top:-2.905em;"><span class="pstrut" style="height:2.7em;"></span><span class="mord"><span class="mord textrm mtight sizing reset-size6 size3">A</span></span></span></span></span></span><span class="mspace" style="margin-right:-0.15em;"></span><span class="mord text"><span class="mord textrm">T</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4678em;"><span style="top:-2.7845em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord textrm">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2155em;"><span></span></span></span></span><span class="mspace" style="margin-right:-0.125em;"></span><span class="mord textrm">X</span></span></span></span></span></span><!-- HTML_TAG_END --></span>となります.</p>
+<p>ディスプレイ数式も,</p>
+<pre class="language-latex"><!-- HTML_TAG_START --><code class="language-latex"><span class="token equation string">$$
+<span class="token equation-command regex">\</span>frac&#123;1&#125;&#123;c^2&#125;<span class="token equation-command regex">ddot</span>&#123;u&#125;(<span class="token equation-command regex">\</span>bm&#123;x&#125;, t)
+- u_&#123;,ii&#125;(<span class="token equation-command regex">\</span>bm&#123;x&#125;,t) = 0,
+<span class="token equation-command regex">\</span>quad <span class="token equation-command regex">\</span>bm&#123;x&#125;<span class="token equation-command regex">\</span>in D, t>0
+$$</span></code><!-- HTML_TAG_END --></pre>
+<p>でOKです.</p>
+<div class="math math-display"><!-- HTML_TAG_START --><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mfrac><mn>1</mn><msup><mi>c</mi><mn>2</mn></msup></mfrac><mover accent="true"><mi>u</mi><mo>¨</mo></mover><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo><mo>−</mo><msub><mi>u</mi><mrow><mo separator="true">,</mo><mi>i</mi><mi>i</mi></mrow></msub><mo stretchy="false">(</mo><mi mathvariant="bold-italic">x</mi><mo separator="true">,</mo><mi>t</mi><mo stretchy="false">)</mo><mo>=</mo><mn>0</mn><mo separator="true">,</mo><mspace width="1em"/><mi mathvariant="bold-italic">x</mi><mo>∈</mo><mi>D</mi><mo separator="true">,</mo><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{1}{c^2}\ddot{u}(\bm{x}, t) - u_{,ii}(\bm{x},t) = 0, \quad \bm{x}\in D, t&gt;0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6679em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">u</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.2222em;"><span class="mord">¨</span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0361em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mpunct mtight">,</span><span class="mord mathnormal mtight">ii</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord"><span class="mord boldsymbol">x</span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span></span><!-- HTML_TAG_END --></div>
+<p>となります.</p>
+<h2>余談</h2>
+<h3>その1</h3>
+<p>コードを貼っていましたが, これは<code>mdsvex</code>が勝手によしなにやってくれています. もはや気持ち悪い</p>
+<p>markdownでコードブロックを書くと, Prism.jsを利用して各コード要素にクラスを付与します.
+Prismのテーマを適当にダウンロードして使うようにしてやれば, いい感じにコードを掲載できます.</p>
+<p>微妙に見にくい気がするのでおすすめのテーマがあったら教えて下さい.</p>
+<h3>その2</h3>
+<p>今, 目次を自動で生成するようにしたいと考えています.</p>
+<p>これもrehypeを使います.
+<code>rehype-slug</code>というやつをpreprocessorに挟むと各見出しにidを付与してくれます（これをslugというそうです）.</p>
+<p>で, <code>rehype-toc</code>というやつでslugがついている見出しをいい感じのhtmlにまとめて冒頭にくっつけてくれます.</p>
+<p>これだけでできそうな気がするのですが, Svelteのビルドで弾かれてしまいます.
+というのも, Svelteはリンクが壊れていないかどうかを巡回して確かめてくれるのですが, <code>rehype</code>系は日本語をそのまま扱うのに対してSvelteはURLエンコードをしてからチェックするようです.</p>
+<p>例えば, 「テスト」という見出しについて考えます.
+これをURLエンコードすると<code>%E3%83%86%E3%82%B9%E3%83%88</code>となります.
+<code>rehype-slug</code>は<code>&lt;h2 id=&quot;テスト&quot;&gt;テスト&lt;/h2&gt;</code>という要素を生成し, <code>rehype-toc</code>もこれに従って<code>&lt;a href=&quot;#テスト&quot;&gt;</code>のようなリンクを生成します.
+しかし, Svelteは「idが<code>%E3%83%86%E3%82%B9%E3%83%88</code>っていう要素がないよ」と警告を出し, ビルドできません.</p>
+<p>実は, <code>rehype-slug</code>側のコードをいじったら解決した（要素にidを挟んでいるだけのすごく簡単なコードでできているので, ここにURLエンコードを挟むだけで解決しました）のですが, GitHub Actionsで自動ビルドするのには使えません.</p>
+<p>というわけで, Issueを立てるかプルリクエストなどと迷っていますが全く何をすればいいかわかりません.
+だれか手ほどきしてくれ〜</p>
+<h2>まとめ</h2>
+<p>というわけで<span class="math math-inline"><!-- HTML_TAG_START --><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>TeX</mtext></mrow><annotation encoding="application/x-tex">\TeX</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8988em;vertical-align:-0.2155em;"></span><span class="mord text"><span class="mord textrm">T</span><span class="mspace" style="margin-right:-0.1667em;"></span><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.4678em;"><span style="top:-2.7845em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord textrm">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2155em;"><span></span></span></span></span><span class="mspace" style="margin-right:-0.125em;"></span><span class="mord textrm">X</span></span></span></span></span><!-- HTML_TAG_END --></span>を使った数学っぽいことも書けるようになります.
+今後とも宜しくお願いします.</p>
+<p>最後は他の記事に分離しても良かったのですが, <code>rehype</code>系で何個も書くのもどうかと思ったのでまとめました.
+まだわからないことがたくさんあります.
+他の忙しいことも多いけどぼちぼち機能向上していければいいなと思います.</p></div>
+</main>
+<footer class="site-footer svelte-1slh2jv"><p id="footer-copyright" class="svelte-1slh2jv">©Aiwaka 2022</p>
+</footer>
+
+
+		<script type="module" data-sveltekit-hydrate="103ywb5">
+			import { start } from "/under-construction/_app/immutable/start-d1f3ac26.js";
+
+			start({
+				env: {},
+				hydrate: {
+					status: 200,
+					error: null,
+					node_ids: [0, 5],
+					params: {slug:"20221123-latex-in-blog"},
+					route: {"id":"/blog/[slug]"},
+					data: [null,null],
+					form: null
+				},
+				paths: {"base":"/under-construction","assets":"/under-construction"},
+				target: document.querySelector('[data-sveltekit-hydrate="103ywb5"]').parentNode,
+				trailing_slash: "always"
+			});
+		</script>
+	</div>
+    </body>
+</html>
