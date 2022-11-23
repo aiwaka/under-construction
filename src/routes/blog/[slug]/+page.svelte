@@ -28,6 +28,11 @@
 
 <svelte:head>
   <title>{title}</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css"
+    crossorigin="anonymous"
+  />
   <link rel="stylesheet" href={bgCssPath} />
   <link rel="stylesheet" href={blogCssPath} />
   <meta property="og:url" content={ogp.url} />
