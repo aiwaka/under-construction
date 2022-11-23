@@ -39,7 +39,8 @@
     }
   }
   .contents-container {
-    margin: 2rem auto;
+    margin: 3rem auto;
+    padding-bottom: 3rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 5%;
