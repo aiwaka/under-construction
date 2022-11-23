@@ -19,7 +19,6 @@ export const load: PageLoad = async ({ params: { slug } }) => {
     new Date(meta.date),
     meta.tags
   );
-  console.log(attr);
   const post = {
     attr,
     body: markdown.default
