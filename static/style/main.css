@@ -90,6 +90,17 @@ img:not([alt]) {
 
 code {
   font-family: "Noto Sans Mono";
+  background-color: lightgray;
+  padding: 0 0.4rem;
+  border-radius: 3px;
+}
+pre > code {
+  background-color: transparent;
+}
+pre {
+  background-color: lightgray;
+  padding: 2rem 3rem;
+  border-radius: 10px;
 }
 
 #app {
