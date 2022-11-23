@@ -13,12 +13,12 @@
 <style>
   .article-tag {
     background-color: slateblue;
-    border: 2px solid darkslateblue;
-    border-radius: 4px;
+    border: 1px solid darkslateblue;
+    border-radius: 5px;
     color: azure;
     width: fit-content;
-    padding: 0.3rem 0.8rem;
-    margin: 0 0.3rem;
+    padding: 0.2rem 0.8rem;
+    margin: 0.1rem 0.3rem;
   }
   .article-tag:first-child {
     margin-left: 0;

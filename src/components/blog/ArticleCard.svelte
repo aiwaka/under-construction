@@ -33,7 +33,7 @@
   .article-link {
     display: block;
     width: 100%;
-    height: 40rem;
+    height: fit-content;
     border: 1px solid darkslateblue;
     border-radius: 5px;
     background-color: rgba(240, 255, 255, 0.6);
@@ -43,7 +43,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    height: 40rem;
   }
   .article-card:hover {
     background-color: darkslateblue;
@@ -52,7 +52,7 @@
   .img-container {
     border: 4px solid darkslateblue;
     width: 100%;
-    height: 50%;
+    height: 20rem;
     clip: rect(0, 0, 0, 0);
   }
   .img-container > img {

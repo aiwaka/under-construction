@@ -70,6 +70,7 @@
   .main-container {
     width: 70%;
     margin: auto;
+    margin-bottom: 5rem;
   }
   @media (max-width: 1024px) {
     .header-margin {
