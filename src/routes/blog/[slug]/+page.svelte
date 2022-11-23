@@ -83,7 +83,7 @@
   .img-container {
     border: 4px solid darkslateblue;
     width: 100%;
-    height: 40vh;
+    height: 45vh;
     clip: rect(0, 0, 0, 0);
     margin: 5rem auto;
   }
