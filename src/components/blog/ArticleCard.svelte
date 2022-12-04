@@ -30,20 +30,21 @@
 </a>
 
 <style>
+  /* このリンクの親はグリッドボックスである前提なので, その大きさ指定やgap等の影響を受ける. */
   .article-link {
     display: block;
     width: 100%;
-    height: fit-content;
     border: 1px solid darkslateblue;
     border-radius: 5px;
     background-color: rgba(240, 255, 255, 0.6);
     overflow: hidden;
+    margin: 2rem 0;
   }
   .article-card {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 40rem;
+    height: 100%;
   }
   .article-card:hover {
     background-color: darkslateblue;
@@ -66,5 +67,6 @@
   .tag-container {
     display: flex;
     flex-wrap: wrap;
+    margin: 1rem auto;
   }
 </style>
