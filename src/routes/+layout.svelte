@@ -2,6 +2,7 @@
   import SiteHeader from "@/SiteHeader.svelte";
   import SiteFooter from "@/SiteFooter.svelte";
   import { base } from "$app/paths";
+  import Analytics from "@/components/analytics/Analytics.svelte";
 
   const cssPath = `${base}/style/main.css`;
 </script>
@@ -10,6 +11,8 @@
 <svelte:head>
   <link rel="stylesheet" href={cssPath} />
 </svelte:head>
+
+<Analytics />
 
 <SiteHeader />
 <slot />
