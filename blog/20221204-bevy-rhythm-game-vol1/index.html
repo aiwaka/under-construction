@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" href="/under-construction/favicon.ico" />
+        <!-- アイコン用svg -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+        <meta name="viewport" content="width=device-width" />
+        <meta http-equiv="content-security-policy" content="">
+		<link href="/under-construction/_app/immutable/assets/_layout-cc200483.css" rel="stylesheet">
+		<link href="/under-construction/_app/immutable/assets/PageLink-86b1915c.css" rel="stylesheet">
+		<link href="/under-construction/_app/immutable/assets/_page-22c65053.css" rel="stylesheet">
+		<link href="/under-construction/_app/immutable/assets/ArticleTag-ff652692.css" rel="stylesheet">
+		<link href="/under-construction/_app/immutable/assets/SoundcloudItem-dece3084.css" rel="stylesheet">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/start-d6f27bc9.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/index-e570fda5.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/singletons-b868cb98.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/paths-6cd3a76e.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/control-41f7de37.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/components/pages/_layout.svelte-24c851da.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/PageLink-cdfc8ea8.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/stores-af25e873.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/_layout.ts-b8ee4d7c.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_layout-1daba58d.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/components/pages/blog/_slug_/_page.svelte-30486ba5.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/ArticleTag-bed4d6af.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/blog/_slug_/_page.ts-ff66ec57.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_page-d1010b6e.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/index-feb84583.js"><title>Rust製ゲームエンジンBevy (v0.9) で音ゲーをつくる [vol.1]</title><!-- HEAD_svelte-qvwuyt_START --><link rel="stylesheet" href="/under-construction/style/main.css"><!-- HEAD_svelte-qvwuyt_END --><!-- HEAD_svelte-bhokwk_START --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css" crossorigin="anonymous"><link href="/under-construction/style/prism/prism-vs.css" rel="stylesheet"><link rel="stylesheet" href="/under-construction/style/bg2.css"><link rel="stylesheet" href="/under-construction/style/blog-contents.css"><meta property="og:url" content="https://littleikawa.github.io/under-construction/blog/20221204-bevy-rhythm-game-vol1/"><meta property="og:type" content="article"><meta property="og:title" content="Rust製ゲームエンジンBevy (v0.9) で音ゲーをつくる [vol.1]"><meta property="og:description" content="Rustで音ゲーをつくる連載をします"><meta property="og:site_name" content="Under Construction"><meta property="og:image" content="https://littleikawa.github.io/under-construction/blog/thumb/bevy-rhythm-game.png"><meta name="twitter:card" content="summary_large_image"><!-- HEAD_svelte-bhokwk_END -->
+    </head>
+    <body>
+        <div id="app">
+
+
+
+
+
+<div id="website-header" class="svelte-1csm9lc"><div class="title-block svelte-1csm9lc"><h1 class="title svelte-1csm9lc"><a href="/under-construction/">UNDER CONSTRUCTION</a></h1></div>
+  <nav class="svelte-1csm9lc"><div class="nav-link-wrapper svelte-1csm9lc">
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/#profile" style="line-height: 3rem;">PROFILE</a>
+</div>
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/#skill" style="line-height: 3rem;">SKILL</a>
+</div>
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/#works" style="line-height: 3rem;">WORKS</a>
+</div>
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/#contact" style="line-height: 3rem;">CONTACT</a>
+</div>
+<div class="page-link__container"><a class="page-link svelte-1jwgugn" href="/under-construction/blog" style="line-height: 3rem;">BLOG</a>
+</div></div></nav>
+</div>
+
+
+<div class="header-margin svelte-1p1t82p"></div>
+<main class="main-container svelte-1p1t82p"><h1>Rust製ゲームエンジンBevy (v0.9) で音ゲーをつくる [vol.1]</h1>
+  
+  <div class="date-block"><span>2022-12-4</span></div>
+  <div class="tag-container svelte-1p1t82p"><a href="/under-construction/blog/tag/プログラミング"><div class="article-tag svelte-113c9rm">#プログラミング</div>
+</a><a href="/under-construction/blog/tag/ゲーム"><div class="article-tag svelte-113c9rm">#ゲーム</div>
+</a><a href="/under-construction/blog/tag/Rust"><div class="article-tag svelte-113c9rm">#Rust</div>
+</a><a href="/under-construction/blog/tag/Bevy"><div class="article-tag svelte-113c9rm">#Bevy</div>
+</a></div>
+  <div class="img-container svelte-1p1t82p"><img src="/under-construction/blog/thumb/bevy-rhythm-game.png" alt="thumbnail" class="svelte-1p1t82p"></div>
+  
+  <div class="blog-article-content-container"><h2>はじめに</h2>
+<h3>この記事の目的</h3>
+<p>Rustのゲームエンジンはいくつか開発されていますが, その中ではBevyが最も勢いがある状態と言えます.
+図について適当に個人的に喋りますと, Bevyと思想を同じくするAmethystはプロジェクトがお亡くなりになりました.
+後発でかなり勢いがあるFyroxはとても気になりますね.
+nannouはゲームエンジンというよりはprocessingのようなクリエイティブプログラミングフレームワークです.
+Pistonは…知らないです（ごめんなさい）</p>
+<img src="/under-construction/blog/img/rust-game-engine-comparing.png" alt="img">
+<p>さて, 私もBevyでゲームを作って <del>（作ろうとして）</del> いますが, 凄まじいスピードでバージョンが変わります.
+以前0.8がリリースされたときに記事を投稿しましたが, 気づいたら11月に0.9が出ていました.
+バージョン0.8を使ってリズムゲーム, いわゆる音ゲーを作っていたのですが, 0.9に移行するついでに少し溜まってきたノウハウを記録しようと思い記事を立ち上げました.</p>
+<p>といいつつまだコードを書いているわけではありません.
+<del>（ニコ動でよくある失踪RTA解説シリーズの如く）</del> 途中で切れないように適度な分量で切り上げようと思っていますが, それなりに忙しい時期なのであまり期待しないでお待ちいただければ幸いです.
+おそらく書いているうちにBevyの1.0か0.10か知りませんが次のバージョンが出ることでしょうが, 適宜更新していきたいと思います.</p>
+<p>めちゃくちゃどうでもいいですが, サムネイルの悪夢のような画像は今流行りのStable Diffusionに「bevy rhythm game」と入れると出てきました.
+AI絵も色々騒がれていますがこういうどうでもいい画像に使えたらいいなと思います.
+でも著作権とかどうなんだろうな…難しい.</p>
+<h3>一連の記事でやること</h3>
+<ul><li>Bevy v0.9で音ゲーのロジック部分をつくる.</li>
+<li>ロードやアセットの扱いについて解説する.</li>
+<li>Bevyを用いた開発における個人的なファイル分割の手法を解説する.</li></ul>
+<p>なお, 音ゲーに必要な音楽ファイルを一つリポジトリで配布します.
+まあ各人で何かしら用意できると思いますが私は著作権とかが怖いのでアップロードに際して自作しました.
+なんの工夫もない拙い曲ですが, よろしければご利用ください.
+加工や別プロジェクトでの個人利用はOK, 再配布は禁止とします.</p>
+<h3>やらないこと</h3>
+<ul><li>Rust言語や関連ツール（Cargoなど）の機能の解説（細かい補足はする）.</li>
+<li>BevyのECSの考え方や実装方法の解説（細かい補足はする）.</li></ul>
+<p>Bevyについての資料としては, 公式ブックの訳でかつ少しバージョンが違いますが, <a href="https://zenn.dev/hideakitai/articles/rust_bevy_ecs_introduction_ht" rel="nofollow">このページ</a>がまとまっており優れているので参照ください.</p>
+<h3>環境</h3>
+<p>私の環境は,</p>
+<ul><li>M1 Macbook Air, macOS Big Sur 11.6</li>
+<li>rustc 1.65.0</li>
+<li>Visual Studio Code 1.73.1</li>
+<li>拡張機能として<code>rust-analyzer</code>をインストール済み</li></ul>
+<p>です.
+Rust, Bevyはクロスプラットフォームで, エディタごとのプラグインも豊富なのでなんでも大丈夫だと思いますが, 参考にしてください.</p>
+<p>注意として, Bevy 0.9は2022年12月時点でのRustの最新版1.65でないと動作しません.
+というのも, 1.65で安定化されたGeneralized Associated Typeをすでに使っているため, 文法レベルで後方互換がありません.
+というわけで, Rustコンパイラのバージョンだけは最新にしておく必要があります.</p>
+<p>では始めていきます.</p>
+<h2>Bevyプロジェクトをつくる</h2>
+<p>とりあえず最初から.</p>
+<p>適当なディレクトリで, <code>cargo new (project-name)</code>を実行します.
+なお, 以下では<code>(project-name)</code>は<code>simple_rhythm_game</code>とします.</p>
+<p>できたディレクトリに移動し, gitの最初のコミットを入れるなりします.</p>
+<p><code>Cargo.toml</code>を編集します.
+後のことも考えて以下のようにします.</p>
+<pre class="language-toml"><!-- HTML_TAG_START --><code class="language-toml"><span class="token punctuation">[</span><span class="token table class-name">package</span><span class="token punctuation">]</span>
+<span class="token key property">name</span> <span class="token punctuation">=</span> <span class="token string">"simple_rhythm_game"</span>
+<span class="token key property">version</span> <span class="token punctuation">=</span> <span class="token string">"0.1.0"</span>
+<span class="token key property">edition</span> <span class="token punctuation">=</span> <span class="token string">"2021"</span>
+
+<span class="token comment"># See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html</span>
+
+<span class="token punctuation">[</span><span class="token table class-name">dependencies</span><span class="token punctuation">]</span>
+<span class="token comment"># Bevyのbevy_audio, vorbis機能を無効化するための設定を行っている.</span>
+<span class="token key property">bevy</span> <span class="token punctuation">=</span> <span class="token punctuation">&#123;</span> <span class="token key property">version</span> <span class="token punctuation">=</span> <span class="token string">"0.9.1"</span><span class="token punctuation">,</span> <span class="token key property">default-features</span> <span class="token punctuation">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token key property">features</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span>
+    <span class="token string">"bevy_asset"</span><span class="token punctuation">,</span>
+    <span class="token string">"bevy_winit"</span><span class="token punctuation">,</span>
+    <span class="token string">"bevy_scene"</span><span class="token punctuation">,</span>
+    <span class="token string">"render"</span><span class="token punctuation">,</span>
+    <span class="token string">"png"</span><span class="token punctuation">,</span>
+    <span class="token string">"hdr"</span><span class="token punctuation">,</span>
+    <span class="token string">"x11"</span><span class="token punctuation">,</span>
+    <span class="token string">"filesystem_watcher"</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span> <span class="token punctuation">&#125;</span>
+<span class="token key property">bevy_kira_audio</span> <span class="token punctuation">=</span> <span class="token punctuation">&#123;</span> <span class="token key property">version</span> <span class="token punctuation">=</span> <span class="token string">"0.13"</span><span class="token punctuation">,</span> <span class="token key property">features</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span><span class="token string">"wav"</span><span class="token punctuation">,</span> <span class="token string">"mp3"</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span>
+<span class="token comment"># Bevy自体の依存バージョンと一致させること, とある.</span>
+<span class="token comment"># https://github.com/bevyengine/bevy/blob/main/crates/bevy_winit とかを見る.</span>
+<span class="token key property">winit</span> <span class="token punctuation">=</span> <span class="token punctuation">&#123;</span> <span class="token key property">version</span> <span class="token punctuation">=</span> <span class="token string">"0.27.0"</span><span class="token punctuation">,</span> <span class="token key property">default-features</span> <span class="token punctuation">=</span> <span class="token boolean">false</span> <span class="token punctuation">&#125;</span>
+<span class="token key property">image</span> <span class="token punctuation">=</span> <span class="token punctuation">&#123;</span> <span class="token key property">version</span> <span class="token punctuation">=</span> <span class="token string">"0.24"</span><span class="token punctuation">,</span> <span class="token key property">default-features</span> <span class="token punctuation">=</span> <span class="token boolean">false</span> <span class="token punctuation">&#125;</span>
+
+<span class="token key property">itertools</span> <span class="token punctuation">=</span> <span class="token string">"0.10"</span>
+<span class="token key property">serde</span> <span class="token punctuation">=</span> <span class="token string">"1.0"</span>
+<span class="token key property">serde_derive</span> <span class="token punctuation">=</span> <span class="token string">"1.0"</span>
+<span class="token key property">serde_yaml</span> <span class="token punctuation">=</span> <span class="token string">"0.9"</span></code><!-- HTML_TAG_END --></pre>
+<p>ただBevyを入れるだけにしては複雑な感じなっていますが理由があります.
+音ゲーという性質上, デフォルトのBevyのオーディオを扱う機能では物足りません（mp3も読み込めないし正確な時刻での再生もできない）.
+色々方法はあるようですが, 自分は<code>kira_bevy_audio</code>というクレートにオーディオを任せる方法を採ります.
+詳しくは解説している記事がありますが, デフォルトのfeaturesを無効化し, オーディオ以外を有効化し, <code>bevy_kira_audio</code>のバージョンを正しく指定して入れる, という複雑な設定が必要です（もう組み込んでくれればいいのに…）.
+また, <code>winit</code>のバージョンも依存関係の解決のためと思いますがちゃんと調べて明示する必要があります.
+（<code>image</code>はなんで設定しているのか失念しました…なくても大丈夫な気もしますが念の為.）</p>
+<p>リポジトリやクレートのホームページに対応表がありますが, Bevy 0.9に対しては<code>bevy_kira_audio</code>のバージョンは0.13を指定します.
+featuresとして<code>wav</code>と<code>mp3</code>を有効化しておきましょう. デフォルトでは<code>ogg</code>のみです（ライセンス料とかの関係からゲームではoggが結構使われます）.</p>
+<p><code>itertools</code>はVec配列を扱う上で色々便利なのでとりあえず入れておきます.
+<code>serde</code>シリーズは譜面の読み込みのために使います.
+譜面の形式は後に解説しますが, 自作型の組み込みやすさを考慮してYAML形式を採用しますのでそのためのクレートも入れておきます.</p>
+<p>なお譜面データの形式について少し触れておきます.
+ハードコーディングは論外として, JSON, CSV, TOML, YAMLあたりで記述したデータを読み込めるようにするのが適切かと思います.
+CSV, TOMLは便利で, 特にTOMLはRustと相性が良いですが少し拡張性の面で厳しく, 複雑なデータをつくるのは難しい気がします.
+編集が面倒という点を解決できるユーティリティを扱えるならJSONでもいいですが, そもそもRustと壊滅的に相性が悪いと思います.
+というわけでYAMLにしました.
+この辺は個人の好みとかプロジェクト次第です.</p>
+<h2>ウィンドウを出す</h2>
+<p>初歩的なところですが, ここがもう0.8から0.9で変わったところです.
+<a href="https://bevyengine.org/learn/book/migration-guides/0.8-0.9/#implement-bundle-for-component-use-bundle-tuples-for-insertion:~:text=Make%20Resource%20trait%20opt%2Din%2C%20requiring%20%23%5Bderive(Resource)%5D%20V2" rel="nofollow">ここ</a>や
+<a href="https://bevyengine.org/learn/book/migration-guides/0.8-0.9/#implement-bundle-for-component-use-bundle-tuples-for-insertion:~:text=Plugins%20own%20their%20settings.%20Rework%20PluginGroup%20trait." rel="nofollow">ここ</a>にある通り,
+従来のResourceは任意の型をデフォルトで扱えなくなり, Resourceとして扱うために<code>#[derive(Resource)]</code>が必要になりました.
+プリミティブな型は自分で定義したシンプルなタプル構造体で包んであげる必要があります（これを扱う際の利便性向上のために<code>Deref</code>と<code>DerefMut</code>も<code>derive</code>することを推奨しています）.</p>
+<p>従来ではウィンドウはリソースとしてアプリに追加していました.
+しかし, リソースに少し設定が必要になったため, デフォルトプラグインに含まれるプラグインの組み込み設定として表現されるようになりました.
+以下リンク先からの引用です.</p>
+<pre class="language-rust"><!-- HTML_TAG_START --><code class="language-rust"><span class="token comment">// Old (Bevy 0.8)</span>
+app
+  <span class="token punctuation">.</span><span class="token function">insert_resource</span><span class="token punctuation">(</span><span class="token class-name">WindowDescriptor</span> <span class="token punctuation">&#123;</span>
+    width<span class="token punctuation">:</span> <span class="token number">400.0</span><span class="token punctuation">,</span>
+    <span class="token punctuation">..</span><span class="token function">default</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">add_plugins</span><span class="token punctuation">(</span><span class="token class-name">DefaultPlugins</span><span class="token punctuation">)</span>
+
+<span class="token comment">// New (Bevy 0.9)</span>
+app<span class="token punctuation">.</span><span class="token function">add_plugins</span><span class="token punctuation">(</span><span class="token class-name">DefaultPlugins</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token class-name">WindowPlugin</span> <span class="token punctuation">&#123;</span>
+  window<span class="token punctuation">:</span> <span class="token class-name">WindowDescriptor</span> <span class="token punctuation">&#123;</span>
+    width<span class="token punctuation">:</span> <span class="token number">400.0</span><span class="token punctuation">,</span>
+    <span class="token punctuation">..</span><span class="token function">default</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">..</span><span class="token function">default</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code><!-- HTML_TAG_END --></pre>
+<p>…まあ我々が触る部分は大して変わってないですね.</p>
+<p>というわけで<code>main.rs</code>を以下のように編集します.</p>
+<pre class="language-rust"><!-- HTML_TAG_START --><code class="language-rust"><span class="token keyword">mod</span> <span class="token module-declaration namespace">constants</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token namespace">bevy<span class="token punctuation">::</span>prelude<span class="token punctuation">::</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token namespace">bevy_kira_audio<span class="token punctuation">::</span>prelude<span class="token punctuation">::</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token namespace">constants<span class="token punctuation">::</span></span><span class="token punctuation">&#123;</span><span class="token constant">SCREEN_HEIGHT</span><span class="token punctuation">,</span> <span class="token constant">SCREEN_WIDTH</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">fn</span> <span class="token function-definition function">global_setup</span><span class="token punctuation">(</span><span class="token keyword">mut</span> commands<span class="token punctuation">:</span> <span class="token class-name">Commands</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// カメラのセット</span>
+    commands<span class="token punctuation">.</span><span class="token function">spawn</span><span class="token punctuation">(</span><span class="token class-name">Camera2dBundle</span><span class="token punctuation">::</span><span class="token function">default</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">fn</span> <span class="token function-definition function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> window <span class="token operator">=</span> <span class="token class-name">WindowDescriptor</span> <span class="token punctuation">&#123;</span>
+        title<span class="token punctuation">:</span> <span class="token string">"rhythm_game"</span><span class="token punctuation">.</span><span class="token function">to_string</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        width<span class="token punctuation">:</span> <span class="token constant">SCREEN_WIDTH</span><span class="token punctuation">,</span>
+        height<span class="token punctuation">:</span> <span class="token constant">SCREEN_HEIGHT</span><span class="token punctuation">,</span>
+        <span class="token punctuation">..</span><span class="token class-name">Default</span><span class="token punctuation">::</span><span class="token function">default</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> app <span class="token operator">=</span> <span class="token class-name">App</span><span class="token punctuation">::</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    app<span class="token punctuation">.</span><span class="token function">add_system</span><span class="token punctuation">(</span><span class="token namespace">bevy<span class="token punctuation">::</span>window<span class="token punctuation">::</span></span>close_on_esc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    app<span class="token punctuation">.</span><span class="token function">add_plugins</span><span class="token punctuation">(</span><span class="token class-name">DefaultPlugins</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token class-name">WindowPlugin</span> <span class="token punctuation">&#123;</span>
+        window<span class="token punctuation">,</span>
+        <span class="token punctuation">..</span><span class="token function">default</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    app<span class="token punctuation">.</span><span class="token function">add_plugin</span><span class="token punctuation">(</span><span class="token class-name">AudioPlugin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    app<span class="token punctuation">.</span><span class="token function">add_startup_system</span><span class="token punctuation">(</span>global_setup<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    app<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code><!-- HTML_TAG_END --></pre>
+<p><code>constants</code>をモジュールとして追加します.
+つまり, <code>src/constants.rs</code>を作成します.
+中身は以下です.</p>
+<pre class="language-rust"><!-- HTML_TAG_START --><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">const</span> <span class="token constant">SCREEN_WIDTH</span><span class="token punctuation">:</span> <span class="token keyword">f32</span> <span class="token operator">=</span> <span class="token number">800.0</span><span class="token punctuation">;</span>
+<span class="token keyword">pub</span> <span class="token keyword">const</span> <span class="token constant">SCREEN_HEIGHT</span><span class="token punctuation">:</span> <span class="token keyword">f32</span> <span class="token operator">=</span> <span class="token number">600.0</span><span class="token punctuation">;</span></code><!-- HTML_TAG_END --></pre>
+<p>個人的にはこのようにゲーム全体での定数は一つのモジュールに分けておくのが好きです.</p>
+<p><code>global_setup()</code>はゲームの最初に一度だけ実行されるシステムです.
+カメラのセット等を行います.</p>
+<p>また, <code>window</code>を上記のように用意すると, 以前のバージョンと互換性が保ちやすい気がします.
+<code>Esc</code>キーでウィンドウを閉じるデバッグ用システムも入れておきます.</p>
+<h2>Vol.1 まとめ</h2>
+<p>とりあえず導入を書きました.
+次回はローディングとかについて書きたいと思います.</p>
+<p>ここまで読んでいただいた方には感謝を申し上げるとともにお気づきのことかと察しますが, 私は文章をまとめるのが非常に下手な人間です.
+コードは多く載せるようにしていくので雑にご覧くだされば幸いです.</p></div>
+</main>
+<footer class="site-footer svelte-1slh2jv"><p id="footer-copyright" class="svelte-1slh2jv">©Aiwaka 2022</p>
+</footer>
+
+
+		<script type="module" data-sveltekit-hydrate="1rw5f0y">
+			import { start } from "/under-construction/_app/immutable/start-d6f27bc9.js";
+
+			start({
+				env: {},
+				hydrate: {
+					status: 200,
+					error: null,
+					node_ids: [0, 5],
+					params: {slug:"20221204-bevy-rhythm-game-vol1"},
+					route: {"id":"/blog/[slug]"},
+					data: [null,null],
+					form: null
+				},
+				paths: {"base":"/under-construction","assets":"/under-construction"},
+				target: document.querySelector('[data-sveltekit-hydrate="1rw5f0y"]').parentNode,
+				trailing_slash: "always"
+			});
+		</script>
+	</div>
+    </body>
+</html>
