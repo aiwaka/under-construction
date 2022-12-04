@@ -1,7 +1,7 @@
 ---
 title: Rust製ゲームエンジンBevy (v0.9) で音ゲーをつくる [vol.1]
-description: ""
-thumbnail: autoseeker.jpeg
+description: "Rustで音ゲーをつくる連載をします"
+thumbnail: bevy-rhythm-game.png
 date: 2022-12-04
 tags:
   - プログラミング
@@ -33,6 +33,10 @@ Pistonは...知らないです（ごめんなさい）
 といいつつまだコードを書いているわけではありません.
 ~~（ニコ動でよくある失踪RTA解説シリーズの如く）~~ 途中で切れないように適度な分量で切り上げようと思っていますが, それなりに忙しい時期なのであまり期待しないでお待ちいただければ幸いです.
 おそらく書いているうちにBevyの1.0か0.10か知りませんが次のバージョンが出ることでしょうが, 適宜更新していきたいと思います.
+
+めちゃくちゃどうでもいいですが, サムネイルの悪夢のような画像は今流行りのStable Diffusionに「bevy rhythm game」と入れると出てきました.
+AI絵も色々騒がれていますがこういうどうでもいい画像に使えたらいいなと思います.
+でも著作権とかどうなんだろうな...難しい.
 
 ### 一連の記事でやること
 
@@ -122,15 +126,15 @@ serde_yaml = "0.9"
 （`image`はなんで設定しているのか失念しました...なくても大丈夫な気もしますが念の為.）
 
 リポジトリやクレートのホームページに対応表がありますが, Bevy 0.9に対しては`bevy_kira_audio`のバージョンは0.13を指定します.
-featuresとして`wav`と`mp3`を有効化しておきましょう. デフォルトではVorbis（いわゆるogg）です.
+featuresとして`wav`と`mp3`を有効化しておきましょう. デフォルトでは`ogg`のみです（ライセンス料とかの関係からゲームではoggが結構使われます）.
 
 `itertools`はVec配列を扱う上で色々便利なのでとりあえず入れておきます.
 `serde`シリーズは譜面の読み込みのために使います.
 譜面の形式は後に解説しますが, 自作型の組み込みやすさを考慮してYAML形式を採用しますのでそのためのクレートも入れておきます.
 
 なお譜面データの形式について少し触れておきます.
-ハードコーディングは論外として, JSON, CSV, TOML, YAMLあたりかと思います.
-CSV, TOMLは便利ですが少し拡張性の面で厳しい気がします.
+ハードコーディングは論外として, JSON, CSV, TOML, YAMLあたりで記述したデータを読み込めるようにするのが適切かと思います.
+CSV, TOMLは便利で, 特にTOMLはRustと相性が良いですが少し拡張性の面で厳しく, 複雑なデータをつくるのは難しい気がします.
 編集が面倒という点を解決できるユーティリティを扱えるならJSONでもいいですが, そもそもRustと壊滅的に相性が悪いと思います.
 というわけでYAMLにしました.
 この辺は個人の好みとかプロジェクト次第です.
@@ -140,7 +144,7 @@ CSV, TOMLは便利ですが少し拡張性の面で厳しい気がします.
 初歩的なところですが, ここがもう0.8から0.9で変わったところです.
 [ここ](https://bevyengine.org/learn/book/migration-guides/0.8-0.9/#implement-bundle-for-component-use-bundle-tuples-for-insertion:~:text=Make%20Resource%20trait%20opt%2Din%2C%20requiring%20%23%5Bderive(Resource)%5D%20V2)や
 [ここ](https://bevyengine.org/learn/book/migration-guides/0.8-0.9/#implement-bundle-for-component-use-bundle-tuples-for-insertion:~:text=Plugins%20own%20their%20settings.%20Rework%20PluginGroup%20trait.)にある通り,
-従来のResourceは適当な型を扱えなくなり, Resourceとして扱うために`#[derive(Resource)]`が必要になりました.
+従来のResourceは任意の型をデフォルトで扱えなくなり, Resourceとして扱うために`#[derive(Resource)]`が必要になりました.
 プリミティブな型は自分で定義したシンプルなタプル構造体で包んであげる必要があります（これを扱う際の利便性向上のために`Deref`と`DerefMut`も`derive`することを推奨しています）.
 
 従来ではウィンドウはリソースとしてアプリに追加していました.
