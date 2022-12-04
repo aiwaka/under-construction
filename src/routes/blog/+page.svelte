@@ -43,7 +43,7 @@
     padding-bottom: 3rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 5%;
+    column-gap: 5%;
   }
   @media (max-width: 1024px) {
     .contents-container {
