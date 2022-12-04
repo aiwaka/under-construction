@@ -1,10 +1,11 @@
 <script lang="ts">
   import { base } from "$app/paths";
   import type { PageData } from ".svelte-kit/types/src/routes/blog/tag/[tag]/$types";
-  import ArticleCard from "@/components/blog/ArticleCard.svelte";
-  const bgCssPath = `${base}/style/bg2.css`;
+  import ArticleCardContainer from "@/components/blog/ArticleCardContainer.svelte";
 
   export let data: PageData;
+
+  const bgCssPath = `${base}/style/bg2.css`;
 </script>
 
 <svelte:head>
@@ -19,11 +20,7 @@
   {#if data.post.length === 0}
     <p>一致するものはありませんでした。</p>
   {:else}
-    <div class="contents-container">
-      {#each data.post as metadata (metadata.id)}
-        <ArticleCard {metadata} />
-      {/each}
-    </div>
+    <ArticleCardContainer cardList={data.post} />
   {/if}
 </main>
 
@@ -41,17 +38,6 @@
     }
     .main-container {
       width: 85%;
-    }
-  }
-  .contents-container {
-    margin: 2rem auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 5%;
-  }
-  @media (max-width: 1024px) {
-    .contents-container {
-      grid-template-columns: repeat(1, 1fr);
     }
   }
 </style>

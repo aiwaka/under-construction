@@ -15,9 +15,10 @@
     background-color: slateblue;
     border: 1px solid darkslateblue;
     border-radius: 5px;
+    font-size: 90%;
     color: azure;
     width: fit-content;
-    padding: 0.2rem 0.8rem;
+    padding: 0.1rem 0.9rem;
     margin: 0.1rem 0.3rem;
   }
   .article-tag:first-child {
