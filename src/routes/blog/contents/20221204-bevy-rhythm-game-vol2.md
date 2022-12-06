@@ -60,6 +60,7 @@ simple_rhythm_game
 `src`以下を見ますと, `main.rs`のほか, 第一回で作った`constants.rs`, イベントの定義や追加を行う`event.rs`があります.
 Bevyの特徴的な要素であるECSを司るのが`components`, `resources`, `systems`モジュールです.
 ここに役割ごとにソースコードを置いていくことで管理します.
+以下ではこれらをコンポーネントモジュール, リソースモジュール, システムモジュールと呼びます.
 
 ただ, `resources`で定義した構造体に`Component`を付与することもあり`components`と`resources`を分ける理由がやや曖昧になっているなど, 改善の余地が大いにあると思います.
 
@@ -171,17 +172,195 @@ vec![
 このため, 文字列をパースするための構造体と, 実際に扱う構造体を2つ用意するのが定石のようです.
 Rustには`From`トレイトがあり, このような変換に意味をもたせることが簡単にできます.
 `From`を使えば`Into`も実装されるため, 様々な場面で扱いやすくなります.
+また`From`の`from`メソッドでは所有権が移りますが, これも適切です.
+というのも, ファイルから読み込んだ一時的なデータを保存しておく必要はないからです.
 
-パース用構造体に`Deserialize`を実装し, 対応する構造体に`From`を実装することで, 帰納的に変換を行うことができます.
+まとめると, パース用構造体に`Deserialize`を実装し, 対応する構造体に`From`を実装することで, 帰納的に変換を行うことができます.
 
 ## 構造体をつくる
 
 以上を踏まえて実際に構造体を用意してみます.
+リソースモジュールの`mod.rs`に`pub mod song;`を追加し, `song.rs`を追加して次のように書きます.
+なお, ほとんど全部のファイルで`use bevy::prelude::*`を追加することになるので, これは適宜省略します.
+また`use serde::{Deserialize, Serialize};`も`derive`マクロを使っている場合はこれが必要だということにして省略することがあるかもしれません.
+
+```rust:src/resources/song.rs
+use bevy::prelude::*;
+use serde::{Deserialize, Serialize};
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct SongConfigParser {
+    pub name: String,
+    pub filename: String,
+    /// 曲の尺（秒）
+    pub length: f64,
+    /// 曲開始時点で一小節に何拍あるか
+    pub initial_beat: u32,
+    pub initial_bpm: f32,
+    pub notes: Vec<NoteSpawnParser>,
+}
+```
+
+`NoteSpawnParser`はノーツ出現情報をパースする構造体です.
+これはノーツ情報なので, `note.rs`をリソースモジュールに追加し, 以下のように定義します.
+
+```rust:src/resources/note.rs
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub struct NoteSpawnParser {
+    note: NoteTypeParser,
+    /// 小節番号（0始まり）
+    bar: u32,
+    /// 小節内の拍位置（0始まり）. 例えば1.5なら2拍目の裏になる
+    beat: f64,
+}
+
+#[derive(Deserialize, Serialize, Debug, Clone)]
+pub enum NoteTypeParser {
+    Normal { key: i32 },
+}
+```
+
+`NoteSpawnParser`にはさらに`NoteTypeParser`が入ることになっています.
+これにノーツの種類ごとの情報を持たせるようにします.
+
+これで実際に読み込めるか試してみます.
+`assets/songs`に`song1.yaml`を作成し, 以下を追加します.
+
+```yaml:assets/songs/song1.yaml
+name: "Song1"
+filename: "song1.wav"
+length: 63.0
+initial_beat: 4
+initial_bpm: 180
+
+notes:
+  # intro
+  - { bar: 0, beat: 0, note: !Normal { key: 0 } }
+  - { bar: 0, beat: 1, note: !Normal { key: 0 } }
+  - { bar: 0, beat: 2, note: !Normal { key: 0 } }
+  - { bar: 0, beat: 2.5, note: !Normal { key: 1 } }
+  - { bar: 0, beat: 2.75, note: !Normal { key: 2 } }
+  - { bar: 0, beat: 3, note: !Normal { key: 3 } }
+```
+
+`main.rs`に次のような雑なシステムを書きます（面倒なのでトレイト以外は全部直接型指定しています）.
+
+```rust:main.rs
+fn parse_test() {
+    use std::io::Read;
+
+    let mut file = std::fs::File::open("assets/songs/song1.yaml").expect("Couldn't open file");
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)
+        .expect("Couldn't read file into String");
+
+    // serdeを用いてパースする
+    let parsed: crate::resources::song::SongConfigParser =
+        serde_yaml::from_str(&contents).expect("Couldn't parse into SongConfigParser");
+
+    info!("{:?}", parsed);
+}
+```
+
+これを`startup_system`として指定します.
+
+```rust:main.rs
+    app.add_startup_system(parse_test);
+```
+
+実行してみるとコンソールに以下のような表示がされるはずです.
+
+```shell
+SongConfigParser { name: "Song1", filename: "song1.wav", length: 63.0, initial_beat: 4, initial_bpm: 180.0, notes: [NoteSpawnParser { note: Normal { key: 0 }, bar: 0, beat: 0.0 }, ... ]}
+```
+
+YAMLで記述したデータを読み込めていることになります.
+これらに対応する構造体を定義し, `From`トレイトを実装します.
+
+```rust:src/resources/song.rs
+#[derive(Debug, Clone)]
+pub struct SongConfig {
+    pub name: String,
+    pub filename: String,
+    pub length: f64,
+    pub initial_beat: u32,
+    pub initial_bpm: f32,
+    pub notes: Vec<NoteSpawn>,
+}
+impl From<SongConfigParser> for SongConfig {
+    fn from(data: SongConfigParser) -> Self {
+        Self {
+            name: data.name,
+            filename: data.filename,
+            length: data.length,
+            initial_beat: data.initial_beat,
+            initial_bpm: data.initial_bpm,
+            // map(NoteSpawn::from)でも動く
+            notes: data.notes.into_iter().map(|note| note.into()).collect_vec(),
+        }
+    }
+}
+```
+
+```rust:src/resources/note.rs
+#[derive(Debug, Clone)]
+pub struct NoteSpawn {
+    pub note_type: NoteType,
+    pub bar: u32,
+    pub beat: f64,
+}
+impl From<NoteSpawnParser> for NoteSpawn {
+    fn from(data: NoteSpawnParser) -> Self {
+        Self {
+            note_type: data.note.into(),
+            bar: data.bar,
+            beat: data.beat,
+        }
+    }
+}
+
+/// ノーツの種類ごとの情報を保持する構造体.
+#[derive(Debug, Clone)]
+pub enum NoteType {
+    Normal { key: i32 },
+}
+impl From<NoteTypeParser> for NoteType {
+    fn from(data: NoteTypeParser) -> Self {
+        match data {
+            NoteTypeParser::Normal { key } => NoteType::Normal { key },
+        }
+    }
+}
+```
+
+`SongConfig`と`SongConfigParser`等が概ね対応しています.
+`notes`フィールドは配列の各要素を変換するため`map`を用いています.
+また, `From`の実装の中で型変換を行うときに`from`ではなく`into`を用いているのは, （あまり良いことではないですが）構造体の名前が変わったときに修正する必要がなくなるからです.
+`into`であればコンパイラが適切に変換先の型を推論してくれるため, 人間が書く必要がなくなります.
+また, `NoteSpawnParser`から`NoteSpawn`への変換では`note`フィールドが`note_type`フィールドに変化していることにも注意です.
+
+このように, 各場面で使いやすいようにデータ構造の形を変化させると見通しがよくなり, 修正も楽になります.
+欠点としてはコード量が増えることですが, Rustはそういうものだと思っています.
+~~（どのみちVSCodeがよろしくやってくれるので人間が書いている部分って半分くらいでは）~~
+
+先程のテスト用システムを少し変更します.
+
+```rust:main.rs
+fn parse_test() {
+    ...
+
+    let song_config = crate::resources::song::SongConfig::from(parsed);
+    info!("{:?}", song_config);
+}
+```
+
+`SongConfig::from`一発でほしいデータ構造に変換できています.
 
 ## Vol.2 まとめ
 
-とりあえず導入を書きました.
-次回はローディングとかについて書きたいと思います.
+譜面データを外部ファイルに書き, それをゲーム内で読み込むところまでできました.
+入出力はどんなプログラミングでも一番面倒な部分のような気がしますが, `serde`が最強なので, データ構造を考える部分に力を入れることができます.
+結局, 読み取り用と実際のデータを分けるというところがポイントかと思います.
 
-ここまで読んでいただいた方には感謝を申し上げるとともにお気づきのことかと察しますが, 私は文章をまとめるのが非常に下手な人間です.
-コードは多く載せるようにしていくので雑にご覧くだされば幸いです.
+もちろんYAMLでなくとも, TOMLで書くとか, 自分で定義した構造を使うとか, 色々やり方があります.
+もっと簡単な方法があるよという意見をお待ちしております.
