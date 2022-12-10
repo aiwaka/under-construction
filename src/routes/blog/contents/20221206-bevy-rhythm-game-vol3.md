@@ -1,0 +1,402 @@
+---
+title: Rust製ゲームエンジンBevy (v0.9) で音ゲーをつくる [vol.3]
+description: "Rustで音ゲーをつくる連載"
+thumbnail: bevy-rhythm-game.png
+date: 2022-12-06
+tags:
+  - プログラミング
+  - ゲーム
+  - Rust
+  - Bevy
+---
+
+<script>
+  import { base } from "$app/paths";
+</script>
+
+## はじめに
+
+第三回です.
+第一回は[こちら](https://littleikawa.github.io/under-construction/blog/20221204-bevy-rhythm-game-vol1/).
+前回は[こちら](https://littleikawa.github.io/under-construction/blog/20221204-bevy-rhythm-game-vol2/).
+
+今回はローディング関連です.
+
+<!-- TODO: リンクを追加 -->
+なお, アセットを利用しますので, [GitHubリポジトリ](#)のassetsディレクトリから必要なものをダウンロードしてください.
+
+## Bevyのアセットの扱い
+
+ゲームエンジンは様々なデータを柔軟に扱う必要があります.
+Bevyでもこの機能が用意されていますが, 日本語の文献があまりないので, 雑ではありますがここに書いておきます.
+
+なお, ほとんど[Unofficial Bevy Cheat Book](https://bevy-cheatbook.github.io/assets.html)に記載されている内容で, 私が取り違えている可能性もあるため原典を参照したほうが何かといいと思います.
+
+### アセットローダー
+
+Bevyでアセットをファイルから読む場合, `AssetServer`というリソースを用いてデータをゲームに登録し, 効率的に利用します.
+アセットとして扱われるデータはメモリに読み込まれ, そのメモリを参照するためのハンドル（`Handle<T>`）が発行されます.
+Bevyの組み込みコンポーネント等でハンドルを要求される場合（例えばマテリアルにおける色情報など）, ハンドルを通してデータをはめ込むような形でゲーム世界に存在させることになります（文献では"pop in"と表現されています. 別のエンジンではDXライブラリも同様です）.
+このとき, **アセットの読み込みは非同期** であり, ハンドルを通してそのメモリを参照してもデータの実体がある, すなわち画像や音声をその時点で使えるという保証はありません.
+存在しなくてもエラーにはなりませんが, もちろん描画や再生はされません.
+PCの性能にも依りますが, 今回扱うような大きな音声データをロード開始した瞬間から使えるようになるまでには十数秒程度を要する可能性もあります.
+
+実際にロード可能なものに対して言えば, 開始からかなり待てば完了していることは概ね保証できますが, 何らかの理由で読み込めないことがあった場合なども考え, ロードが完了したことをローダーから教えてもらえると便利です.
+Bevyにはそのような機能がありますが, あまりドキュメントが読みやすくないと思います.
+なので, 今回はうまくアセットのロードを処理する仕組みを作ってみようと思います.
+
+ちなみに, ファイルだけではなくゲーム中のデータもアセットとして扱うことができます.
+これで同期的な場合ローディングは存在しません.
+
+### ハンドルについて
+
+先程出たハンドルについてもう少し書いておきます.
+
+ハンドルはいわゆるスマートポインタのようなものであり, 参照カウンタを持ちます.
+強参照と弱参照ハンドルがあり, メモリ中にあるアセットへの強参照ハンドルが一つでも存在する限り, アセットはメモリに保持され続けます.
+逆に, 強ハンドルが一つもメモリに存在しなくなったときに, アセットがメモリから開放される, という処理が自動で行われます.
+つまり, アセットをロードして保存しておくというのは, ローダーから発行されたハンドルをどこかに保存しておくということです.
+
+なお, すでにハンドルが存在しているアセットに対して読み込みを実行した場合でも, ちゃんと判断して読み込みを行わずに既存のハンドルと同様のものを返してくれます.
+また任意の（`Asset`を実装した）型`T`に対する`Handle<T>`には`Clone`が実装されており, また軽い操作であることが明記されています.
+明示的にクローンすることで, ほとんどコストをかけずにアセットを使い回すことが可能です.
+
+最後に, Untyped Handleについて.
+`Handle`には型引数`T`がついていました.
+`T`は`Image`, `Audio`等, `Asset`トレイトを実装した型です.
+ただ, ファイルから読み込みを行っている場面を考えると, そのデータのメモリへのコピーが完了しているかどうかさえ分かれば良いため, どの型に対してロードを行っているかいちいち決めなくてはならないのは煩雑です.
+そこで, 型情報を持たず, データへの参照という形でのみ存在するハンドルを配列やHashMapに収めておくことができれば楽だと考えられます.
+Bevyには型情報を外した`HandleUntyped`という型が用意されており, 上の要件を満たしてくれます.
+もちろん実際にアセットとして使う際は型付きである必要があり, Untypedなハンドルに型をつけ直すこともできます（それが必要な場面は今回はありません）.
+
+以上の仕組みを利用し, 各場面で必要なだけアセットをロードしておくシステムを作ります.
+
+## ローディング画面の実装
+
+ゲームが始まるときも終わるときも同じロードシステムを使っていると考えるのが自然です.
+つまり, ゲームに対して次に必要なアセットの集合を教えてあげる必要があります.
+
+### ゲームにおけるステートを使う
+
+Bevyは他のエンジンで言うシーンをステートと呼び, ゲーム内における実行時の状態を制御できる機能があります（Bevyでのシーンは別の意味のようです）.
+Rustの`enum`で定義することができ, 非常に直感的に扱うことができます.
+この`enum`には`Debug`, `Clone`, `PartialEq`, `Eq`, `Hash`の`derive`実装が必要です.
+同一性の検証に時間をかけないようにできています.
+
+というわけで, リソースモジュールに`game_state.rs`を追加し, 以下を追加します.
+
+```rust:src/resources/game_state.rs
+[derive(Clone, Copy, Eq, PartialEq, Debug, Hash)]
+pub enum AppState {
+    HomeMenu,
+    SongSelect,
+    Loading,
+    Game,
+}
+```
+
+追加で`Copy`も実装しています.
+これは後で実装を楽にするためです.
+ちなみに, 今回は`HomeMenu`と`SongSelect`の実装は省くと思います.
+
+次に, リソースを一つ追加します.
+
+```rust:src/resources/game_state.rs
+#[derive(Resource)]
+pub struct NextAppState(pub AppState);
+```
+
+名前の通り, 次のステートを保持しておくリソースです.
+ステートが変化するときにこれを用意しておき, これによって次に何をロードすべきか分岐させればいいという考え方です.
+
+ちなみにBevyのステートは少し微妙な仕様であり, システムを実行するか詳細に制御できるRun Criteriaという概念と共存できません.
+可能ならばこの程度のステートの使い方に関しては自前で仕組みを用意することも検討すると良いかもしれません（自分でやったわけではなく想像ですが, ステートごとに適当なマーカーコンポーネントを用意し, クエリに対して常にそのコンポーネントを要求するようにすればステートと似たようなことができると思います）.
+
+### ハンドルの置き場所をつくる
+
+各ステートごとに必要なハンドルを保持する構造体を作ります.
+
+`resources/handles.rs`を作り, 以下を追加します.
+
+```rust :src/resources/handles.rs
+use bevy::prelude::*;
+use bevy_kira_audio::prelude::*;
+
+use crate::constants::LANE_WIDTH;
+
+// アセットを読み込む際に型を考えずにロードできるようにするためのリソース.
+#[derive(Resource)]
+pub struct AssetsLoading(pub Vec<HandleUntyped>);
+
+pub trait AssetHandles {
+    /// 型付けされていないハンドルの列に変換する.
+    /// これについてイテレートしてすべてのアセットがロード済みかどうかを確認できる.
+    /// あたらしくアセットを追加した場合, 直接ファイルを読みに行くものについてのみを追加する.
+    fn get_untyped_vec(&self) -> Vec<HandleUntyped>;
+}
+
+/// ゲームシーンのアセットハンドルを持っておく構造体.
+#[derive(Resource, Debug)]
+pub struct GameAssetsHandles {
+    // フォント
+    pub main_font: Handle<Font>,
+
+    // 曲
+    pub music: Handle<AudioSource>,
+
+    // 色
+    pub color_material_red: Handle<ColorMaterial>,
+    pub color_material_blue: Handle<ColorMaterial>,
+    pub color_material_green: Handle<ColorMaterial>,
+    pub color_material_white_trans: Handle<ColorMaterial>,
+    // 4鍵それぞれで色を用意するとエフェクトとして使える
+    pub color_material_lane_background: Vec<Handle<ColorMaterial>>,
+
+    // メッシュ
+    pub note: Handle<Mesh>,
+    pub judge_line: Handle<Mesh>,
+    pub lane_line: Handle<Mesh>,
+    pub lane_background: Handle<Mesh>,
+}
+
+impl GameAssetsHandles {
+    /// アセットをロードしてハンドルとして保持しておく
+    pub fn new(
+        music_filename: String,
+        server: &Res<AssetServer>,
+        color_material: &mut ResMut<Assets<ColorMaterial>>,
+        meshes: &mut ResMut<Assets<Mesh>>,
+    ) -> Self {
+        let note_shape = shape::Quad::new(Vec2::new(100.0, 8.0));
+        let judge_line_shape = shape::Quad::new(Vec2::new(700.0, 8.0));
+        let lane_line_shape = shape::Quad::new(Vec2::new(8.0, 500.0));
+        let lane_background_shape = shape::Quad::new(Vec2::new(LANE_WIDTH, 500.0));
+
+        let color_material_lane_background = vec![
+            color_material.add(ColorMaterial::from(Color::CRIMSON)),
+            color_material.add(ColorMaterial::from(Color::CRIMSON)),
+            color_material.add(ColorMaterial::from(Color::CRIMSON)),
+            color_material.add(ColorMaterial::from(Color::CRIMSON)),
+        ];
+        Self {
+            main_font: server.load("fonts/FiraSans-Bold.ttf"),
+
+            music: server.load(&*format!("songs/{}", music_filename)),
+
+            color_material_red: color_material.add(ColorMaterial::from(Color::RED)),
+            color_material_blue: color_material.add(ColorMaterial::from(Color::BLUE)),
+            color_material_green: color_material.add(ColorMaterial::from(Color::GREEN)),
+            color_material_white_trans: color_material
+                .add(ColorMaterial::from(Color::rgba(1.0, 1.0, 1.0, 0.5))),
+            color_material_lane_background,
+
+            note: meshes.add(Mesh::from(note_shape)),
+            judge_line: meshes.add(Mesh::from(judge_line_shape)),
+            lane_line: meshes.add(Mesh::from(lane_line_shape)),
+            lane_background: meshes.add(Mesh::from(lane_background_shape)),
+        }
+    }
+}
+impl AssetHandles for GameAssetsHandles {
+    fn get_untyped_vec(&self) -> Vec<HandleUntyped> {
+        // let assets_loading_vec = vec![];
+        vec![
+            // フォント
+            self.main_font.clone_untyped(),
+            // 曲
+            self.music.clone_untyped(),
+        ]
+    }
+}
+```
+
+少々長いですが単調です.
+`AssetsLoading`は, 先程の`Vec<HandleUntyped>`を持つ構造体で, リソースとして存在させます.
+`AssetHandles`はゲームステートごとにUntypedハンドルの列を得るためのメソッドを定義するトレイトです.
+他のステートでも同じようなことをやるためにトレイトを定義しましたが, 今回くらいのケースであれば直接実装してもいいと思います.
+
+`GameAssetsHandles`が本体で, ハンドル型のフィールドをたくさん持っています.
+`Font`や`AudioSource`の他, `ColorMaterial`や`Mesh`もハンドルとして持っておきます.
+これで, 形状データや色データをノーコストで利用できます.
+
+`new()`を実装し, アセットをロードして構造体を返すコンストラクタ的なメソッドを作ります.
+トレイトの実装部分では, ハンドル型の`clone_untyped()`を利用して型無しハンドルの配列を返しています.
+ファイルから読み込むアセットのみについてクローンしていることに注意です.
+データを使うアセットの場合, 後に使うロード検知の仕組みではうまく行かないためです.
+画像を分割してアクセスできる, いわゆるアトラス形式の画像もアセットとして扱えますが, この場合も元の画像のハンドルを持っておき, 元の画像のみ型無し配列に追加することになります.
+
+## ローディング画面
+
+いよいよロードシステムを作ります.
+
+コンポーネントモジュールに`load.rs`を追加し,
+
+```rs: src/components/load.rs
+use bevy::prelude::*;
+
+#[derive(Component, Clone, Copy, Debug)]
+pub struct NowLoadingText;
+```
+
+とコンポーネントを一つ追加しておきます.
+これは字面の通りの役割で, 文字オブジェクトを表すマーカーコンポーネントの役割を果たします.
+
+システムモジュールに`load.rs`を追加して以下のようにします.
+
+```rs :src/systems/load.rs
+use bevy::{asset::LoadState, prelude::*};
+
+use crate::{
+    components::load::NowLoadingText,
+    resources::{
+        game_state::{AppState, NextAppState},
+        handles::{AssetHandles, AssetsLoading, GameAssetsHandles},
+        score::ScoreResource,
+    },
+};
+
+/// アセットのロードを開始する.
+/// また, 各シーンに移行したときに用意されているべきリソース等を準備する.
+fn load_assets(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    next_scene: Res<NextAppState>,
+    mut color_material: ResMut<Assets<ColorMaterial>>,
+    mut meshes: ResMut<Assets<Mesh>>,
+) {
+    // 型なしのアセット列を用意
+    let mut assets_loading_vec = Vec::<HandleUntyped>::new();
+
+    // 次がどのシーンに行くかによって分岐.
+    match next_scene.0 {
+        AppState::HomeMenu => {}
+        AppState::SongSelect => {}
+        AppState::Game => {
+            let song_filename = "song1.wav".to_string();
+            let assets = GameAssetsHandles::new(
+                song_filename,
+                &asset_server,
+                &mut color_material,
+                &mut meshes,
+            );
+            // 読み込んだハンドルの型を外した配列をもらう.
+            assets_loading_vec.extend(assets.get_untyped_vec());
+            commands.insert_resource(assets);
+
+            // スコアを初期化
+            commands.insert_resource(ScoreResource::new(0));
+        }
+        _ => {}
+    }
+    // ローディング中の型無しアセットとしてリソースに追加
+    commands.insert_resource(AssetsLoading(assets_loading_vec));
+    // ローディング中テキストエンティティを出現させる.
+    commands
+        .spawn(TextBundle {
+            style: Style {
+                position_type: PositionType::Absolute,
+                position: UiRect {
+                    bottom: Val::Px(20.0),
+                    right: Val::Px(40.0),
+                    ..default()
+                },
+                ..default()
+            },
+            text: Text::from_section(
+                "Now Loading...",
+                TextStyle {
+                    font: asset_server.load("fonts/FiraSans-Bold.ttf"),
+                    font_size: 40.0,
+                    color: Color::WHITE,
+                },
+            ),
+            ..default()
+        })
+        .insert(NowLoadingText);
+}
+
+fn check_assets_ready(
+    mut state: ResMut<State<AppState>>,
+    server: Res<AssetServer>,
+    loading: Res<AssetsLoading>,
+    next_scene: Res<NextAppState>,
+) {
+    // すべてロードが終わったかどうかを確認してから次のシーンへ移行する
+    match server.get_group_load_state(loading.0.iter().map(|h| h.id)) {
+        // ここでローディングテキストや画像を動かしてもいい.
+        LoadState::Loading => {}
+        LoadState::Failed => {
+            warn!("loading failed");
+        }
+        LoadState::Loaded => {
+            info!("loaded");
+            // ロード完了したら次のシーンに遷移する命令
+            state.set(next_scene.0).unwrap();
+        }
+        _ => {}
+    }
+}
+
+fn exit_loading(mut commands: Commands, text_q: Query<Entity, With<NowLoadingText>>) {
+    // ロード完了を確認したのでロード用一時ハンドル列を削除する
+    commands.remove_resource::<AssetsLoading>();
+    // 次のステートの情報も削除する.
+    commands.remove_resource::<NextAppState>();
+    // ローディング文字列も消去
+    if let Ok(ent) = text_q.get_single() {
+        commands.entity(ent).despawn();
+    }
+}
+
+/// アセットロード関連システムのプラグイン
+pub struct LoadPlugin;
+impl Plugin for LoadPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_system_set(SystemSet::on_enter(AppState::Loading).with_system(load_assets));
+        app.add_system_set(SystemSet::on_update(AppState::Loading).with_system(check_assets_ready));
+        app.add_system_set(SystemSet::on_exit(AppState::Loading).with_system(exit_loading));
+    }
+}
+```
+
+最後の方にプラグイン構造体を用意し, そこにロード関連のシステムを追加しています.
+ロードステートに入る際にアセットのロードを行い, ロードが完了するまで待ち, 完了したらステートを抜けるときに様々な後片付けを行うという流れです.
+
+ロードを実際に行う`load_assets`では, `NextAppState`に入っているロード後に行くべきステートで分岐してハンドル取得の操作を行い, 型を外したハンドルの列をリソースとしてゲームに追加します.
+またNowLoadingのテキストもここで出現させます.
+
+`check_assets_ready`では, `get_group_load_state`メソッドを用いています.
+これは`handleId`を返すイテレータを受け取り, すべてのハンドルが指すアセットのロード状況を返すものです.
+
+> Gets the overall load state of a group of assets from the provided handles.
+> This method will only return LoadState::Loaded if all assets in the group were loaded successfully.
+
+とあるとおり, 返り値で`LoadState`が取得できるので, この値を見ればロード状況が把握できます.
+`LoadState::Loaded`が返ってきたときに, あらかじめ指定してある次のステートへ移行する処理を行います.
+
+この移行命令をトリガーとしてロードステートを抜ける処理である`exit_loading`が実行されます.
+ここではゲーム中に必要ないアセットやエンティティを片付けています.
+先程追加したローディングテキスト用のコンポーネントはここで必要になります.
+
+ロードが完了しているしていないに関わらず, すでにハンドルを持つ構造体はリソースとして追加されています.
+したがって, ロード完了と判定された場合は何も考えずに次のステートへ進めばロード済みアセットをリソースから利用できることになります.
+逆に, アンロードしたい場合にはそのリソースを破棄すればよいです.
+ただし, アセットへの強ハンドルが一つでも残っているとアンロードされない点には注意です.
+これを確認するためのシステムを用意するのも良いと思います（というか探せばネットに転がっていそう）.
+
+### プラグインとしてゲームに追加
+
+Bevyの本体は`App`インスタンスなので, これにシステムを追加する必要があります.
+`main.rs`で`LoadPlugin`を読み込み, `app.add_plugin(LoadPlugin)`を追加すればOKです.
+Bevyのプラグインは機能を切り分ける機能ですが, このように一定の役割ごとに切り分けるのが自分は好みです.
+また, システムを定義する関数に`pub`をつけずに済むというのも利点と捉えています.
+
+ここまでやった上で実行してみます.
+テキストが出た後, コンソールに`loaded`が表示されればロード完了までできています.
+
+## Vol.3 まとめ
+
+アセットの管理方法を紹介しました.
+何度目かわかりませんが正しいという保証はできません.
+コード量はそれなりに多いですが, 間違いなくロードされたアセットを扱えることは保証できています.
+今回作るゲームに限らず, Bevyを用いたゲーム作成の一助となれば幸いです.
