@@ -43,10 +43,13 @@
 
   <h3 id="works-app">Apps</h3>
   <span> 一部の制作物はタイトルがリンクになっておりGitHubリポジトリに飛べます。 </span>
-  <AppItem langList={["vite", "ts", "svelte"]} href="">
+  <AppItem langList={["ts", "svelte"]} href="">
     <svelte:fragment slot="title">当ウェブサイト</svelte:fragment>
     <svelte:fragment slot="work-period">2022年11月</svelte:fragment>
     <p>制作物を公開するサイトです。昔からやりたかったので勢いで作りました。</p>
+    <p>
+      ブログサイトも併設しています。マークダウンファイルを置けばそのまま記事となり、各記事にはOGPが設定されるようになっています。
+    </p>
   </AppItem>
   <AppItem
     langList={["vue", "ts", "sass", "latex", "firebase", "express"]}
@@ -73,6 +76,7 @@
     <p>家で飼っているうさぎのお世話を管理するための掲示板ウェブアプリケーションです。</p>
     <p>
       餌やりや水の入れ替え、散歩等の時刻を記録でき、一覧を見返すことができます。
+      スマホ操作に疎い人でも使いやすいデザインに拘りました。
       クライアントである家族に開発中のものを見てもらって機能改善を繰り返しています。
     </p>
   </AppItem>
@@ -124,6 +128,7 @@
       様々なギミックがあるのでそれを利用していきます。
     </p>
     <p>物体間の物理演算を自分で実装しました。それなりに動くものができたので満足です。</p>
+    <p>現在は統一性のある素材画像を貼り付けたり、物理演算の改良をするなどして作り直しています。</p>
   </AppItem>
   <AppItem langList={["c++"]} href={"https://github.com/littleIkawa/shooting_game_cpp_remastered"}>
     <svelte:fragment slot="title">FailOver 2 Remastered</svelte:fragment>
@@ -135,7 +140,7 @@
     <p>
       とあるインターンに参加し、C++でゲームを作る必要を感じたのもあり、題材として適当なこのゲームを選んでやってみました。
       プログラミングへの考え方が当時と全く変わっており、高い汎用性とコードの可読性を両立したエンジンを書くことができました。
-      7年以上の時を経て自分がどう変わったかを見直すことができました（いろいろな意味で）。
+      7年以上の時を経て自分がどう変わったかを（いろいろな意味で）見直すことができました。
     </p>
   </AppItem>
   <AppItem langList={["latex"]} href={"https://github.com/littleIkawa/inochi"}>
@@ -146,12 +151,16 @@
     </p>
   </AppItem>
   <AppItem langList={["rust"]} href={""}>
-    <svelte:fragment slot="title">Rhythm Game by Rust（仮）</svelte:fragment>
+    <svelte:fragment slot="title">Rhythm Game（仮）</svelte:fragment>
     <svelte:fragment slot="work-period">2022年10月</svelte:fragment>
     <p>Rust製ゲームエンジンBevyを用いたリズムゲームです。</p>
     <p>
-      リズムゲームの面白さについて考え、人間は根本的にリズムを取るのが好きだと考えて、パターンを取り切ると演出と加点が付くシステムを考えました。
-      UIは少し質素ですが、Rustの機能をうまくつかって非常に汎用性の高いシンプルなエンジンを構築できました。
+      リズムゲームの面白さについて考え、人間は根本的にリズムを取って遊ぶのが好きだと考えて、パターンを取り切ると演出と加点が付くシステムを考えました。
+      Rustの機能をうまくつかって非常に汎用性の高いシンプルなエンジンを構築できました。
+      また、譜面制作機能も用意しています。
+    </p>
+    <p>
+      ゲーム本体とは関係ない部分で、デバッグ機能を充実させ、開発がスムーズに進められるように設計を考えてみました。
     </p>
   </AppItem>
   <AppItem langList={["rust"]} href={"https://github.com/littleIkawa/memo_cli_rust"}>
