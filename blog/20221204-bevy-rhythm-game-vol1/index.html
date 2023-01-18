@@ -12,20 +12,20 @@
 		<link href="/under-construction/_app/immutable/assets/_page-22c65053.css" rel="stylesheet">
 		<link href="/under-construction/_app/immutable/assets/ArticleTag-ff652692.css" rel="stylesheet">
 		<link href="/under-construction/_app/immutable/assets/SoundcloudItem-dece3084.css" rel="stylesheet">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/start-b3407914.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/start-761614ef.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/index-c73836e3.js">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/singletons-f83011ce.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/singletons-5ff3e486.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/paths-6cd3a76e.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/control-41f7de37.js">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/components/pages/_layout.svelte-76b328de.js">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/PageLink-58394f88.js">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/stores-a54ea89f.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/components/pages/_layout.svelte-f2e9d42a.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/PageLink-4a746d99.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/stores-d7fa967a.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/_layout.ts-b8ee4d7c.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_layout-1daba58d.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/components/pages/blog/_slug_/_page.svelte-d2d4348c.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/ArticleTag-cfe0e874.js">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/blog/_slug_/_page.ts-000dc143.js">
-		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_page-e31ddd66.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/modules/pages/blog/_slug_/_page.ts-a14c5361.js">
+		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/_page-7a13becb.js">
 		<link rel="modulepreload" href="/under-construction/_app/immutable/chunks/index-feb84583.js"><title>Rust製ゲームエンジンBevy (v0.9) で音ゲーをつくる [vol.1]</title><!-- HEAD_svelte-qvwuyt_START --><link rel="stylesheet" href="/under-construction/style/main.css"><!-- HEAD_svelte-qvwuyt_END --><!-- HEAD_svelte-1idu1j5_START --><script async src="https://www.googletagmanager.com/gtag/js?id=G-XRK0L39370"></script><script>window.dataLayer = window.dataLayer || [];
     function gtag() {
       dataLayer.push(arguments);
@@ -73,7 +73,7 @@
   <div class="blog-article-content-container"><h2>はじめに</h2>
 <h3>この記事の目的</h3>
 <p>Rustのゲームエンジンはいくつか開発されていますが, その中ではBevyが最も勢いがある状態と言えます.
-図について適当に個人的に喋りますと, Bevyと思想を同じくするAmethystはプロジェクトがお亡くなりになりました.
+図について適当に個人的に喋りますと, Bevyと思想を同じくするAmethystはプロジェクトが <del>お亡くなりになり</del> 開発終了しました.
 後発でかなり勢いがあるFyroxはとても気になりますね.
 nannouはゲームエンジンというよりはprocessingのようなクリエイティブプログラミングフレームワークです.
 Pistonは…知らないです（ごめんなさい）</p>
@@ -93,7 +93,7 @@ AI絵も色々騒がれていますがこういうどうでもいい画像に使
 <li>Bevyを用いた開発における個人的なファイル分割の手法を解説する.</li></ul>
 <p>なお, 音ゲーに必要な音楽ファイルを一つリポジトリで配布します.
 まあ各人で何かしら用意できると思いますが私は著作権とかが怖いのでアップロードに際して自作しました.
-なんの工夫もない拙い曲ですが, よろしければご利用ください.
+特に言えることがない曲ですが, よろしければご利用ください.
 加工や別プロジェクトでの個人利用はOK, 再配布は禁止とします.</p>
 <h3>やらないこと</h3>
 <ul><li>Rust言語や関連ツール（Cargoなど）の機能の解説（細かい補足はする）.</li>
@@ -138,21 +138,15 @@ Rust, Bevyはクロスプラットフォームで, エディタごとのプラ�
     <span class="token string">"filesystem_watcher"</span><span class="token punctuation">,</span>
 <span class="token punctuation">]</span> <span class="token punctuation">&#125;</span>
 <span class="token key property">bevy_kira_audio</span> <span class="token punctuation">=</span> <span class="token punctuation">&#123;</span> <span class="token key property">version</span> <span class="token punctuation">=</span> <span class="token string">"0.13"</span><span class="token punctuation">,</span> <span class="token key property">features</span> <span class="token punctuation">=</span> <span class="token punctuation">[</span><span class="token string">"wav"</span><span class="token punctuation">,</span> <span class="token string">"mp3"</span><span class="token punctuation">]</span> <span class="token punctuation">&#125;</span>
-<span class="token comment"># Bevy自体の依存バージョンと一致させること, とある.</span>
-<span class="token comment"># https://github.com/bevyengine/bevy/blob/main/crates/bevy_winit とかを見る.</span>
-<span class="token key property">winit</span> <span class="token punctuation">=</span> <span class="token punctuation">&#123;</span> <span class="token key property">version</span> <span class="token punctuation">=</span> <span class="token string">"0.27.0"</span><span class="token punctuation">,</span> <span class="token key property">default-features</span> <span class="token punctuation">=</span> <span class="token boolean">false</span> <span class="token punctuation">&#125;</span>
-<span class="token key property">image</span> <span class="token punctuation">=</span> <span class="token punctuation">&#123;</span> <span class="token key property">version</span> <span class="token punctuation">=</span> <span class="token string">"0.24"</span><span class="token punctuation">,</span> <span class="token key property">default-features</span> <span class="token punctuation">=</span> <span class="token boolean">false</span> <span class="token punctuation">&#125;</span>
 
 <span class="token key property">itertools</span> <span class="token punctuation">=</span> <span class="token string">"0.10"</span>
 <span class="token key property">serde</span> <span class="token punctuation">=</span> <span class="token string">"1.0"</span>
 <span class="token key property">serde_derive</span> <span class="token punctuation">=</span> <span class="token string">"1.0"</span>
 <span class="token key property">serde_yaml</span> <span class="token punctuation">=</span> <span class="token string">"0.9"</span></code><!-- HTML_TAG_END --></pre>
 <p>ただBevyを入れるだけにしては複雑な感じなっていますが理由があります.
-音ゲーという性質上, デフォルトのBevyのオーディオを扱う機能では物足りません（mp3も読み込めないし正確な時刻での再生もできない）.
+音ゲーという性質上, デフォルトのBevyのオーディオを扱う機能では物足りません（mp3も読み込めないし, 音量の調整もできない）.
 色々方法はあるようですが, 自分は<code>kira_bevy_audio</code>というクレートにオーディオを任せる方法を採ります.
-詳しくは解説している記事がありますが, デフォルトのfeaturesを無効化し, オーディオ以外を有効化し, <code>bevy_kira_audio</code>のバージョンを正しく指定して入れる, という複雑な設定が必要です（もう組み込んでくれればいいのに…）.
-また, <code>winit</code>のバージョンも依存関係の解決のためと思いますがちゃんと調べて明示する必要があります.
-（<code>image</code>はなんで設定しているのか失念しました…なくても大丈夫な気もしますが念の為.）</p>
+詳しくは解説している記事がありますが, デフォルトのfeaturesを無効化し, オーディオ以外を有効化し, <code>bevy_kira_audio</code>のバージョンを正しく指定して入れる, という複雑な設定が必要です（もう組み込んでくれればいいのに…）.</p>
 <p>リポジトリやクレートのホームページに対応表がありますが, Bevy 0.9に対しては<code>bevy_kira_audio</code>のバージョンは0.13を指定します.
 featuresとして<code>wav</code>と<code>mp3</code>を有効化しておきましょう. デフォルトでは<code>ogg</code>のみです（ライセンス料とかの関係からゲームではoggが結構使われます）.</p>
 <p><code>itertools</code>はVec配列を扱う上で色々便利なのでとりあえず入れておきます.
@@ -235,7 +229,7 @@ app<span class="token punctuation">.</span><span class="token function">add_plug
 <code>Esc</code>キーでウィンドウを閉じるデバッグ用システムも入れておきます.</p>
 <h2>Vol.1 まとめ</h2>
 <p>とりあえず導入を書きました.
-次回はローディングとかについて書きたいと思います.</p>
+次回は <del>ローディングとか</del> 譜面データ構成について書きたいと思います.</p>
 <p>ここまで読んでいただいた方には感謝を申し上げるとともにお気づきのことかと察しますが, 私は文章をまとめるのが非常に下手な人間です.
 コードは多く載せるようにしていくので雑にご覧くだされば幸いです.</p></div>
 </main>
@@ -243,8 +237,8 @@ app<span class="token punctuation">.</span><span class="token function">add_plug
 </footer>
 
 
-		<script type="module" data-sveltekit-hydrate="14altw2">
-			import { start } from "/under-construction/_app/immutable/start-b3407914.js";
+		<script type="module" data-sveltekit-hydrate="1kekyps">
+			import { start } from "/under-construction/_app/immutable/start-761614ef.js";
 
 			start({
 				env: {},
@@ -258,7 +252,7 @@ app<span class="token punctuation">.</span><span class="token function">add_plug
 					form: null
 				},
 				paths: {"base":"/under-construction","assets":"/under-construction"},
-				target: document.querySelector('[data-sveltekit-hydrate="14altw2"]').parentNode,
+				target: document.querySelector('[data-sveltekit-hydrate="1kekyps"]').parentNode,
 				trailing_slash: "always"
 			});
 		</script>
