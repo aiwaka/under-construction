@@ -1,5 +1,5 @@
 <footer class="site-footer">
-  <p id="footer-copyright">&copy;Aiwaka 2022</p>
+  <p id="footer-copyright">&copy;Aiwaka 2023</p>
 </footer>
 
 <style>
