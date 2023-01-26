@@ -68,8 +68,8 @@
     </p>
   </AppItem>
   <AppItem
-    langList={["vue", "ts", "sass", "firebase"]}
-    href={"https://github.com/littleIkawa/tako_board_easy_app"}
+    langList={["svelte", "ts", "firebase"]}
+    href={"https://github.com/littleIkawa/tako_board_new"}
   >
     <svelte:fragment slot="title">Tako Board</svelte:fragment>
     <svelte:fragment slot="work-period">2021年10月〜</svelte:fragment>
@@ -79,6 +79,7 @@
       スマホ操作に疎い人でも使いやすいデザインに拘りました。
       クライアントである家族に開発中のものを見てもらって機能改善を繰り返しています。
     </p>
+    <p>最近UIを大幅に刷新し、使用フレームワークをVueからSvelteに変更しました。</p>
   </AppItem>
   <AppItem
     langList={["python", "flask", "mysql", "docker", "aws-ec2", "nginx"]}
