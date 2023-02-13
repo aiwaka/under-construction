@@ -52,8 +52,8 @@
     </p>
   </AppItem>
   <AppItem
-    langList={["vue", "ts", "sass", "latex", "firebase", "express"]}
-    href={"https://github.com/littleIkawa/aiwaka-bunko"}
+    langList={["vue", "ts", "sass", "svelte", "latex", "firebase", "express"]}
+    href={"https://github.com/littleIkawa/aiwaka-bunko-new"}
   >
     <svelte:fragment slot="title">あいわか文庫</svelte:fragment>
     <svelte:fragment slot="work-period">2021年〜</svelte:fragment>
@@ -66,9 +66,15 @@
       リクエストの管理コンソールも用意しました。Firebaseを管理者権限でサーバーで操作し、全体のリクエストを一元的に管理できます。UIはVueで構築し、サーバーはExpressを用いてREST
       APIを構築しました。
     </p>
+    <p>
+      一つ下に書いているTako
+      Boardの次にSvelteKitに移行しました。同じくSASSの利用をやめました。このアップデートで,
+      ダークモードに対応し、リクエストにLaTeX記法が使えるようになりました。
+    </p>
   </AppItem>
+
   <AppItem
-    langList={["svelte", "ts", "firebase"]}
+    langList={["vue", "sass", "svelte", "ts", "firebase"]}
     href={"https://github.com/littleIkawa/tako_board_new"}
   >
     <svelte:fragment slot="title">Tako Board</svelte:fragment>
@@ -79,7 +85,9 @@
       スマホ操作に疎い人でも使いやすいデザインに拘りました。
       クライアントである家族に開発中のものを見てもらって機能改善を繰り返しています。
     </p>
-    <p>最近UIを大幅に刷新し、使用フレームワークをVueからSvelteに変更しました。</p>
+    <p>
+      最近UIを大幅に刷新し、使用フレームワークをVueからSvelteに変更しました。このときにSASSの利用をやめました。これは標準化された規格に準拠すべきと考えたからです。
+    </p>
   </AppItem>
   <AppItem
     langList={["python", "flask", "mysql", "docker", "aws-ec2", "nginx"]}
