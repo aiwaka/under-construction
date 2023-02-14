@@ -189,6 +189,9 @@
 </section>
 
 <style>
+  a {
+    text-decoration: underline;
+  }
   h3 {
     margin: 2rem auto;
   }
