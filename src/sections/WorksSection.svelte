@@ -186,6 +186,25 @@
       で公開しているので誰でもインストールできます。よかったら使ってみてください（一応100回ダウンロードされたようです）。
     </p>
   </AppItem>
+  <AppItem
+    langList={["js", "ts", "html"]}
+    href={"https://github.com/littleIkawa/3d-audio-playground"}
+  >
+    <svelte:fragment slot="title">3Dオーディオ</svelte:fragment>
+    <svelte:fragment slot="work-period">2023年1月</svelte:fragment>
+    <p>
+      頭部伝達関数と音源を畳み込んで3Dオーディオを作る、というのを以前からやってみたいと考えていました。
+      ただ、どうせならグリグリと配置を切り替えたりその場で音が合成できたりするほうが面白いと思い、PythonやRustで書こうとしつつも放置していました。
+    </p>
+    <p>
+      なんやかんやでJavaScript自体にかなり親しんできたので、以前から気になっていたWebAudioAPIやCanvasの利用を試み、これらを組み合わせて動的なインターフェイスを実現できました。
+    </p>
+    <p>
+      今回はフレームワークは未使用で、Typescriptだけで頑張ってみました。バイナリやWebAudioの扱い等でまだまだ未知の部分が多いですが、それなりに上手く設計できたと思います。
+      リポジトリに使い方を記載したので是非試してみてください。
+    </p>
+    <p>完全に余談ですが私が開発中に使用した音源はイカちゃんのﾏﾝﾒﾝﾐです。</p>
+  </AppItem>
 </section>
 
 <style>
