@@ -1,0 +1,32 @@
+---
+// ブログページだけ背景を変えたいので背景スタイルを当てるためだけのレイアウトを作成する.
+import BaseLayout from "./BaseLayout.astro";
+---
+
+<BaseLayout title="Under Construction | Blog">
+  <div class="header-margin"></div>
+  <slot />
+</BaseLayout>
+
+<style>
+  .header-margin {
+    height: 8rem;
+  }
+  body::before {
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -50;
+    width: 100%;
+    height: 100svh;
+    background-repeat: no-repeat;
+    background-image: url("/img/blue_2.png");
+    background-position: 100% 0%;
+    background-size: cover;
+    @media (max-width: 1024px) {
+      background-position: center 0%;
+    }
+  }
+</style>

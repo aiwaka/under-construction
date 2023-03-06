@@ -1,11 +1,11 @@
 <script lang="ts">
   export let currentRoute: string;
   export let href: string;
-  export let height = "8rem";
+  export let height = "6rem";
   export let mobileHeight = "3rem";
 
   $: windowWidth = 0;
-  $: resultHeight = windowWidth < 1024 ? mobileHeight : height;
+  $: resultHeight = windowWidth < 1023 ? mobileHeight : height;
   $: isCurrentPage = currentRoute === href;
 </script>
 

@@ -24,14 +24,12 @@
       <a href="/">UNDER CONSTRUCTION</a>
     </h1>
   </div>
-  <nav>
-    <div class="nav-link-wrapper">
-      {#each navLinkList as navLink}
-        <PageLink {currentRoute} href={import.meta.env.BASE_URL + navLink.href}>
-          {navLink.name}
-        </PageLink>
-      {/each}
-    </div>
+  <nav class="nav-link-container">
+    {#each navLinkList as navLink}
+      <PageLink {currentRoute} href={navLink.href}>
+        {navLink.name}
+      </PageLink>
+    {/each}
   </nav>
 </div>
 
@@ -72,7 +70,7 @@
     }
   }
 
-  nav .nav-link-wrapper {
+  nav.nav-link-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
