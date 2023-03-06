@@ -21,17 +21,15 @@
   </a>
 </div>
 
-<style>
+<style lang="postcss">
   .page-link {
     transition: 0.25s ease-in-out;
     display: block;
     position: relative;
-    margin: 0 1rem;
-    font-size: 2rem;
-    color: azure;
-  }
-  @media (max-width: 1024px) {
-    .page-link {
+    margin: 0 0.6rem;
+    font-size: 1.4rem;
+    color: var(--main-bg-color);
+    @media (max-width: 1024px) {
       font-size: 1.4rem;
     }
   }
@@ -43,7 +41,7 @@
   .page-link::before {
     content: "";
     width: 0;
-    height: 0.2rem;
+    height: 0.1rem;
     background: rgb(172, 255, 244);
     position: absolute;
     left: 50%;

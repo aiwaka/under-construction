@@ -1,5 +1,6 @@
 <script lang="ts">
   import PageLink from "@components/PageLink.svelte";
+  import "@fontsource/noto-serif-jp";
 
   interface NavLink {
     name: string;
@@ -34,79 +35,52 @@
   </nav>
 </div>
 
-<style>
+<style lang="postcss">
   #website-header {
     z-index: 10000;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
     width: 100%;
-    height: 8rem;
+    height: var(--header-height);
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
-    background-color: rgba(36, 30, 90, 0.8);
+    background-color: var(--main-color);
     backdrop-filter: blur(1rem);
-    border-bottom: 2px solid darkslateblue;
-  }
-  @media (max-width: 1024px) {
-    #website-header {
+    @media (max-width: 1024px) {
       flex-direction: column;
-      height: calc(8rem + 3rem);
-      border-bottom: 2px solid slateblue;
+      height: calc(var(--header-height) + 3rem);
+      border-bottom: 2px solid var(--main-color);
     }
   }
 
   #website-header .title-block {
     display: flex;
-    margin: 0.2rem 2rem;
-    font-family: "Noto Serif JP", serif;
+    margin: 0rem 2rem;
   }
-  @media (max-width: 1024px) {
-    #website-header .title-block {
-      margin: 0 2rem;
-    }
-  }
-  /* #website-header .logo {
-    object-fit: scale-down;
-    height: 5rem;
-    width: 5rem;
-    margin: 1.5rem 2.1rem;
-    @media (max-width: 1024px) {
-      #website-header .logo {
-        height: 3rem;
-      }
-    }
-  } */
   #website-header .title {
-    color: azure;
-    font-size: 3.6rem;
-    line-height: 8rem;
-    font-weight: bold;
-  }
-  @media (max-width: 1024px) {
-    #website-header .title {
+    margin: 0;
+    color: var(--main-bg-color);
+    font-size: 2.2rem;
+    line-height: var(--header-height);
+    font-family: "Noto Serif JP", serif;
+    /* font-weight: 400; */
+    @media (max-width: 1024px) {
       font-size: 2.2rem;
     }
   }
 
-  @media (max-width: 1024px) {
-    nav {
-      scrollbar-width: none;
-    }
-  }
   nav .nav-link-wrapper {
     display: flex;
     justify-content: space-between;
-    margin: 0 1.4rem;
-    margin-right: 3.4rem;
+    align-items: center;
+    margin-right: 2.4rem;
     width: fit-content;
-  }
-  @media (max-width: 1024px) {
-    nav .nav-link-wrapper {
+    height: 100%;
+    @media (max-width: 1024px) {
       position: relative;
-      /* top: 0; */
       bottom: 0;
       height: 3rem;
     }
