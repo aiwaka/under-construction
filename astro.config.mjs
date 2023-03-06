@@ -9,4 +9,6 @@ import mdx from "@astrojs/mdx";
 export default defineConfig({
   integrations: [svelte(), image(), mdx()],
 
+  trailingSlash: "always",
+  base: import.meta.env.PROD ? "/under-construction" : "",
 });
