@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProfileSection from "@components/sections/ProfileSection.astro";
+import SkillSection from "@components/sections/SkillSection.svelte";
 ---
 
 <BaseLayout title="Under Construction">
@@ -15,6 +16,7 @@ import ProfileSection from "@components/sections/ProfileSection.astro";
   <main class="main-container">
     <div class="contents-container">
       <ProfileSection />
+      <SkillSection />
     </div>
   </main>
 </BaseLayout>
@@ -132,6 +134,6 @@ import ProfileSection from "@components/sections/ProfileSection.astro";
   }
 
   :global(.section-item) {
-    margin: 8rem auto;
+    margin: 5rem auto;
   }
 </style>
