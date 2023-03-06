@@ -26,7 +26,7 @@
   </div>
   <nav class="nav-link-container">
     {#each navLinkList as navLink}
-      <PageLink {currentRoute} href={navLink.href}>
+      <PageLink shrinkable={true} {currentRoute} href={navLink.href}>
         {navLink.name}
       </PageLink>
     {/each}
@@ -49,16 +49,19 @@
     backdrop-filter: blur(1rem);
     @media (max-width: 1024px) {
       flex-direction: column;
-      height: calc(var(--header-height) + 3rem);
+      height: calc(var(--mobile-header-height) + var(--mobile-nav-height));
       border-bottom: 2px solid var(--main-color);
     }
   }
 
-  #website-header .title-block {
+  .title-block {
     display: flex;
     margin: 0rem 2rem;
+    @media (max-width: 1024px) {
+      margin: 0 1rem;
+    }
   }
-  #website-header .title {
+  .title {
     margin: 0;
     color: var(--main-bg-color);
     font-size: 2.2rem;
@@ -66,7 +69,8 @@
     font-family: "Noto Serif JP", serif;
     /* font-weight: 400; */
     @media (max-width: 1024px) {
-      font-size: 2.2rem;
+      line-height: var(--mobile-header-height);
+      font-size: min(7vw, 1.9rem);
     }
   }
 
@@ -80,7 +84,7 @@
     @media (max-width: 1024px) {
       position: relative;
       bottom: 0;
-      height: 3rem;
+      height: var(--mobile-nav-height);
     }
   }
 </style>
