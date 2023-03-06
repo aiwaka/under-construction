@@ -26,7 +26,7 @@
   </div>
   <nav class="nav-link-container">
     {#each navLinkList as navLink}
-      <PageLink shrinkable={true} {currentRoute} href={navLink.href}>
+      <PageLink {currentRoute} href={navLink.href}>
         {navLink.name}
       </PageLink>
     {/each}
