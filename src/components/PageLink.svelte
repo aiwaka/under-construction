@@ -1,15 +1,18 @@
 <script lang="ts">
   export let currentRoute: string;
   export let href: string;
+  export let shrinkable: boolean;
   export let height = "6rem";
-  export let mobileHeight = "3rem";
+  export let mobileHeight = "var(--mobile-nav-height)";
 
-  $: windowWidth = 0;
-  $: resultHeight = windowWidth < 1023 ? mobileHeight : height;
+  $: shrink = false;
+  $: if (window && shrinkable) {
+    shrink = window.innerWidth < 1024;
+  }
+  $: resultHeight = shrink ? mobileHeight : height;
   $: isCurrentPage = currentRoute === href;
 </script>
 
-<svelte:window bind:innerWidth={windowWidth} />
 <div class="page-link__container">
   <a
     class:current-page={isCurrentPage}
@@ -30,7 +33,7 @@
     font-size: 1.4rem;
     color: var(--main-bg-color);
     @media (max-width: 1024px) {
-      font-size: 1.4rem;
+      font-size: min(4vw, 1.2rem);
     }
   }
 

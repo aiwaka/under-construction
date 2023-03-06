@@ -29,11 +29,15 @@ const bgColor = Astro.url.pathname.startsWith("/blog")
     <title>{title}</title>
   </head>
   <body>
-    <SiteHeader currentRoute={currentPath} />
+    <SiteHeader client:only currentRoute={currentPath} />
     <slot />
     <SiteFooter />
   </body>
 </html>
+<script>
+  if (window) {
+  }
+</script>
 
 <style is:global lang="postcss" define:vars={{ bgColor }}>
   *,
@@ -59,6 +63,8 @@ const bgColor = Astro.url.pathname.startsWith("/blog")
   }
   :root {
     --header-height: 6rem;
+    --mobile-header-height: 4.6rem;
+    --mobile-nav-height: 1.8rem;
 
     --main-color-params: 72, 61, 139;
     --main-bg-params: 244, 255, 255;
