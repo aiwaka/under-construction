@@ -272,16 +272,11 @@
           <th class="name">
             {#if Array.isArray(data.icon)}
               {#each data.icon as icon}
-                <ServiceIcon
-                  name={icon}
-                  size={windowWidth < 1024 ? "small" : "normal"}
-                />
+                <ServiceIcon name={icon} size="normal" />
+                <!-- レスポンシブにサイズ変更したいかも -->
               {/each}
             {:else}
-              <ServiceIcon
-                name={data.icon}
-                size={windowWidth < 1024 ? "small" : "normal"}
-              />
+              <ServiceIcon name={data.icon} size="normal" />
             {/if}
             <span>{data.name}</span>
           </th>
@@ -305,16 +300,10 @@
         <tr class="table-row">
           <th class="name">
             <div>
-              <ServiceIcon
-                name={data.langIcon}
-                size={windowWidth < 1024 ? "2rem" : "small"}
-              />
+              <ServiceIcon name={data.langIcon} size="small" />
             </div>
             {#if data.icon}
-              <ServiceIcon
-                name={data.icon}
-                size={windowWidth < 1024 ? "small" : "normal"}
-              />
+              <ServiceIcon name={data.icon} size="normal" />
             {/if}
             <span>{data.name}</span>
           </th>
@@ -338,10 +327,7 @@
         <tr class="table-row">
           <th class="name">
             {#if data.icon}
-              <ServiceIcon
-                name={data.icon}
-                size={windowWidth < 1024 ? "small" : "normal"}
-              />
+              <ServiceIcon name={data.icon} size="normal" />
             {/if}
             <span>{data.name}</span>
           </th>
@@ -365,10 +351,7 @@
         <tr class="table-row">
           <th class="name">
             {#if data.icon}
-              <ServiceIcon
-                name={data.icon}
-                size={windowWidth < 1024 ? "small" : "normal"}
-              />
+              <ServiceIcon name={data.icon} size="normal" />
             {/if}
             <span>{data.name}</span>
           </th>
@@ -386,30 +369,18 @@
   </table>
 </section>
 
-<style>
+<style lang="postcss">
   table {
     margin: 1rem 2rem;
     border-collapse: collapse;
-  }
-  @media (max-width: 1024px) {
-    table {
-      margin: 1rem 1rem;
+    @media (max-width: 1024px) {
+      margin: 0.7rem 0;
     }
   }
   .table-row {
-    border: 1px solid darkslateblue;
-  }
-  .table-row > th {
-    width: 25%;
-  }
-  .table-row > td,
-  th {
-    padding: 1.4rem 1.8rem;
-  }
-  @media (max-width: 1024px) {
-    .table-row > td,
-    th {
-      padding: 1rem 1rem;
+    border: 1px solid var(--main-color);
+    > .name > span {
+      display: block;
     }
   }
   .table-row:nth-child(odd) {
@@ -418,7 +389,25 @@
   .table-row:nth-child(even) {
     background-color: rgba(240, 240, 250, 0.8);
   }
-  .table-row .name > span {
-    display: block;
+  .table-row > td,
+  th {
+    padding: 1.4rem 1.8rem;
+    @media (max-width: 1024px) {
+      display: block;
+      width: 100%;
+      padding: 1rem 1rem;
+    }
+  }
+  /* ここでは画面サイズが大きいときにスタイルを当てている */
+  .table-row > th {
+    @media (min-width: 1024px) {
+      width: 25%;
+      min-width: 12rem;
+    }
+  }
+  .table-row > td {
+    @media (max-width: 1024px) {
+      padding-top: 0;
+    }
   }
 </style>
