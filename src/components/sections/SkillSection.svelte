@@ -388,12 +388,12 @@
 
 <style>
   table {
-    margin: 2rem 3rem;
+    margin: 1rem 2rem;
     border-collapse: collapse;
   }
   @media (max-width: 1024px) {
     table {
-      margin: 2rem 0.8rem;
+      margin: 1rem 1rem;
     }
   }
   .table-row {
@@ -404,7 +404,7 @@
   }
   .table-row > td,
   th {
-    padding: 2rem 2.4rem;
+    padding: 1.4rem 1.8rem;
   }
   @media (max-width: 1024px) {
     .table-row > td,

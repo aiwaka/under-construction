@@ -78,11 +78,11 @@
   const getSize = (sizeStr: string) => {
     switch (sizeStr) {
       case "normal":
-        return "2.5rem";
+        return "3rem";
       case "small":
-        return "1.8rem";
+        return "2rem";
       case "large":
-        return "3.5rem";
+        return "4.5rem";
       default:
         return sizeStr;
     }
