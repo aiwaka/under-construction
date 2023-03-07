@@ -1,0 +1,247 @@
+<script lang="ts">
+  import AppItem from "@components/works/AppItem.svelte";
+  import SoundcloudItem from "@components/works/SoundcloudItem.svelte";
+  import IndexBar from "@components/IndexBar.svelte";
+</script>
+
+<section class="works-section section-item">
+  <h2 id="works">Works</h2>
+  <IndexBar
+    indexList={[
+      { name: "Music", href: "#works-music" },
+      // { name: "Picture", href: "#works-picture" },
+      { name: "App", href: "#works-app" },
+    ]}
+  />
+
+  <h3 id="works-music">Music</h3>
+  <span>公開した楽曲の一部を紹介します。</span>
+  <h4>SoundCloud</h4>
+  <SoundcloudItem trackId={999665578} />
+  <SoundcloudItem trackId={804565441} />
+  <SoundcloudItem trackId={1380936451} />
+  <h4>niconico</h4>
+  <p>
+    ものすごいコンソールエラーが出るため動画枠は現在非表示です。よろしければリンク先を御覧ください。
+  </p>
+  <div class="niconico-container">
+    <ul>
+      <li>
+        <a href="https://www.nicovideo.jp/watch/sm33454945"> 青の幻燈 </a>
+        [<time datetime="2018-07-01T20:46"> 2018/7/1 </time>]
+      </li>
+      <li>
+        <a href="https://www.nicovideo.jp/watch/sm38351407">汐見橋 </a>
+        [<time datetime="2021-03-01T20:12"> 2021/3/1 </time>]
+      </li>
+      <li>
+        <a href="https://www.nicovideo.jp/watch/sm40095155">忘却の河 </a>
+        [<time datetime="2022-02-25T20:28"> 2022/2/25 </time>]
+      </li>
+    </ul>
+  </div>
+
+  <h3 id="works-app">Apps</h3>
+  <span>
+    一部の制作物はタイトルがリンクになっておりGitHubリポジトリに飛べます。
+  </span>
+  <AppItem langList={["ts", "svelte"]} href="">
+    <svelte:fragment slot="title">当ウェブサイト</svelte:fragment>
+    <svelte:fragment slot="work-period">2022年11月</svelte:fragment>
+    <p>制作物を公開するサイトです。昔からやりたかったので勢いで作りました。</p>
+    <p>
+      ブログサイトも併設しています。マークダウンファイルを置けばそのまま記事となり、各記事にはOGPが設定されるようになっています。
+    </p>
+  </AppItem>
+  <AppItem
+    langList={["vue", "ts", "sass", "svelte", "latex", "firebase", "express"]}
+    href={"https://github.com/littleIkawa/aiwaka-bunko-new"}
+  >
+    <svelte:fragment slot="title">あいわか文庫</svelte:fragment>
+    <svelte:fragment slot="work-period">2021年〜</svelte:fragment>
+    <p>PDF文書配布用ウェブサイト・アプリケーションです。</p>
+    <p>
+      私がLaTeXで作成したPDF等の資産を知人等の限られた範囲で、私と閲覧者の両方ができるだけ簡便に使えるために制作したウェブサイトです。
+      二種類のダウンロード方法のサポート、文書へのリクエスト機能、ユーザー個人のお気に入りファイル管理機能等を持っています。
+    </p>
+    <p>
+      リクエストの管理コンソールも用意しました。Firebaseを管理者権限でサーバーで操作し、全体のリクエストを一元的に管理できます。UIはVueで構築し、サーバーはExpressを用いてREST
+      APIを構築しました。
+    </p>
+    <p>
+      一つ下に書いているTako
+      Boardの次にSvelteKitに移行しました。同じくSASSの利用をやめました。このアップデートで,
+      ダークモードに対応し、リクエストにLaTeX記法が使えるようになりました。
+    </p>
+  </AppItem>
+
+  <AppItem
+    langList={["vue", "sass", "svelte", "ts", "firebase"]}
+    href={"https://github.com/littleIkawa/tako_board_new"}
+  >
+    <svelte:fragment slot="title">Tako Board</svelte:fragment>
+    <svelte:fragment slot="work-period">2021年10月〜</svelte:fragment>
+    <p>
+      家で飼っているうさぎのお世話を管理するための掲示板ウェブアプリケーションです。
+    </p>
+    <p>
+      餌やりや水の入れ替え、散歩等の時刻を記録でき、一覧を見返すことができます。
+      スマホ操作に疎い人でも使いやすいデザインに拘りました。
+      クライアントである家族に開発中のものを見てもらって機能改善を繰り返しています。
+    </p>
+    <p>
+      最近UIを大幅に刷新し、使用フレームワークをVueからSvelteに変更しました。このときにSASSの利用をやめました。これは標準化された規格に準拠すべきと考えたからです。
+    </p>
+  </AppItem>
+  <AppItem
+    langList={["python", "flask", "mysql", "docker", "aws-ec2", "nginx"]}
+    href={"https://github.com/littleIkawa/anime-tinder"}
+  >
+    <svelte:fragment slot="title">Toonder</svelte:fragment>
+    <svelte:fragment slot="work-period">2021年3月, 10月</svelte:fragment>
+    <p>TinderライクなUIで機械学習を用いたアニメのマッチングアプリです。</p>
+    <p>
+      初めてのハッカソン～オンライン開発合宿vol.1～(サポーターズ様、2021年3月開催)にて制作、努力賞を頂きました。
+    </p>
+    <p>
+      私の担当箇所はdocker開発環境の構築とAPIサーバー開発です。
+      初めてのチーム開発となり、異なる環境に合わせた開発環境構築、サーバーの基礎的な知識、リーダブルなコードへの意識など、現在の私を支える多くの知見を得ました。
+    </p>
+    <p>
+      またその後に参加した展示イベントで追加の開発の機会を得たため、AWS-EC2とNginxを用いたバックエンドサーバーのデプロイを行いました。
+    </p>
+  </AppItem>
+  <AppItem
+    langList={["python"]}
+    href={"https://github.com/littleIkawa/year_of_station_by_municipality"}
+  >
+    <svelte:fragment slot="title"
+      >自治体別最古・最近の鉄道駅設置年を抽出するスクリプト</svelte:fragment
+    >
+    <svelte:fragment slot="work-period">2021年9月</svelte:fragment>
+    <p>Wikipediaクローラです。</p>
+    <p>
+      MANDARA10という日本地図塗り分けアプリを使って鉄道の設置年を使った図を作成するために書いたスクリプトです。
+      自治体のページから設置された鉄道駅を順に取得していきデータを取得します。
+      スクレイピング独特の例外処理や効率的なログのとり方を工夫しました。
+    </p>
+  </AppItem>
+  <AppItem
+    langList={["rust"]}
+    href={"https://github.com/littleIkawa/bem_laplace_eq_rust"}
+  >
+    <svelte:fragment slot="title">Laplace問題の数値計算</svelte:fragment>
+    <svelte:fragment slot="work-period">2022年2月</svelte:fragment>
+    <p>
+      卒業論文が終わって余裕ができたので、境界要素法による数値計算をRustで試してみたものです。
+    </p>
+  </AppItem>
+  <AppItem
+    langList={["rust"]}
+    href={"https://github.com/littleIkawa/block_golf"}
+  >
+    <svelte:fragment slot="title">Block Golf （仮）</svelte:fragment>
+    <svelte:fragment slot="work-period">2022年6月〜</svelte:fragment>
+    <p>Rust製ゲームエンジンBevyを用いたアクションパズルゲームです。</p>
+    <p>
+      小学生の頃の妄想を今なら作れるのではないかと思い作ってみました。
+      ブロックを動かして転がる玉をゴールへ導きます。
+      様々なギミックがあるのでそれを利用していきます。
+    </p>
+    <p>
+      物体間の物理演算を自分で実装しました。それなりに動くものができたので満足です。
+    </p>
+    <p>
+      現在は統一性のある素材画像を貼り付けたり、物理演算の改良をするなどして作り直しています。
+    </p>
+  </AppItem>
+  <AppItem
+    langList={["c++"]}
+    href={"https://github.com/littleIkawa/shooting_game_cpp_remastered"}
+  >
+    <svelte:fragment slot="title">FailOver 2 Remastered</svelte:fragment>
+    <svelte:fragment slot="work-period">2022年9月</svelte:fragment>
+    <p>
+      PC部に所属していた高校生のとき文化祭向けに作ったシューティングゲーム：FailOver
+      2をC++で全面的に書き直したものです。
+    </p>
+    <p>
+      とあるインターンに参加し、C++でゲームを作る必要を感じたのもあり、題材として適当なこのゲームを選んでやってみました。
+      プログラミングへの考え方が当時と全く変わっており、高い汎用性とコードの可読性を両立したエンジンを書くことができました。
+      7年以上の時を経て自分がどう変わったかを（いろいろな意味で）見直すことができました。
+    </p>
+  </AppItem>
+  <AppItem langList={["latex"]} href={"https://github.com/littleIkawa/inochi"}>
+    <svelte:fragment slot="title">命の輝きくん</svelte:fragment>
+    <svelte:fragment slot="work-period">2020年1月</svelte:fragment>
+    <p>
+      完全に遊びで、大阪万博2025の公式キャラクター（当時名称不定）をLaTeXのライブラリTikZで描いたものです。
+    </p>
+  </AppItem>
+  <AppItem langList={["rust"]} href={""}>
+    <svelte:fragment slot="title">Rhythm Game（仮）</svelte:fragment>
+    <svelte:fragment slot="work-period">2022年10月</svelte:fragment>
+    <p>Rust製ゲームエンジンBevyを用いたリズムゲームです。</p>
+    <p>
+      リズムゲームの面白さについて考え、人間は根本的にリズムを取って遊ぶのが好きだと考えて、パターンを取り切ると演出と加点が付くシステムを考えました。
+      Rustの機能をうまくつかって非常に汎用性の高いシンプルなエンジンを構築できました。
+      デバッグ機能などの開発者向けの機能を作ることを試しています。
+      また、譜面制作機能も用意しています。
+    </p>
+    <p>
+      ゲーム本体とは関係ない部分で、デバッグ機能を充実させ、開発がスムーズに進められるように設計を考えてみました。
+    </p>
+  </AppItem>
+  <AppItem
+    langList={["rust"]}
+    href={"https://github.com/littleIkawa/memo_cli_rust"}
+  >
+    <svelte:fragment slot="title">memocr</svelte:fragment>
+    <svelte:fragment slot="work-period">2022年11月</svelte:fragment>
+    <p>コマンドラインでメモを管理できるツールです。</p>
+    <p>
+      一通りの編集やファイルの作成・消去操作の他、現在のディレクトリにコピーしたり、簡易なHTTPサーバーを立ててマークダウンをプレビューしたりできます。
+    </p>
+    <p>
+      Cargoのコマンドとして
+      <a href="https://crates.io/crates/memocr">crates.io</a>
+      で公開しているので誰でもインストールできます。よかったら使ってみてください（一応100回ダウンロードされたようです）。
+    </p>
+  </AppItem>
+  <AppItem
+    langList={["js", "ts", "html"]}
+    href={"https://github.com/littleIkawa/3d-audio-playground"}
+  >
+    <svelte:fragment slot="title">3Dオーディオ</svelte:fragment>
+    <svelte:fragment slot="work-period">2023年1月</svelte:fragment>
+    <p>
+      頭部伝達関数と音源を畳み込んで3Dオーディオを作る、というのを以前からやってみたいと考えていました。
+      ただ、どうせならグリグリと配置を切り替えたりその場で音が合成できたりするほうが面白いと思い、PythonやRustで書こうとしつつも放置していました。
+    </p>
+    <p>
+      なんやかんやでJavaScript自体にかなり親しんできたので、以前から気になっていたWebAudioAPIやCanvasの利用を試み、これらを組み合わせて動的なインターフェイスを実現できました。
+    </p>
+    <p>
+      今回はフレームワークは未使用で、Typescriptだけで頑張ってみました。バイナリやWebAudioの扱い等でまだまだ未知の部分が多いですが、それなりに上手く設計できたと思います。
+      リポジトリに使い方を記載したので是非試してみてください。
+    </p>
+    <p>完全に余談ですが私が開発中に使用した音源はイカちゃんのﾏﾝﾒﾝﾐです。</p>
+  </AppItem>
+</section>
+
+<style>
+  a {
+    text-decoration: underline;
+  }
+  h3 {
+    margin: 1.4rem auto;
+  }
+  h4 {
+    margin: 1.4rem auto;
+  }
+  .niconico-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+  }
+</style>
