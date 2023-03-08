@@ -18,6 +18,25 @@ const { title } = Astro.props;
   <slot />
 </BaseLayout>
 
+<script>
+  // タグをクリックした際カードコンポーネントによる遷移を阻止する処理
+  const cards = document.querySelectorAll<HTMLElement>("a.article-link");
+  cards.forEach((card) => {
+    card.addEventListener("click", (ev) => {
+      const target = ev.target as HTMLElement;
+      target.dataset.hasOwnProperty("tagUrl") ? ev.preventDefault() : null;
+    });
+  });
+  // タグコンポーネントにクリックイベントハンドラを割り当てる処理
+  const tagButtons =
+    document.querySelectorAll<HTMLElement>("button.article-tag");
+  tagButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      alert(btn.dataset.tagUrl);
+    });
+  });
+</script>
+
 <style>
   .header-margin {
     height: 8rem;
