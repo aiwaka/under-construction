@@ -13,7 +13,7 @@
 
 <style>
   .contents-card-container {
-    margin: 2rem auto;
+    margin: 1.4rem auto;
     padding-bottom: 2rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);

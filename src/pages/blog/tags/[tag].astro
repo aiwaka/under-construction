@@ -1,0 +1,44 @@
+---
+import ArticleCardContainer from "@components/blog/ArticleCardContainer.svelte";
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import { ArticleAttribute } from "@lib/articles";
+import { getFilenameFromPath } from "@lib/utils";
+
+export async function getStaticPaths() {
+  // 全記事を取得
+  const posts = await Astro.glob("../../blog/*.mdx");
+  const nonDraftPosts = posts.filter((post) => !post.frontmatter.draft);
+  // タグ一覧を取得
+  const allTags = nonDraftPosts.reduce((prev, curr) => {
+    return prev.concat(curr.frontmatter.tags);
+  }, []);
+  const uniqueAllTags = Array.from(new Set(allTags));
+  return uniqueAllTags.map((tag) => ({ params: { tag } }));
+}
+
+const { tag } = Astro.params;
+const posts = await Astro.glob("../../blog/*.mdx");
+const nonDraftPosts = posts
+  .filter((post) => !post.frontmatter.draft)
+  .filter((post) => post.frontmatter.tags.includes(tag));
+const postAttrList = nonDraftPosts.map((post) => {
+  const frontmatter = post.frontmatter as Record<string, any> &
+    ArticleAttribute;
+  const filename = getFilenameFromPath(post.file) ?? "";
+  return new ArticleAttribute(
+    filename,
+    frontmatter.title,
+    frontmatter.description,
+    frontmatter.thumbnail,
+    new Date(frontmatter.date),
+    frontmatter.tags
+  );
+});
+postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
+---
+
+<BlogGeneralLayout title="">
+  <h2>Blog</h2>
+  <h3>{tag}の検索結果</h3>
+  <ArticleCardContainer cardList={postAttrList} />
+</BlogGeneralLayout>
