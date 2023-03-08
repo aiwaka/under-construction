@@ -2,11 +2,11 @@
   export let tag: string;
 </script>
 
-<a href={`/blog/tag/${tag}`}>
-  <div class="article-tag">
-    #{tag}
-  </div>
-</a>
+<!-- anchorタグを入れ子にすることはマークアップ上でおかしい. ボタンを用い, データ属性を利用する. -->
+<!-- この属性を利用するため, レイアウトファイル上でイベントリスナを設定している. -->
+<button data-tag-url={`/blog/tags/${tag}`} class="article-tag">
+  #{tag}
+</button>
 
 <style>
   .article-tag {
@@ -23,6 +23,7 @@
     margin-left: 0;
   }
   .article-tag:hover {
+    cursor: pointer;
     background-color: var(--main-bg-color);
     color: var(--main-color);
   }

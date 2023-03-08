@@ -3,12 +3,12 @@ import { Debug } from "astro/components";
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.svelte";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import { ArticleAttribute } from "@lib/articles";
+import { getFilenameFromPath } from "@lib/utils";
 
 const postsData = await Astro.glob("./blog/*.md");
 const postAttrList = postsData.map((data) => {
   const frontmatter = data.frontmatter;
-  const matched = data.file.match(".+/(.+?).[a-z]+([?#;].*)?$");
-  const filename = matched ? matched[1] : "";
+  const filename = getFilenameFromPath(data.file) ?? "";
   return new ArticleAttribute(
     filename,
     frontmatter.title,

@@ -6,13 +6,12 @@
 </script>
 
 <div class="contents-card-container">
-  <ArticleCard metadata={cardList[0]} />
-  <!-- {#each cardList as metadata (metadata.id)}
+  {#each cardList as metadata (metadata.id)}
     <ArticleCard {metadata} />
-  {/each} -->
+  {/each}
 </div>
 
-<!-- <style>
+<style>
   .contents-card-container {
     margin: 2rem auto;
     padding-bottom: 2rem;
@@ -25,4 +24,4 @@
       grid-template-columns: repeat(1, 1fr);
     }
   }
-</style> -->
+</style>
