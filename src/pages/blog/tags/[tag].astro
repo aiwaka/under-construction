@@ -44,6 +44,13 @@ postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
 
 <BlogGeneralLayout title="">
   <h2>Blog</h2>
-  <h3>{tag}の検索結果</h3>
+  <a class="to-tag-list" href="/blog/tags">タグ一覧へ</a>
+  <h3>#{tag}の検索結果</h3>
   <ArticleCardContainer cardList={postAttrList} />
 </BlogGeneralLayout>
+
+<style>
+  .to-tag-list {
+    text-decoration: underline;
+  }
+</style>
