@@ -4,7 +4,7 @@ import ArticleCardContainer from "@components/blog/ArticleCardContainer.svelte";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import { ArticleAttribute } from "@lib/articles";
 
-const postsData = await Astro.glob("../contents/*.md");
+const postsData = await Astro.glob("./blog/*.md");
 const postAttrList = postsData.map((data) => {
   const frontmatter = data.frontmatter;
   const matched = data.file.match(".+/(.+?).[a-z]+([?#;].*)?$");
