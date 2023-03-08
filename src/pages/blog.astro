@@ -1,5 +1,39 @@
 ---
-import BlogPageLayout from "@layouts/BlogPageLayout.astro";
+import { Debug } from "astro/components";
+import ArticleCardContainer from "@components/blog/ArticleCardContainer.svelte";
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import { ArticleAttribute } from "@lib/articles";
+
+const postsData = await Astro.glob("../contents/*.md");
+const postAttrList = postsData.map((data) => {
+  const frontmatter = data.frontmatter;
+  const matched = data.file.match(".+/(.+?).[a-z]+([?#;].*)?$");
+  const filename = matched ? matched[1] : "";
+  return new ArticleAttribute(
+    filename,
+    frontmatter.title,
+    frontmatter.description,
+    frontmatter.thumbnail,
+    new Date(frontmatter.date),
+    frontmatter.tags
+  );
+});
+postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
 ---
 
-<BlogPageLayout>test</BlogPageLayout>
+<BlogGeneralLayout title="">
+  <main class="main-container">
+    <h2>Blog</h2>
+    <ArticleCardContainer cardList={postAttrList} />
+  </main>
+</BlogGeneralLayout>
+
+<style lang="postcss">
+  .main-container {
+    width: 70%;
+    margin: auto;
+    @media (max-width: 1024px) {
+      width: 80%;
+    }
+  }
+</style>

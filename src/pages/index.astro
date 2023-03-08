@@ -116,25 +116,14 @@ import ContactSection from "@components/sections/ContactSection.svelte";
     width: 70%;
     margin: auto;
     @media (max-width: 1024px) {
-      width: 90%;
+      width: 80%;
     }
     z-index: 2;
     position: relative;
-    height: fit-content;
-    width: 100vw;
-    display: flex;
-    /* justify-content: center; */
-    align-items: center;
-    flex-direction: column;
   }
   .contents-container {
     position: sticky;
-    width: 70%;
-  }
-  @media (max-width: 1024px) {
-    .contents-container {
-      width: 80%;
-    }
+    width: 100%;
   }
 
   :global(.section-item) {
