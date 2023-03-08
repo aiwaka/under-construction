@@ -13,27 +13,32 @@ export async function getStaticPaths() {
     return prev.concat(curr.frontmatter.tags);
   }, []);
   const uniqueAllTags = Array.from(new Set(allTags));
-  return uniqueAllTags.map((tag) => ({ params: { tag } }));
+  return uniqueAllTags.map((tag) => ({
+    params: {
+      tag,
+    },
+    props: {
+      postAttrList: nonDraftPosts
+        .filter((post) => post.frontmatter.tags.includes(tag))
+        .map((post) => {
+          const frontmatter = post.frontmatter as Record<string, any> &
+            ArticleAttribute;
+          const filename = getFilenameFromPath(post.file) ?? "";
+          return new ArticleAttribute(
+            filename,
+            frontmatter.title,
+            frontmatter.description,
+            frontmatter.thumbnail,
+            new Date(frontmatter.date),
+            frontmatter.tags
+          );
+        }),
+    },
+  }));
 }
 
 const { tag } = Astro.params;
-const posts = await Astro.glob("../../blog/*.mdx");
-const nonDraftPosts = posts
-  .filter((post) => !post.frontmatter.draft)
-  .filter((post) => post.frontmatter.tags.includes(tag));
-const postAttrList = nonDraftPosts.map((post) => {
-  const frontmatter = post.frontmatter as Record<string, any> &
-    ArticleAttribute;
-  const filename = getFilenameFromPath(post.file) ?? "";
-  return new ArticleAttribute(
-    filename,
-    frontmatter.title,
-    frontmatter.description,
-    frontmatter.thumbnail,
-    new Date(frontmatter.date),
-    frontmatter.tags
-  );
-});
+const postAttrList = Astro.props.postAttrList as ArticleAttribute[];
 postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
 ---
 
