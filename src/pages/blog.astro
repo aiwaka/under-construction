@@ -1,14 +1,15 @@
 ---
-import { Debug } from "astro/components";
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.svelte";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import { ArticleAttribute } from "@lib/articles";
 import { getFilenameFromPath } from "@lib/utils";
 
-const postsData = await Astro.glob("./blog/*.md");
-const postAttrList = postsData.map((data) => {
-  const frontmatter = data.frontmatter;
-  const filename = getFilenameFromPath(data.file) ?? "";
+const posts = await Astro.glob("./blog/*.mdx");
+const nonDraftPosts = posts.filter((post) => !post.frontmatter.draft);
+const postAttrList = nonDraftPosts.map((post) => {
+  const frontmatter = post.frontmatter as Record<string, any> &
+    ArticleAttribute;
+  const filename = getFilenameFromPath(post.file) ?? "";
   return new ArticleAttribute(
     filename,
     frontmatter.title,
@@ -22,18 +23,6 @@ postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
 ---
 
 <BlogGeneralLayout title="">
-  <main class="main-container">
-    <h2>Blog</h2>
-    <ArticleCardContainer cardList={postAttrList} />
-  </main>
+  <h2>Blog</h2>
+  <ArticleCardContainer cardList={postAttrList} />
 </BlogGeneralLayout>
-
-<style lang="postcss">
-  .main-container {
-    width: 70%;
-    margin: auto;
-    @media (max-width: 1024px) {
-      width: 80%;
-    }
-  }
-</style>

@@ -1,26 +1,21 @@
 <script lang="ts">
   import type { ArticleAttribute } from "@lib/articles";
+  import { dateText, thumbnailPath } from "@lib/utils";
   import ArticleTag from "./ArticleTag.svelte";
 
   export let metadata: ArticleAttribute;
 
   const { id, title, thumbnail, date, tags } = metadata;
-
-  const thumbnailPath = `/blog/thumb/${thumbnail}`;
-
-  const dateText = `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()}`;
 </script>
 
 <a class="article-link" href={`/blog/${id}`}>
   <div class="article-card">
     <div class="img-container">
-      <img src={thumbnailPath} alt="thumbnail" />
+      <img src={thumbnailPath(thumbnail)} alt="thumbnail" />
     </div>
     <div class="card-contents">
       <h2>{title}</h2>
-      <span>{dateText}</span>
+      <span>{dateText(date)}</span>
       <div class="tag-container">
         {#each tags as tag}
           <ArticleTag {tag} />
