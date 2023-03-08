@@ -18,4 +18,9 @@ const thumbnailPath = (filename: string): string => {
   return `/blog/thumb/${filename}`;
 };
 
-export { getFilenameFromPath, dateText, thumbnailPath };
+/**
+ * 1ページあたりの記事数
+ */
+const POST_PER_PAGE = 9;
+
+export { getFilenameFromPath, dateText, thumbnailPath, POST_PER_PAGE };
