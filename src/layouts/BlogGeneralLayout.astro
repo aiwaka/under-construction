@@ -15,7 +15,9 @@ const { title } = Astro.props;
     : "Under Construction | Blog"}
 >
   <div class="header-margin"></div>
-  <slot />
+  <main class="main-container">
+    <slot />
+  </main>
 </BaseLayout>
 
 <script>
@@ -56,6 +58,13 @@ const { title } = Astro.props;
     background-size: cover;
     @media (max-width: 1024px) {
       background-position: center 0%;
+    }
+  }
+  .main-container {
+    width: 70%;
+    margin: auto;
+    @media (max-width: 1024px) {
+      width: 80%;
     }
   }
 </style>

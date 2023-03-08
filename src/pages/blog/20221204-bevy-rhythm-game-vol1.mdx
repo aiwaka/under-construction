@@ -1,4 +1,5 @@
 ---
+layout: ../../layouts/BlogPageLayout.astro
 title: Rust製ゲームエンジンBevy (v0.9) で音ゲーをつくる [vol.1]
 description: "Rustで音ゲーをつくる連載をします"
 thumbnail: bevy-rhythm-game.png
@@ -10,10 +11,6 @@ tags:
   - Bevy
 ---
 
-<script>
-  import { base } from "$app/paths";
-</script>
-
 ## はじめに
 
 ### この記事の目的
@@ -24,7 +21,7 @@ Rustのゲームエンジンはいくつか開発されていますが, その�
 nannouはゲームエンジンというよりはprocessingのようなクリエイティブプログラミングフレームワークです.
 Pistonは...知らないです（ごめんなさい）
 
-<img src={`${base}/blog/img/rust-game-engine-comparing.png`} alt="img">
+![エンジン比較画像](/blog/img/rust-game-engine-comparing.png "エンジン比較画像")
 
 さて, 私もBevyでゲームを作って ~~（作ろうとして）~~ いますが, 凄まじいスピードでバージョンが変わります.
 以前0.8がリリースされたときに記事を投稿しましたが, 気づいたら11月に0.9が出ていました.
