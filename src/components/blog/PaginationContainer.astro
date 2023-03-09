@@ -12,19 +12,27 @@ const range = (num: number) => [...Array(num)].map((_, i) => i);
   <div class="pagination-container">
     {
       currentPage === 1 ? (
-        <div class="page-button disabled">&lt;&lt;</div>
+        <div class="page-button disabled">
+          <span>&lt;&lt;</span>
+        </div>
       ) : (
         <a href={`/blog/1`}>
-          <div class="page-button">&lt;&lt;</div>
+          <div class="page-button">
+            <span>&lt;&lt;</span>
+          </div>
         </a>
       )
     }
     {
       currentPage === 1 ? (
-        <div class="page-button disabled">&lt;</div>
+        <div class="page-button disabled">
+          <span>&lt;</span>
+        </div>
       ) : (
         <a href={`/blog/${currentPage - 1}`}>
-          <div class="page-button">&lt;</div>
+          <div class="page-button">
+            <span>&lt;</span>
+          </div>
         </a>
       )
     }
@@ -35,29 +43,43 @@ const range = (num: number) => [...Array(num)].map((_, i) => i);
         if (range(lastPage).includes(temp - 1)) {
           return (
             <a href={`/blog/${temp}`}>
-              <div class="page-button">{temp}</div>
+              <div class="page-button">
+                <span>{temp}</span>
+              </div>
             </a>
           );
         } else {
-          return <div class="page-button disabled"> </div>;
+          return (
+            <div class="page-button disabled">
+              <span> </span>
+            </div>
+          );
         }
       })
     }
     {
       currentPage === lastPage ? (
-        <div class="page-button disabled">&gt;</div>
+        <div class="page-button disabled">
+          <span>&gt;</span>
+        </div>
       ) : (
         <a href={`/blog/${currentPage + 1}`}>
-          <div class="page-button">&gt;</div>
+          <div class="page-button">
+            <span>&gt;</span>
+          </div>
         </a>
       )
     }
     {
       currentPage === lastPage ? (
-        <div class="page-button disabled">&gt;&gt;</div>
+        <div class="page-button disabled">
+          <span>&gt;&gt;</span>
+        </div>
       ) : (
         <a href={`/blog/${lastPage}`}>
-          <div class="page-button">&gt;&gt;</div>
+          <div class="page-button">
+            <span>&gt;&gt;</span>
+          </div>
         </a>
       )
     }
@@ -76,12 +98,15 @@ const range = (num: number) => [...Array(num)].map((_, i) => i);
     width: fit-content;
     & .page-button {
       text-align: center;
-      line-height: 2rem;
       width: 2rem;
       height: 2rem;
       border: 1px solid var(--main-color);
       border-radius: 2px;
       background-color: var(--main-bg-color);
+      & span {
+        display: inline-block;
+        line-height: 2rem;
+      }
       &:hover {
         cursor: pointer;
         background-color: rgba(var(--main-color-params), 0.5);
