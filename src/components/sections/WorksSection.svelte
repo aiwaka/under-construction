@@ -45,12 +45,18 @@
   <span>
     一部の制作物はタイトルがリンクになっておりGitHubリポジトリに飛べます。
   </span>
-  <AppItem langList={["ts", "svelte"]} href="">
+  <AppItem langList={["ts", "svelte", "astro", "postcss"]} href="">
     <svelte:fragment slot="title">当ウェブサイト</svelte:fragment>
-    <svelte:fragment slot="work-period">2022年11月</svelte:fragment>
+    <svelte:fragment slot="work-period">2022年11月〜</svelte:fragment>
     <p>制作物を公開するサイトです。昔からやりたかったので勢いで作りました。</p>
     <p>
       ブログサイトも併設しています。マークダウンファイルを置けばそのまま記事となり、各記事にはOGPが設定されるようになっています。
+    </p>
+    <p>
+      2023年3月にAstroを導入してリニューアルしました。
+      SvelteKitで自分で考えないといけなかった部分をかなり簡単に実現でき、さらにSvelteのコンポーネントをそのまま使えたので感動しています。
+      ついでにAstroはPostCSSも組み込みらしいので使っています。
+      （現在OGP機能は実装中です。）
     </p>
   </AppItem>
   <AppItem
