@@ -1,6 +1,0 @@
-body::before {
-    background-image: url("../img/blue_2.png");
-  background-position: center 70%;
-  background-size:cover;
-  background-color: slateblue;
-}
