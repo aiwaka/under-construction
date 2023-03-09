@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { ArticleAttribute } from "$lib/articles";
-  import ArticleCard from "@/components/blog/ArticleCard.svelte";
+  import type { ArticleAttribute } from "@lib/articles";
+  import ArticleCard from "@components/blog/ArticleCard.svelte";
 
   export let cardList: ArticleAttribute[];
 </script>
@@ -13,8 +13,8 @@
 
 <style>
   .contents-card-container {
-    margin: 3rem auto;
-    padding-bottom: 3rem;
+    margin: 1.4rem auto;
+    padding-bottom: 2rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     column-gap: 5%;

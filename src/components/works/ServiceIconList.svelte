@@ -1,7 +1,7 @@
 <!-- 言語アイコンを並べて表示するのを簡単にするコンポーネント. -->
 <script lang="ts">
-  import type { AllowedName } from "@/components/allowdServiceName";
-  import ServiceIcon from "@/components/ServiceIcon.svelte";
+  import type { AllowedName } from "@components/allowdServiceName";
+  import ServiceIcon from "@components/ServiceIcon.svelte";
   export let langList: AllowedName[];
 </script>
 
