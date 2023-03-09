@@ -2,25 +2,10 @@
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.svelte";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import { ArticleAttribute } from "@lib/articles";
-import { getFilenameFromPath, POST_PER_PAGE } from "@lib/utils";
+import { getAttrList, POST_PER_PAGE } from "@lib/utils";
 
 const posts = await Astro.glob("./blog/*.mdx");
-const nonDraftPosts = posts.filter((post) => !post.frontmatter.draft);
-const postAttrList = nonDraftPosts.map((post) => {
-  const frontmatter = post.frontmatter as Record<string, any> &
-    ArticleAttribute;
-  const filename = getFilenameFromPath(post.file) ?? "";
-  return new ArticleAttribute(
-    filename,
-    frontmatter.title,
-    frontmatter.description,
-    frontmatter.thumbnail,
-    new Date(frontmatter.date),
-    frontmatter.tags
-  );
-});
-postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
+const postAttrList = getAttrList(posts);
 const pageNum = Math.ceil(postAttrList.length / POST_PER_PAGE);
 ---
 

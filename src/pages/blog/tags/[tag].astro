@@ -1,8 +1,9 @@
 ---
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.svelte";
+import PaginationContainer from "@components/blog/PaginationContainer.astro";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import { ArticleAttribute } from "@lib/articles";
-import { getFilenameFromPath } from "@lib/utils";
+import type { ArticleAttribute } from "@lib/articles";
+import { getAttrList, POST_PER_PAGE } from "@lib/utils";
 
 export async function getStaticPaths() {
   // 全記事を取得
@@ -11,28 +12,14 @@ export async function getStaticPaths() {
   // タグ一覧を取得
   const allTags = nonDraftPosts.reduce((prev, curr) => {
     return prev.concat(curr.frontmatter.tags);
-  }, []);
+  }, [] as string[]);
   const uniqueAllTags = Array.from(new Set(allTags));
   return uniqueAllTags.map((tag) => ({
     params: {
       tag,
     },
     props: {
-      postAttrList: nonDraftPosts
-        .filter((post) => post.frontmatter.tags.includes(tag))
-        .map((post) => {
-          const frontmatter = post.frontmatter as Record<string, any> &
-            ArticleAttribute;
-          const filename = getFilenameFromPath(post.file) ?? "";
-          return new ArticleAttribute(
-            filename,
-            frontmatter.title,
-            frontmatter.description,
-            frontmatter.thumbnail,
-            new Date(frontmatter.date),
-            frontmatter.tags
-          );
-        }),
+      postAttrList: getAttrList(nonDraftPosts, { tag }),
     },
   }));
 }
@@ -40,6 +27,8 @@ export async function getStaticPaths() {
 const { tag } = Astro.params;
 const postAttrList = Astro.props.postAttrList as ArticleAttribute[];
 postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
+
+const pageNum = Math.ceil(postAttrList.length / POST_PER_PAGE);
 ---
 
 <BlogGeneralLayout title="">
@@ -47,6 +36,9 @@ postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
   <a class="to-tag-list" href="/blog/tags">タグ一覧へ</a>
   <h3>#{tag}の検索結果</h3>
   <ArticleCardContainer cardList={postAttrList} />
+
+  <!-- TODO: タグフィルタにおけるページネーションを作成する -->
+  <PaginationContainer currentPage={1} lastPage={pageNum} />
 </BlogGeneralLayout>
 
 <style>
