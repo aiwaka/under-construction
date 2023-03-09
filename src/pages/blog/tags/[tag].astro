@@ -3,23 +3,18 @@ import ArticleCardContainer from "@components/blog/ArticleCardContainer.svelte";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import type { ArticleAttribute } from "@lib/articles";
-import { getAttrList, POST_PER_PAGE } from "@lib/utils";
+import { getAllTagSet, getAttrList, POST_PER_PAGE } from "@lib/utils";
 
 export async function getStaticPaths() {
   // 全記事を取得
   const posts = await Astro.glob("../../blog/*.mdx");
-  const nonDraftPosts = posts.filter((post) => !post.frontmatter.draft);
-  // タグ一覧を取得
-  const allTags = nonDraftPosts.reduce((prev, curr) => {
-    return prev.concat(curr.frontmatter.tags);
-  }, [] as string[]);
-  const uniqueAllTags = Array.from(new Set(allTags));
-  return uniqueAllTags.map((tag) => ({
+  const allTagList = Array.from(getAllTagSet(posts));
+  return allTagList.map((tag) => ({
     params: {
       tag,
     },
     props: {
-      postAttrList: getAttrList(nonDraftPosts, { tag }),
+      postAttrList: getAttrList(posts, { tag }),
     },
   }));
 }

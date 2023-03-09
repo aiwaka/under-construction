@@ -63,10 +63,30 @@ const getAttrList = (
   return attrList;
 };
 
+/**
+ * MDXオブジェクトのリストからタグ一覧のSetを返す.
+ * @param posts Astro.globで取得したMDXオブジェクトのリスト.
+ * @param includeDraft 作成中記事を含めるかどうか. trueならdraftがtrueの記事のタグも含める.
+ */
+const getAllTagSet = (
+  posts: MDXInstance<Record<string, any>>[],
+  includeDraft: boolean = false
+) => {
+  const nonDraftPosts = posts.filter(
+    (post) => includeDraft || !post.frontmatter.draft
+  );
+  // タグ一覧を取得
+  const allTags = nonDraftPosts.reduce((prev, curr) => {
+    return prev.concat(curr.frontmatter.tags);
+  }, [] as string[]);
+  return new Set(allTags);
+};
+
 export {
   getFilenameFromPath,
   dateText,
   thumbnailPath,
   getAttrList,
+  getAllTagSet,
   POST_PER_PAGE,
 };
