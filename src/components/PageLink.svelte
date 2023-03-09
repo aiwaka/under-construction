@@ -17,18 +17,10 @@
   style:line-height={resultHeight}
   class="page-link__container"
 >
-  <AnimatedLink {href} highlight={isCurrentPage}>
+  <AnimatedLink
+    href={`${import.meta.env.BASE_URL}${href}`}
+    highlight={isCurrentPage}
+  >
     <slot />
   </AnimatedLink>
 </div>
-
-<!-- <div class="page-link__container">
-  <a
-    class:current-page={isCurrentPage}
-    class="page-link"
-    style:line-height={resultHeight}
-    {href}
-  >
-    <slot />
-  </a>
-</div> -->

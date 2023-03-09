@@ -8,7 +8,7 @@
   const { id, title, thumbnail, date, tags } = metadata;
 </script>
 
-<a class="article-link" href={`/blog/${id}`}>
+<a class="article-link" href={`${import.meta.env.BASE_URL}blog/${id}`}>
   <div class="article-card">
     <div class="img-container">
       <img src={thumbnailPath(thumbnail)} alt="thumbnail" />

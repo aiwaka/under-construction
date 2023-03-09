@@ -18,7 +18,7 @@ const dateText = (date: Date): string => {
  * @param filename 拡張子付きファイル名
  */
 const thumbnailPath = (filename: string): string => {
-  return `/blog/thumb/${filename}`;
+  return `${import.meta.env.BASE_URL}blog/thumb/${filename}`;
 };
 
 /**
