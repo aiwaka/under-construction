@@ -4,7 +4,10 @@
 
 <!-- anchorタグを入れ子にすることはマークアップ上でおかしい. ボタンを用い, データ属性を利用する. -->
 <!-- この属性を利用するため, レイアウトファイル上でイベントリスナを設定している. -->
-<button data-tag-url={`/blog/tags/${tag}`} class="article-tag">
+<button
+  data-tag-url={`${import.meta.env.BASE_URL}blog/tags/${tag}`}
+  class="article-tag"
+>
   #{tag}
 </button>
 

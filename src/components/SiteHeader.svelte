@@ -8,11 +8,11 @@
   }
   // 表示名とリンクを並べる
   const navLinkList: NavLink[] = [
-    { name: "PROFILE", href: "/#profile" },
-    { name: "SKILL", href: "/#skill" },
-    { name: "WORKS", href: "/#works" },
-    { name: "CONTACT", href: "/#contact" },
-    { name: "BLOG", href: "/blog" },
+    { name: "PROFILE", href: "#profile" },
+    { name: "SKILL", href: "#skill" },
+    { name: "WORKS", href: "#works" },
+    { name: "CONTACT", href: "#contact" },
+    { name: "BLOG", href: "blog" },
   ];
 
   export let currentRoute: string;
@@ -21,7 +21,7 @@
 <div id="website-header">
   <div class="title-block">
     <h1 class="title">
-      <a href="/">UNDER CONSTRUCTION</a>
+      <a href={import.meta.env.BASE_URL}>UNDER CONSTRUCTION</a>
     </h1>
   </div>
   <nav class="nav-link-container">

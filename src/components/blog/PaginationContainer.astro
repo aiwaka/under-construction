@@ -1,14 +1,15 @@
 ---
 // ページ遷移ボタンを管理する
 interface Props {
-  /** ページ番号とオリジンを除いたurlの部分文字列. ex: `/blog/` */
-  base: string;
+  /** ページ番号とオリジンを除いたurlの部分文字列. ex: `blog/` */
+  subbase: string;
   /** 最後のページ番号 */
   lastPage: number;
   /** 現在のページ番号 */
   currentPage: number;
 }
-const { base, lastPage, currentPage } = Astro.props;
+const { subbase, lastPage, currentPage } = Astro.props;
+const base = `${import.meta.env.BASE_URL}${subbase}`;
 const range = (num: number) => [...Array(num)].map((_, i) => i);
 ---
 
