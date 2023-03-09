@@ -4,6 +4,7 @@ import SiteHeader from "@components/SiteHeader.svelte";
 import "@fontsource/noto-sans-jp";
 import "@fontsource/noto-sans-jp/700.css";
 import "@fontsource/noto-serif-jp";
+import "@fontsource/noto-sans-mono";
 
 const pathname = new URL(Astro.request.url).pathname;
 const currentPath = pathname.slice(1);
@@ -24,7 +25,13 @@ const bgColor = Astro.url.pathname.startsWith("/blog")
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" href="favicon.ico" />
+    <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+      integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+      crossorigin="anonymous"
+    />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>

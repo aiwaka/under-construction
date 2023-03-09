@@ -5,9 +5,25 @@ import svelte from "@astrojs/svelte";
 import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [svelte(), image(), mdx()],
+  markdown: {
+    shikiConfig: {
+      theme: "dracula",
+      wrap: false,
+    },
+  },
+  integrations: [
+    svelte(),
+    image(),
+    mdx({
+      remarkPlugins: [remarkMath],
+      rehypePlugins: [rehypeKatex],
+    }),
+  ],
 
   // trailingSlash: "always",
   base: import.meta.env.PROD ? "/under-construction" : "",

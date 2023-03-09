@@ -1,0 +1,159 @@
+---
+layout: ../../layouts/BlogPageLayout.astro
+title: LaTeXを記事中で使う
+description: 報告と設定備忘録など
+thumbnail: latex.png
+date: 2022-11-23
+tags:
+  - プログラミング
+  - Node
+  - LaTeX
+---
+
+タイトルの通りです.
+
+ちょっと前言及したところで調べてみたところできそうだったので$\LaTeX$を書けるようにしました.
+
+めちゃくちゃ簡単で, 便利な世の中だと思いました（小並感）.
+
+せっかくなのでやったことだけ書いておこうと思います.
+
+## 使用したライブラリ
+
+とりあえず, 順番に列挙していこうと思います.
+
+### KaTeX
+
+ウェブ上でLaTeXを書きたいときにはMathJaxが有名と思いますが, おそらく後発のKaTeXというものもあります.
+Qiitaとかでも使われているらしいです.
+高速, 見た目の質, 依存性のなさ等で優れているようです.
+
+### remark
+
+[Remark](https://github.com/remarkjs/remark)はMarkdownプロセッサであり, [unified](https://github.com/unifiedjs/unified)というプロジェクトの一部という位置づけのようです.
+
+この辺のプロジェクトの全体像はOSSとしては今までに触れたことがないくらい混沌としていたのであまり詳しく調べたわけではないです.
+~~（フロントエンド関連のヤバい側面のように見える）~~
+
+unifiedはテキストと抽象構文木を関連付けて操作するライブラリ全般を扱うようです.
+その中で, Markdownの文法に対応したものがremarkだと理解しました.
+
+関連ライブラリが様々にあるようで, 処理自体に影響を与えるもの, 構造要素に色々味付けができるもの, 他の構造化文書に変換するものなど多岐にわたります.
+
+### rehype
+
+これもunifiedプロジェクトの一部です.
+
+こちらはHTML処理を担当するようで, 思想はremarkと似ています.
+remarkと組み合わせて美味しいことができそうな感じがします.
+こちらも大量に関連ライブラリがあります.
+
+### mdsvex
+
+このブログはどうしてもmarkdownで書きたかったので, Svelte用にmarkdownを処理してくれるライブラリを用いています.
+それが`mdsvex`です（読み方がわからん. React用のMDXというやつが由来らしいです）.
+これをSvelteのConfigファイルでプリプロセッサとして書いてあげると, ビルド時にマークダウンファイルをよしなにSvelteの要素として扱ってくれます.
+
+この`mdsvex`, 上記の`remark`や`rehype`をさらに中で走らせることができます.
+つまり, markdownを読みこんだときにremarkで処理したり, 処理したhtmlをrehypeで処理したりできます.
+好きな機能を選んで使えることになります.
+
+### 結局使ったもの
+
+というわけでその中で使ったのが以下です.
+
+- [`remark-math`](https://github.com/remarkjs/remark-math)
+- [`rehype-katex-svelte`](https://github.com/kwshi/rehype-katex-svelte)
+
+`remark-math`は, markdown中の$\LaTeX$構文をunifiedで扱える構造に置き換えるものです（だと思っています）.
+`rehype-katex-svelte`は, [`rehype-katex`](https://github.com/remarkjs/remark-math/tree/HEAD/packages/rehype-katex)というプラグインをSvelteで扱えるようにチューニングされたものです（公式のrehypeプラグインとはなっていないようです）.
+`rehype-katex`は適当なunified構造を`KaTeX`を用いてマークアップするものです.
+
+ここまでで, できそうな気がしてきました.
+
+## Svelteにおける設定
+
+あとはほとんど用意してもらった構造を使うだけです.
+
+`svelte.config.js`を以下のようにセットします.
+
+```js
+import { mdsvex } from "mdsvex";
+import rehypeKatexSvelte from "rehype-katex-svelte";
+import remarkMath from "remark-math";
+
+const config = {
+  preprocess: [
+    preprocess(),
+    mdsvex({
+      extensions: [".md"],
+      remarkPlugins: [remarkMath],
+      rehypePlugins: [rehypeKatexSvelte]
+    })
+  ],
+  ...
+}
+```
+
+のようにします.
+これで, markdown中に`$\LaTeX$`と書けば$\LaTeX$となります.
+
+ディスプレイ数式も,
+
+```latex
+$$
+\\frac{1}{c^2}\ddot{u}(\\bm{x}, t)
+- u_{,ii}(\\bm{x},t) = 0,
+\\quad \\bm{x}\\in D, t>0
+$$
+```
+
+でOKです.
+
+$$
+\frac{1}{c^2}\ddot{u}(\bm{x}, t) - u_{,ii}(\bm{x},t) = 0, \quad \bm{x}\in D, t>0
+$$
+
+となります.
+
+## 余談
+
+### その1
+
+コードを貼っていましたが, これは`mdsvex`が勝手によしなにやってくれています. もはや気持ち悪い
+
+markdownでコードブロックを書くと, Prism.jsを利用して各コード要素にクラスを付与します.
+Prismのテーマを適当にダウンロードして使うようにしてやれば, いい感じにコードを掲載できます.
+
+微妙に見にくい気がするのでおすすめのテーマがあったら教えて下さい.
+
+### その2
+
+今, 目次を自動で生成するようにしたいと考えています.
+
+これもrehypeを使います.
+`rehype-slug`というやつをpreprocessorに挟むと各見出しにidを付与してくれます（これをslugというそうです）.
+
+で, `rehype-toc`というやつでslugがついている見出しをいい感じのhtmlにまとめて冒頭にくっつけてくれます.
+
+これだけでできそうな気がするのですが, Svelteのビルドで弾かれてしまいます.
+というのも, Svelteはリンクが壊れていないかどうかを巡回して確かめてくれるのですが, `rehype`系は日本語をそのまま扱うのに対してSvelteはURLエンコードをしてからチェックするようです.
+
+例えば, 「テスト」という見出しについて考えます.
+これをURLエンコードすると`%E3%83%86%E3%82%B9%E3%83%88`となります.
+`rehype-slug`は`<h2 id="テスト">テスト</h2>`という要素を生成し, `rehype-toc`もこれに従って`<a href="#テスト">`のようなリンクを生成します.
+しかし, Svelteは「idが`%E3%83%86%E3%82%B9%E3%83%88`っていう要素がないよ」と警告を出し, ビルドできません.
+
+実は, `rehype-slug`側のコードをいじったら解決した（要素にidを挟んでいるだけのすごく簡単なコードでできているので, ここにURLエンコードを挟むだけで解決しました）のですが, GitHub Actionsで自動ビルドするのには使えません.
+
+というわけで, Issueを立てるかプルリクエストなどと迷っていますが全く何をすればいいかわかりません.
+だれか手ほどきしてくれ〜
+
+## まとめ
+
+というわけで$\TeX$を使った数学っぽいことも書けるようになります.
+今後とも宜しくお願いします.
+
+最後は他の記事に分離しても良かったのですが, `rehype`系で何個も書くのもどうかと思ったのでまとめました.
+まだわからないことがたくさんあります.
+他の忙しいことも多いけどぼちぼち機能向上していければいいなと思います.
