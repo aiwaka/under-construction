@@ -18,6 +18,17 @@ const { title } = Astro.props;
 const bgColor = Astro.url.pathname.startsWith("/blog")
   ? "var(--main-bg-color)"
   : "black";
+
+const ogp = {
+  url: Astro.request.url,
+  type: "article",
+  title,
+  description: "",
+  siteName: "Under Construction",
+  // githubでデプロイするとここに保存されているようなのでこのようにする.
+  // image: `https://littleikawa.github.io/under-construction/blog/thumb/${thumbnail}`
+  image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
+};
 ---
 
 <!DOCTYPE html>
@@ -33,6 +44,13 @@ const bgColor = Astro.url.pathname.startsWith("/blog")
       crossorigin="anonymous"
     />
     <meta name="generator" content={Astro.generator} />
+    <meta property="og:url" content={ogp.url} />
+    <meta property="og:type" content={ogp.type} />
+    <meta property="og:title" content={ogp.title} />
+    <meta property="og:description" content={ogp.description} />
+    <meta property="og:site_name" content={ogp.siteName} />
+    <meta property="og:image" content={ogp.image} />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
   </head>
   <body>
@@ -46,7 +64,7 @@ const bgColor = Astro.url.pathname.startsWith("/blog")
   }
 </script>
 
-<style is:global lang="postcss" define:vars={{ bgColor }}>
+<style is:global define:vars={{ bgColor }}>
   *,
   *::before,
   *::after {
