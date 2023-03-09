@@ -70,7 +70,7 @@
     /* font-weight: 400; */
     @media (max-width: 1024px) {
       line-height: var(--mobile-header-height);
-      font-size: min(7vw, 1.9rem);
+      font-size: min(5.6vw, 1.9rem);
     }
   }
 
