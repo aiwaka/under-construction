@@ -4,38 +4,31 @@ import PaginationContainer from "@components/blog/PaginationContainer.astro";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import type { ArticleAttribute } from "@lib/articles";
 import { getAllTagSet, getAttrList, POST_PER_PAGE } from "@lib/utils";
+import type { GetStaticPathsOptions, Page } from "astro";
 
-export async function getStaticPaths() {
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   // 全記事を取得
-  const posts = await Astro.glob("../../blog/*.mdx");
+  const posts = await Astro.glob("../../../blog/*.mdx");
   const allTagList = Array.from(getAllTagSet(posts));
-  return allTagList.map((tag) => ({
-    params: {
-      tag,
-    },
-    props: {
-      postAttrList: getAttrList(posts, { tag }),
-    },
-  }));
+  return allTagList.map((tag) => {
+    const attrList = getAttrList(posts, { tag });
+    return paginate(attrList, { params: { tag }, pageSize: POST_PER_PAGE });
+  });
 }
 
+const { page } = Astro.props as { page: Page<ArticleAttribute> };
 const { tag } = Astro.params;
-const postAttrList = Astro.props.postAttrList as ArticleAttribute[];
-postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
-
-const pageNum = Math.ceil(postAttrList.length / POST_PER_PAGE);
 ---
 
 <BlogGeneralLayout title="">
   <h2>Blog</h2>
   <a class="to-tag-list" href="/blog/tags">タグ一覧へ</a>
-  <h3>#{tag}の検索結果</h3>
-  <ArticleCardContainer cardList={postAttrList.slice(0, POST_PER_PAGE)} />
-
+  <h3>#{tag}の検索結果：{page.currentPage}</h3>
+  <ArticleCardContainer cardList={page.data} />
   <PaginationContainer
     base={`/blog/tags/${tag}/`}
-    currentPage={1}
-    lastPage={pageNum}
+    currentPage={page.currentPage}
+    lastPage={page.lastPage}
   />
 </BlogGeneralLayout>
 

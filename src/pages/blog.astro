@@ -13,5 +13,5 @@ const pageNum = Math.ceil(postAttrList.length / POST_PER_PAGE);
   <h2>Blog</h2>
   <ArticleCardContainer cardList={postAttrList.slice(0, POST_PER_PAGE)} />
 
-  <PaginationContainer currentPage={1} lastPage={pageNum} />
+  <PaginationContainer base={"/blog/"} currentPage={1} lastPage={pageNum} />
 </BlogGeneralLayout>

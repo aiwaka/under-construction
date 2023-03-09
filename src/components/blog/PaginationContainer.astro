@@ -1,91 +1,97 @@
 ---
 // ページ遷移ボタンを管理する
 interface Props {
+  /** ページ番号とオリジンを除いたurlの部分文字列. ex: `/blog/` */
+  base: string;
+  /** 最後のページ番号 */
   lastPage: number;
+  /** 現在のページ番号 */
   currentPage: number;
 }
-const { lastPage, currentPage } = Astro.props;
+const { base, lastPage, currentPage } = Astro.props;
 const range = (num: number) => [...Array(num)].map((_, i) => i);
 ---
 
-<div class="pagination-section">
-  <div class="pagination-container">
-    {
-      currentPage === 1 ? (
-        <div class="page-button disabled">
-          <span>&lt;&lt;</span>
-        </div>
-      ) : (
-        <a href={`/blog/1`}>
-          <div class="page-button">
+{
+  lastPage > 1 && (
+    <div class="pagination-section">
+      <div class="pagination-container">
+        {currentPage === 1 ? (
+          <div class="page-button disabled">
             <span>&lt;&lt;</span>
           </div>
-        </a>
-      )
-    }
-    {
-      currentPage === 1 ? (
-        <div class="page-button disabled">
-          <span>&lt;</span>
-        </div>
-      ) : (
-        <a href={`/blog/${currentPage - 1}`}>
-          <div class="page-button">
+        ) : (
+          <a href={`${base}1`}>
+            <div class="page-button">
+              <span>&lt;&lt;</span>
+            </div>
+          </a>
+        )}
+        {currentPage === 1 ? (
+          <div class="page-button disabled">
             <span>&lt;</span>
           </div>
-        </a>
-      )
-    }
-
-    {
-      range(5).map((num) => {
-        const temp = num + currentPage - 2;
-        if (range(lastPage).includes(temp - 1)) {
-          return (
-            <a href={`/blog/${temp}`}>
-              <div class="page-button">
-                <span>{temp}</span>
-              </div>
-            </a>
-          );
-        } else {
-          return (
-            <div class="page-button disabled">
-              <span> </span>
+        ) : (
+          <a href={`${base}${currentPage - 1}`}>
+            <div class="page-button">
+              <span>&lt;</span>
             </div>
-          );
-        }
-      })
-    }
-    {
-      currentPage === lastPage ? (
-        <div class="page-button disabled">
-          <span>&gt;</span>
-        </div>
-      ) : (
-        <a href={`/blog/${currentPage + 1}`}>
-          <div class="page-button">
+          </a>
+        )}
+
+        {/* 5つ分の遷移ボタンを作るが, 存在しないページはdisabledとする. */}
+        {range(5).map((num) => {
+          const temp = num + currentPage - 2;
+          if (range(lastPage).includes(temp - 1)) {
+            if (num === 2) {
+              return (
+                <div class="page-button current">
+                  <span>{temp}</span>
+                </div>
+              );
+            } else {
+              return (
+                <a href={`${base}${temp}`}>
+                  <div class="page-button">
+                    <span>{temp}</span>
+                  </div>
+                </a>
+              );
+            }
+          } else {
+            return (
+              <div class="page-button disabled">
+                <span> </span>
+              </div>
+            );
+          }
+        })}
+        {currentPage === lastPage ? (
+          <div class="page-button disabled">
             <span>&gt;</span>
           </div>
-        </a>
-      )
-    }
-    {
-      currentPage === lastPage ? (
-        <div class="page-button disabled">
-          <span>&gt;&gt;</span>
-        </div>
-      ) : (
-        <a href={`/blog/${lastPage}`}>
-          <div class="page-button">
+        ) : (
+          <a href={`${base}${currentPage + 1}`}>
+            <div class="page-button">
+              <span>&gt;</span>
+            </div>
+          </a>
+        )}
+        {currentPage === lastPage ? (
+          <div class="page-button disabled">
             <span>&gt;&gt;</span>
           </div>
-        </a>
-      )
-    }
-  </div>
-</div>
-
+        ) : (
+          <a href={`${base}${lastPage}`}>
+            <div class="page-button">
+              <span>&gt;&gt;</span>
+            </div>
+          </a>
+        )}
+      </div>
+    </div>
+  )
+}
 <style>
   .pagination-section {
     width: 100%;
@@ -110,6 +116,11 @@ const range = (num: number) => [...Array(num)].map((_, i) => i);
       &:hover {
         cursor: pointer;
         background-color: rgba(var(--main-color-params), 0.5);
+      }
+      &.current {
+        background-color: var(--main-color);
+        color: var(--main-bg-color);
+        cursor: auto;
       }
       &.disabled {
         color: gray;
