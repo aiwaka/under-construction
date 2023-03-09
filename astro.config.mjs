@@ -26,5 +26,6 @@ export default defineConfig({
   ],
 
   // trailingSlash: "always",
+  site: "https://littleikawa.github.io",
   base: import.meta.env.PROD ? "/under-construction" : "",
 });
