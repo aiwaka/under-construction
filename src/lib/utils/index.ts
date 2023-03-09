@@ -24,7 +24,7 @@ const thumbnailPath = (filename: string): string => {
 /**
  * 1ページあたりの記事数
  */
-const POST_PER_PAGE = 1 as const satisfies number;
+const POST_PER_PAGE = 9 as const satisfies number;
 
 interface FetchPostsOptions {
   tag?: string;
