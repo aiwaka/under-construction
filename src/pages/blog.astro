@@ -1,5 +1,17 @@
 ---
-import BlogPageLayout from "@layouts/BlogPageLayout.astro";
+import ArticleCardContainer from "@components/blog/ArticleCardContainer.svelte";
+import PaginationContainer from "@components/blog/PaginationContainer.astro";
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import { getAttrList, POST_PER_PAGE } from "@lib/utils";
+
+const posts = await Astro.glob("./blog/*.mdx");
+const postAttrList = getAttrList(posts);
+const pageNum = Math.ceil(postAttrList.length / POST_PER_PAGE);
 ---
 
-<BlogPageLayout>test</BlogPageLayout>
+<BlogGeneralLayout title="">
+  <h2>Blog</h2>
+  <ArticleCardContainer cardList={postAttrList.slice(0, POST_PER_PAGE)} />
+
+  <PaginationContainer base={"/blog/"} currentPage={1} lastPage={pageNum} />
+</BlogGeneralLayout>
