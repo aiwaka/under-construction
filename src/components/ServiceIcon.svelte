@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { AllowedName } from "@/components/allowdServiceName";
+  import type { AllowedName } from "./allowdServiceName";
 
   export let name: AllowedName;
   export let size = "normal";
@@ -56,6 +56,8 @@
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/twitter/twitter-original.svg";
       case "vue":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg";
+      case "astro":
+        return "svg-porn-icon/astro.svg";
       case "aws-ec2":
         return "svg-porn-icon/aws-ec2.svg";
       case "fortran":
@@ -76,11 +78,11 @@
   const getSize = (sizeStr: string) => {
     switch (sizeStr) {
       case "normal":
-        return "4rem";
-      case "small":
         return "3rem";
+      case "small":
+        return "2rem";
       case "large":
-        return "6rem";
+        return "4.5rem";
       default:
         return sizeStr;
     }

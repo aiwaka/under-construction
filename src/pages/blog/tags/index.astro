@@ -1,0 +1,28 @@
+---
+import ArticleTag from "@components/blog/ArticleTag.svelte";
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import { getAllTagSet } from "@lib/utils";
+
+const posts = await Astro.glob("../../blog/*.mdx");
+const allTagList = Array.from(getAllTagSet(posts));
+---
+
+<BlogGeneralLayout title="">
+  <h2>Blog タグ一覧</h2>
+  <div class="tag-container">
+    {
+      allTagList.map((tag) => {
+        return <ArticleTag tag={tag} />;
+      })
+    }
+  </div>
+</BlogGeneralLayout>
+
+<style>
+  .tag-container {
+    border: 1px solid var(--main-color);
+    border-radius: 7px;
+    padding: 1rem 1.2rem;
+    margin: 1.6rem 0;
+  }
+</style>

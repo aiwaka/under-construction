@@ -1,5 +1,6 @@
 // このアプリでアイコンを提供する名前セットを定義する
 export type AllowedName =
+  | "astro"
   | "aws-ec2"
   | "c"
   | "c++"

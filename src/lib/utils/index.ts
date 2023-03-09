@@ -1,39 +1,92 @@
-import { ArticleAttributeJson } from "$lib/articles";
+import { ArticleAttribute } from "@lib/articles";
+import type { AstroGlobal, MDXInstance } from "astro";
 
-export interface FetchOptions {
-  tag?: string;
-}
+const getFilenameFromPath = (path: string): string | null => {
+  const matched = path.match(".+/(.+?).[a-z]+([?#;].*)?$");
+  return matched ? matched[1] : null;
+};
 
 /**
- * contentsディレクトリのmarkdownファイルを読み取って情報の一覧を返す.
- * そのままjsonに変換できるように日付は文字列で保持したデータ形式とする.
- * @param options 取得オプションを含むオブジェクト.
+ * 日付をこのサイトで用いる書式に変換する
  */
-export const fetchMarkdownArticles = async (options: FetchOptions = {}) => {
-  // contentsフォルダのmdファイル一覧をモジュールとして取得する
-  const mdModules = import.meta.glob("../../routes/blog/contents/*.md");
+const dateText = (date: Date): string => {
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+};
 
-  const attributeList: ArticleAttributeJson[] = [];
-  for (const modulePath in mdModules) {
-    // パスからファイル名を取得
-    const filename = modulePath.split("/").reverse()[0].split(".")[0];
-    // https://github.com/rollup/plugins/tree/master/packages/dynamic-import-vars#limitations
-    // に従い, ファイル名パターンや拡張子を含み, 相対パス指定を行う形式でimportする.
-    const markdown = await import(`../../routes/blog/contents/${filename}.md`);
-    const meta = markdown.metadata;
-    if (options.tag && !meta.tags.includes(options.tag)) {
-      continue;
-    }
-    const newData = new ArticleAttributeJson(
+/**
+ * サムネイルファイル名を参照すべきパスに変換する
+ * @param filename 拡張子付きファイル名
+ */
+const thumbnailPath = (filename: string): string => {
+  return `/blog/thumb/${filename}`;
+};
+
+/**
+ * 1ページあたりの記事数
+ */
+const POST_PER_PAGE = 9 as const satisfies number;
+
+interface FetchPostsOptions {
+  tag?: string;
+}
+/**
+ * MDXオブジェクトのリストからdraftフラグがついたものを除き, 各ページの情報をまとめて日付でソートしたリストを返す. オプションでタグによるフィルタリングができる.
+ * @param posts Astro.globで取得したMDXオブジェクトのリスト.
+ * @param options
+ */
+const getAttrList = (
+  posts: MDXInstance<Record<string, any>>[],
+  options: FetchPostsOptions = {}
+) => {
+  // draftがtrueのものを除く
+  const nonDraftPosts = posts.filter((post) => !post.frontmatter.draft);
+  // タグがある場合はそれを含むもののみ取得し, 指定がない場合はなにもしない.
+  const filteredPosts = nonDraftPosts.filter((post) =>
+    options.tag ? post.frontmatter.tags.includes(options.tag) : true
+  );
+  // mdxオブジェクトのpostリストを自分のデータ形式に変換する
+  const attrList = filteredPosts.map((post) => {
+    const frontmatter = post.frontmatter as Record<string, any> &
+      ArticleAttribute;
+    const filename = getFilenameFromPath(post.file) ?? "";
+    return new ArticleAttribute(
       filename,
-      meta.title,
-      meta.description,
-      meta.thumbnail,
-      meta.date,
-      meta.tags
+      frontmatter.title,
+      frontmatter.description,
+      frontmatter.thumbnail,
+      new Date(frontmatter.date),
+      frontmatter.tags
     );
-    attributeList.push(newData);
-  }
+  });
+  // ソート
+  attrList.sort((a, b) => (a.date < b.date ? 1 : -1));
+  return attrList;
+};
 
-  return attributeList;
+/**
+ * MDXオブジェクトのリストからタグ一覧のSetを返す.
+ * @param posts Astro.globで取得したMDXオブジェクトのリスト.
+ * @param includeDraft 作成中記事を含めるかどうか. trueならdraftがtrueの記事のタグも含める.
+ */
+const getAllTagSet = (
+  posts: MDXInstance<Record<string, any>>[],
+  includeDraft: boolean = false
+) => {
+  const nonDraftPosts = posts.filter(
+    (post) => includeDraft || !post.frontmatter.draft
+  );
+  // タグ一覧を取得
+  const allTags = nonDraftPosts.reduce((prev, curr) => {
+    return prev.concat(curr.frontmatter.tags);
+  }, [] as string[]);
+  return new Set(allTags);
+};
+
+export {
+  getFilenameFromPath,
+  dateText,
+  thumbnailPath,
+  getAttrList,
+  getAllTagSet,
+  POST_PER_PAGE,
 };

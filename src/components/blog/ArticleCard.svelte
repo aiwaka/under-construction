@@ -1,25 +1,21 @@
 <script lang="ts">
-  import { base } from "$app/paths";
-  import type { ArticleAttribute } from "$lib/articles";
+  import type { ArticleAttribute } from "@lib/articles";
+  import { dateText, thumbnailPath } from "@lib/utils";
   import ArticleTag from "./ArticleTag.svelte";
 
   export let metadata: ArticleAttribute;
 
   const { id, title, thumbnail, date, tags } = metadata;
-
-  const thumbnailPath = `${base}/blog/thumb/${thumbnail}`;
-
-  const dateText = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 </script>
 
-<a class="article-link" href={`${base}/blog/${id}`}>
+<a class="article-link" href={`/blog/${id}`}>
   <div class="article-card">
     <div class="img-container">
-      <img src={thumbnailPath} alt="thumbnail" />
+      <img src={thumbnailPath(thumbnail)} alt="thumbnail" />
     </div>
     <div class="card-contents">
       <h2>{title}</h2>
-      <span>{dateText}</span>
+      <span>{dateText(date)}</span>
       <div class="tag-container">
         {#each tags as tag}
           <ArticleTag {tag} />
@@ -34,11 +30,11 @@
   .article-link {
     display: block;
     width: 100%;
-    border: 1px solid darkslateblue;
-    border-radius: 5px;
-    background-color: rgba(240, 255, 255, 0.6);
+    border: 1px solid var(--main-color);
+    border-radius: 3px;
+    background-color: rgba(var(--main-bg-params), 0.6);
     overflow: hidden;
-    margin: 2rem 0;
+    margin: 1.4rem 0;
   }
   .article-card {
     display: flex;
@@ -47,13 +43,13 @@
     height: 100%;
   }
   .article-card:hover {
-    background-color: darkslateblue;
-    color: azure;
+    background-color: var(--main-color);
+    color: var(--main-bg-color);
   }
   .img-container {
-    border: 4px solid darkslateblue;
+    border: 4px solid var(--main-color);
     width: 100%;
-    height: 20rem;
+    height: 12rem;
     clip: rect(0, 0, 0, 0);
   }
   .img-container > img {
@@ -62,11 +58,11 @@
     height: 100%;
   }
   .card-contents {
-    padding: 1rem 2rem;
+    padding: 0.5rem 1rem;
   }
   .tag-container {
     display: flex;
     flex-wrap: wrap;
-    margin: 1rem auto;
+    margin: 0.7rem auto;
   }
 </style>

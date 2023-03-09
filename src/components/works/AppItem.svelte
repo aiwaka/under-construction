@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { AllowedName } from "@/components/allowdServiceName";
-  import ServiceIconList from "./ServiceIconList.svelte";
+  import type { AllowedName } from "@components/allowdServiceName";
+  import ServiceIconList from "@components/works/ServiceIconList.svelte";
 
   export let langList: AllowedName[];
   export let href: string;
