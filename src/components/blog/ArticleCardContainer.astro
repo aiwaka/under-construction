@@ -1,0 +1,32 @@
+---
+import type { ArticleAttribute } from "@lib/articles";
+import ArticleCard from "@components/blog/ArticleCard.astro";
+
+interface Props {
+  cardList: ArticleAttribute[];
+}
+const { cardList } = Astro.props;
+---
+
+<div class="contents-card-container">
+  {
+    cardList.map((data) => {
+      return <ArticleCard metadata={data} />;
+    })
+  }
+</div>
+
+<style>
+  .contents-card-container {
+    margin: 1.4rem auto;
+    padding-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 5%;
+  }
+  @media (max-width: 1024px) {
+    .contents-card-container {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+</style>
