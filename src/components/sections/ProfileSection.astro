@@ -5,9 +5,6 @@ import { Image } from "@astrojs/image/components";
 <section class="profile-section section-item">
   <h2 id="profile">Profile</h2>
   <div class="my-icon-col">
-    {
-      /* NOTE: aspectRatio={1}を用いるとエディタで怒られてしまうのでheightを指定する */
-    }
     <Image
       class={"icon"}
       src={`${import.meta.env.BASE_URL}img/my-icon.png`}
