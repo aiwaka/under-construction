@@ -18,7 +18,9 @@ export default defineConfig({
   },
   integrations: [
     svelte(),
-    image(),
+    image({
+      serviceEntryPoint: "@astrojs/image/sharp",
+    }),
     mdx({
       remarkPlugins: [remarkMath],
       rehypePlugins: [rehypeKatex],
