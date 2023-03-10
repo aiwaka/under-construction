@@ -4,6 +4,7 @@ import type { ArticleAttribute } from "@lib/articles";
 import { dateText, thumbnailPath } from "@lib/utils";
 import BlogGeneralLayout from "./BlogGeneralLayout.astro";
 import ArticleTag from "@components/blog/ArticleTag.svelte";
+import { Image } from "@astrojs/image/components";
 
 type Props = MarkdownLayoutProps<ArticleAttribute>;
 
@@ -36,7 +37,11 @@ const ogp = {
     }
   </div>
   <div class="img-container">
-    <img src={thumbnailPath(frontmatter.thumbnail)} alt="thumbnail" />
+    <Image
+      src={import(`../pages/blog/thumb/${frontmatter.thumbnail}.png`)}
+      width={1024}
+      alt="thumbnail"
+    />
   </div>
   <div class="blog-article-content-container">
     <slot />
