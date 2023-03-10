@@ -1,6 +1,6 @@
 <script lang="ts">
   import PageLink from "@components/PageLink.svelte";
-  import "@fontsource/noto-serif-jp";
+  // import "@fontsource/noto-serif-jp";
 
   interface NavLink {
     name: string;
