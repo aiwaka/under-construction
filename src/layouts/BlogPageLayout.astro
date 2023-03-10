@@ -4,12 +4,26 @@ import type { ArticleAttribute } from "@lib/articles";
 import { dateText, thumbnailPath } from "@lib/utils";
 import BlogGeneralLayout from "./BlogGeneralLayout.astro";
 import ArticleTag from "@components/blog/ArticleTag.svelte";
+
 type Props = MarkdownLayoutProps<ArticleAttribute>;
 
 const { frontmatter } = Astro.props;
+const ogp = {
+  url: Astro.request.url,
+  type: "blog",
+  title: `Under Construction | blog | ${frontmatter.title}`,
+  description: frontmatter.description,
+  siteName: "Under Construction",
+  // githubでデプロイするとここに保存されているようなのでこのようにする.
+  image: thumbnailPath(frontmatter.thumbnail),
+};
 ---
 
-<BlogGeneralLayout title={frontmatter.title}>
+<BlogGeneralLayout
+  ogp={ogp}
+  title={frontmatter.title}
+  usingLatex={frontmatter.latex}
+>
   <h1>{frontmatter.title}</h1>
   <div class="date-block">
     <span>{dateText(new Date(frontmatter.date))}</span>
