@@ -1,10 +1,10 @@
 ---
 import SiteFooter from "@components/SiteFooter.astro";
 import SiteHeader from "@components/SiteHeader.svelte";
-import "@fontsource/noto-sans-jp";
-import "@fontsource/noto-sans-jp/700.css";
-import "@fontsource/noto-serif-jp";
-import "@fontsource/noto-sans-mono";
+// import "@fontsource/noto-sans-jp";
+// import "@fontsource/noto-sans-jp/700.css";
+// import "@fontsource/noto-serif-jp";
+// import "@fontsource/noto-sans-mono";
 import type { OGPInfo } from "@lib/ogp";
 
 const pathname = new URL(Astro.request.url).pathname;
@@ -36,6 +36,12 @@ const bgColor = currentPath.startsWith("blog")
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+Mono&family=Noto+Serif+JP&display=swap"
+      rel="stylesheet"
+    />
     <meta name="generator" content={Astro.generator} />
     <meta property="og:url" content={ogp.url} />
     <meta property="og:type" content={ogp.type} />
