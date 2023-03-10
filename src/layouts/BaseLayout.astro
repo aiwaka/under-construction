@@ -5,30 +5,42 @@ import "@fontsource/noto-sans-jp";
 import "@fontsource/noto-sans-jp/700.css";
 import "@fontsource/noto-serif-jp";
 import "@fontsource/noto-sans-mono";
+import type { OGPInfo } from "@lib/ogp";
 
 const pathname = new URL(Astro.request.url).pathname;
-const currentPath = pathname.slice(1);
+const currentPath = pathname.replace(import.meta.env.BASE_URL, "");
 
 export interface Props {
   title: string;
+  ogp?: OGPInfo;
+  usingLatex?: boolean;
 }
+const defaultOgp = {
+  url: Astro.request.url,
+  type: "website",
+  title: "Under Construction",
+  description: "あいわかのホームページ",
+  siteName: "Under Construction",
+  // githubでデプロイするとここに保存されているようなのでこのようにする.
+  image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
+};
 
-const { title } = Astro.props;
+const { title, ogp = defaultOgp, usingLatex = false } = Astro.props;
 
-const bgColor = Astro.url.pathname.startsWith("/blog")
+const bgColor = currentPath.startsWith("blog")
   ? "var(--main-bg-color)"
   : "black";
 
-const ogp = {
-  url: Astro.request.url,
-  type: "article",
-  title,
-  description: "",
-  siteName: "Under Construction",
-  // githubでデプロイするとここに保存されているようなのでこのようにする.
-  // image: `https://littleikawa.github.io/under-construction/blog/thumb/${thumbnail}`
-  image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
-};
+// const ogp = {
+//   url: Astro.request.url,
+//   type: "article",
+//   title,
+//   description: "あいわかのホームページ",
+//   siteName: "Under Construction",
+//   // githubでデプロイするとここに保存されているようなのでこのようにする.
+//   // image: `https://littleikawa.github.io/under-construction/blog/thumb/${thumbnail}`
+//   image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
+// };
 ---
 
 <!DOCTYPE html>
@@ -37,12 +49,18 @@ const ogp = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
-      integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
-      crossorigin="anonymous"
-    />
+    {
+      // latexを用いるページではそれ用のスタイルへのリンクを追加する
+      usingLatex && (
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+          integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+          fetchpriority="low"
+          crossorigin="anonymous"
+        />
+      )
+    }
     <meta name="generator" content={Astro.generator} />
     <meta property="og:url" content={ogp.url} />
     <meta property="og:type" content={ogp.type} />
@@ -101,10 +119,9 @@ const ogp = {
     box-sizing: border-box;
     min-height: 100dvh;
     color: var(--main-color);
-    background: var(--main-bg-color);
+    background-color: var(--bgColor);
     transition: color 0.5s, background-color 0.5s;
     font-family: "Noto Sans JP", sans-serif;
-    background-color: var(--bgColor);
   }
   a {
     color: inherit;
