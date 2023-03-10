@@ -1,14 +1,19 @@
-<script lang="ts">
-  import type { ArticleAttribute } from "@lib/articles";
-  import ArticleCard from "@components/blog/ArticleCard.svelte";
+---
+import type { ArticleAttribute } from "@lib/articles";
+import ArticleCard from "@components/blog/ArticleCard.astro";
 
-  export let cardList: ArticleAttribute[];
-</script>
+interface Props {
+  cardList: ArticleAttribute[];
+}
+const { cardList } = Astro.props;
+---
 
 <div class="contents-card-container">
-  {#each cardList as metadata (metadata.id)}
-    <ArticleCard {metadata} />
-  {/each}
+  {
+    cardList.map((data) => {
+      return <ArticleCard metadata={data} />;
+    })
+  }
 </div>
 
 <style>
