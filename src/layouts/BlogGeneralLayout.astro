@@ -7,15 +7,16 @@ import BaseLayout from "./BaseLayout.astro";
 export interface Props {
   title?: string;
   ogp: OGPInfo;
+  usingLatex?: boolean;
 }
-const { title, ogp } = Astro.props;
+const { title, ogp, usingLatex = false } = Astro.props;
 const resultTitle =
   title !== undefined
     ? `Under Construction | Blog | ${title}`
     : "Under Construction | Blog";
 ---
 
-<BaseLayout ogp={ogp} title={resultTitle}>
+<BaseLayout ogp={ogp} title={resultTitle} usingLatex={usingLatex}>
   <div class="header-margin"></div>
   <main class="main-container">
     <slot />
