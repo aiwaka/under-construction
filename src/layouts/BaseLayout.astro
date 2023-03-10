@@ -5,30 +5,41 @@ import "@fontsource/noto-sans-jp";
 import "@fontsource/noto-sans-jp/700.css";
 import "@fontsource/noto-serif-jp";
 import "@fontsource/noto-sans-mono";
+import type { OGPInfo } from "@lib/ogp";
 
 const pathname = new URL(Astro.request.url).pathname;
 const currentPath = pathname.slice(1);
 
 export interface Props {
   title: string;
+  ogp?: OGPInfo;
 }
+const defaultOgp = {
+  url: Astro.request.url,
+  type: "website",
+  title: "Under Construction",
+  description: "あいわかのホームページ",
+  siteName: "Under Construction",
+  // githubでデプロイするとここに保存されているようなのでこのようにする.
+  image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
+};
 
-const { title } = Astro.props;
+const { title, ogp = defaultOgp } = Astro.props;
 
 const bgColor = Astro.url.pathname.startsWith("/blog")
   ? "var(--main-bg-color)"
   : "black";
 
-const ogp = {
-  url: Astro.request.url,
-  type: "article",
-  title,
-  description: "",
-  siteName: "Under Construction",
-  // githubでデプロイするとここに保存されているようなのでこのようにする.
-  // image: `https://littleikawa.github.io/under-construction/blog/thumb/${thumbnail}`
-  image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
-};
+// const ogp = {
+//   url: Astro.request.url,
+//   type: "article",
+//   title,
+//   description: "あいわかのホームページ",
+//   siteName: "Under Construction",
+//   // githubでデプロイするとここに保存されているようなのでこのようにする.
+//   // image: `https://littleikawa.github.io/under-construction/blog/thumb/${thumbnail}`
+//   image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
+// };
 ---
 
 <!DOCTYPE html>
