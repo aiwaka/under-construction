@@ -16,7 +16,20 @@ const resultTitle =
     : "Under Construction | Blog";
 ---
 
-<BaseLayout ogp={ogp} title={resultTitle} usingLatex={usingLatex}>
+<BaseLayout ogp={ogp} title={resultTitle}>
+  {
+    usingLatex && (
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+        integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ"
+        fetchpriority="low"
+        crossorigin="anonymous"
+        slot="extra-header"
+      />
+    )
+  }
+
   <div class="header-margin"></div>
   <main class="main-container">
     <slot />

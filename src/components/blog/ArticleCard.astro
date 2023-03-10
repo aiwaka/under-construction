@@ -1,26 +1,30 @@
-<script lang="ts">
-  import type { ArticleAttribute } from "@lib/articles";
-  import { dateText, thumbnailPath } from "@lib/utils";
-  import ArticleTag from "./ArticleTag.svelte";
+---
+import type { ArticleAttribute } from "@lib/articles";
+import { dateText, thumbnailPath } from "@lib/utils";
+import TagContainer from "./TagContainer.svelte";
+import { Image } from "@astrojs/image/components";
 
-  export let metadata: ArticleAttribute;
+interface Props {
+  metadata: ArticleAttribute;
+}
 
-  const { id, title, thumbnail, date, tags } = metadata;
-</script>
+const { metadata } = Astro.props;
+const { id, title, thumbnail, date, tags } = metadata;
+---
 
 <a class="article-link" href={`${import.meta.env.BASE_URL}blog/${id}`}>
   <div class="article-card">
     <div class="img-container">
-      <img src={thumbnailPath(thumbnail)} alt="thumbnail" />
+      <Image
+        src={import(`../../pages/blog/thumb/${thumbnail}.png`)}
+        alt="thumbnail"
+        width={1024}
+      />
     </div>
     <div class="card-contents">
       <h2>{title}</h2>
       <span>{dateText(date)}</span>
-      <div class="tag-container">
-        {#each tags as tag}
-          <ArticleTag {tag} />
-        {/each}
-      </div>
+      <TagContainer tagList={tags} />
     </div>
   </div>
 </a>
@@ -59,10 +63,5 @@
   }
   .card-contents {
     padding: 0.5rem 1rem;
-  }
-  .tag-container {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0.7rem auto;
   }
 </style>
