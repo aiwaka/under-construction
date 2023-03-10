@@ -19,7 +19,11 @@ const ogp = {
 };
 ---
 
-<BlogGeneralLayout ogp={ogp} title={frontmatter.title}>
+<BlogGeneralLayout
+  ogp={ogp}
+  title={frontmatter.title}
+  usingLatex={frontmatter.latex}
+>
   <h1>{frontmatter.title}</h1>
   <div class="date-block">
     <span>{dateText(new Date(frontmatter.date))}</span>
