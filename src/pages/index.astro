@@ -4,17 +4,35 @@ import ProfileSection from "@components/sections/ProfileSection.astro";
 import SkillSection from "@components/sections/SkillSection.svelte";
 import WorksSection from "@components/sections/WorksSection.svelte";
 import ContactSection from "@components/sections/ContactSection.svelte";
+import { Image } from "@astrojs/image/components";
 ---
 
 <BaseLayout title="Under Construction">
-  <div class="background-image"></div>
+  <Image
+    class={"background-image"}
+    src={`${import.meta.env.BASE_URL}img/my-icon.png`}
+    alt="illust-background"
+    quality={50}
+    width={1024}
+    height={1024}
+    format={"png"}
+  />
   <div class="title-container">
     <div class="title-card">
       <h1 class="title">UNDER CONSTRUCTION</h1>
       <p class="subtitle">Aiwaka's profile website</p>
     </div>
   </div>
-  <div class="slided-bg-image"></div>
+  <div class="slided-bg-image-container">
+    <Image
+      class={"slided-bg-image"}
+      src={`${import.meta.env.BASE_URL}img/blue_2.png`}
+      alt="light-background"
+      width={640}
+      height={480}
+      format={"png"}
+    />
+  </div>
   <main class="main-container">
     <div class="contents-container">
       <ProfileSection />
@@ -25,7 +43,7 @@ import ContactSection from "@components/sections/ContactSection.svelte";
   </main>
 </BaseLayout>
 
-<style lang="postcss">
+<style>
   /* .text-gradient {
     background-image: var(--accent-gradient);
     -webkit-background-clip: text;
@@ -61,16 +79,11 @@ import ContactSection from "@components/sections/ContactSection.svelte";
   .background-image {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100lvw;
+    right: 0;
+    width: 100lvh;
     height: 100lvh;
-    background-repeat: no-repeat;
-    background-image: url("/img/my-icon.png");
-    background-position: 100% 0%;
-    background-size: contain;
     @media (max-width: 1024px) {
-      background-position: center 0%;
-      background-size: cover;
+      right: -20lvh;
     }
   }
 
@@ -100,17 +113,21 @@ import ContactSection from "@components/sections/ContactSection.svelte";
       }
     }
   }
-  .slided-bg-image {
+  .slided-bg-image-container {
+    overflow: hidden;
     top: 0;
     position: sticky;
-    background-image: url("/img/blue_2.png");
-    background-repeat: no-repeat;
-    background-position: center 70%;
-    background-size: cover;
-    background-attachment: fixed;
-    margin-top: 100vh;
-    height: 100vh;
-    width: 100vw;
+    margin-top: 100lvh;
+    height: 100lvh;
+    width: 100lvw;
+    > .slided-bg-image {
+      height: 100%;
+      width: 100%;
+      @media (max-width: 1024px) {
+        right: 70lvw;
+        width: auto;
+      }
+    }
   }
   .main-container {
     width: 70%;
