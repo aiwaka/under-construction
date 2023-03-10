@@ -14,11 +14,9 @@ const illustBgSettings = {
   width: 1024,
   height: 1024,
 };
-const illustBg = await getImage(illustBgSettings);
 ---
 
 <BaseLayout title="Under Construction">
-  <link rel="preload" as="image" href={illustBg.src} slot="extra-header" />
   <Image
     class={"background-image"}
     src={illustBgSettings.src}
