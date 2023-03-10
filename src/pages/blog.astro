@@ -7,9 +7,18 @@ import { getAttrList, POST_PER_PAGE } from "@lib/utils";
 const posts = await Astro.glob("./blog/*.mdx");
 const postAttrList = getAttrList(posts);
 const pageNum = Math.ceil(postAttrList.length / POST_PER_PAGE);
+
+const ogp = {
+  url: Astro.request.url,
+  type: "blog",
+  title: "Under Construction | Blog",
+  description: "ブログトップページ",
+  siteName: "Under Construction",
+  image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
+};
 ---
 
-<BlogGeneralLayout title="">
+<BlogGeneralLayout ogp={ogp}>
   <h2>Blog</h2>
   <ArticleCardContainer cardList={postAttrList.slice(0, POST_PER_PAGE)} />
 

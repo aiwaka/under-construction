@@ -6,6 +6,8 @@
 [GitHub Pages](https://littleikawa.github.io/under-construction/)で公開しています.
 
 ~~SvelteKitで書き,~~ Svelteを用いてAstroで生成し, GitHub Actionsで自動でビルドを公開しています.
+（旧プロジェクトは`old-svelte/`を接頭辞としたブランチで残しています.）
+Astroのインテグレーションを用いて画像の最適化を行っています.
 
 ## ブランチについて
 
