@@ -18,9 +18,17 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 
 const { page } = Astro.props as { page: Page<ArticleAttribute> };
 const { tag } = Astro.params;
+const ogp = {
+  url: Astro.request.url,
+  type: "blog",
+  title: `Under Construction | Blog | #${tag}の検索結果`,
+  description: "ブログ記事のタグ検索結果",
+  siteName: "Under Construction",
+  image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
+};
 ---
 
-<BlogGeneralLayout title="">
+<BlogGeneralLayout ogp={ogp}>
   <h2>Blog</h2>
   <a class="to-tag-list" href={`${import.meta.env.BASE_URL}blog/tags`}
     >タグ一覧へ</a
