@@ -1,14 +1,17 @@
-<script lang="ts">
-  export let href: string;
-  export let highlight: boolean = false;
-</script>
+---
+interface Props {
+  href: string;
+  highlight?: boolean;
+}
+const { href, highlight = false } = Astro.props;
+---
 
-<a class:current-page={highlight} class="page-link" {href}>
+<a class:list={["animated-link", { "current-page": highlight }]} href={href}>
   <slot />
 </a>
 
-<style lang="postcss">
-  .page-link {
+<style>
+  .animated-link {
     transition: 0.25s ease-in-out;
     display: block;
     position: relative;
@@ -21,11 +24,11 @@
     }
   }
 
-  .page-link:hover {
+  .animated-link:hover {
     color: rgb(172, 255, 244);
   }
 
-  .page-link::before {
+  .animated-link::before {
     content: "";
     width: 0;
     height: 0.1rem;
@@ -37,14 +40,14 @@
     transition: 0.25s ease-out;
   }
 
-  .page-link:hover::before {
+  .animated-link:hover::before {
     width: 100%;
   }
 
-  .page-link.current-page {
+  .animated-link.current-page {
     color: rgb(172, 255, 244);
   }
-  .page-link.current-page::before {
+  .animated-link.current-page::before {
     width: 100%;
     background: rgb(100, 200, 255);
   }
