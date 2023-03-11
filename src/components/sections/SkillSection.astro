@@ -1,12 +1,17 @@
 ---
-import type { DbData, FrameworkData, ToolsData, SkillData } from "@lib/profile";
+import type {
+  DbData,
+  FrameworkData,
+  ToolsData,
+  LanguageData,
+} from "@lib/profile";
 import IndexBar from "@components/IndexBar.astro";
 import FrameworkTable from "./skill-subcomponent/framework-table.svelte";
 import DbTable from "./skill-subcomponent/db-table.svelte";
 import ToolsTable from "./skill-subcomponent/tools-table.svelte";
 import LanguageTable from "./skill-subcomponent/language-table.svelte";
 
-const languageTableData: SkillData[] = [
+const languageTableData: LanguageData[] = [
   {
     name: "C/C++",
     icon: ["c", "c++"],
