@@ -1,7 +1,7 @@
 <script lang="ts">
   import AnimatedLink from "./utils/AnimatedLink.svelte";
 
-  export let currentRoute: string;
+  export let isCurrent: boolean;
   export let href: string;
 
   $: shrink = false;
@@ -9,7 +9,6 @@
     shrink = window.innerWidth < 1024;
   }
   $: resultHeight = shrink ? "var(--mobile-nav-height)" : "6rem";
-  $: isCurrentPage = currentRoute === href;
 </script>
 
 <div
@@ -19,7 +18,7 @@
 >
   <AnimatedLink
     href={`${import.meta.env.BASE_URL}${href}`}
-    highlight={isCurrentPage}
+    highlight={isCurrent}
   >
     <slot />
   </AnimatedLink>

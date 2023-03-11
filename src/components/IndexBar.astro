@@ -1,26 +1,29 @@
-<script lang="ts">
-  import PageLink from "./PageLink.svelte";
-  import AnimatedLink from "./utils/AnimatedLink.svelte";
+---
+import AnimatedLink from "./utils/AnimatedLink.svelte";
 
-  interface IndexData {
-    name: string;
-    href: string;
-  }
-  export let indexList: IndexData[];
-</script>
+interface IndexData {
+  name: string;
+  href: string;
+}
+interface Props {
+  indexList: IndexData[];
+}
+const { indexList } = Astro.props;
+---
 
 <div class="contents-link-wrapper">
-  {#each indexList as idx}
-    {@const href = idx.href}
-    <div class="index-link">
-      <AnimatedLink {href}>
-        {idx.name}
-      </AnimatedLink>
-    </div>
-  {/each}
+  {
+    indexList.map((index) => {
+      return (
+        <div class="index-link">
+          <AnimatedLink href={index.href}>{index.name}</AnimatedLink>
+        </div>
+      );
+    })
+  }
 </div>
 
-<style lang="postcss">
+<style>
   .contents-link-wrapper {
     display: flex;
     justify-content: space-evenly;
