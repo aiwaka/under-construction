@@ -1,0 +1,29 @@
+---
+import AnimatedLink from "./utils/AnimatedLink.astro";
+
+interface Props {
+  isCurrent: boolean;
+  href: string;
+}
+const { isCurrent, href } = Astro.props;
+---
+
+<div class="page-link__container">
+  <AnimatedLink
+    href={`${import.meta.env.BASE_URL}${href}`}
+    highlight={isCurrent}
+  >
+    <slot />
+  </AnimatedLink>
+</div>
+
+<style>
+  .page-link__container {
+    height: 6rem;
+    line-height: 6rem;
+    @media (max-width: 1024px) {
+      height: var(--mobile-nav-height);
+      line-height: var(--mobile-nav-height);
+    }
+  }
+</style>
