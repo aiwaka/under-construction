@@ -1,6 +1,6 @@
 <!-- 言語アイコンを並べて表示するのを簡単にするコンポーネント. -->
 <script lang="ts">
-  import type { AllowedName } from "@components/allowdServiceName";
+  import type { AllowedName } from "@lib/profile";
   import ServiceIcon from "@components/ServiceIcon.svelte";
   export let langList: AllowedName[];
 </script>

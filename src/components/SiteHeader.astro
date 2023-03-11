@@ -1,22 +1,20 @@
-<script lang="ts">
-  import PageLink from "@components/PageLink.svelte";
-  // import "@fontsource/noto-serif-jp";
+---
+import PageLink from "@components/PageLink.astro";
+// import "@fontsource/noto-serif-jp";
 
-  interface NavLink {
-    name: string;
-    href: string;
-  }
-  // 表示名とリンクを並べる
-  const navLinkList: NavLink[] = [
-    { name: "PROFILE", href: "#profile" },
-    { name: "SKILL", href: "#skill" },
-    { name: "WORKS", href: "#works" },
-    { name: "CONTACT", href: "#contact" },
-    { name: "BLOG", href: "blog" },
-  ];
-
-  export let currentRoute: string;
-</script>
+interface NavLink {
+  name: string;
+  href: string;
+}
+// 表示名とリンクを並べる
+const navLinkList: NavLink[] = [
+  { name: "PROFILE", href: "#profile" },
+  { name: "SKILL", href: "#skill" },
+  { name: "WORKS", href: "#works" },
+  { name: "CONTACT", href: "#contact" },
+  { name: "BLOG", href: "blog" },
+];
+---
 
 <div id="website-header">
   <div class="title-block">
@@ -25,15 +23,19 @@
     </h1>
   </div>
   <nav class="nav-link-container">
-    {#each navLinkList as navLink}
-      <PageLink {currentRoute} href={navLink.href}>
-        {navLink.name}
-      </PageLink>
-    {/each}
+    {
+      navLinkList.map((navLink) => {
+        return (
+          <PageLink isCurrent={false} href={navLink.href}>
+            {navLink.name}
+          </PageLink>
+        );
+      })
+    }
   </nav>
 </div>
 
-<style lang="postcss">
+<style>
   #website-header {
     z-index: 10000;
     display: flex;
