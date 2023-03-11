@@ -1,8 +1,8 @@
 <script lang="ts">
   import ServiceIcon from "@components/ServiceIcon.svelte";
-  import type { SkillData } from "@lib/profile";
+  import type { LanguageData } from "@lib/profile";
 
-  export let languageTableData: SkillData[];
+  export let languageTableData: LanguageData[];
 </script>
 
 <table class="lang-table skill-table">
