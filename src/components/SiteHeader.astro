@@ -1,5 +1,5 @@
 ---
-import PageLink from "@components/PageLink.svelte";
+import PageLink from "@components/PageLink.astro";
 // import "@fontsource/noto-serif-jp";
 
 interface NavLink {
@@ -26,7 +26,7 @@ const navLinkList: NavLink[] = [
     {
       navLinkList.map((navLink) => {
         return (
-          <PageLink client:only isCurrent={false} href={navLink.href}>
+          <PageLink isCurrent={false} href={navLink.href}>
             {navLink.name}
           </PageLink>
         );
