@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { AllowedName } from "./allowdServiceName";
+  import type { AllowedName } from "@lib/profile";
 
   export let name: AllowedName;
   export let size = "normal";

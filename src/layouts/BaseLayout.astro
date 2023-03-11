@@ -1,6 +1,6 @@
 ---
 import SiteFooter from "@components/SiteFooter.astro";
-import SiteHeader from "@components/SiteHeader.svelte";
+import SiteHeader from "@components/SiteHeader.astro";
 // import "@fontsource/noto-sans-jp";
 // import "@fontsource/noto-sans-jp/700.css";
 // import "@fontsource/noto-serif-jp";
@@ -54,7 +54,7 @@ const bgColor = currentPath.startsWith("blog")
     <title>{title}</title>
   </head>
   <body>
-    <SiteHeader client:only currentRoute={currentPath} />
+    <SiteHeader />
     <slot />
     <SiteFooter />
   </body>
