@@ -25,8 +25,8 @@ const illustBgSettings = {
     width={illustBgSettings.width}
     height={illustBgSettings.height}
     format={"webp"}
-    loading={"eager"}
-    fetchpriority={"high"}
+    loading="eager"
+    fetchpriority="high"
   />
   <div class="title-container">
     <div class="title-card">
@@ -39,8 +39,8 @@ const illustBgSettings = {
       class={"slided-bg-image"}
       src={`${import.meta.env.BASE_URL}img/blue_2.png`}
       alt="light-background"
-      width={640}
-      height={480}
+      width={1200}
+      height={900}
       format={"webp"}
     />
   </div>
@@ -134,10 +134,7 @@ const illustBgSettings = {
     > .slided-bg-image {
       height: 100%;
       width: 100%;
-      @media (max-width: 1024px) {
-        right: 70lvw;
-        width: auto;
-      }
+      object-fit: cover;
     }
   }
   .main-container {
