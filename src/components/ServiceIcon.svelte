@@ -99,12 +99,13 @@
     style:width={computedSize}
     style:height={computedSize}
     alt={`icon-${name}`}
+    loading="lazy"
   />
 </div>
 
 <style>
   .language-icon {
     display: inline-block;
-    vertical-align: sub;
+    vertical-align: baseline;
   }
 </style>
