@@ -1,0 +1,56 @@
+---
+interface Props {
+  a: number;
+  b: number;
+  c: number;
+}
+---
+
+<table>
+  <tbody>
+    <tr>
+      <th>a</th>
+      <td>{Astro.props.a}</td>
+    </tr>
+    <tr>
+      <th>b</th>
+      <td>{Astro.props.b}</td>
+    </tr>
+    <tr>
+      <th>c</th>
+      <td>{Astro.props.c}</td>
+    </tr>
+  </tbody>
+</table>
+
+<style>
+  table {
+    margin: 1.4rem 2rem 2.7rem;
+    border-collapse: collapse;
+    & tr {
+      > .name > span {
+        display: block;
+      }
+    }
+    & tr:nth-child(odd) {
+      background-color: rgba(210, 210, 220, 0.8);
+    }
+    & tr:nth-child(even) {
+      background-color: rgba(240, 240, 250, 0.8);
+    }
+    & tr > td,
+    th {
+      border: 1px solid var(--main-color);
+      padding: 0.7rem 1rem;
+      @media (max-width: 1024px) {
+        display: block;
+        width: 100%;
+      }
+    }
+    /* ここでは画面サイズが大きいときにスタイルを当てている */
+    & tr > th {
+    }
+    & tr > td {
+    }
+  }
+</style>
