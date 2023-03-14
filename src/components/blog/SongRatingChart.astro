@@ -1,0 +1,74 @@
+---
+interface Props {
+  composer: string;
+  designer: string;
+  level: number;
+  notes: number;
+  length: number;
+  bpm: number;
+}
+---
+
+<table>
+  <tbody>
+    <tr>
+      <th>コンポーザー</th>
+      <td>{Astro.props.composer}</td>
+    </tr>
+    <tr>
+      <th>譜面製作者</th>
+      <td>{Astro.props.designer}</td>
+    </tr>
+    <tr>
+      <th>難易度定数</th>
+      <td>{Astro.props.level}</td>
+    </tr>
+    <tr>
+      <th>ノーツ数</th>
+      <td>{Astro.props.notes}</td>
+    </tr>
+    <tr>
+      <th>長さ</th>
+      <td
+        >{Math.floor(Astro.props.length / 60)}:{
+          (Astro.props.length % 60).toString().padStart(2, "0")
+        }</td
+      >
+    </tr>
+    <tr>
+      <th>BPM</th>
+      <td>{Astro.props.bpm}</td>
+    </tr>
+  </tbody>
+</table>
+
+<style>
+  table {
+    margin: 1.4rem 2rem 2.7rem;
+    border-collapse: collapse;
+    & tr {
+      > .name > span {
+        display: block;
+      }
+    }
+    & tr:nth-child(odd) {
+      background-color: rgba(210, 210, 220, 0.8);
+    }
+    & tr:nth-child(even) {
+      background-color: rgba(240, 240, 250, 0.8);
+    }
+    & tr > td,
+    th {
+      border: 1px solid var(--main-color);
+      padding: 0.7rem 1rem;
+      @media (max-width: 1024px) {
+        padding: 0.2rem 0.5rem;
+      }
+    }
+    /* ここでは画面サイズが大きいときにスタイルを当てている */
+    & tr > th {
+    }
+    & tr > td {
+    }
+  }
+</style>
