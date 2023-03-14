@@ -23,11 +23,9 @@ const ogp = {
   title: `Under Construction | blog | ${frontmatter.title}`,
   description: frontmatter.description,
   siteName: "Under Construction",
-  // githubでデプロイするとここに保存されているようなのでこのようにする.
-  // image: "https://littleikawa.github.io" + thumbnailPath(frontmatter.thumbnail),
   image:
-    img.src ??
-    "https://littleikawa.github.io/under-construction/img/blue_2.png",
+    "https://littleikawa.github.io" +
+    (img.src ?? "/under-construction/img/blue_2.png"),
 };
 ---
 
