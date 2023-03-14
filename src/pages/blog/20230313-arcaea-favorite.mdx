@@ -6,9 +6,11 @@ thumbnail: blue_square
 date: 2023-03-13
 tags:
   - "ゲーム"
+  - "音ゲー"
   - "Arcaea"
 draft: true
 ---
+
 import BlogImage from "@components/blog/BlogImage.astro";
 import SongRatingChart from "@components/blog/SongRatingChart.astro";
 
@@ -17,22 +19,122 @@ import SongRatingChart from "@components/blog/SongRatingChart.astro";
 今回は完全に趣味です。
 
 [Arcaea](https://arcaea.lowiro.com/ja)というリズムゲームをご存知でしょうか。
-イギリスのデベロッパーLowiroにより開発されています。
+イギリスのデベロッパー Lowiro により開発されています。
 無料から始められるにも関わらず硬派な作りで、一時期はモバイル音ゲーの中でもかなりの人気がありました（今では某セカイ一強な感じですが）。
-私はこのゲームが大好きなのですが、なんとなく好きな譜面を列挙してみたいと思ってこの記事を書きました。
+私はこのゲームが大好きで、好きな譜面を列挙してみたいと思ってこの記事を書きました。
 そういうコンセプトなので今回は無料曲から選んでみようと思います。
 
 注意：
 
 - 特に基準はないです。
 - また完全に主観で選んでいます。
-- 難易度は全部FTR譜面です。
+- 難易度は全部 FTR 譜面です。
 
 ### GOODTEK (Arcaea Edit)
 
-<SongRatingChart composer="EBIMAYO" designer="Nitro" level={9.3} notes={968} length={123} bpm={190} />
+<SongRatingChart
+  composer="EBIMAYO"
+  designer="Nitro"
+  level={9.3}
+  notes={968}
+  length={123}
+  bpm={190}
+/>
 
-BMS界隈でよく知られた曲。
-定数9.3と無料曲の中では結構難しいですが、サビの混フレがとても気持ちいいです。
+BMS 界隈でよく知られた曲。
+初期の Nitro 氏の素直で楽しい譜面です。
+定数 9.3 と無料曲の中では結構難しいですが、混フレがとても気持ちいいです。
+このゲームでよくある乱打や 8 分連打の配置がたくさんあるので練習にもちょうどよいと思います。
 
-<BlogImage src={import('./img/arcaea-ss/goodtek-505.png')} width="1500" alt="goodtek-505" caption="トレースノートの演出も好き" />
+<BlogImage
+  src={import("./img/arcaea-ss/goodtek-505.png")}
+  width="1500"
+  alt="goodtek-505"
+  caption="トレースノートの演出も好き"
+/>
+<BlogImage
+  src={import("./img/arcaea-ss/goodtek-711.png")}
+  width="1500"
+  alt="goodtek-711"
+  caption="全種類のノーツが絡まった混フレで無料曲としては難しい"
+/>
+
+### inkar-usi
+
+<SongRatingChart
+  composer="DIA"
+  designer="Kurorak"
+  level={7.5}
+  notes={463}
+  length={143}
+  bpm={102}
+/>
+
+低難度でも一つと考えてみたらこれが一番好きでした。
+特別印象に残るというわけではありませんが、音取りが丁寧で楽しくプレイできます。
+ノーツ数は同難易度帯と比較しても少なめなので精度が取れないうちはスコアが出ないかもしれませんが、実際の難易度よりは定数が高いので練習にも稼ぎにも最適です。
+シャッフルのリズムに慣れていない人にとっては一番いいかもしれない。
+ちなみに曲名はアイヌ語で遠軽町の名前の由来らしいです。
+
+<BlogImage
+  src={import("./img/arcaea-ss/inkarusi.png")}
+  width="1500"
+  alt="inkarusi"
+  caption="三連符の3拍目から入る配置が多いのでそこはちょっと独特"
+/>
+
+### NULCTRL
+
+<SongRatingChart
+  composer="Silentroom"
+  designer="moonquay [NUL]"
+  level={9.5}
+  notes={715}
+  length={152}
+  bpm={100}
+/>
+
+私が敬愛する Silentroom 氏の曲。
+中盤以降に増えたギミック付き譜面では珍しい無料曲です。
+moonquay は Nitro の別名義らしい。
+序盤は屁でもないですが停止ギミックや後半の三連符のスカイとフロアの混合などが結構独特で、許容が狭いため意外とスコアが伸びなかったり。
+けどリズムがはっきりしていてやっていて楽しめる譜面です。
+氏の曲としては Nhelv のほうが好きですがあっちの譜面はお世辞にも良いとは言えないので...
+
+<BlogImage
+  src={import("./img/arcaea-ss/nulctrl.png")}
+  width="1500"
+  alt="nulctrl"
+  caption="ここからが少し難しい"
+/>
+
+### Ignotus
+
+<SongRatingChart
+  composer="ak+q"
+  designer="Toaster"
+  level={9.3}
+  notes={1225}
+  length={147}
+  bpm={170}
+/>
+
+私がこのゲームを続けるきっかけになった曲です。
+確か解禁が必要ですが、選択時に聞けるサビが良すぎてこれの解禁をモチベーションにしてプレイしていました。
+今となっては比較的低難易度ですが、今でも楽しめる良譜面です。
+Toaster 氏の譜面は色々言われがちですがこれはいい塩梅だと思います（1:31 からちょっと彼らしい配置がありますが）。
+GOODTEK と定数は同じですが雰囲気はかなり違い、総合力が重要です。
+開幕のタップのリズムは結構独特。
+
+<BlogImage
+  src={import("./img/arcaea-ss/ignotus-348.png")}
+  width="1500"
+  alt="ignotus-348"
+  caption="アークのみの部分でもちゃんとめりはりのあるリズムを取っていて好き"
+/>
+<BlogImage
+  src={import("./img/arcaea-ss/ignotus-1071.png")}
+  width="1500"
+  alt="goodtek-1071"
+  caption="スカイノートが絡んだトリルも丁寧に配置されていて気持ちよく叩けて好き"
+/>
