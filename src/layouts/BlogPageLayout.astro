@@ -5,10 +5,18 @@ import { dateText, thumbnailPath } from "@lib/utils";
 import BlogGeneralLayout from "./BlogGeneralLayout.astro";
 import ArticleTag from "@components/blog/ArticleTag.svelte";
 import { Image } from "@astrojs/image/components";
+import { getImage } from "@astrojs/image";
 
 type Props = MarkdownLayoutProps<ArticleAttribute>;
 
 const { frontmatter } = Astro.props;
+
+const img = await getImage({
+  src: import(`../pages/blog/thumb/${frontmatter.thumbnail}.png`),
+  format: "webp",
+  width: 1024,
+  alt: "thumbnail",
+});
 const ogp = {
   url: Astro.request.url,
   type: "blog",
@@ -16,7 +24,10 @@ const ogp = {
   description: frontmatter.description,
   siteName: "Under Construction",
   // githubでデプロイするとここに保存されているようなのでこのようにする.
-  image: "https://littleikawa.github.io" + thumbnailPath(frontmatter.thumbnail),
+  // image: "https://littleikawa.github.io" + thumbnailPath(frontmatter.thumbnail),
+  image:
+    img.src ??
+    "https://littleikawa.github.io/under-construction/img/blue_2.png",
 };
 ---
 
@@ -37,12 +48,20 @@ const ogp = {
     }
   </div>
   <div class="img-container">
-    <Image
+    <img
+      src={img.src}
+      width={img.height}
+      height={img.height}
+      alt={img.alt}
+      loading="eager"
+      decoding="async"
+    />
+    <!-- <Image
       src={import(`../pages/blog/thumb/${frontmatter.thumbnail}.png`)}
       width={1024}
       alt="thumbnail"
       loading="eager"
-    />
+    /> -->
   </div>
   <div class="blog-article-content-container">
     <slot />
