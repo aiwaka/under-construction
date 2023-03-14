@@ -1,24 +1,43 @@
 ---
 interface Props {
-  a: number;
-  b: number;
-  c: number;
+  composer: string;
+  designer: string;
+  level: number;
+  notes: number;
+  length: number;
+  bpm: number;
 }
 ---
 
 <table>
   <tbody>
     <tr>
-      <th>a</th>
-      <td>{Astro.props.a}</td>
+      <th>コンポーザー</th>
+      <td>{Astro.props.composer}</td>
     </tr>
     <tr>
-      <th>b</th>
-      <td>{Astro.props.b}</td>
+      <th>譜面製作者</th>
+      <td>{Astro.props.designer}</td>
     </tr>
     <tr>
-      <th>c</th>
-      <td>{Astro.props.c}</td>
+      <th>難易度定数</th>
+      <td>{Astro.props.level}</td>
+    </tr>
+    <tr>
+      <th>ノーツ数</th>
+      <td>{Astro.props.notes}</td>
+    </tr>
+    <tr>
+      <th>長さ</th>
+      <td
+        >{Math.floor(Astro.props.length / 60)}:{
+          (Astro.props.length % 60).toString().padStart(2, "0")
+        }</td
+      >
+    </tr>
+    <tr>
+      <th>BPM</th>
+      <td>{Astro.props.bpm}</td>
     </tr>
   </tbody>
 </table>
