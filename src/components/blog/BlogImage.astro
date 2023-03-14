@@ -1,9 +1,16 @@
 ---
 import { Image } from "@astrojs/image/components";
 
-const { src, width, height, alt, ...attrs } = Astro.props;
+interface Props {
+  src: string;
+  width: number;
+  alt: string;
+  caption?: string;
+}
+const { src, width, height, alt, caption, ...attrs } = Astro.props;
 ---
 
-<p>
+<figure>
   <Image src={src} width={width} height={height} alt={alt} {...attrs} />
-</p>
+  {caption ? <figcaption>{caption}</figcaption> : null}
+</figure>
