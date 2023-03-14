@@ -83,7 +83,7 @@ const ogp = {
     margin-top: 2.5rem;
   }
   .blog-article-content-container :global(p) {
-    margin: 1.7rem;
+    margin: 1.7rem 1rem;
   }
   .blog-article-content-container :global(img) {
     width: 100%;
@@ -92,5 +92,16 @@ const ogp = {
   .blog-article-content-container :global(ul) {
     margin-left: 2.7rem;
     padding-left: 2.7rem;
+  }
+  .blog-article-content-container :global(figure) {
+    margin: 1.7rem 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .blog-article-content-container :global(figcaption) {
+    background-color: rgba(var(--main-color-params), 0.8);
+    color: var(--main-bg-color);
+    padding: 3px;
+    text-align: center;
   }
 </style>
