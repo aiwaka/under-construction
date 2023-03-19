@@ -1,0 +1,43 @@
+---
+import { Image } from "@astrojs/image/components";
+import BlogImage from "./BlogImage.astro";
+
+interface ImageProps {
+  // FIXME: 同様に型を修正
+  src: string;
+  width: number;
+  alt: string;
+  caption?: string;
+}
+interface Props {
+  list: ImageProps[];
+}
+const { list, ...attrs } = Astro.props;
+---
+
+<figure class="multi-image">
+  {
+    list.map((item) => {
+      const { src, width, alt, caption } = item;
+      return (
+        <BlogImage
+          src={src}
+          width={width}
+          alt={alt}
+          caption={caption}
+          {...attrs}
+        />
+      );
+    })
+  }
+</figure>
+
+<style>
+  .multi-image {
+    display: flex;
+    flex-wrap: nowrap;
+    @media (max-width: 1024px) {
+      flex-direction: column;
+    }
+  }
+</style>
