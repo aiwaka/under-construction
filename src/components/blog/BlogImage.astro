@@ -2,6 +2,7 @@
 import { Image } from "@astrojs/image/components";
 
 interface Props {
+  // FIXME: stringではなくimport結果を渡すようにしている. 修正する
   src: string;
   width: number;
   alt: string;
@@ -14,3 +15,18 @@ const { src, width, height, alt, caption, ...attrs } = Astro.props;
   <Image src={src} width={width} height={height} alt={alt} {...attrs} />
   {caption ? <figcaption>{caption}</figcaption> : null}
 </figure>
+
+<style>
+  figure {
+    border: 3px double var(--main-color);
+    margin: 1.7rem 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  figcaption {
+    background-color: rgba(var(--main-color-params), 0.8);
+    color: var(--main-bg-color);
+    padding: 3px;
+    text-align: center;
+  }
+</style>
