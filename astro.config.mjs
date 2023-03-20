@@ -8,6 +8,9 @@ import partytown from "@astrojs/partytown";
 
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeToc from "rehype-toc";
 
 // https://astro.build/config
 export default defineConfig({
@@ -24,7 +27,12 @@ export default defineConfig({
     }),
     mdx({
       remarkPlugins: [remarkMath],
-      rehypePlugins: [rehypeKatex],
+      rehypePlugins: [
+        rehypeKatex,
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: "append" }],
+        [rehypeToc, { headings: ["h1", "h2", "h3"] }],
+      ],
     }),
     partytown(),
   ],
