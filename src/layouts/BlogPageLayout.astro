@@ -7,7 +7,7 @@ import ArticleTag from "@components/blog/ArticleTag.svelte";
 import { Image } from "@astrojs/image/components";
 import { getImage } from "@astrojs/image";
 
-type Props = MarkdownLayoutProps<ArticleAttribute>;
+type Props = MarkdownLayoutProps<ArticleAttribute & { wordCount: number }>;
 
 const { frontmatter } = Astro.props;
 
@@ -44,6 +44,12 @@ const ogp = {
         return <ArticleTag tag={tag} />;
       })
     }
+  </div>
+  {
+    /* NOTE: この文字数カウントが正確か検証はしていない. 大体あっていそうだが... */
+  }
+  <div class="word-count">
+    <span>文字数：{frontmatter.wordCount}</span>
   </div>
   <div class="img-container">
     <img
@@ -109,5 +115,14 @@ const ogp = {
   .blog-article-content-container :global(ul) {
     margin: auto 1rem;
     padding-left: 1.6rem;
+  }
+  .blog-article-content-container :global(nav.toc) {
+    margin: auto 1rem;
+    padding: 0.8rem 1.2rem;
+    background-color: rgba(200, 200, 200, 0.5);
+    border-radius: 5px;
+    & :global(ol) {
+      margin-left: 1.6rem;
+    }
   }
 </style>
