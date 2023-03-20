@@ -12,6 +12,8 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
 
+import remarkWordCountPlugin from "./plugins/remark-word-count-plugin.mjs";
+
 // https://astro.build/config
 export default defineConfig({
   markdown: {
@@ -26,7 +28,7 @@ export default defineConfig({
       serviceEntryPoint: "@astrojs/image/sharp",
     }),
     mdx({
-      remarkPlugins: [remarkMath],
+      remarkPlugins: [remarkMath, remarkWordCountPlugin],
       rehypePlugins: [
         rehypeKatex,
         rehypeSlug,
