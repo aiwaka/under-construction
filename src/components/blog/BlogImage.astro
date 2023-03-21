@@ -11,6 +11,7 @@ interface Props {
 const { src, width, height, alt, caption, ...attrs } = Astro.props;
 ---
 
+{/* TODO: format="webp"を追加する */}
 <figure>
   <Image src={src} width={width} height={height} alt={alt} {...attrs} />
   {caption ? <figcaption>{caption}</figcaption> : null}
