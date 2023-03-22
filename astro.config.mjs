@@ -40,8 +40,25 @@ export default defineConfig({
       rehypePlugins: [
         rehypeKatex,
         rehypeSlug,
-        [rehypeAutolinkHeadings, { behavior: "append" }],
         [rehypeToc, { headings: ["h1", "h2", "h3"] }],
+        [
+          rehypeAutolinkHeadings,
+          {
+            content: {
+              type: "element",
+              tagName: "span",
+              properties: {
+                className: ["anchor-link"],
+              },
+              children: [
+                {
+                  type: "text",
+                  value: "#",
+                },
+              ],
+            },
+          },
+        ],
       ],
     }),
     partytown(),
