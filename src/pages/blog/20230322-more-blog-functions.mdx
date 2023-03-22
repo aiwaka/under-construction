@@ -1,0 +1,61 @@
+---
+layout: ../../layouts/BlogPageLayout.astro
+title: ブログへの機能追加
+description: いろいろ付け足しました
+thumbnail: 20230314-arcaea-chart
+date: 2023-03-22
+tags:
+  - "プログラミング"
+  - "Astro"
+---
+
+import BlogMultiImage from "@components/blog/BlogMultiImage.astro";
+
+## 概要
+
+ブログページに機能を細々と付け足していますが、結構変わってきたのでここらで記録しておきます。
+
+## ブログ個別ページ
+
+### 目次機能
+
+目次の生成機能を追加しました。
+このページにもありますが、冒頭に目次があります。
+これは自分でいちいち書いているわけではなく、HTMLプロセッサであるrehypeのプラグインで実現しています。
+
+このブログがAstroで作られるようにしたのは以前の記事のとおりですが、Astroはrehypeやremarkのプラグインを噛ませることができます。
+
+```bash
+npm i rehype-slug rehype-autolink-headings rehype-toc
+```
+
+でプラグインパッケージを入れ、`astro.config.mjs`に以下のように記述します。
+
+```js:astro.config.mjs
+import { defineConfig } from "astro/config";
+
+import mdx from "@astrojs/mdx";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeToc from "rehype-toc";
+
+// ...
+
+export default defineConfig({
+  integrations: [
+    mdx({
+      rehypePlugins: [
+        // ...
+        rehypeSlug,
+        [rehypeAutolinkHeadings, { behavior: "prepend" }],
+        [rehypeToc, { headings: ["h1", "h2", "h3"] }],
+      ],
+      // ...
+    }),
+    // ...
+  ],
+  // ...
+});
+```
+
+のように設定します。

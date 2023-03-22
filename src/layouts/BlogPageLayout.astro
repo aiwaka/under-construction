@@ -125,4 +125,17 @@ const ogp = {
       margin-left: 1.6rem;
     }
   }
+  /* h2, h3見出し開始位置を崩さない処理と, 見出し上でホバーしたらアンカーリンク（#文字）が表示される処理. */
+  .blog-article-content-container :global(span.anchor-link) {
+    display: inline-block;
+    width: 1rem;
+    margin-left: -1rem;
+    color: transparent;
+  }
+  .blog-article-content-container :global(h2:hover span.anchor-link) {
+    color: inherit;
+  }
+  .blog-article-content-container :global(h3:hover span.anchor-link) {
+    color: inherit;
+  }
 </style>
