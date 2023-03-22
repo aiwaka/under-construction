@@ -22,7 +22,6 @@ export default defineConfig({
     shikiConfig: {
       theme: "dracula",
       wrap: false,
-      langs: ["rust", "rs", "yaml", "ts"],
     },
   },
   integrations: [
