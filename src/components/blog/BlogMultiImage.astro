@@ -1,11 +1,11 @@
 ---
 import { Image } from "@astrojs/image/components";
+import type { ImageMetadata } from "@astrojs/image/dist/vite-plugin-astro-image";
 import BlogImage from "./BlogImage.astro";
 
 // TODO: タイプガードを使ってリストではないオブジェクト一個でも動くようにする.
 interface ImageProps {
-  // FIXME: 同様に型を修正
-  src: string;
+  src: ImageMetadata | Promise<{ default: ImageMetadata }>;
   width: number;
   alt: string;
   // TODO: キャプションがundefinedであればaltをそのまま用いるようにする
