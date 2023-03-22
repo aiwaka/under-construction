@@ -1,13 +1,8 @@
 ---
 import { Image, warnForMissingAlt } from "@astrojs/image/components";
-import type { ImageMetadata } from "@astrojs/image/dist/vite-plugin-astro-image";
+import type { BlogImageProps } from "@lib/articles";
 
-interface Props {
-  src: ImageMetadata | Promise<{ default: ImageMetadata }>;
-  width: number;
-  alt?: string;
-  caption?: string;
-}
+interface Props extends BlogImageProps {}
 const { src, width, height, alt, caption, ...attrs } = Astro.props;
 // altがなければキャプションを使い, それもなければ適当に設定するが警告を出す.
 const resultAlt = alt !== undefined ? alt : caption ? caption : "_";
