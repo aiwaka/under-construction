@@ -1,18 +1,23 @@
 ---
-import { Image } from "@astrojs/image/components";
+import { Image, warnForMissingAlt } from "@astrojs/image/components";
+import type { ImageMetadata } from "@astrojs/image/dist/vite-plugin-astro-image";
 
 interface Props {
-  // FIXME: stringではなくimport結果を渡すようにしている. 修正する
-  src: string;
+  src: ImageMetadata | Promise<{ default: ImageMetadata }>;
   width: number;
-  alt: string;
+  alt?: string;
   caption?: string;
 }
 const { src, width, height, alt, caption, ...attrs } = Astro.props;
+// altがなければキャプションを使い, それもなければ適当に設定するが警告を出す.
+const resultAlt = alt !== undefined ? alt : caption ? caption : "_";
+if (!caption && !alt) {
+  warnForMissingAlt();
+}
 ---
 
 <figure>
-  <Image src={src} width={width} height={height} alt={alt} {...attrs} />
+  <Image src={src} width={width} height={height} alt={resultAlt} {...attrs} />
   {caption ? <figcaption>{caption}</figcaption> : null}
 </figure>
 
