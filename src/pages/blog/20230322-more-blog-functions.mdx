@@ -47,8 +47,25 @@ export default defineConfig({
       rehypePlugins: [
         // ...
         rehypeSlug,
-        [rehypeAutolinkHeadings, { behavior: "prepend" }],
         [rehypeToc, { headings: ["h1", "h2", "h3"] }],
+        [
+          rehypeAutolinkHeadings,
+          {
+            content: {
+              type: "element",
+              tagName: "span",
+              properties: {
+                className: ["anchor-link"],
+              },
+              children: [
+                {
+                  type: "text",
+                  value: "#",
+                },
+              ],
+            },
+          },
+        ],
       ],
       // ...
     }),
@@ -59,3 +76,110 @@ export default defineConfig({
 ```
 
 のように設定します。
+やたら長くなっていますが`rehype-autolink-headings`の`content`オプションのせいで、基本はプラグインを読み込んで並べるだけです。
+`rehype-slug`は見出しにタグ内文字列と同じ`id`属性を付与します。
+`rehype-toc`は見出しを`ol`リストにまとめてコンテンツの最初に`div`要素として付け加えます。
+`rehype-autolink-headings`は、`id`属性を持つ見出しタグの中にアンカーリンクを付与するものです。
+これが結構いろいろできるのですが、今回はよくある形でホバーすると自分へのリンクが表示されるようにします。
+オプションの`contents`には`hast`オブジェクトを渡すことができ、それがアンカータグとして利用されます（関数を受け取って動的な内容生成もできるようです）。
+このアンカータグに適当なスタイルをAstroのレイアウト側で当てて実現しています。
+参考までに以下（あんまり綺麗なスタイル記述ではないです）。
+
+```css:BlogPageLayout.astro
+/*
+h2, h3見出し開始位置を崩さない処理と,
+見出し上でホバーしたらアンカーリンク（#文字）が表示される処理.
+*/
+.blog-article-content-container {
+  & :global(span.anchor-link) {
+    display: inline-block;
+    width: 1rem;
+    margin-left: -1rem;
+    color: transparent;
+  }
+  & :global(h2:hover span.anchor-link) {
+    color: inherit;
+  }
+  & :global(h3:hover span.anchor-link) {
+    color: inherit;
+  }
+}
+```
+
+Postcss nestingで書いており, `:global()`はAstroによる自動スコープを外す拡張記法です。
+目次自体にもここでスタイルを当てています。
+
+ちなみに`rehypePlugins`内のプラグインの記述順が処理に影響します。
+というのも`rehype`は根本的にはテキストプロセッサーなので、`autolink-headings`で`#`文字を付与した後に`toc`を適用すると目次にも`#`の文字が入ってしまいます。
+
+### コードブロックにファイル名を表示
+
+こちらも`unified`プロジェクトに乗っかったものを利用していますが、`rehype`の代わりに`remark`です。
+`remark`はHTMLの代わりにマークダウンに関する処理を行います。
+`remark-code-titles`というプラグインを利用すると、特定の書式でコードブロック中にファイル名を記述することでそれをコードブロックタグの直前に`div`タグで挿入してくれます。
+
+```
+npm i remark-code-titles
+```
+
+で入れ、
+
+```js:astro.config.mjs
+import remarkCodeTitles from "remark-code-titles";
+
+export default defineConfig({
+  // ...
+  integrations: [
+    mdx({
+      remarkPlugins: [
+        remarkCodeTitles,
+        // ...
+      ],
+    }),
+  ],
+});
+```
+
+とするだけ。
+こちらにもスタイルを当て、表示を整えています。
+ちなみに`rehype-code-titles`もあるのですが、それだけではうまく動きませんでした。
+HTMLにした段階でマークダウン記法のコードブロックに付随した情報は失われているのでまあ当然です。
+頑張ればできそうですが意味もないのでこちらでは`remark`を用います。
+
+### 文字数カウントと表示
+
+Astroで使われる`remark`や`rehype`処理中ではMarkdownのFrontmatterブロックの情報に触れることができます。
+これを利用して、任意のFrontmatterにマークダウン自体から算出される属性を追加することができます（参考：[MarkdownとMDX](https://docs.astro.build/ja/guides/markdown-content/#%E4%BE%8Bfront-matter%E3%81%AE%E6%8C%BF%E5%85%A5)）。
+`remark`などのプラグインモジュールはデフォルトで関数を返す関数をエクスポートする形式になっているようです。
+返される関数には構文木とファイルの情報を受け取るようになっているのかな？（ここは一切調べていません、後日に期待）。
+で、`file.data.astro.frontmatter`にFrontmatterがオブジェクトとして保持されているようなので、ここに好きな情報を加えられる、ということです。
+適当なところにモジュールスクリプトを書いて置いておけば、他のプラグインと混ぜて使うことができます。
+非常に合理的で便利です。
+
+今回は`mdast-util-to-string`というパッケージを用います。
+`unified`の構文木から文字列を抽出してプレーンテキストにするというものだと思います。
+
+```js:remark-word-count-plugin.mjs
+import { toString } from "mdast-util-to-string";
+
+export default function remarkWordCountPlugin() {
+  return function (tree, file) {
+    const textOnPage = toString(tree);
+    file.data.astro.frontmatter.wordCount = textOnPage.length;
+  };
+}
+
+```
+
+こんな感じで作ってみました。
+プレーンテキストの文字数をfrontmatterに追加するだけ。
+使う側では、
+
+```ts:BlogPageLayout.astro
+type Props = MarkdownLayoutProps<ArticleAttribute & { wordCount: number }>;
+```
+
+のようにAstroの`Props`に文字数情報が入っている旨を伝えます。
+`MarkdownLayoutProps`に型引数を与えると、そのレイアウトにおけるプロパティをマージした型を生成できます。
+`ArticleAttribute`はSvelte時代から使いまわしていて、frontmatterに直接書くことにしている属性を定めています。
+それに加えて`wordCount`を入れている、という具合です。
