@@ -10,7 +10,7 @@ const { images, ...attrs } = Astro.props;
 const list = Array.isArray(images) ? images : [images];
 ---
 
-<div class="multi-image">
+<div class="image-container">
   {
     list.map((item) => {
       const { src, width, alt, caption } = item;
@@ -28,7 +28,7 @@ const list = Array.isArray(images) ? images : [images];
 </div>
 
 <style>
-  .multi-image {
+  .image-container {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
