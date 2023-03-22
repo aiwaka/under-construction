@@ -1,24 +1,16 @@
 ---
-import { Image } from "@astrojs/image/components";
-import type { ImageMetadata } from "@astrojs/image/dist/vite-plugin-astro-image";
+import type { BlogImageProps } from "@lib/articles";
 import BlogImage from "./BlogImage.astro";
 
-// TODO: タイプガードを使ってリストではないオブジェクト一個でも動くようにする.
-interface ImageProps {
-  src: ImageMetadata | Promise<{ default: ImageMetadata }>;
-  width: number;
-  alt: string;
-  // TODO: キャプションがundefinedであればaltをそのまま用いるようにする
-  caption?: string;
-}
 interface Props {
-  list: ImageProps[];
+  images: BlogImageProps[] | BlogImageProps;
 }
-const { list, ...attrs } = Astro.props;
+const { images, ...attrs } = Astro.props;
+// かならずArrayになるように型を操作する
+const list = Array.isArray(images) ? images : [images];
 ---
 
-{/* TODO: figureが入れ子になってしまっている. */}
-<figure class="multi-image">
+<div class="multi-image">
   {
     list.map((item) => {
       const { src, width, alt, caption } = item;
@@ -33,7 +25,7 @@ const { list, ...attrs } = Astro.props;
       );
     })
   }
-</figure>
+</div>
 
 <style>
   .multi-image {
