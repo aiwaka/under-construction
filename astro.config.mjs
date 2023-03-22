@@ -11,6 +11,7 @@ import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
+import remarkCodeTitles from "remark-code-titles";
 
 import remarkWordCountPlugin from "./plugins/remark-word-count-plugin.mjs";
 
@@ -20,6 +21,7 @@ export default defineConfig({
     shikiConfig: {
       theme: "dracula",
       wrap: false,
+      langs: ["rust", "rs", "yaml", "ts"],
     },
   },
   integrations: [
@@ -28,7 +30,7 @@ export default defineConfig({
       serviceEntryPoint: "@astrojs/image/sharp",
     }),
     mdx({
-      remarkPlugins: [remarkMath, remarkWordCountPlugin],
+      remarkPlugins: [remarkCodeTitles, remarkMath, remarkWordCountPlugin],
       rehypePlugins: [
         rehypeKatex,
         rehypeSlug,
