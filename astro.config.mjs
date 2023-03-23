@@ -6,11 +6,13 @@ import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 
+import remarkSmartypants from "remark-smartypants";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
+import remarkCodeTitles from "remark-code-titles";
 
 import remarkWordCountPlugin from "./plugins/remark-word-count-plugin.mjs";
 
@@ -28,12 +30,34 @@ export default defineConfig({
       serviceEntryPoint: "@astrojs/image/sharp",
     }),
     mdx({
-      remarkPlugins: [remarkMath, remarkWordCountPlugin],
+      remarkPlugins: [
+        remarkSmartypants,
+        remarkCodeTitles,
+        remarkMath,
+        remarkWordCountPlugin,
+      ],
       rehypePlugins: [
         rehypeKatex,
         rehypeSlug,
-        [rehypeAutolinkHeadings, { behavior: "append" }],
         [rehypeToc, { headings: ["h1", "h2", "h3"] }],
+        [
+          rehypeAutolinkHeadings,
+          {
+            content: {
+              type: "element",
+              tagName: "span",
+              properties: {
+                className: ["anchor-link"],
+              },
+              children: [
+                {
+                  type: "text",
+                  value: "#",
+                },
+              ],
+            },
+          },
+        ],
       ],
     }),
     partytown(),
