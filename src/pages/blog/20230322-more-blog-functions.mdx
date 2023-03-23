@@ -1,0 +1,301 @@
+---
+layout: ../../layouts/BlogPageLayout.astro
+title: ブログへの機能追加
+description: いろいろ付け足しました
+thumbnail: blue_square
+date: 2023-03-22
+tags:
+  - "プログラミング"
+  - "Astro"
+---
+
+import BlogImageList from "@components/blog/BlogImageList.astro";
+import BlogImage from "@components/blog/BlogImage.astro";
+import HoverText from "@components/blog/HoverText.astro";
+
+## 概要
+
+ブログページに機能を細々と付け足していますが、結構変わってきたのでここらで記録しておきます。
+
+## ブログ一覧ページ
+
+ようやく記事数が増えてきて、ページ遷移が機能するようになっています。
+Astroはコンテンツを並べるときにページ分割をするAPIが整っているので、仕様をちゃんと読めばすぐに実装できます。
+SvelteKitでは外部プラグインが必要だったりして結局やらなかったのでこれは嬉しい。
+ページを指定したときにJavaScriptが一切走らないので非常に高速です。
+
+ページ分割が必要な量を読み込んだときのみページ遷移用ボタンが表示される仕掛けになっています。
+そのため、タグ検索とかで絞り込んだときは表示されなかったりします。
+また、無効なページにはリンクを作らないように配慮しています（多分そういうことをするとビルド時にちゃんと怒ってくれます、Astroなので）。
+それなりに上手くできたと思います。
+
+## ブログ個別ページ
+
+### 目次機能
+
+目次の生成機能を追加しました。
+このページにもありますが、冒頭に目次があります。
+これは自分でいちいち書いているわけではなく、HTMLプロセッサであるrehypeのプラグインで実現しています。
+
+このブログがAstroで作られるようにしたのは以前の記事のとおりですが、Astroはrehypeやremarkのプラグインを噛ませることができます。
+
+```bash
+npm i rehype-slug rehype-autolink-headings rehype-toc
+```
+
+でプラグインパッケージを入れ、`astro.config.mjs`に以下のように記述します。
+
+```js:astro.config.mjs
+import { defineConfig } from "astro/config";
+
+import mdx from "@astrojs/mdx";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeToc from "rehype-toc";
+
+// ...
+
+export default defineConfig({
+  integrations: [
+    mdx({
+      rehypePlugins: [
+        // ...
+        rehypeSlug,
+        [rehypeToc, { headings: ["h1", "h2", "h3"] }],
+        [
+          rehypeAutolinkHeadings,
+          {
+            content: {
+              type: "element",
+              tagName: "span",
+              properties: {
+                className: ["anchor-link"],
+              },
+              children: [
+                {
+                  type: "text",
+                  value: "#",
+                },
+              ],
+            },
+          },
+        ],
+      ],
+      // ...
+    }),
+    // ...
+  ],
+  // ...
+});
+```
+
+のように設定します。
+やたら長くなっていますが`rehype-autolink-headings`の`content`オプションのせいで、基本はプラグインを読み込んで並べるだけです。
+`rehype-slug`は見出しにタグ内文字列と同じ`id`属性を付与します。
+`rehype-toc`は見出しを`ol`リストにまとめてコンテンツの最初に`div`要素として付け加えます。
+`rehype-autolink-headings`は、`id`属性を持つ見出しタグの中にアンカーリンクを付与するものです。
+これが結構いろいろできるのですが、今回はよくある形でホバーすると自分へのリンクが表示されるようにします。
+オプションの`contents`には`hast`オブジェクトを渡すことができ、それがアンカータグとして利用されます（関数を受け取って動的な内容生成もできるようです）。
+このアンカータグに適当なスタイルをAstroのレイアウト側で当てて実現しています。
+参考までに以下（あんまり綺麗なスタイル記述ではないです）。
+
+```css:BlogPageLayout.astro
+/*
+h2, h3見出し開始位置を崩さない処理と,
+見出し上でホバーしたらアンカーリンク（#文字）が表示される処理.
+*/
+.blog-article-content-container {
+  & :global(span.anchor-link) {
+    display: inline-block;
+    width: 1rem;
+    margin-left: -1rem;
+    color: transparent;
+  }
+  & :global(h2:hover span.anchor-link) {
+    color: inherit;
+  }
+  & :global(h3:hover span.anchor-link) {
+    color: inherit;
+  }
+}
+```
+
+Postcss nestingで書いており, `:global()`はAstroによる自動スコープを外す拡張記法です。
+目次自体にもここでスタイルを当てています。
+
+ちなみに`rehypePlugins`内のプラグインの記述順が処理に影響します。
+というのも`rehype`は根本的にはテキストプロセッサーなので、`autolink-headings`で`#`文字を付与した後に`toc`を適用すると目次にも`#`の文字が入ってしまいます。
+
+### コードブロックにファイル名を表示
+
+こちらも`unified`プロジェクトに乗っかったものを利用していますが、`rehype`の代わりに`remark`です。
+`remark`はHTMLの代わりにマークダウンに関する処理を行います。
+`remark-code-titles`というプラグインを利用すると、特定の書式でコードブロック中にファイル名を記述することでそれをコードブロックタグの直前に`div`タグで挿入してくれます。
+
+```bash
+npm i remark-code-titles
+```
+
+で入れ、
+
+```js:astro.config.mjs
+import remarkCodeTitles from "remark-code-titles";
+
+export default defineConfig({
+  // ...
+  integrations: [
+    mdx({
+      remarkPlugins: [
+        remarkCodeTitles,
+        // ...
+      ],
+    }),
+  ],
+});
+```
+
+とするだけ。
+こちらにもスタイルを当て、表示を整えています。
+ちなみに`rehype-code-titles`もあるのですが、それだけではうまく動きませんでした。
+HTMLにした段階でマークダウン記法のコードブロックに付随した情報は失われているのでまあ当然です。
+頑張ればできそうですが意味もないのでこちらでは`remark`を用います。
+
+### 文字数カウントと表示
+
+Astroで使われる`remark`や`rehype`処理中ではMarkdownのfrontmatterブロックの情報に触れることができます。
+これを利用して、任意のfrontmatterにマークダウン自体から算出される属性を追加することができます（参考：[MarkdownとMDX](https://docs.astro.build/ja/guides/markdown-content/#%E4%BE%8Bfront-matter%E3%81%AE%E6%8C%BF%E5%85%A5)）。
+`remark`などのプラグインモジュールはデフォルトで関数を返す関数をエクスポートする形式になっているようです。
+返される関数には構文木とファイルの情報を受け取るようになっているのかな？（ここは一切調べていません、後日に期待）。
+で、`file.data.astro.frontmatter`にfrontmatterがオブジェクトとして保持されているようなので、ここに好きな情報を加えられる、ということです。
+適当なところにモジュールスクリプトを書いて置いておけば、他のプラグインと混ぜて使うことができます。
+非常に合理的で便利です。
+
+今回は`mdast-util-to-string`というパッケージを用います。
+`unified`の構文木から文字列を抽出してプレーンテキストにするというものだと思います。
+
+```js:remark-word-count-plugin.mjs
+import { toString } from "mdast-util-to-string";
+
+export default function remarkWordCountPlugin() {
+  return function (tree, file) {
+    const textOnPage = toString(tree);
+    file.data.astro.frontmatter.wordCount = textOnPage.length;
+  };
+}
+
+```
+
+こんな感じで作ってみました。
+プレーンテキストの文字数をfrontmatterに追加するだけ。
+使う側では、
+
+```ts:BlogPageLayout.astro
+type Props = MarkdownLayoutProps<ArticleAttribute & { wordCount: number }>;
+```
+
+のようにAstroの`Props`に文字数情報が入っている旨を伝えます。
+`MarkdownLayoutProps`に型引数を与えると、そのレイアウトにおけるプロパティをマージした型を生成できます。
+`ArticleAttribute`はSvelte時代から使いまわしていて、frontmatterに直接書くことにしている属性を定めています。
+それに加えて`wordCount`を入れている、という具合です。
+
+### ブログ記事内画像用コンポーネントを作成
+
+Astroのimageインテグレーションによる`Image`コンポーネントを包んだ`BlogImage`というコンポーネントを作り, 形式を統一してみました。
+キャプションを渡すことができ、キャプションが存在すれば`figcaption`タグを出し分けるなどしています。
+`img`属性にはアクセシビリティのために`alt`を必ず設定する必要がありますが、`alt`を明示せずキャプションを設定していればそれが自動的に設定されます。
+
+```jsx
+<BlogImage
+  src={import("./img/sample.png")}
+  width="1000"
+  caption="サンプル画像"
+/>
+```
+
+のようにすると、
+
+<BlogImage
+  src={import("./img/sample.png")}
+  width="1000"
+  caption="サンプル画像"
+/>
+
+のようになります（`alt`属性をみてみてください）。
+両方設定しない場合に警告を出すことができそうですが、面倒だったので今後の課題とします。
+
+これをさらに包んで横並びをサポートするコンポーネントも作りました。
+Flex boxなので画面が小さい場合は自動的に縦並びになります。
+
+これが&darr;
+
+```jsx
+<BlogImageList
+  images={
+    [
+      {
+          src: import("./img/sample.png"),
+          width: "1000",
+          caption: "サンプル画像1",
+      },
+      {
+          src: import("./img/sample.png"),
+          width: "1000",
+          alt: "サンプル画像2",
+      }
+    ]
+  }
+/>
+```
+
+こう&darr;
+
+<BlogImageList
+  images={
+    [
+      {
+          src: import("./img/sample.png"),
+          width: "1000",
+          caption: "サンプル画像1",
+      },
+      {
+          src: import("./img/sample.png"),
+          width: "1000",
+          alt: "サンプル画像2",
+      }
+    ]
+  }
+/>
+
+`images`にはオブジェクトの配列とオブジェクト単体どちらを渡しても正しく動くのでこちらだけ使えば良さそうです。
+画像の比率で大きさを正しく表示するとかもできたら良いと思います。
+
+### テキスト内ホバー注釈
+
+テキスト内に注釈を入れたいと思うことがあります。
+脚注にしても良いのですがマークダウンを介してやる手法がちょっと面倒だし、その場で注釈を見たいと思うものです。
+常時表示されているのもどうにもダサいので、切り替えをできるようなコンポーネントを考えてみました。
+
+テキスト内に<HoverText text="ああああああああああああああああああああ">こんな感じで</HoverText>注釈があることを示します。
+PCなどの端末の場合はホバーする、スマホなどではタップし続けることで注釈ブロックが表示されます。
+
+インラインテキストにコンポーネントを埋め込むため、`span`タグを使っています。
+ホバーで表示されるテキストはブロック要素であるべきなので`div`を使いたかったのですが、そのように役割が入れ替わるようなマークアップを行うとAstroによる解析の際に壊れてしまうようです。
+そのため、テキストブロックも`span`を使い、表示時に`display: block`を指定しました。
+
+結局これはJSXであり、HTMLをそのまま扱っているわけではないということに起因するようです。
+実はAstroに移行し始めた際にもヘッダ用のリンクで同じようなことがありました。
+こういうところがJSXが何となく好きになれない部分の一つです。
+
+モバイル端末でホバー操作はできないので、`hover`メディアクエリをを用いて条件を設定しています。
+`hover: none`にマッチする場合は疑似要素を`:hover`の代わりに`:active`をつけることで対処しています。
+スクリプトを用いれば楽なのですが、ゼロJSを目指してやってみています。
+実際そのほうがマークアップとしては正しいと思います。
+
+## まとめ
+
+やりたかったことがかなりできてきて嬉しいです。
+他のことも忙しいですが、ぼちぼち改良なり投稿なりしていきます。
+っていうかいい加減そろそろ作曲したい。
+ブログ内にSoundCloudを介さずにオーディオを置けるようにしたいなと考えています。
+
+まとまってないですが今後もよろしくおねがいします。
