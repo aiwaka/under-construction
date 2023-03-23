@@ -117,6 +117,12 @@ const ogp = {
     padding-left: 1.6rem;
   }
   .blog-article-content-container :global(nav.toc) {
+    & :global(.toc-link) {
+      color: var(--main-color);
+      &:hover {
+        color: orangered;
+      }
+    }
     margin: auto 1rem;
     padding: 0.8rem 1.2rem;
     background-color: rgba(200, 200, 200, 0.5);
