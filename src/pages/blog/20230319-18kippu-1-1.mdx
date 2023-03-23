@@ -10,7 +10,6 @@ tags:
   - 18きっぷ
 ---
 
-import BlogImage from "@components/blog/BlogImage.astro";
 import BlogImageList from "@components/blog/BlogImageList.astro";
 
 ## 概要
@@ -48,15 +47,13 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 そうでなくとも既存ホームとはかなり離れているので利用したかは微妙である.
 
 <BlogImageList
-  list={
-    [
-      {
-        src: import("./img/202303-18kippu-picts/IMG_0866.png"),
-        width: 1500,
-        alt: "新設された北西側のコンコース",
-        caption: "新設された北西側のコンコース",
-      }
-    ]
+  images={
+    {
+      src: import("./img/202303-18kippu-picts/IMG_0866.png"),
+      width: 1500,
+      alt: "新設された北西側のコンコース",
+      caption: "新設された北西側のコンコース",
+    }
   }
 />
 
@@ -138,7 +135,7 @@ JR四国が運行するアンパンマントロッコがちょうど良い時間
 子供連れが写真を撮っていたりして微妙に似つかわしくなかったため, 写真を撮った後はそそくさとその場を後にした.
 
 <BlogImageList
-  list={
+  images={
     [
       {
         src: import("./img/202303-18kippu-picts/IMG_0870.png"),
@@ -171,7 +168,7 @@ JR四国が運行するアンパンマントロッコがちょうど良い時間
 私としても381系は好きだし, 国鉄塗装もとても美しくて好きなので写真を少し撮影.
 
 <BlogImageList
-  list={
+  images={
     [
       {
         src: import("./img/202303-18kippu-picts/IMG_0883.png"),
@@ -204,15 +201,12 @@ JR四国が運行するアンパンマントロッコがちょうど良い時間
 総社の市街地もすぐに終わり, 山の間の点在する集落が見えるようになる.
 
 <BlogImageList
-  list={
-    [
-      {
-        src: import("./img/202303-18kippu-picts/IMG_0890.png"),
-        width: 1500,
-        alt: "_",
-        caption: "_",
-      }
-    ]
+  images={
+    {
+      src: import("./img/202303-18kippu-picts/IMG_0890.png"),
+      width: 1500,
+      caption: "日羽駅周辺",
+    }
   }
 />
 
@@ -237,7 +231,7 @@ JR四国が運行するアンパンマントロッコがちょうど良い時間
 ということで, 岡山駅伯備線ホームで購入した駅弁を開封.
 
 <BlogImageList
-  list={
+  images={
     [
       {
         src: import("./img/202303-18kippu-picts/IMG_0892.png"),
@@ -289,7 +283,7 @@ JR四国が運行するアンパンマントロッコがちょうど良い時間
 おそらく駅周辺を見て回った後に次の伯備線列車に乗るのだろう（だいぶ時間が空くと思うが）.
 
 <BlogImageList
-  list={
+  images={
     [
       {
         src: import("./img/202303-18kippu-picts/IMG_0898.png"),

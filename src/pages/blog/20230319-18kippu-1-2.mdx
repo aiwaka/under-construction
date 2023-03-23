@@ -10,7 +10,6 @@ tags:
   - 18きっぷ
 ---
 
-import BlogImage from "@components/blog/BlogImage.astro";
 import BlogImageList from "@components/blog/BlogImageList.astro";
 
 ## 概要
@@ -31,7 +30,7 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 どうせタダ乗りで来たのだから地域に還元しようと, 私はクリアファイルを購入した（1000円）.
 
 <BlogImageList
-  list={
+  images={
     [
       {
         src: import("./img/202303-18kippu-picts/IMG_0927.png"),
@@ -49,7 +48,7 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
   }
 />
 <BlogImageList
-  list={
+  images={
     [
       {
         src: import("./img/202303-18kippu-picts/IMG_0918.png"),
@@ -102,15 +101,13 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 その後もたびたび速度を大きく下げながら, 90分かけて三次に到着.
 
 <BlogImageList
-  list={
-    [
-      {
-        src: import("./img/202303-18kippu-picts/IMG_0932.png"),
-        width: 1500,
-        alt: "快速みよしライナー広島行き",
-        caption: "快速みよしライナー広島行き",
-      },
-    ]
+  images={
+    {
+      src: import("./img/202303-18kippu-picts/IMG_0932.png"),
+      width: 1500,
+      alt: "快速みよしライナー広島行き",
+      caption: "快速みよしライナー広島行き",
+    }
   }
 />
 
@@ -179,15 +176,13 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 ここから徒歩1キロ弱の店舗で服を補充する.
 途中, 広場のような場所で酒まつりなるものが開催されており, 多くの人が屋台飯を肴に歓談していて大変盛況であった.
 <BlogImageList
-  list={
-    [
-      {
-        src: import("./img/202303-18kippu-picts/IMG_0937.png"),
-        width: 1500,
-        alt: "西条の酒まつり",
-        caption: "西条の酒まつり",
-      },
-    ]
+  images={
+    {
+      src: import("./img/202303-18kippu-picts/IMG_0937.png"),
+      width: 1500,
+      alt: "西条の酒まつり",
+      caption: "西条の酒まつり",
+    }
   }
 />
 後に知ったのだがこれは月に数度行われるイベントであり, 遭遇したのは完全に偶然である.
@@ -224,15 +219,13 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 ### 三原周辺の夜
 
 <BlogImageList
-  list={
-    [
-      {
-        src: import("./img/202303-18kippu-picts/IMG_0945.png"),
-        width: 1500,
-        alt: "夜の三原駅",
-        caption: "夜の三原駅",
-      },
-    ]
+  images={
+    {
+      src: import("./img/202303-18kippu-picts/IMG_0945.png"),
+      width: 1500,
+      alt: "夜の三原駅",
+      caption: "夜の三原駅",
+    }
   }
 />
 
@@ -264,7 +257,7 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 というわけで三原に向かわれる皆様におかれては是非イオン前のウオトシを訪れてみてほしい.
 
 <BlogImageList
-  list={
+  images={
     [
       {
         src: import("./img/202303-18kippu-picts/IMG_0952.png"),
