@@ -117,12 +117,33 @@ const ogp = {
     padding-left: 1.6rem;
   }
   .blog-article-content-container :global(nav.toc) {
+    & :global(.toc-link) {
+      color: var(--main-color);
+      &:hover {
+        color: orangered;
+      }
+    }
     margin: auto 1rem;
     padding: 0.8rem 1.2rem;
     background-color: rgba(200, 200, 200, 0.5);
     border-radius: 5px;
     & :global(ol) {
       margin-left: 1.6rem;
+    }
+  }
+  /* h2, h3見出し開始位置を崩さない処理と, 見出し上でホバーしたらアンカーリンク（#文字）が表示される処理. */
+  .blog-article-content-container {
+    & :global(span.anchor-link) {
+      display: inline-block;
+      width: 1rem;
+      margin-left: -1rem;
+      color: transparent;
+    }
+    & :global(h2:hover span.anchor-link) {
+      color: inherit;
+    }
+    & :global(h3:hover span.anchor-link) {
+      color: inherit;
     }
   }
 </style>

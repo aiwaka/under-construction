@@ -1,0 +1,39 @@
+---
+import type { BlogImageProps } from "@lib/articles";
+import BlogImage from "./BlogImage.astro";
+
+interface Props {
+  images: BlogImageProps[] | BlogImageProps;
+}
+const { images, ...attrs } = Astro.props;
+// かならずArrayになるように型を操作する
+const list = Array.isArray(images) ? images : [images];
+---
+
+<div class="image-container">
+  {
+    list.map((item) => {
+      const { src, width, alt, caption } = item;
+      return (
+        <BlogImage
+          src={src}
+          width={width}
+          alt={alt}
+          caption={caption}
+          {...attrs}
+        />
+      );
+    })
+  }
+</div>
+
+<style>
+  .image-container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    @media (max-width: 1024px) {
+      flex-direction: column;
+    }
+  }
+</style>
