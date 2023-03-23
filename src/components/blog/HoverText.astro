@@ -22,11 +22,13 @@ const { text } = Astro.props;
   .hover-text {
     display: none;
     position: absolute;
+    translate: -10%;
     bottom: 1.1lh;
+    width: 120%;
     background-color: var(--main-color);
     color: var(--main-bg-color);
     border-radius: 3px;
-    padding: 0.4rem 0.7rem;
+    padding: 0.4rem 1rem;
   }
   @media (hover: hover) {
     .hover-text-container:hover {
