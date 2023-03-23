@@ -5,7 +5,7 @@ interface Props {
 const { text } = Astro.props;
 ---
 
-<span class="hover-text-container" ontouchstart="">
+<span class="hover-text-container">
   <span class="hover-text">
     {text}
   </span>
@@ -14,21 +14,27 @@ const { text } = Astro.props;
 
 <style>
   .hover-text-container {
-    display: inline-block;
-    height: 1lh;
+    @media (max-width: 1024px) {
+      position: static;
+    }
     background-color: rgba(var(--main-color-params), 0.15);
-    border-radius: 3px;
+    border-radius: 7px;
   }
   .hover-text {
     display: none;
     position: absolute;
-    translate: -10%;
-    bottom: 1.1lh;
-    width: 120%;
-    background-color: var(--main-color);
-    color: var(--main-bg-color);
-    border-radius: 3px;
-    padding: 0.4rem 1rem;
+    /* NOTE: min-widthであることに注意
+     * これに引っかからない場合コンテナのpositionがstaticなので位置調整が変わる（デフォルトで良さそう）
+     */
+    @media (min-width: 1024px) {
+      left: 0;
+      bottom: 1.04lh;
+    }
+    border: 1px solid var(--main-color);
+    background-color: var(--main-bg-color);
+    color: var(--main-color);
+    border-radius: 7px;
+    padding: 0.2rem 0.5rem;
   }
   @media (hover: hover) {
     .hover-text-container:hover {
