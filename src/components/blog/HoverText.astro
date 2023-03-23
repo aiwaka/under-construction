@@ -1,0 +1,54 @@
+---
+interface Props {
+  text: string;
+}
+const { text } = Astro.props;
+---
+
+<span class="hover-text-container">
+  <span class="hover-text">
+    {text}
+  </span>
+  <slot />
+</span>
+
+<style>
+  .hover-text-container {
+    @media (max-width: 1024px) {
+      position: static;
+    }
+    border: 2px dashed rgba(var(--main-color-params), 0.6);
+    background-color: rgba(var(--main-color-params), 0.15);
+    border-radius: 7px;
+  }
+  .hover-text {
+    display: none;
+    position: absolute;
+    /* NOTE: min-widthであることに注意
+     * これに引っかからない場合コンテナのpositionがstaticなので位置調整が変わる（デフォルトで良さそう）
+     */
+    @media (min-width: 1024px) {
+      left: 0;
+      bottom: 1.04lh;
+    }
+    border: 1px solid var(--main-color);
+    background-color: var(--main-bg-color);
+    color: var(--main-color);
+    border-radius: 7px;
+    padding: 0.2rem 0.5rem;
+  }
+  @media (hover: hover) {
+    .hover-text-container:hover {
+      & .hover-text {
+        display: block;
+      }
+    }
+  }
+  @media (hover: none) {
+    .hover-text-container:active {
+      & .hover-text {
+        display: block;
+      }
+    }
+  }
+</style>
