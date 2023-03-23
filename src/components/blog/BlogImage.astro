@@ -13,7 +13,14 @@ if (!caption && !alt) {
 
 {/* TODO: format="webp"を追加する */}
 <figure>
-  <Image src={src} width={width} height={height} alt={resultAlt} {...attrs} />
+  <Image
+    src={src}
+    width={width}
+    height={height}
+    format="webp"
+    alt={resultAlt}
+    {...attrs}
+  />
   {caption ? <figcaption>{caption}</figcaption> : null}
 </figure>
 
