@@ -25,9 +25,9 @@ SCRIPT_DIR=$(dirname $0)
 cd $SCRIPT_DIR
 
 if [ $TARGET = "HEIC" ] ; then
-  mogrify -format png +dither -colors 256 -quality 75 -resize 1200x *.HEIC
+  mogrify -format jpg +dither -quality 85 -resize 1200x *.HEIC
 elif [ $TARGET = "png" ] ; then
-  mogrify +dither -colors 256 -quality 75 -resize 1200x *.png
+  mogrify +dither -format jpg -quality 85 -resize 1200x *.png
 else
   echo "ERROR : invalid target"
   exit 1
