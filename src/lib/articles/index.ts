@@ -7,9 +7,9 @@ export class ArticleAttribute {
   date: Date;
   updateDate: Date | null;
   tags: string[];
+  wordCount: number;
   latex: boolean;
   draft: boolean;
-  wordCount: number;
 
   constructor(
     id: string,
@@ -19,9 +19,9 @@ export class ArticleAttribute {
     date: Date,
     updateDate: Date | null,
     tags: string[],
+    wordCount: number,
     latex?: boolean,
-    draft?: boolean,
-    wordCount?: number
+    draft?: boolean
   ) {
     this.id = id;
     this.title = title;
@@ -30,11 +30,15 @@ export class ArticleAttribute {
     this.date = date;
     this.updateDate = updateDate;
     this.tags = tags;
+    this.wordCount = wordCount;
     this.latex = latex !== undefined ? latex : false;
     this.draft = draft !== undefined ? draft : true;
-    this.wordCount = wordCount !== undefined ? wordCount : 0;
   }
 
+  /** updateDateがnullでないならそれを使い, そうでなければdateを返す. */
+  getLastUpdateDate() {
+    return this.updateDate ?? this.date;
+  }
   // // コンストラクタのオーバーロードはしたくないのでこのようにstatic methodで記述する
   // /**
   //  * json形式のArticleAttributeJsonの日付をDateオブジェクトに変換してArticleAttributeを作成する

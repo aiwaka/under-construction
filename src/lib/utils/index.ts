@@ -56,11 +56,14 @@ const getAttrList = (
       frontmatter.thumbnail,
       new Date(frontmatter.date),
       frontmatter.updateDate ? new Date(frontmatter.updateDate) : null,
-      frontmatter.tags
+      frontmatter.tags,
+      frontmatter.wordCount
     );
   });
   // ソート
-  attrList.sort((a, b) => (a.date < b.date ? 1 : -1));
+  attrList.sort((a, b) =>
+    a.getLastUpdateDate() < b.getLastUpdateDate() ? 1 : -1
+  );
   return attrList;
 };
 
