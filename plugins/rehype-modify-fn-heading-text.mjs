@@ -13,6 +13,7 @@ function findFootnoteHeading(node, options) {
     (node) =>
       isHtmlElementNode(node) &&
       node.tagName === "h2" &&
+      "id" in node.properties &&
       node.properties.id === "footnote-label"
   );
   return footnoteHeadingNodes;
