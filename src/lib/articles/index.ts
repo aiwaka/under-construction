@@ -5,9 +5,11 @@ export class ArticleAttribute {
   // ファイル名を指定
   thumbnail: string;
   date: Date;
+  updateDate: Date | null;
   tags: string[];
   latex: boolean;
   draft: boolean;
+  wordCount: number;
 
   constructor(
     id: string,
@@ -15,18 +17,22 @@ export class ArticleAttribute {
     description: string,
     thumbnail: string,
     date: Date,
+    updateDate: Date | null,
     tags: string[],
-    latex: boolean = false,
-    draft: boolean = true
+    latex?: boolean,
+    draft?: boolean,
+    wordCount?: number
   ) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.thumbnail = thumbnail;
     this.date = date;
+    this.updateDate = updateDate;
     this.tags = tags;
-    this.latex = false;
-    this.draft = false;
+    this.latex = latex !== undefined ? latex : false;
+    this.draft = draft !== undefined ? draft : true;
+    this.wordCount = wordCount !== undefined ? wordCount : 0;
   }
 
   // // コンストラクタのオーバーロードはしたくないのでこのようにstatic methodで記述する

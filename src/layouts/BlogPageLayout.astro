@@ -4,10 +4,9 @@ import type { ArticleAttribute } from "@lib/articles";
 import { dateText, thumbnailPath } from "@lib/utils";
 import BlogGeneralLayout from "./BlogGeneralLayout.astro";
 import ArticleTag from "@components/blog/ArticleTag.svelte";
-import { Image } from "@astrojs/image/components";
 import { getImage } from "@astrojs/image";
 
-type Props = MarkdownLayoutProps<ArticleAttribute & { wordCount: number }>;
+type Props = MarkdownLayoutProps<ArticleAttribute>;
 
 const { frontmatter } = Astro.props;
 
@@ -38,6 +37,13 @@ const ogp = {
   <div class="date-block">
     <span>{dateText(new Date(frontmatter.date))}</span>
   </div>
+  {
+    frontmatter.updateDate ? (
+      <div class="date-block">
+        <span>{dateText(new Date(frontmatter.updateDate))} 追記</span>
+      </div>
+    ) : null
+  }
   <div class="tag-container">
     {
       frontmatter.tags.map((tag) => {
