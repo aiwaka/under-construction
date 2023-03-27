@@ -13,6 +13,7 @@
   .tag-container {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.1rem 0.2rem;
     margin: 0.7rem auto;
   }
 </style>

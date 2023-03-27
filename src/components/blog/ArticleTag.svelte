@@ -20,7 +20,6 @@
     color: var(--main-bg-color);
     width: fit-content;
     padding: 0.1rem 0.4rem;
-    margin: 0.1rem 0.2rem;
   }
   .article-tag:first-child {
     margin-left: 0;
