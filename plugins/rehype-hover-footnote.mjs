@@ -101,20 +101,18 @@ function findTargetNodeRecursive(node, targetNodes, options, typeGuard) {
 }
 
 /**
- * 脚注のノード列を元に, 番号をキーとするオブジェクトを作成する.
+ * 脚注のノード列を元に, idをキーとするオブジェクトを作成する.
  * @param {Node[]} texts - 脚注テキストノード列
  */
-function createTextDict(labels) {
+function createTextDict(texts) {
   const footnoteTextDict = {};
-  for (const textNode of labels) {
+  for (const textNode of texts) {
     for (const child of textNode.children) {
       if (isHtmlElementNode(child) && child.tagName === "p") {
         const targetText = child.children
           .find((node) => node.type === "text")
           .value.trim();
-        footnoteTextDict[
-          textNode.properties.id.replace("user-content-fn-", "")
-        ] = targetText;
+        footnoteTextDict[textNode.properties.id] = targetText;
       }
     }
   }
@@ -124,9 +122,9 @@ function createTextDict(labels) {
 function insertTitleToLabel(texts, labels) {
   const textDict = createTextDict(texts);
   for (const labelAnchorNode of labels) {
-    const labelId = labelAnchorNode.properties.id;
-    labelAnchorNode.properties["title"] =
-      textDict[labelId.replace("user-content-fnref-", "")];
+    // 脚注へのリンクを持つノードにテキストを埋め込む.
+    const labelHref = labelAnchorNode.properties.href.substring(1);
+    labelAnchorNode.properties["title"] = textDict[labelHref];
   }
 }
 
