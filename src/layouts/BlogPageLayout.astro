@@ -146,4 +146,14 @@ const ogp = {
       color: inherit;
     }
   }
+  /* 脚注の下の<p>タグの行間を詰める処理 NOTE: むしろrehypeで<p>タグを取ってもいいかもしれない. */
+  .blog-article-content-container {
+    & :global(h2#footnote-label + ol) {
+      margin: 1.7rem 1rem;
+      & :global(p) {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
 </style>
