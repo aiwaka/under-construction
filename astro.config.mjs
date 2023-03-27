@@ -16,6 +16,7 @@ import remarkCodeTitles from "remark-code-titles";
 
 import remarkWordCountPlugin from "./plugins/remark-word-count-plugin.mjs";
 import rehypeHoverFootnote from "./plugins/rehype-hover-footnote";
+import rehypeMyMiniProcessor from "./plugins/rehype-my-mini-processor.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -60,6 +61,7 @@ export default defineConfig({
             },
           },
         ],
+        rehypeMyMiniProcessor,
       ],
     }),
     partytown(),
