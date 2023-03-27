@@ -23,6 +23,7 @@ function isFootnoteTextNode(node) {
   return (
     isHtmlElementNode(node) &&
     node.tagName === "li" &&
+    "id" in node.properties &&
     node.properties.id.startsWith("user-content-fn-")
   );
 }
@@ -37,6 +38,7 @@ function isFootnoteLabelNode(node) {
     isHtmlElementNode(node) &&
     node.tagName === "a" &&
     "dataFootnoteRef" in node.properties &&
+    "id" in node.properties &&
     node.properties.id.startsWith("user-content-fnref-")
   );
 }
