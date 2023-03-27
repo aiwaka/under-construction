@@ -1,13 +1,13 @@
 ---
 import type { MarkdownLayoutProps } from "astro";
 import type { ArticleAttribute } from "@lib/articles";
-import { dateText, thumbnailPath } from "@lib/utils";
+import { dateText } from "@lib/utils";
 import BlogGeneralLayout from "./BlogGeneralLayout.astro";
 import ArticleTag from "@components/blog/ArticleTag.svelte";
-import { Image } from "@astrojs/image/components";
 import { getImage } from "@astrojs/image";
+import TagContainer from "@components/blog/TagContainer.svelte";
 
-type Props = MarkdownLayoutProps<ArticleAttribute & { wordCount: number }>;
+type Props = MarkdownLayoutProps<ArticleAttribute>;
 
 const { frontmatter } = Astro.props;
 
@@ -38,13 +38,14 @@ const ogp = {
   <div class="date-block">
     <span>{dateText(new Date(frontmatter.date))}</span>
   </div>
-  <div class="tag-container">
-    {
-      frontmatter.tags.map((tag) => {
-        return <ArticleTag tag={tag} />;
-      })
-    }
-  </div>
+  {
+    frontmatter.updateDate ? (
+      <div class="date-block">
+        <span>{dateText(new Date(frontmatter.updateDate))} 追記</span>
+      </div>
+    ) : null
+  }
+  <TagContainer tagList={frontmatter.tags} />
   {
     /* NOTE: この文字数カウントが正確か検証はしていない. 大体あっていそうだが... */
   }
@@ -84,10 +85,6 @@ const ogp = {
     object-fit: cover;
     width: 100%;
     height: 100%;
-  }
-  .tag-container {
-    display: flex;
-    flex-wrap: wrap;
   }
   :global(.blog-article-content-container) {
     line-height: 2rem;
@@ -144,6 +141,16 @@ const ogp = {
     }
     & :global(h3:hover span.anchor-link) {
       color: inherit;
+    }
+  }
+  /* 脚注の下の<p>タグの行間を詰める処理 NOTE: むしろrehypeで<p>タグを取ってもいいかもしれない. */
+  .blog-article-content-container {
+    & :global(h2#footnote-label + ol) {
+      margin: 1.7rem 1rem;
+      & :global(p) {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
     }
   }
 </style>

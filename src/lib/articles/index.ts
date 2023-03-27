@@ -5,7 +5,9 @@ export class ArticleAttribute {
   // ファイル名を指定
   thumbnail: string;
   date: Date;
+  updateDate: Date | null;
   tags: string[];
+  wordCount: number;
   latex: boolean;
   draft: boolean;
 
@@ -15,20 +17,28 @@ export class ArticleAttribute {
     description: string,
     thumbnail: string,
     date: Date,
+    updateDate: Date | null,
     tags: string[],
-    latex: boolean = false,
-    draft: boolean = true
+    wordCount: number,
+    latex?: boolean,
+    draft?: boolean
   ) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.thumbnail = thumbnail;
     this.date = date;
+    this.updateDate = updateDate;
     this.tags = tags;
-    this.latex = false;
-    this.draft = false;
+    this.wordCount = wordCount;
+    this.latex = latex !== undefined ? latex : false;
+    this.draft = draft !== undefined ? draft : true;
   }
 
+  /** updateDateがnullでないならそれを使い, そうでなければdateを返す. */
+  getLastUpdateDate() {
+    return this.updateDate ?? this.date;
+  }
   // // コンストラクタのオーバーロードはしたくないのでこのようにstatic methodで記述する
   // /**
   //  * json形式のArticleAttributeJsonの日付をDateオブジェクトに変換してArticleAttributeを作成する

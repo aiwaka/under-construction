@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { metadata } = Astro.props;
-const { id, title, thumbnail, date, tags } = metadata;
+const { id, title, thumbnail, date, updateDate, tags, wordCount } = metadata;
 ---
 
 <a class="article-link" href={`${import.meta.env.BASE_URL}blog/${id}`}>
@@ -23,8 +23,21 @@ const { id, title, thumbnail, date, tags } = metadata;
     </div>
     <div class="card-contents">
       <h2>{title}</h2>
-      <span>{dateText(date)}</span>
+      <span>
+        {dateText(date)}
+      </span>
+      {
+        updateDate !== null ? (
+          <>
+            <br />
+            <span>{`${dateText(updateDate)} 追記`}</span>
+          </>
+        ) : null
+      }
       <TagContainer tagList={tags} />
+      <div class="word-count">
+        <span>文字数：{wordCount}</span>
+      </div>
     </div>
   </div>
 </a>
