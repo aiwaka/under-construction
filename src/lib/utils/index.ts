@@ -55,6 +55,7 @@ const getAttrList = (
       frontmatter.description,
       frontmatter.thumbnail,
       new Date(frontmatter.date),
+      frontmatter.updateDate ? new Date(frontmatter.updateDate) : null,
       frontmatter.tags
     );
   });
