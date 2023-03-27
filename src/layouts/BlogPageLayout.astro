@@ -1,10 +1,11 @@
 ---
 import type { MarkdownLayoutProps } from "astro";
 import type { ArticleAttribute } from "@lib/articles";
-import { dateText, thumbnailPath } from "@lib/utils";
+import { dateText } from "@lib/utils";
 import BlogGeneralLayout from "./BlogGeneralLayout.astro";
 import ArticleTag from "@components/blog/ArticleTag.svelte";
 import { getImage } from "@astrojs/image";
+import TagContainer from "@components/blog/TagContainer.svelte";
 
 type Props = MarkdownLayoutProps<ArticleAttribute>;
 
@@ -44,13 +45,7 @@ const ogp = {
       </div>
     ) : null
   }
-  <div class="tag-container">
-    {
-      frontmatter.tags.map((tag) => {
-        return <ArticleTag tag={tag} />;
-      })
-    }
-  </div>
+  <TagContainer tagList={frontmatter.tags} />
   {
     /* NOTE: この文字数カウントが正確か検証はしていない. 大体あっていそうだが... */
   }
