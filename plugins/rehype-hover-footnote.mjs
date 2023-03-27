@@ -4,26 +4,14 @@
  *
  */
 
+import { findTargetNodeRecursive, isHtmlElementNode } from "./lib";
+
 export class NormalizedOptions {
   dummy;
 
   constructor(options = {}) {
     this.dummy = true;
   }
-}
-
-/**
- * ノードがHTML要素かどうかの判定
- * @param {Node} node
- */
-function isHtmlElementNode(node) {
-  return (
-    typeof node === "object" &&
-    node.type === "element" &&
-    typeof node.tagName === "string" &&
-    "properties" in node &&
-    typeof node.properties === "object"
-  );
 }
 
 /**
@@ -60,7 +48,7 @@ function isFootnoteLabelNode(node) {
 function findFootnoteText(node, options) {
   /** @type {Node[]} */
   let footnoteTextNodes = [];
-  findTargetNodeRecursive(node, footnoteTextNodes, options, isFootnoteTextNode);
+  findTargetNodeRecursive(node, footnoteTextNodes, isFootnoteTextNode);
   return footnoteTextNodes;
 }
 /**
@@ -70,34 +58,8 @@ function findFootnoteText(node, options) {
 function findFootnoteLabel(node, options) {
   /** @type {Node[]} */
   let footnoteLabelNodes = [];
-  findTargetNodeRecursive(
-    node,
-    footnoteLabelNodes,
-    options,
-    isFootnoteLabelNode
-  );
+  findTargetNodeRecursive(node, footnoteLabelNodes, isFootnoteLabelNode);
   return footnoteLabelNodes;
-}
-
-/**
- * HAST木を探索して渡された配列に目的の要素を入れるのを再帰的に行う.
- * @param {Node} node
- * @param {Node[]} targetNodes
- * @param {NormalizedOptions} options
- * @param {TypeGuard} typeGuard
- */
-function findTargetNodeRecursive(node, targetNodes, options, typeGuard) {
-  if (typeGuard(node)) {
-    targetNodes.push(node);
-  }
-
-  if (node.children) {
-    /** @type {Parent} */
-    let parent = node;
-    for (let child of parent.children) {
-      findTargetNodeRecursive(child, targetNodes, options, typeGuard);
-    }
-  }
 }
 
 /**
