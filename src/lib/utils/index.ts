@@ -1,4 +1,4 @@
-import { ArticleAttribute } from "@lib/articles";
+import { ArticleAttribute, ArticleRawAttribute } from "@lib/articles";
 import type { AstroGlobal, MDXInstance } from "astro";
 
 const getFilenameFromPath = (path: string): string | null => {
@@ -47,18 +47,9 @@ const getAttrList = (
   // mdxオブジェクトのpostリストを自分のデータ形式に変換する
   const attrList = filteredPosts.map((post) => {
     const frontmatter = post.frontmatter as Record<string, any> &
-      ArticleAttribute;
+      ArticleRawAttribute;
     const filename = getFilenameFromPath(post.file) ?? "";
-    return new ArticleAttribute(
-      filename,
-      frontmatter.title,
-      frontmatter.description,
-      frontmatter.thumbnail,
-      new Date(frontmatter.date),
-      frontmatter.updateDate ? new Date(frontmatter.updateDate) : null,
-      frontmatter.tags,
-      frontmatter.wordCount
-    );
+    return ArticleAttribute.fromRawAttribute(filename, frontmatter);
   });
   // ソート
   attrList.sort((a, b) =>
