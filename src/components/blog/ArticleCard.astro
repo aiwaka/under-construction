@@ -9,14 +9,23 @@ interface Props {
 }
 
 const { metadata } = Astro.props;
-const { id, title, thumbnail, date, updateDate, tags, wordCount } = metadata;
+const {
+  id,
+  title,
+  thumbnail,
+  date,
+  updateDate,
+  tags,
+  wordCount,
+  thumbnailFormat,
+} = metadata;
 ---
 
 <a class="article-link" href={`${import.meta.env.BASE_URL}blog/${id}`}>
   <div class="article-card">
     <div class="img-container">
       <Image
-        src={import(`../../pages/blog/thumb/${thumbnail}.png`)}
+        src={import(`../../pages/blog/thumb/${thumbnail}.${thumbnailFormat}`)}
         alt="thumbnail"
         width={1024}
       />
