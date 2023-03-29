@@ -1,18 +1,33 @@
 ---
 import type { MarkdownLayoutProps } from "astro";
-import type { ArticleAttribute } from "@lib/articles";
-import { dateText } from "@lib/utils";
+import { ArticleAttribute, ArticleRawAttribute } from "@lib/articles";
+import { dateText, getFilenameFromPath } from "@lib/utils";
 import BlogGeneralLayout from "./BlogGeneralLayout.astro";
-import ArticleTag from "@components/blog/ArticleTag.svelte";
 import { getImage } from "@astrojs/image";
 import TagContainer from "@components/blog/TagContainer.svelte";
 
-type Props = MarkdownLayoutProps<ArticleAttribute>;
+type Props = MarkdownLayoutProps<ArticleRawAttribute>;
 
-const { frontmatter } = Astro.props;
+// 未指定フィールドを含むものとして取得
+const rawFrontmatter = Astro.props.frontmatter;
+// 確実に指定されたものに変更する.
+const {
+  title,
+  description,
+  date,
+  updateDate,
+  thumbnail,
+  thumbnailFormat,
+  tags,
+  latex,
+  wordCount,
+} = ArticleAttribute.fromRawAttribute(
+  getFilenameFromPath(rawFrontmatter.file) ?? "",
+  rawFrontmatter
+);
 
 const img = await getImage({
-  src: import(`../pages/blog/thumb/${frontmatter.thumbnail}.png`),
+  src: import(`../pages/blog/thumb/${thumbnail}.${thumbnailFormat}`),
   format: "webp",
   width: 1024,
   alt: "thumbnail",
@@ -20,8 +35,8 @@ const img = await getImage({
 const ogp = {
   url: Astro.request.url,
   type: "blog",
-  title: `Under Construction | blog | ${frontmatter.title}`,
-  description: frontmatter.description,
+  title: `Under Construction | blog | ${title}`,
+  description,
   siteName: "Under Construction",
   image:
     "https://littleikawa.github.io" +
@@ -29,28 +44,24 @@ const ogp = {
 };
 ---
 
-<BlogGeneralLayout
-  ogp={ogp}
-  title={frontmatter.title}
-  usingLatex={frontmatter.latex}
->
-  <h1>{frontmatter.title}</h1>
+<BlogGeneralLayout ogp={ogp} title={title} usingLatex={latex}>
+  <h1>{title}</h1>
   <div class="date-block">
-    <span>{dateText(new Date(frontmatter.date))}</span>
+    <span>{dateText(date)}</span>
   </div>
   {
-    frontmatter.updateDate ? (
+    updateDate ? (
       <div class="date-block">
-        <span>{dateText(new Date(frontmatter.updateDate))} 追記</span>
+        <span>{dateText(updateDate)} 追記</span>
       </div>
     ) : null
   }
-  <TagContainer tagList={frontmatter.tags} />
+  <TagContainer tagList={tags} />
   {
     /* NOTE: この文字数カウントが正確か検証はしていない. 大体あっていそうだが... */
   }
   <div class="word-count">
-    <span>文字数：{frontmatter.wordCount}</span>
+    <span>文字数：{wordCount}</span>
   </div>
   <div class="img-container">
     <img
@@ -61,12 +72,6 @@ const ogp = {
       loading="eager"
       decoding="async"
     />
-    <!-- <Image
-      src={import(`../pages/blog/thumb/${frontmatter.thumbnail}.png`)}
-      width={1024}
-      alt="thumbnail"
-      loading="eager"
-    /> -->
   </div>
   <div class="blog-article-content-container">
     <slot />
