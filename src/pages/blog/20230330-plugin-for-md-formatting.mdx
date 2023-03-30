@@ -1,0 +1,57 @@
+---
+layout: ../../layouts/BlogPageLayout.astro
+title: マークダウンとPrettierのためのプラグインについて
+description: ありがたく使わせていただきます
+thumbnail: blue_square
+date: 2023-03-30
+tags:
+  - "プログラミング"
+  - "prettier"
+---
+
+## 概要
+
+VSCodeでマークダウンを書いているとPrettierがフォーマットしてくれます。
+これ自体はとても便利です。
+しかし、何故か半角文字と全角文字の間にスペースが入ってしまい、これが見栄えもそうですが非常に気持ち悪いのです。
+Macではフォーマットされないように設定し放置していたのですがWSLで作業していたら再び出てきていい加減ウザくなったので対策だけしました。
+備忘録として残しておきます。
+
+## 原因と対策
+
+を言えるほど調べていないのですが、Prettierの有力なコントリビューターが日本語のことを顧みないまま仕様を追加したせいのようです（よく読んでないので適当です）。
+Prettierになにか対策してもらえなさそうなのでプラグインを作ってくれた人がいるようで、それを導入したところ概ねうまく行きました。
+[この記事を参照](https://qiita.com/tats-u/items/bcbfe2bb4e71bf0a2b87)。
+
+```bash
+npm i -D prettier-plugin-md-nocjsp
+```
+
+でインストールし,
+
+```yaml:.prettierrc.yaml
+overrides:
+  - files:
+      - "*.md"
+      - README.md
+    options:
+      parser: markdown-nocjsp
+  - files:
+      - "*.mdx"
+    options:
+      parser: mdx-nocjsp
+```
+
+を追加すれば良いです。
+また、`settings.json`に
+
+```json:settings.json
+"prettier.resolveGlobalModules": true,
+```
+
+というオプションを設定するとより確実かもしれないですが、私の環境では必要ありませんでした（グローバルの`npm`設定を読みに行くオプションで、Windowsでは特に重いため扱い注意とのこと）。
+
+## まとめ
+
+ちょっとしょうもないことで煩わされたのが解決したので取り急ぎ備忘録とした次第です。
+旅行記の執筆が終わりませんが適当に頑張ります。
