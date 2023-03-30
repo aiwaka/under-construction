@@ -73,6 +73,7 @@ function createTextDict(texts) {
   for (const textNode of texts) {
     for (const child of textNode.children) {
       if (isHtmlElementNode(child) && child.tagName === "p") {
+        // TODO: 再帰的にテキストを抽出して末尾を切り取るようにするとよい
         const targetText = child.children
           .find((node) => node.type === "text")
           .value.trim();
