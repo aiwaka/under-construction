@@ -118,6 +118,13 @@ const ogp = {
     margin: auto 1rem;
     padding-left: 1.6rem;
   }
+  .blog-article-content-container :global(blockquote) {
+    margin: 0 1rem;
+    /* paddingの縦が0だとpタグのmarginと相殺されるため微小量を設定する */
+    padding: 0.01rem 0.8rem;
+    background-color: rgba(var(--main-color-params), 0.2);
+    border-radius: 10px;
+  }
   .blog-article-content-container :global(nav.toc) {
     & :global(.toc-link) {
       color: var(--main-color);
