@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/BlogPageLayout.astro
 title: Rust製ゲームエンジンBevy (v0.9) で音ゲーをつくる [vol.1]
 description: "Rustで音ゲーをつくる連載をします"
 thumbnail: bevy-rhythm-game
@@ -23,7 +22,11 @@ Rustのゲームエンジンはいくつか開発されていますが, その�
 nannouはゲームエンジンというよりはprocessingのようなクリエイティブプログラミングフレームワークです.
 Pistonは...知らないです（ごめんなさい）
 
-<BlogImage src={import('./img/rust-game-engine-comparing.png')} width="1576" alt="エンジン比較" />
+<BlogImage
+  src={import("@blog-images/rust-game-engine-comparing.png")}
+  width="1576"
+  alt="エンジン比較"
+/>
 
 さて, 私もBevyでゲームを作って ~~（作ろうとして）~~ いますが, 凄まじいスピードでバージョンが変わります.
 以前0.8がリリースされたときに記事を投稿しましたが, 気づいたら11月に0.9が出ていました.
@@ -135,7 +138,7 @@ CSV, TOMLは便利で, 特にTOMLはRustと相性が良いですが少し拡張�
 ## ウィンドウを出す
 
 初歩的なところですが, ここがもう0.8から0.9で変わったところです.
-[ここ](https://bevyengine.org/learn/book/migration-guides/0.8-0.9/#implement-bundle-for-component-use-bundle-tuples-for-insertion:~:text=Make%20Resource%20trait%20opt%2Din%2C%20requiring%20%23%5Bderive(Resource)%5D%20V2)や
+[ここ](<https://bevyengine.org/learn/book/migration-guides/0.8-0.9/#implement-bundle-for-component-use-bundle-tuples-for-insertion:~:text=Make%20Resource%20trait%20opt%2Din%2C%20requiring%20%23%5Bderive(Resource)%5D%20V2>)や
 [ここ](https://bevyengine.org/learn/book/migration-guides/0.8-0.9/#implement-bundle-for-component-use-bundle-tuples-for-insertion:~:text=Plugins%20own%20their%20settings.%20Rework%20PluginGroup%20trait.)にある通り,
 従来のResourceは任意の型をデフォルトで扱えなくなり, Resourceとして扱うために`#[derive(Resource)]`が必要になりました.
 プリミティブな型は自分で定義したシンプルなタプル構造体で包んであげる必要があります（これを扱う際の利便性向上のために`Deref`と`DerefMut`も`derive`することを推奨しています）.

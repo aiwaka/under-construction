@@ -12,10 +12,6 @@ export async function getStaticPaths() {
     params: { slug: entry.slug },
     props: { entry },
   }));
-  // return allBlogPosts.map((entry) => ({
-  //   params: { slug: entry.slug },
-  //   props: { entry },
-  // }));
 }
 
 type Props = {

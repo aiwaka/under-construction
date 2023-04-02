@@ -1,5 +1,4 @@
 ---
-layout: ../../layouts/BlogPageLayout.astro
 title: ブログへの機能追加
 description: いろいろ付け足しました
 thumbnail: blue_square
@@ -228,16 +227,16 @@ Astroのimageインテグレーションによる`Image`コンポーネントを
 
 ```jsx
 <BlogImage
-  src={import("./img/sample.png")}
+  src={import("@blog-images/sample.png")}
   width="1000"
   caption="サンプル画像"
-/>
+/>;
 ```
 
 のようにすると、
 
 <BlogImage
-  src={import("./img/sample.png")}
+  src={import("@blog-images/sample.png")}
   width="1000"
   caption="サンプル画像"
 />
@@ -252,40 +251,36 @@ Flex boxなので画面が小さい場合は自動的に縦並びになります
 
 ```jsx
 <BlogImageList
-  images={
-    [
-      {
-          src: import("./img/sample.png"),
-          width: "1000",
-          caption: "サンプル画像1",
-      },
-      {
-          src: import("./img/sample.png"),
-          width: "1000",
-          alt: "サンプル画像2",
-      }
-    ]
-  }
-/>
+  images={[
+    {
+      src: import("@blog-images/sample.png"),
+      width: "1000",
+      caption: "サンプル画像1",
+    },
+    {
+      src: import("@blog-images/sample.png"),
+      width: "1000",
+      alt: "サンプル画像2",
+    },
+  ]}
+/>;
 ```
 
 こう&darr;
 
 <BlogImageList
-  images={
-    [
-      {
-          src: import("./img/sample.png"),
-          width: "1000",
-          caption: "サンプル画像1",
-      },
-      {
-          src: import("./img/sample.png"),
-          width: "1000",
-          alt: "サンプル画像2",
-      }
-    ]
-  }
+  images={[
+    {
+      src: import("@blog-images/sample.png"),
+      width: "1000",
+      caption: "サンプル画像1",
+    },
+    {
+      src: import("@blog-images/sample.png"),
+      width: "1000",
+      alt: "サンプル画像2",
+    },
+  ]}
 />
 
 `images`にはオブジェクトの配列とオブジェクト単体どちらを渡しても正しく動くようにしたので、こちらだけ使っていきたいと思います。
