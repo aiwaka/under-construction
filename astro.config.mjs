@@ -69,4 +69,7 @@ export default defineConfig({
   // trailingSlash: "always",
   site: "https://littleikawa.github.io",
   base: "/under-construction",
+  build: {
+    format: "file",
+  },
 });
