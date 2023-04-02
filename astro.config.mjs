@@ -70,6 +70,9 @@ export default defineConfig({
   site: "https://littleikawa.github.io",
   base: "/under-construction",
   build: {
+    // NOTE: ビルド時ページファイルとして`foo/index.html`が作られるのを防ぎ, 代わりに`foo.html`を作る.
+    // これによりマークダウンの中で相対リンクを貼るようにすれば開発環境と同じリンク関係が保たれる.
+    // GitHub Pagesはルートの`index.html`を探すが, このプロジェクトでは`index.astro`があるので問題ない.
     format: "file",
   },
 });
