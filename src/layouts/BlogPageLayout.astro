@@ -8,15 +8,14 @@ import type {
   FrontmatterByRemarkPlugin,
 } from "@lib/schema";
 
-// TODO: もはやレイアウトが必要ないので動的ページのastroファイルに統合する.
-// そうするとadditionalFrontmatterも必要ない.
-
 export interface Props {
-  frontmatter: BlogArticleSchemaType;
+  // BlogArticleSchemaにRemarkで加工された情報を付与できる形にする. 渡される時点ではundefined.
+  frontmatter: BlogArticleSchemaType & Partial<FrontmatterByRemarkPlugin>;
   additionalFrontmatter: FrontmatterByRemarkPlugin;
 }
 
-const { frontmatter: rawFrontmatter, additionalFrontmatter } = Astro.props;
+const { frontmatter, additionalFrontmatter } = Astro.props;
+frontmatter.wordCount = additionalFrontmatter.wordCount;
 const {
   title,
   description,
@@ -26,8 +25,8 @@ const {
   thumbnailFormat,
   tags,
   latex,
-} = rawFrontmatter;
-const { wordCount } = additionalFrontmatter;
+  wordCount,
+} = frontmatter;
 
 const img = await getImage({
   src: import(`../pages/blog/thumb/${thumbnail}.${thumbnailFormat}`),
