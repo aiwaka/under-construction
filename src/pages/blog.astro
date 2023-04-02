@@ -2,13 +2,13 @@
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import { getAttrList, POST_PER_PAGE } from "@lib/utils";
-import { getCollection, getEntryBySlug } from "astro:content";
+import { getBlogPostEntries, POST_PER_PAGE } from "@lib/utils";
+import { getCollection } from "astro:content";
 
 const allBlogPosts = await getCollection("blog");
-// const posts = await Astro.glob("./blog/*.mdx");
-// const postAttrList = getAttrList(posts);
-// const pageNum = Math.ceil(postAttrList.length / POST_PER_PAGE);
+const blogPostEntries = await getBlogPostEntries(allBlogPosts);
+blogPostEntries.sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+const pageNum = Math.ceil(blogPostEntries.length / POST_PER_PAGE);
 
 const ogp = {
   url: Astro.request.url,
@@ -22,18 +22,10 @@ const ogp = {
 
 <BlogGeneralLayout ogp={ogp}>
   <h2>Blog</h2>
-  {
-    allBlogPosts.map((post) => {
-      const id = post.slug;
-      return (
-        <a class="article-link" href={`${import.meta.env.BASE_URL}blog/${id}`}>
-          {post.data.title}
-        </a>
-      );
-    })
-  }
-  <!-- <ArticleCardContainer cardList={postAttrList.slice(0, POST_PER_PAGE)} /> -->
+  <a class="to-tag-list" href={`${import.meta.env.BASE_URL}blog/tags`}>
+    タグ一覧へ
+  </a>
+  <ArticleCardContainer cardList={blogPostEntries.slice(0, POST_PER_PAGE)} />
 
-  {allBlogPosts.length}
-  <!-- <PaginationContainer subbase={"blog/"} currentPage={1} lastPage={pageNum} /> -->
+  <PaginationContainer subbase={"blog/"} currentPage={1} lastPage={pageNum} />
 </BlogGeneralLayout>

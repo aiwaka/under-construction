@@ -1,22 +1,30 @@
 ---
+import { getCollection } from "astro:content";
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import type { ArticleAttribute } from "@lib/articles";
-import { getAllTagSet, getAttrList, POST_PER_PAGE } from "@lib/utils";
+import { getAllTagSet, getBlogPostEntries, POST_PER_PAGE } from "@lib/utils";
 import type { GetStaticPathsOptions, Page } from "astro";
+import type { FinalBlogCollectionEntry } from "@lib/schema";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  // 全記事を取得
-  const posts = await Astro.glob("../../../blog/*.mdx");
-  const allTagList = Array.from(getAllTagSet(posts));
-  return allTagList.map((tag) => {
-    const attrList = getAttrList(posts, { tag });
-    return paginate(attrList, { params: { tag }, pageSize: POST_PER_PAGE });
-  });
+  const allBlogPosts = await getCollection("blog");
+  const allTagList = Array.from(getAllTagSet(allBlogPosts));
+  return Promise.all(
+    allTagList.map(async (tag) => {
+      const blogPostEntries = await getBlogPostEntries(allBlogPosts, { tag });
+      return paginate(blogPostEntries, {
+        params: { tag },
+        pageSize: POST_PER_PAGE,
+      });
+    })
+  );
 }
 
-const { page } = Astro.props as { page: Page<ArticleAttribute> };
+interface Props {
+  page: Page<FinalBlogCollectionEntry>;
+}
+const { page } = Astro.props;
 const { tag } = Astro.params;
 const ogp = {
   url: Astro.request.url,
@@ -30,9 +38,9 @@ const ogp = {
 
 <BlogGeneralLayout ogp={ogp}>
   <h2>Blog</h2>
-  <a class="to-tag-list" href={`${import.meta.env.BASE_URL}blog/tags`}
-    >タグ一覧へ</a
-  >
+  <a class="to-tag-list" href={`${import.meta.env.BASE_URL}blog/tags`}>
+    タグ一覧へ
+  </a>
   <h3>#{tag}の検索結果：{page.currentPage}</h3>
   <ArticleCardContainer cardList={page.data} />
   <PaginationContainer

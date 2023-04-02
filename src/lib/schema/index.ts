@@ -1,3 +1,4 @@
+import type { CollectionEntry } from "astro:content";
 import { z } from "astro:content";
 
 enum ThumbnailFormatEnum {
@@ -19,9 +20,15 @@ export const BlogArticleSchema = z.object({
   draft: z.boolean().default(false),
 });
 
-export type BlogArticleSchemaType = z.infer<typeof BlogArticleSchema>;
-
 /** Remarkによって書き換えられて追加される属性 */
 export interface FrontmatterByRemarkPlugin {
   wordCount: number;
 }
+
+/** ブログ記事のfrontmatterのスキーマを表す型 */
+export type BlogArticleSchemaType = CollectionEntry<"blog">["data"];
+
+/** コレクション情報のスキーマ部分にremarkによる加工を追加した型 */
+export type FinalBlogCollectionEntry = Omit<CollectionEntry<"blog">, "data"> & {
+  data: BlogArticleSchemaType & FrontmatterByRemarkPlugin;
+};
