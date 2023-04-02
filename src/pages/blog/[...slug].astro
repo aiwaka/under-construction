@@ -1,0 +1,30 @@
+---
+import { CollectionEntry, getCollection } from "astro:content";
+import BlogPageLayout from "@layouts/BlogPageLayout.astro";
+import type { FrontmatterByRemarkPlugin } from "@lib/schema";
+
+export async function getStaticPaths() {
+  const allBlogPosts = await getCollection("blog");
+  return allBlogPosts.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+type Props = {
+  entry: CollectionEntry<"blog">;
+};
+
+const { entry } = Astro.props;
+const { Content, remarkPluginFrontmatter } = await entry.render();
+const additionalFrontmatter: FrontmatterByRemarkPlugin = {
+  wordCount: remarkPluginFrontmatter.wordCount,
+};
+---
+
+<BlogPageLayout
+  frontmatter={entry.data}
+  additionalFrontmatter={additionalFrontmatter}
+>
+  <Content />
+</BlogPageLayout>

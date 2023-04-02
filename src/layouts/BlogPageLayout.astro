@@ -1,16 +1,22 @@
 ---
-import type { MarkdownLayoutProps } from "astro";
-import { ArticleAttribute, ArticleRawAttribute } from "@lib/articles";
-import { dateText, getFilenameFromPath } from "@lib/utils";
+import { dateText } from "@lib/utils";
 import BlogGeneralLayout from "./BlogGeneralLayout.astro";
 import { getImage } from "@astrojs/image";
 import TagContainer from "@components/blog/TagContainer.svelte";
+import type {
+  BlogArticleSchemaType,
+  FrontmatterByRemarkPlugin,
+} from "@lib/schema";
 
-type Props = MarkdownLayoutProps<ArticleRawAttribute>;
+// TODO: もはやレイアウトが必要ないので動的ページのastroファイルに統合する.
+// そうするとadditionalFrontmatterも必要ない.
 
-// 未指定フィールドを含むものとして取得
-const rawFrontmatter = Astro.props.frontmatter;
-// 確実に指定されたものに変更する.
+export interface Props {
+  frontmatter: BlogArticleSchemaType;
+  additionalFrontmatter: FrontmatterByRemarkPlugin;
+}
+
+const { frontmatter: rawFrontmatter, additionalFrontmatter } = Astro.props;
 const {
   title,
   description,
@@ -20,11 +26,8 @@ const {
   thumbnailFormat,
   tags,
   latex,
-  wordCount,
-} = ArticleAttribute.fromRawAttribute(
-  getFilenameFromPath(rawFrontmatter.file) ?? "",
-  rawFrontmatter
-);
+} = rawFrontmatter;
+const { wordCount } = additionalFrontmatter;
 
 const img = await getImage({
   src: import(`../pages/blog/thumb/${thumbnail}.${thumbnailFormat}`),
