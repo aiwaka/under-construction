@@ -6,7 +6,6 @@ import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 
-import remarkSmartypants from "remark-smartypants";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
@@ -32,12 +31,7 @@ export default defineConfig({
       serviceEntryPoint: "@astrojs/image/sharp",
     }),
     mdx({
-      remarkPlugins: [
-        // remarkSmartypants,
-        remarkCodeTitles,
-        remarkMath,
-        remarkWordCountPlugin,
-      ],
+      remarkPlugins: [remarkCodeTitles, remarkMath, remarkWordCountPlugin],
       rehypePlugins: [
         rehypeKatex,
         rehypeHoverFootnote,
