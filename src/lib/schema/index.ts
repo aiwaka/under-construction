@@ -25,6 +25,3 @@ export type BlogArticleSchemaType = z.infer<typeof BlogArticleSchema>;
 export interface FrontmatterByRemarkPlugin {
   wordCount: number;
 }
-
-export type FinalFrontmatter = BlogArticleSchemaType &
-  FrontmatterByRemarkPlugin;

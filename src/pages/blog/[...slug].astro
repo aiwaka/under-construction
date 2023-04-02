@@ -1,6 +1,9 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content";
-import BlogPageLayout from "@layouts/BlogPageLayout.astro";
+import { getImage } from "@astrojs/image";
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import { dateText } from "@lib/utils";
+import TagContainer from "@components/blog/TagContainer.svelte";
 import type { FrontmatterByRemarkPlugin } from "@lib/schema";
 
 export async function getStaticPaths() {
@@ -17,14 +20,157 @@ type Props = {
 
 const { entry } = Astro.props;
 const { Content, remarkPluginFrontmatter } = await entry.render();
-const additionalFrontmatter: FrontmatterByRemarkPlugin = {
-  wordCount: remarkPluginFrontmatter.wordCount,
+const {
+  title,
+  description,
+  date,
+  updateDate,
+  thumbnail,
+  thumbnailFormat,
+  tags,
+  latex,
+} = entry.data;
+const additionalFrontmatter =
+  remarkPluginFrontmatter as FrontmatterByRemarkPlugin;
+const wordCount = additionalFrontmatter.wordCount;
+
+const img = await getImage({
+  src: import(`../blog/thumb/${thumbnail}.${thumbnailFormat}`),
+  format: "webp",
+  width: 1024,
+  alt: "thumbnail",
+});
+const ogp = {
+  url: Astro.request.url,
+  type: "blog",
+  title: `Under Construction | blog | ${title}`,
+  description,
+  siteName: "Under Construction",
+  image:
+    "https://littleikawa.github.io" +
+    (img.src ?? "/under-construction/img/blue_2.png"),
 };
 ---
 
-<BlogPageLayout
-  frontmatter={entry.data}
-  additionalFrontmatter={additionalFrontmatter}
->
-  <Content />
-</BlogPageLayout>
+<BlogGeneralLayout ogp={ogp} title={title} usingLatex={latex}>
+  <h1>{title}</h1>
+  <div class="date-block">
+    <span>{dateText(date)}</span>
+  </div>
+  {
+    updateDate ? (
+      <div class="date-block">
+        <span>{dateText(updateDate)} 追記</span>
+      </div>
+    ) : null
+  }
+  <TagContainer tagList={tags} />
+  {
+    /* NOTE: この文字数カウントが正確か検証はしていない. 大体あっていそうだが... */
+  }
+  <div class="word-count">
+    <span>文字数：{wordCount}</span>
+  </div>
+  <div class="img-container">
+    <img
+      src={img.src}
+      width={img.width}
+      height={img.height}
+      alt={img.alt}
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+  <div class="blog-article-content-container">
+    <Content />
+  </div>
+</BlogGeneralLayout>
+
+<style>
+  .img-container {
+    border: 4px solid var(--main-color);
+    width: 100%;
+    height: 45vh;
+    clip: rect(0, 0, 0, 0);
+    margin: 3rem auto;
+  }
+  .img-container > img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  :global(.blog-article-content-container) {
+    line-height: 2rem;
+  }
+  .blog-article-content-container :global(a) {
+    color: darkgoldenrod;
+  }
+  .blog-article-content-container :global(a:hover) {
+    color: orangered;
+  }
+  .blog-article-content-container :global(h2) {
+    margin-top: 4rem;
+    margin-bottom: 1.4rem;
+  }
+  .blog-article-content-container :global(h3) {
+    margin-top: 2.5rem;
+  }
+  .blog-article-content-container :global(p) {
+    margin: 1.7rem 1rem;
+  }
+  .blog-article-content-container :global(img) {
+    width: 100%;
+    height: auto;
+  }
+  .blog-article-content-container :global(ul) {
+    margin: auto 1rem;
+    padding-left: 1.6rem;
+  }
+  .blog-article-content-container :global(blockquote) {
+    margin: 0 1rem;
+    /* paddingの縦が0だとpタグのmarginと相殺されるため微小量を設定する */
+    padding: 0.01rem 0.8rem;
+    background-color: rgba(var(--main-color-params), 0.2);
+    border-radius: 10px;
+  }
+  .blog-article-content-container :global(nav.toc) {
+    & :global(.toc-link) {
+      color: var(--main-color);
+      &:hover {
+        color: orangered;
+      }
+    }
+    margin: auto 1rem;
+    padding: 0.8rem 1.2rem;
+    background-color: rgba(200, 200, 200, 0.5);
+    border-radius: 5px;
+    & :global(ol) {
+      margin-left: 1.6rem;
+    }
+  }
+  /* h2, h3見出し開始位置を崩さない処理と, 見出し上でホバーしたらアンカーリンク（#文字）が表示される処理. */
+  .blog-article-content-container {
+    & :global(span.anchor-link) {
+      display: inline-block;
+      width: 1rem;
+      margin-left: -1rem;
+      color: transparent;
+    }
+    & :global(h2:hover span.anchor-link) {
+      color: inherit;
+    }
+    & :global(h3:hover span.anchor-link) {
+      color: inherit;
+    }
+  }
+  /* 脚注の下の<p>タグの行間を詰める処理 NOTE: むしろrehypeで<p>タグを取ってもいいかもしれない. */
+  .blog-article-content-container {
+    & :global(h2#footnote-label + ol) {
+      margin: 1.7rem 1rem;
+      & :global(p) {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+    }
+  }
+</style>
