@@ -5,15 +5,15 @@ labels: ["contents-request"]
 assignees: ["littleIkawa"]
 
 body:
-  - type: input
-    id: request
-    attributes:
-      label: お題
-    validations:
-      required: true
-  - type: textarea
-    id: message
-    attributes:
-      label: 自由記述
-      description: 含めてほしいトピックや追加情報など
+- type: input
+  id: request
+  attributes:
+    label: お題
+  validations:
+    required: true
+- type: textarea
+  id: message
+  attributes:
+    label: 自由記述
+    description: 含めてほしいトピックや追加情報など
 
