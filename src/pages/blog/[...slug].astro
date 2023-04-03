@@ -1,10 +1,11 @@
 ---
-import { CollectionEntry, getCollection } from "astro:content";
+import { getCollection } from "astro:content";
 import { getImage } from "@astrojs/image";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import { dateText, getBlogPostEntries } from "@lib/utils";
 import TagContainer from "@components/blog/TagContainer.svelte";
 import type { FrontmatterByRemarkPlugin } from "@lib/schema";
+import type { InferGetStaticPropsType } from "astro";
 
 export async function getStaticPaths() {
   const allBlogPosts = await getCollection("blog");
@@ -14,9 +15,7 @@ export async function getStaticPaths() {
   }));
 }
 
-type Props = {
-  entry: CollectionEntry<"blog">;
-};
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { entry } = Astro.props;
 const { Content, remarkPluginFrontmatter } = await entry.render();

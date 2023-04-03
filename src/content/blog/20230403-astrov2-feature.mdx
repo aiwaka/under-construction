@@ -1,0 +1,197 @@
+---
+title: Astro v2.0のCollections APIを用いたブログ記事管理
+description: 管理を移行してみた
+thumbnail: blue_square
+date: 2023-04-03
+tags:
+  - Astro
+  - Typescript
+  - プログラミング
+  - ブログ
+---
+
+## 概要
+
+Astroを使ってこのウェブサイトを作っています。
+色々記事も書いています。
+
+先日（2023年1月24日）にAstroのメジャーアップデートがあり、バージョンが2.0になりました（[リリース](https://astro.build/blog/astro-2/)）.
+このサイトにAstroを導入したのはコミット履歴を見ると3月5日のようですが、調べながら作っていくとなるとその時点での記事は殆どがv1.0準拠のもので公式サイトでも追加機能的な扱いでした。
+
+ブログ自体の機能の充実や記事の投稿が軌道に乗ってきたため、これを機に新しい機能を使ってみたいと思い、アップデートしてみました。
+ついでにGitHubリポジトリ側でも少し遊んでみました。
+
+## これまでの構成
+
+実際は自分もマークダウンを形式化しないといけないため、自分でデータ構造を作っていました。
+記事になるマークダウンのfrontmatterには定義しなくてもよいフィールドやデフォルト値を持つフィールドがあります。
+この未定義成分を含むインターフェイスと、デフォルトの補完や加工をした最終的なオブジェクトのインターフェイスの2種類を作り、`.mdx`ファイルの一覧からオブジェクト一覧を作成する仕組みを作りました。
+
+規模が小さいのでそれといった問題はなかったのですが、
+
+- 型チェックはどうしても強制されたものになる
+- 属性の指定忘れや、型のミスをした際のエラーがわかりづらい
+- 全記事ファイルでレイアウトファイルの指定をしなければならない
+
+などは気になっていました。
+個人的には特に最後の問題が嫌いで、相対パスを含むデータを複製し続けるのは如何なものかと思っていました。
+型についても、日付が`Date`型か文字列かはちょっとわかりづらく、実装当初は惑わされました。
+
+## Collections API
+
+マークダウン/MDXで作業するのは辛いというウェブ開発の問題に取り組んだと豪語しています。
+外部データを扱う場合は基本的に解釈やバリデーションがちょっとした手間になりますが、マークダウンは基礎的な構造化文書であり、体系化されたデータ形式として使うには上述のように自分で実装が必要です。
+コンテンツとなるマークダウンのfrontmatterをスキーマで管理できる仕組みを導入し, 型チェックやエラー表示の改善を行う試みのようです（めっちゃ横文字が多い文章になってしまった）。
+
+### スキーマ
+
+コンテンツの形式はZodというライブラリの形式に従うことになっています。
+全く知りませんでしたがデータ構造検証のライブラリの中ではかなり勢いがあるプロジェクトみたいです。
+オプショナル型、デフォルト値や入力を元にした変換などがスキーマの時点で記述できるため、最初に述べた型変換が必要なくなりました。
+マークダウン側で指定されていないものもちゃんと考慮した型指定が効いています。
+これは便利。
+
+見様見真似で書いてみたのが以下。
+
+```ts:src/lib/schema/blog.ts
+import { z } from "astro:content";
+
+enum ThumbnailFormatEnum {
+  png = "png",
+  jpg = "jpg",
+}
+const ThumbnailFormatSchema = z.nativeEnum(ThumbnailFormatEnum);
+
+export const BlogArticleSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  thumbnail: z.string(),
+  thumbnailFormat: ThumbnailFormatSchema.default(ThumbnailFormatEnum.png),
+  date: z.date(),
+  updateDate: z.date().optional(),
+  tags: z.string().array(),
+  latex: z.boolean().default(false),
+  draft: z.boolean().default(false),
+});
+```
+
+フォーマット指定はenumで書いていますが普通に文字列リテラルのunionを使えば良さそうです。
+
+### コレクション定義
+
+そもそもCollections APIはブログ、ニュース、リリース記事など、様々な形式を統括することを想定したものです。
+~~こういう小規模なもので使う必要は皆無です。~~
+そのため、その形式に名前をつけて形式ごとにスキーマを定義できる仕組みになっています。
+この形式とその名前をコレクションと呼びます。
+
+この定義を行うディレクトリは予約・固定されており、`src/content`以下で行うことになっています。
+もうこの名前を他の用途で使っていた人は名前の変更を強制されます（なかなか頑張るなあと思いました）。
+ここに`config.ts`を置いて設定を書き、定義したコレクション名のディレクトリ内に`.md/.mdx`ファイルを配置します。
+これによりAstro側で一括した管理がなされます。
+私の場合は以下のようになります。
+
+```ts:src/content/config.ts
+import { defineCollection } from "astro:content";
+import { BlogArticleSchema } from "@lib/schema";
+
+const blogCollection = defineCollection({ schema: BlogArticleSchema });
+
+export const collections = {
+  blog: blogCollection,
+};
+```
+
+コレクションを増やしたい場合は`blog: blogCollection`と並列に増やしていけばいいというわけです。
+`astro`コマンドの`dev`または`build`または`sync`サブコマンドを走らせると、プロジェクトルートに`.astro`というディレクトリが作成され、ここにコレクションの型情報がまとめられます（SvelteKitと似ている）。
+プロジェクト内でコレクションの情報を参照する際はこのディレクトリへのエイリアスを使うことになります。
+
+### スキーマで管理しきれない部分
+
+ただちょっと問題がありました。
+[公式ドキュメント](https://docs.astro.build/ja/guides/content-collections/#modifying-frontmatter-with-remark)にも書いてありますが、Remarkプラグインでfrontmatterに追加された情報は検証できません。
+私は文字数を数えて埋め込むRemarkプラグインを自分で書いて使っていたので、少々困りました。
+レンダーをその場で行うことで最終的に得られるfrontmatterオブジェクトを得ることはでき、ここだけ型を犠牲にすれば必要な情報を取得することは容易にできます。
+が、せっかくなので型のことを考えてあげたいと思ってあがいてみました。
+Typescriptに親しみまくっているわけではないので最終的には無理やりな箇所が一箇所できてしまいましたが...
+
+```ts:src/lib/schema/blog.ts
+import type { CollectionEntry } from "astro:content";
+
+export interface FrontmatterByRemarkPlugin {
+  wordCount: number;
+}
+export type BlogArticleSchemaType = CollectionEntry<"blog">["data"];
+export type FinalBlogCollectionEntry = Omit<CollectionEntry<"blog">, "data"> & {
+  data: BlogArticleSchemaType & FrontmatterByRemarkPlugin;
+};
+```
+
+まず、Remarkにより追加される属性をまとめたインターフェイスを用意します。
+また、スキーマはZodオブジェクトとして定義されますが、このオブジェクトから`CollectionEntry`により型を得ることができます。
+`CollectionEntry`は先程の`.astro`ディレクトリを参照するもので、型引数でコレクション名を指定してスキーマに対応する属性（`data`）を含む記事のデータ型（エントリー）を取得できます。
+最後に、`FinalBlogCollectionEntry`という型を作成します。
+エントリーのスキーマの型を、Remarkによる加工の情報を付与したものに置き換えています。
+コレクションの記事を取得する際は
+
+```ts
+import { getCollection } from "astro:content";
+
+const allBlogPosts = await getCollection("blog"); // 型は CollectionEntry<"blog">[]
+```
+
+によってできます。
+この配列を受け取り、各エントリーを一度レンダーしてRemarkによる加工を行う関数を作ります。
+最終的に`FinalBlogCollectionEntry[]`が返ってくるようにすれば、Remarkによる加工の安全でない処理をその関数の中だけに留めておけます。
+実際にはdraftフラグがあるものを除いたりタグフィルタをかけたりを同時に行っています。
+
+得られた配列は型定義によりエントリーの情報をすべて保持しているので、加工された情報が単に追加されただけです。
+すなわち、加工された情報は元からあるものとして扱うことができます。
+ページ分割に渡したりするのも全く問題なくできます。
+
+### レイアウトは不要
+
+コンテンツをAstroで管理してくれるようになったため、もはやマークダウン側でレイアウトを指定する必要はなく、型がきちんとついたデータを使ってAstroページを構成することができます。
+実際には動的URLになるので、`getStaticPaths`を使って生成しますが、レイアウトに情報を渡すためだけに定義していた型や構造が不要になりました。
+
+### 画像
+
+記事内で使う画像はAstroコンポーネントを通して最適化するために相対パスで指定しています。
+`src/content`以下に画像を入れても動くのですが警告が出まくるので正しくはないのでしょう。
+そのため`tsconfig.js`のオプションにパス解決を追加してブログ記事画像を入れるディレクトリを`src`以下に作成しました。
+その上で、記事内の`import()`の引数にこのエイリアスを含んだパスを入れるようにすれば、コンポーネントには一切変更を加えずに移行できました。
+`import`はViteの機能を利用しているらしいですが、このように使えるのであればメンテナンスが楽にできそうです。
+
+## 自動型推論を使う
+
+これはAstro v2.1からの機能です。
+`InferGetStaticPropsType`という型を使うと、`getStaticPaths`関数からそのページの`Props`を推定してくれるというものです。
+`InferGetStaticParamsType`も使えます。
+自分は知らなかったですがNext.js使いの人的にはこのParamsとPropsが同時に設定できるのが嬉しいらしいので、さらに使いやすくなるのではないかと思います。
+ただ、ページ分割のために`Promise<GetStaticPathsResult[]>`が返るようになっている場合はうまく推論できないみたいです。
+今後に期待でしょうか（自分でできるようになりたい）。
+
+## おまけ
+
+このサイトは静的なためフォームとかを置く気は一切ありません。
+が、記事リクエスト的なものをやってみたいと思いました。
+ちょうど同じようなことをやっている人がいた[^cite1]ので、参考にさせてもらいました。
+
+[^cite1]: [https://blog.ojisan.io/renew-blog-2022/](https://blog.ojisan.io/renew-blog-2022/)
+
+[ここ](https://github.com/littleIkawa/under-construction/issues/new/choose)からIssueを作ってもらえれば記事リクエストができます。
+GitHubのIssue formsという機能を使ってみました。
+ちなみに、`.github/ISSUE_TEMPLATE`以下のテンプレート定義の`.yaml`ファイル名が半角文字でなければフォーム定義として認識されないという罠に引っかかりました（最初で作ったときは`.md`で、自動で作られたファイル名がテンプレート名そのままの日本語になっていました）。
+
+よかったらリクエストお願いします。
+
+## まとめ
+
+というわけで無事に構成を変えることができました。
+今後とも宜しくお願いします。
+
+画像最適化も組み込みになる予定のようで、v2.1で既に`experimental`フラグを用いて使うことができます。
+現状のプラグイン依存もあまり好きではないので、次に試したいと思っています。
+v2.1の別の機能としてMarkdocの採用もありますがこちらは特に必要はないかなと思います。
+
+オープンソースソフトウェアなのだからソースを読めばいろいろなことができるようになるはずですが、使う側にばかりなってしまいます。
+いろんな思うことが出始めてきているので、そろそろ作る側に回ってみたいなとも思います。
