@@ -11,4 +11,9 @@ body:
       label: お題
     validations:
       required: true
+  - type: textarea
+    id: message
+    attributes:
+      label: 自由記述
+      description: 含めてほしいトピックや追加情報など
 
