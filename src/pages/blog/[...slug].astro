@@ -1,16 +1,25 @@
 ---
-import type { MarkdownLayoutProps } from "astro";
-import { ArticleAttribute, ArticleRawAttribute } from "@lib/articles";
-import { dateText, getFilenameFromPath } from "@lib/utils";
-import BlogGeneralLayout from "./BlogGeneralLayout.astro";
+import { CollectionEntry, getCollection } from "astro:content";
 import { getImage } from "@astrojs/image";
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import { dateText, getBlogPostEntries } from "@lib/utils";
 import TagContainer from "@components/blog/TagContainer.svelte";
+import type { FrontmatterByRemarkPlugin } from "@lib/schema";
 
-type Props = MarkdownLayoutProps<ArticleRawAttribute>;
+export async function getStaticPaths() {
+  const allBlogPosts = await getCollection("blog");
+  return (await getBlogPostEntries(allBlogPosts)).map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
 
-// 未指定フィールドを含むものとして取得
-const rawFrontmatter = Astro.props.frontmatter;
-// 確実に指定されたものに変更する.
+type Props = {
+  entry: CollectionEntry<"blog">;
+};
+
+const { entry } = Astro.props;
+const { Content, remarkPluginFrontmatter } = await entry.render();
 const {
   title,
   description,
@@ -20,14 +29,13 @@ const {
   thumbnailFormat,
   tags,
   latex,
-  wordCount,
-} = ArticleAttribute.fromRawAttribute(
-  getFilenameFromPath(rawFrontmatter.file) ?? "",
-  rawFrontmatter
-);
+} = entry.data;
+const additionalFrontmatter =
+  remarkPluginFrontmatter as FrontmatterByRemarkPlugin;
+const wordCount = additionalFrontmatter.wordCount;
 
 const img = await getImage({
-  src: import(`../pages/blog/thumb/${thumbnail}.${thumbnailFormat}`),
+  src: import(`../blog/thumb/${thumbnail}.${thumbnailFormat}`),
   format: "webp",
   width: 1024,
   alt: "thumbnail",
@@ -74,7 +82,7 @@ const ogp = {
     />
   </div>
   <div class="blog-article-content-container">
-    <slot />
+    <Content />
   </div>
 </BlogGeneralLayout>
 

@@ -6,7 +6,6 @@ import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 
-import remarkSmartypants from "remark-smartypants";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
@@ -32,12 +31,7 @@ export default defineConfig({
       serviceEntryPoint: "@astrojs/image/sharp",
     }),
     mdx({
-      remarkPlugins: [
-        // remarkSmartypants,
-        remarkCodeTitles,
-        remarkMath,
-        remarkWordCountPlugin,
-      ],
+      remarkPlugins: [remarkCodeTitles, remarkMath, remarkWordCountPlugin],
       rehypePlugins: [
         rehypeKatex,
         rehypeHoverFootnote,
@@ -70,6 +64,9 @@ export default defineConfig({
   site: "https://littleikawa.github.io",
   base: "/under-construction",
   build: {
+    // NOTE: ビルド時ページファイルとして`foo/index.html`が作られるのを防ぎ, 代わりに`foo.html`を作る.
+    // これによりマークダウンの中で相対リンクを貼るようにすれば開発環境と同じリンク関係が保たれる.
+    // GitHub Pagesはルートの`index.html`を探すが, このプロジェクトでは`index.astro`があるので問題ない.
     format: "file",
   },
 });

@@ -1,29 +1,35 @@
 ---
+import { getCollection } from "astro:content";
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import type { ArticleAttribute } from "@lib/articles";
-import { getAllTagSet, getAttrList, POST_PER_PAGE } from "@lib/utils";
+import { getAllTagSet, getBlogPostEntries, POST_PER_PAGE } from "@lib/utils";
+import type { FinalBlogCollectionEntry } from "@lib/schema";
 
 export async function getStaticPaths() {
-  // 全記事を取得
-  const posts = await Astro.glob("../../blog/*.mdx");
-  const allTagList = Array.from(getAllTagSet(posts));
-  return allTagList.map((tag) => ({
-    params: {
-      tag,
-    },
-    props: {
-      postAttrList: getAttrList(posts, { tag }),
-    },
-  }));
+  const allBlogPosts = await getCollection("blog");
+  const allTagList = Array.from(getAllTagSet(allBlogPosts));
+  return await Promise.all(
+    allTagList.map(async (tag) => ({
+      params: {
+        tag,
+      },
+      props: {
+        blogPostEntries: await getBlogPostEntries(allBlogPosts, { tag }),
+      },
+    }))
+  );
+}
+
+interface Props {
+  blogPostEntries: FinalBlogCollectionEntry[];
 }
 
 const { tag } = Astro.params;
-const postAttrList = Astro.props.postAttrList as ArticleAttribute[];
-postAttrList.sort((a, b) => (a.date < b.date ? 1 : -1));
+const { blogPostEntries } = Astro.props;
+blogPostEntries.sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
 
-const pageNum = Math.ceil(postAttrList.length / POST_PER_PAGE);
+const pageNum = Math.ceil(blogPostEntries.length / POST_PER_PAGE);
 const ogp = {
   url: Astro.request.url,
   type: "blog",
@@ -40,7 +46,7 @@ const ogp = {
     タグ一覧へ
   </a>
   <h3>#{tag}の検索結果</h3>
-  <ArticleCardContainer cardList={postAttrList.slice(0, POST_PER_PAGE)} />
+  <ArticleCardContainer cardList={blogPostEntries.slice(0, POST_PER_PAGE)} />
 
   <PaginationContainer
     subbase={`blog/tags/${tag}/`}

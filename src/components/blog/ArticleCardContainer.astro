@@ -1,17 +1,17 @@
 ---
-import type { ArticleAttribute } from "@lib/articles";
 import ArticleCard from "@components/blog/ArticleCard.astro";
+import type { FinalBlogCollectionEntry } from "@lib/schema";
 
 interface Props {
-  cardList: ArticleAttribute[];
+  cardList: FinalBlogCollectionEntry[];
 }
 const { cardList } = Astro.props;
 ---
 
 <div class="contents-card-container">
   {
-    cardList.map((data) => {
-      return <ArticleCard metadata={data} />;
+    cardList.map((entry) => {
+      return <ArticleCard entry={entry} />;
     })
   }
 </div>

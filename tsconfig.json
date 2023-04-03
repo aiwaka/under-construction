@@ -1,12 +1,14 @@
 {
   "extends": "astro/tsconfigs/strict",
+  "exclude": ["node_modules/**/*", "dist/**/*"],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@layouts/*": ["src/layouts/*"],
       "@components/*": ["src/components/*"],
       "@assets/*": ["src/assets/*"],
-      "@lib/*": ["src/lib/*"]
+      "@lib/*": ["src/lib/*"],
+      "@blog-images/*": ["src/blog-images/*"]
     },
     "types": ["@astrojs/image/client"]
   }

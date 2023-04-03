@@ -1,10 +1,11 @@
 ---
+import { getCollection } from "astro:content";
 import ArticleTag from "@components/blog/ArticleTag.svelte";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import { getAllTagSet } from "@lib/utils";
 
-const posts = await Astro.glob("../../blog/*.mdx");
-const allTagList = Array.from(getAllTagSet(posts));
+const allBlogPosts = await getCollection("blog");
+const allTagList = Array.from(getAllTagSet(allBlogPosts));
 
 const ogp = {
   url: Astro.request.url,
