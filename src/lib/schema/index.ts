@@ -1,34 +1,15 @@
-import type { CollectionEntry } from "astro:content";
-import { z } from "astro:content";
+import { BlogArticleSchema } from "./blog";
+import type {
+  ThumbnailFormatType,
+  FrontmatterByRemarkPlugin,
+  BlogArticleSchemaType,
+  FinalBlogCollectionEntry,
+} from "./blog";
 
-enum ThumbnailFormatEnum {
-  png = "png",
-  jpg = "jpg",
-}
-const ThumbnailFormatSchema = z.nativeEnum(ThumbnailFormatEnum);
-export type ThumbnailFormat = z.infer<typeof ThumbnailFormatSchema>;
-
-export const BlogArticleSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  thumbnail: z.string(),
-  thumbnailFormat: ThumbnailFormatSchema.default(ThumbnailFormatEnum.png),
-  date: z.date(),
-  updateDate: z.date().optional(),
-  tags: z.string().array(),
-  latex: z.boolean().default(false),
-  draft: z.boolean().default(false),
-});
-
-/** Remarkによって書き換えられて追加される属性 */
-export interface FrontmatterByRemarkPlugin {
-  wordCount: number;
-}
-
-/** ブログ記事のfrontmatterのスキーマを表す型 */
-export type BlogArticleSchemaType = CollectionEntry<"blog">["data"];
-
-/** コレクション情報のスキーマ部分にremarkによる加工を追加した型 */
-export type FinalBlogCollectionEntry = Omit<CollectionEntry<"blog">, "data"> & {
-  data: BlogArticleSchemaType & FrontmatterByRemarkPlugin;
+export {
+  BlogArticleSchema,
+  BlogArticleSchemaType,
+  ThumbnailFormatType,
+  FrontmatterByRemarkPlugin,
+  FinalBlogCollectionEntry,
 };
