@@ -3,7 +3,6 @@ description: 何か書いてほしいお題があれば投稿リクエストを�
 title: "[request]: "
 labels: ["contents-request"]
 assignees: ["littleIkawa"]
-
 body:
 - type: input
   id: request
