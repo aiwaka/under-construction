@@ -4,7 +4,7 @@ import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import { getAllTagSet, getBlogPostEntries, POST_PER_PAGE } from "@lib/utils";
-import type { FinalBlogCollectionEntry } from "@lib/schema";
+import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 
 export async function getStaticPaths() {
   const allBlogPosts = await getCollection("blog");
@@ -21,11 +21,10 @@ export async function getStaticPaths() {
   );
 }
 
-interface Props {
-  blogPostEntries: FinalBlogCollectionEntry[];
-}
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { tag } = Astro.params;
+const { tag } = Astro.params as Params;
 const { blogPostEntries } = Astro.props;
 blogPostEntries.sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
 
