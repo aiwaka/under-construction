@@ -6,7 +6,7 @@ import { dateText, getBlogPostEntries } from "@lib/utils";
 import TagContainer from "@components/blog/TagContainer.svelte";
 import type { FrontmatterByRemarkPlugin } from "@lib/schema";
 import type { InferGetStaticPropsType } from "astro";
-import ArticleCard from "@components/blog/ArticleCard.astro";
+import SiblingsLinkContainer from "@components/blog/SiblingsLinkContainer.astro";
 
 export async function getStaticPaths() {
   const allBlogPosts = await getCollection("blog");
@@ -63,15 +63,12 @@ const ogp = {
 <BlogGeneralLayout ogp={ogp} title={title} usingLatex={latex}>
   <h1>{title}</h1>
   <div class="date-block">
-    <span>{dateText(date)}</span>
+    <span>
+      {dateText(date)}
+      {updateDate ? <>（{dateText(updateDate)} 追記）</> : null}
+    </span>
   </div>
-  {
-    updateDate ? (
-      <div class="date-block">
-        <span>{dateText(updateDate)} 追記</span>
-      </div>
-    ) : null
-  }
+
   <TagContainer tagList={tags} />
   {
     /* NOTE: この文字数カウントが正確か検証はしていない. 大体あっていそうだが... */
@@ -92,32 +89,7 @@ const ogp = {
   <div class="blog-article-content-container">
     <Content />
   </div>
-  <div class="prev-next-container">
-    {
-      next ? (
-        <div class="card-box next">
-          <div class="guide-text">
-            <a href={`${import.meta.env.BASE_URL}blog/${next.slug}`}>
-              <p>Next &larr;</p>
-            </a>
-          </div>
-          <ArticleCard entry={next} mini={true} />
-        </div>
-      ) : null
-    }
-    {
-      prev ? (
-        <div class="card-box prev">
-          <div class="guide-text">
-            <a href={`${import.meta.env.BASE_URL}blog/${prev.slug}`}>
-              <p>&rarr; Prev</p>
-            </a>
-          </div>
-          <ArticleCard entry={prev} mini={true} />
-        </div>
-      ) : null
-    }
-  </div>
+  <SiblingsLinkContainer next={next} prev={prev} />
 </BlogGeneralLayout>
 
 <style>
@@ -207,32 +179,6 @@ const ogp = {
         margin-top: 0;
         margin-bottom: 0;
       }
-    }
-  }
-
-  /* 前後の記事へのリンクに対するスタイル */
-  .prev-next-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 1rem;
-    margin: 1rem 0;
-
-    & .card-box {
-      display: flex;
-      flex-direction: column;
-    }
-    & .guide-text {
-      width: fit-content;
-    }
-    & .next {
-      grid-column: 1 / 2;
-    }
-    & .prev {
-      grid-column: -2 / -1;
-      align-items: flex-end;
-    }
-    @media (max-width: 1024px) {
-      grid-template-columns: repeat(2, 1fr);
     }
   }
 </style>
