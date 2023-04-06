@@ -6,9 +6,11 @@ import type { FinalBlogCollectionEntry } from "@lib/schema";
 
 interface Props {
   entry: FinalBlogCollectionEntry;
+  /** サムネイルなどを省略した小さい形式にするかどうか */
+  mini?: boolean;
 }
 
-const { entry } = Astro.props;
+const { entry, mini } = Astro.props;
 const {
   slug,
   data: {
@@ -26,31 +28,40 @@ const {
 
 <a class="article-link" href={`${import.meta.env.BASE_URL}blog/${slug}`}>
   <div class="article-card">
-    <div class="img-container">
-      <Image
-        src={import(`../../pages/blog/thumb/${thumbnail}.${thumbnailFormat}`)}
-        alt="thumbnail"
-        width={1024}
-      />
-    </div>
-    <div class="card-contents">
-      <h2>{title}</h2>
-      <span>
-        {dateText(date)}
-      </span>
-      {
-        updateDate ? (
-          <>
-            <span>（{`${dateText(updateDate)} 追記`}）</span>
-          </>
-        ) : null
-      }
-      <div class="word-count">
-        <span>文字数：{wordCount}</span>
-      </div>
-      <div class="overview">{description}</div>
-      <TagContainer tagList={tags} />
-    </div>
+    {
+      !mini ? (
+        <>
+          <div class="img-container">
+            <Image
+              src={import(
+                `../../pages/blog/thumb/${thumbnail}.${thumbnailFormat}`
+              )}
+              alt="thumbnail"
+              width={1024}
+            />
+          </div>
+          <div class="card-contents">
+            <h2>{title}</h2>
+            <span>{dateText(date)}</span>
+            {updateDate ? (
+              <>
+                <span>（{`${dateText(updateDate)} 追記`}）</span>
+              </>
+            ) : null}
+            <div class="word-count">
+              <span>文字数：{wordCount}</span>
+            </div>
+            <div class="overview">{description}</div>
+            <TagContainer tagList={tags} />
+          </div>
+        </>
+      ) : (
+        <div class="card-contents mini">
+          <h2>{title}</h2>
+          <span>{dateText(date)}</span>
+        </div>
+      )
+    }
   </div>
 </a>
 
@@ -87,5 +98,12 @@ const {
   }
   .card-contents {
     padding: 0.5rem 1rem;
+  }
+  @media (max-width: 1024px) {
+    .mini {
+      & h2 {
+        font-size: 1rem;
+      }
+    }
   }
 </style>
