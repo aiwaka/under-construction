@@ -134,13 +134,13 @@ const ogp = {
     height: 100%;
   }
   :global(.blog-article-content-container) {
-    line-height: 2rem;
+    line-height: 1.8rem;
   }
   .blog-article-content-container :global(a) {
     color: darkgoldenrod;
-  }
-  .blog-article-content-container :global(a:hover) {
-    color: orangered;
+    &:hover {
+      color: orangered;
+    }
   }
   .blog-article-content-container :global(h2) {
     margin-top: 4rem;
@@ -150,7 +150,10 @@ const ogp = {
     margin-top: 2.5rem;
   }
   .blog-article-content-container :global(p) {
-    margin: 1.7rem 1rem;
+    margin: 1.5rem 1rem;
+    @media (max-width: 1024px) {
+      margin: 1.5rem 0;
+    }
   }
   .blog-article-content-container :global(img) {
     width: 100%;
@@ -163,7 +166,7 @@ const ogp = {
   .blog-article-content-container :global(blockquote) {
     margin: 0 1rem;
     /* paddingの縦が0だとpタグのmarginと相殺されるため微小量を設定する */
-    padding: 0.01rem 0.8rem;
+    padding: 1px 0.8rem;
     background-color: rgba(var(--main-color-params), 0.2);
     border-radius: 10px;
   }
@@ -174,7 +177,6 @@ const ogp = {
         color: orangered;
       }
     }
-    margin: auto 1rem;
     padding: 0.8rem 1.2rem;
     background-color: rgba(200, 200, 200, 0.5);
     border-radius: 5px;
@@ -208,6 +210,7 @@ const ogp = {
     }
   }
 
+  /* 前後の記事へのリンクに対するスタイル */
   .prev-next-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
