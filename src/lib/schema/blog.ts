@@ -12,7 +12,7 @@ export const BlogArticleSchema = z.object({
   title: z.string(),
   description: z.string(),
   thumbnail: z.string(),
-  thumbnailFormat: ThumbnailFormatSchema.default(ThumbnailFormatEnum.png),
+  thumbnailFormat: ThumbnailFormatSchema,
   date: z.date(),
   updateDate: z.date().optional(),
   tags: z.string().array(),
