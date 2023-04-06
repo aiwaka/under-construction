@@ -17,6 +17,7 @@ const {
     date,
     updateDate,
     tags,
+    description,
     wordCount,
     thumbnailFormat,
   },
@@ -40,15 +41,15 @@ const {
       {
         updateDate ? (
           <>
-            <br />
-            <span>{`${dateText(updateDate)} 追記`}</span>
+            <span>（{`${dateText(updateDate)} 追記`}）</span>
           </>
         ) : null
       }
-      <TagContainer tagList={tags} />
       <div class="word-count">
         <span>文字数：{wordCount}</span>
       </div>
+      <div class="overview">{description}</div>
+      <TagContainer tagList={tags} />
     </div>
   </div>
 </a>
