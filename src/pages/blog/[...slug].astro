@@ -7,7 +7,8 @@ import type {
   FinalBlogCollectionEntry,
   FrontmatterByRemarkPlugin,
 } from "@lib/schema";
-import { dateText, getBlogPostEntries } from "@lib/utils";
+import { getBlogPostEntries } from "@lib/blog";
+import { dateText } from "@lib/utils";
 
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import SiblingsLinkContainer from "@components/blog/SiblingsLinkContainer.astro";
