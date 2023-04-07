@@ -1,11 +1,13 @@
 ---
 import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions, Page } from "astro";
+
+import type { FinalBlogCollectionEntry } from "@lib/schema";
+import { getAllTagSet, getBlogPostEntries, POST_PER_PAGE } from "@lib/utils";
+
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
-import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import { getAllTagSet, getBlogPostEntries, POST_PER_PAGE } from "@lib/utils";
-import type { GetStaticPathsOptions, Page } from "astro";
-import type { FinalBlogCollectionEntry } from "@lib/schema";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allBlogPosts = await getCollection("blog");

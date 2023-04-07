@@ -1,15 +1,17 @@
 ---
+import type { InferGetStaticPropsType } from "astro";
 import { getCollection, getEntryBySlug } from "astro:content";
 import { getImage } from "@astrojs/image";
-import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import { dateText, getBlogPostEntries } from "@lib/utils";
-import TagContainer from "@components/blog/TagContainer.svelte";
+
 import type {
   FinalBlogCollectionEntry,
   FrontmatterByRemarkPlugin,
 } from "@lib/schema";
-import type { InferGetStaticPropsType } from "astro";
+import { dateText, getBlogPostEntries } from "@lib/utils";
+
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import SiblingsLinkContainer from "@components/blog/SiblingsLinkContainer.astro";
+import TagContainer from "@components/blog/TagContainer.svelte";
 import ArticleTag from "@components/blog/ArticleTag.svelte";
 
 interface RelatedEntry {
@@ -274,6 +276,7 @@ const ogp = {
     & .article-link {
       border: 1px solid var(--main-color);
       border-bottom: 0;
+      background-color: rgba(var(--main-bg-params), 0.6);
       &:last-child {
         border: 1px solid var(--main-color);
       }

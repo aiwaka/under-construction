@@ -1,6 +1,7 @@
 <script lang="ts">
-  import ServiceIcon from "@components/ServiceIcon.svelte";
   import type { FrameworkData } from "@lib/profile";
+
+  import ServiceIcon from "@components/ServiceIcon.svelte";
 
   export let frameworkTableData: FrameworkData[];
 </script>

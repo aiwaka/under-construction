@@ -1,8 +1,10 @@
 ---
 import { getCollection } from "astro:content";
-import ArticleTag from "@components/blog/ArticleTag.svelte";
-import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+
 import { getAllTagSet } from "@lib/utils";
+
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import ArticleTag from "@components/blog/ArticleTag.svelte";
 
 const allBlogPosts = await getCollection("blog");
 const allTagList = Array.from(getAllTagSet(allBlogPosts));

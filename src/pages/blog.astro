@@ -1,9 +1,11 @@
 ---
+import { getCollection } from "astro:content";
+
+import { getBlogPostEntries, POST_PER_PAGE } from "@lib/utils";
+
+import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
-import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import { getBlogPostEntries, POST_PER_PAGE } from "@lib/utils";
-import { getCollection } from "astro:content";
 
 const allBlogPosts = await getCollection("blog");
 const blogPostEntries = await getBlogPostEntries(allBlogPosts);
