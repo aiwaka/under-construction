@@ -14,6 +14,9 @@ const navLinkList: NavLink[] = [
   { name: "CONTACT", href: "#contact" },
   { name: "BLOG", href: "blog" },
 ];
+
+const pathname = new URL(Astro.request.url).pathname;
+const currentPath = pathname.replace(import.meta.env.BASE_URL, "");
 ---
 
 <div id="website-header">
@@ -25,8 +28,10 @@ const navLinkList: NavLink[] = [
   <nav class="nav-link-container">
     {
       navLinkList.map((navLink) => {
+        const isCurrent =
+          navLink.href === "blog" && currentPath.startsWith("blog");
         return (
-          <PageLink isCurrent={false} href={navLink.href}>
+          <PageLink isCurrent={isCurrent} href={navLink.href}>
             {navLink.name}
           </PageLink>
         );
