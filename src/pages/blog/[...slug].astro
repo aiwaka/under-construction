@@ -10,8 +10,6 @@ import { dateText } from "@lib/utils";
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import SiblingsLinkContainer from "@components/blog/SiblingsLinkContainer.astro";
 import TagContainer from "@components/blog/TagContainer.svelte";
-// TODO: 不要なので消す
-import ArticleTag from "@components/blog/ArticleTag.svelte";
 
 export async function getStaticPaths() {
   const allBlogPosts = await getCollection("blog");
