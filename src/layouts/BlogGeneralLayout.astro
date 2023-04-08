@@ -1,7 +1,9 @@
 ---
 // ブログページだけ背景を変えたいので背景スタイルを当てるためにレイアウトを作成する.
 // またブログ記事タイトルを受け取った処理も行う.
+
 import type { OGPInfo } from "@lib/ogp";
+
 import BaseLayout from "./BaseLayout.astro";
 
 export interface Props {
@@ -9,14 +11,14 @@ export interface Props {
   ogp: OGPInfo;
   usingLatex?: boolean;
 }
-const { title, ogp, usingLatex = false } = Astro.props;
-const resultTitle =
-  title !== undefined
-    ? `Under Construction | Blog | ${title}`
+const { title: propTitle, ogp, usingLatex = false } = Astro.props;
+const title =
+  propTitle !== undefined
+    ? `Under Construction | Blog | ${propTitle}`
     : "Under Construction | Blog";
 ---
 
-<BaseLayout ogp={ogp} title={resultTitle}>
+<BaseLayout ogp={ogp} title={title}>
   {
     usingLatex && (
       <link

@@ -1,6 +1,7 @@
 <script lang="ts">
-  import ServiceIcon from "@components/ServiceIcon.svelte";
   import type { ToolsData } from "@lib/profile";
+
+  import ServiceIcon from "@components/ServiceIcon.svelte";
 
   export let toolsTableData: ToolsData[];
 </script>

@@ -1,8 +1,10 @@
 ---
-import { dateText } from "@lib/utils";
-import TagContainer from "./TagContainer.svelte";
 import { Image } from "@astrojs/image/components";
+
+import { dateText } from "@lib/utils";
 import type { FinalBlogCollectionEntry } from "@lib/schema";
+
+import TagContainer from "./TagContainer.svelte";
 
 interface Props {
   entry: FinalBlogCollectionEntry;
@@ -27,7 +29,7 @@ const {
 ---
 
 <a class="article-link" href={`${import.meta.env.BASE_URL}blog/${slug}`}>
-  <div class="article-card">
+  <div class="article-card" class:list={{ mini }}>
     {
       !mini ? (
         <>
@@ -56,10 +58,20 @@ const {
           </div>
         </>
       ) : (
-        <div class="card-contents mini">
-          <h2>{title}</h2>
-          <span>{dateText(date)}</span>
-        </div>
+        <>
+          <div class="img-container">
+            <Image
+              src={import(
+                `../../pages/blog/thumb/${thumbnail}.${thumbnailFormat}`
+              )}
+              alt="thumbnail"
+              width={512}
+            />
+          </div>
+          <div class="card-contents">
+            <h2>{title}</h2>
+          </div>
+        </>
       )
     }
   </div>
@@ -99,11 +111,12 @@ const {
   .card-contents {
     padding: 0.5rem 1rem;
   }
-  @media (max-width: 1024px) {
-    .mini {
-      & h2 {
-        font-size: 1rem;
-      }
+  .mini {
+    & h2 {
+      font-size: 1rem;
+    }
+    & .img-container {
+      height: 6rem;
     }
   }
 </style>

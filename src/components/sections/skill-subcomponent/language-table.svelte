@@ -1,6 +1,7 @@
 <script lang="ts">
-  import ServiceIcon from "@components/ServiceIcon.svelte";
   import type { LanguageData } from "@lib/profile";
+
+  import ServiceIcon from "@components/ServiceIcon.svelte";
 
   export let languageTableData: LanguageData[];
 </script>

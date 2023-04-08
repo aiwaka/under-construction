@@ -1,5 +1,6 @@
 ---
 import type { FinalBlogCollectionEntry } from "@lib/schema";
+
 import ArticleCard from "./ArticleCard.astro";
 
 interface Props {
@@ -11,7 +12,7 @@ const { next, prev } = Astro.props;
 
 <div class="prev-next-container">
   {
-    next ? (
+    next && (
       <div class="card-box next">
         <div class="guide-text">
           <a href={`${import.meta.env.BASE_URL}blog/${next.slug}`}>
@@ -20,10 +21,10 @@ const { next, prev } = Astro.props;
         </div>
         <ArticleCard entry={next} mini={true} />
       </div>
-    ) : null
+    )
   }
   {
-    prev ? (
+    prev && (
       <div class="card-box prev">
         <div class="guide-text">
           <a href={`${import.meta.env.BASE_URL}blog/${prev.slug}`}>
@@ -32,15 +33,15 @@ const { next, prev } = Astro.props;
         </div>
         <ArticleCard entry={prev} mini={true} />
       </div>
-    ) : null
+    )
   }
 </div>
 
 <style>
   .prev-next-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    column-gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 25%;
     margin: 1rem 0;
 
     & .card-box {
@@ -58,7 +59,7 @@ const { next, prev } = Astro.props;
       align-items: flex-end;
     }
     @media (max-width: 1024px) {
-      grid-template-columns: repeat(2, 1fr);
+      column-gap: 1rem;
     }
   }
 </style>

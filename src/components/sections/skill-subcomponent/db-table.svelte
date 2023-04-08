@@ -1,6 +1,7 @@
 <script lang="ts">
-  import ServiceIcon from "@components/ServiceIcon.svelte";
   import type { DbData } from "@lib/profile";
+
+  import ServiceIcon from "@components/ServiceIcon.svelte";
 
   export let dbTableData: DbData[];
 </script>
