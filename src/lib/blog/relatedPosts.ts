@@ -7,6 +7,11 @@ interface RelatedEntry {
   whyRelated: string;
 }
 
+/** 共通部分を取得する. */
+const intersection = <T>(x: T[], y: T[]) => {
+  return [...x].filter((e) => y.includes(e));
+};
+
 // TODO: 静的ビルドなのでパフォーマンスに影響はないが, だいぶ冗長なのでコードを見直す
 export const createRelated = (
   allEntries: FinalBlogCollectionEntry[],
@@ -14,9 +19,9 @@ export const createRelated = (
 ) => {
   // 以下で関連記事を追加する.
   // 記事のタグごとにリスト化し, タグごとに一つずつ関連記事として取る.
-  const relatedSlugList: { slug: string; why: string }[] = [];
+  const relatedSlugList: Omit<RelatedEntry, "title">[] = [];
   targetEntry.data.related.forEach((related) =>
-    relatedSlugList.push({ slug: related, why: "specified" })
+    relatedSlugList.push({ slug: related, whyRelated: "specified" })
   );
   const tags = [...targetEntry.data.tags];
   // タグに対してフィルターした記事情報を保存するオブジェクト
@@ -45,7 +50,7 @@ export const createRelated = (
     for (const tag of tags) {
       const popped = filteredDict[tag].pop();
       if (popped) {
-        relatedSlugList.push({ slug: popped.slug, why: tag });
+        relatedSlugList.push({ slug: popped.slug, whyRelated: tag });
         addedNum += 1;
       }
     }
@@ -53,7 +58,7 @@ export const createRelated = (
     if (addedNum === 0) break;
   }
   // 得たslugのリストからエントリーを得て必要な形の配列に変換
-  const related = relatedSlugList.slice(0, 5).map(({ slug, why }) => {
+  const related = relatedSlugList.slice(0, 5).map(({ slug, whyRelated }) => {
     const entry = allEntries.find((entry) => entry.slug === slug);
     if (entry === undefined) {
       throw new Error(`slug '${slug}' is not defined`);
@@ -61,7 +66,7 @@ export const createRelated = (
     return {
       slug: entry.slug,
       title: entry.data.title,
-      whyRelated: why,
+      whyRelated,
     } satisfies RelatedEntry;
   });
   return related;
