@@ -1,0 +1,37 @@
+{
+	"Blog Image": {
+		"scope": "mdx",
+		"prefix": "image",
+		"body": [
+			"<BlogImageList",
+			"  images={{",
+			"    src: import(\"@blog-images/$1\"),",
+			"    width: ${2:1200},",
+			"    caption: \"$3\",",
+			"  }}",
+			"/>",
+		],
+		"description": "Insert a image"
+	},
+	"Blog Image List": {
+		"scope": "mdx",
+		"prefix": "imagelist",
+		"body": [
+			"<BlogImageList",
+			"  images={[",
+			"    {",
+			"      src: import(\"@blog-images/$1\"),",
+			"      width: ${2:1200},",
+			"      caption: \"$3\",",
+			"    },",
+			"    {",
+			"      src: import(\"@blog-images/$4\"),",
+			"      width: ${5:1200},",
+			"      caption: \"$6\",",
+			"    },",
+			"  ]}",
+			"/>",
+		],
+		"description": "Insert image list"
+	}
+}
