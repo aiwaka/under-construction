@@ -97,7 +97,7 @@ const ogp = {
   <h2>関連記事</h2>
   <div class="related-articles-container">
     {
-      related.map(({ slug, title, whyRelated: why }) => {
+      related.map(({ slug, title, whyRelated }) => {
         return (
           <a
             class="article-link"
@@ -105,7 +105,9 @@ const ogp = {
           >
             <div class="related-article">
               <span>{title}</span>
-              {why !== "specified" && <ArticleTag tag={why} />}
+              {whyRelated !== "specified" && (
+                <TagContainer tagList={whyRelated} />
+              )}
             </div>
           </a>
         );
