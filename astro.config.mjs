@@ -7,11 +7,12 @@ import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 
 import remarkMath from "remark-math";
+import remarkCodeTitles from "remark-code-titles";
+import remarkJaRuby from "remark-jaruby";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
-import remarkCodeTitles from "remark-code-titles";
 
 import remarkWordCountPlugin from "./plugins/remark-word-count-plugin.mjs";
 import rehypeHoverFootnote from "./plugins/rehype-hover-footnote";
@@ -31,7 +32,12 @@ export default defineConfig({
       serviceEntryPoint: "@astrojs/image/sharp",
     }),
     mdx({
-      remarkPlugins: [remarkCodeTitles, remarkMath, remarkWordCountPlugin],
+      remarkPlugins: [
+        remarkCodeTitles,
+        remarkJaRuby,
+        remarkMath,
+        remarkWordCountPlugin,
+      ],
       rehypePlugins: [
         rehypeKatex,
         rehypeHoverFootnote,
