@@ -26,6 +26,7 @@
     "rehype-slug": "^5.1.0",
     "rehype-toc": "^3.0.2",
     "remark-code-titles": "^0.1.2",
+    "remark-jaruby": "^0.1.0",
     "remark-math": "^5.1.1",
     "sharp": "^0.31.3",
     "svelte": "^3.55.1"

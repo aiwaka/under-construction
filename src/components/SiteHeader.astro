@@ -56,7 +56,10 @@ const currentPath = pathname.replace(import.meta.env.BASE_URL, "");
     backdrop-filter: blur(1rem);
     @media (max-width: 1024px) {
       flex-direction: column;
-      height: calc(var(--mobile-header-height) + var(--mobile-nav-height));
+      /* border分を足す（box-sizing: content-box;でもよい） */
+      height: calc(
+        var(--mobile-header-height) + var(--mobile-nav-height) + 2px
+      );
       border-bottom: 2px solid var(--main-color);
     }
   }
@@ -89,9 +92,8 @@ const currentPath = pathname.replace(import.meta.env.BASE_URL, "");
     width: fit-content;
     height: 100%;
     @media (max-width: 1024px) {
-      position: relative;
-      bottom: 0;
       height: var(--mobile-nav-height);
+      overflow: scroll;
     }
   }
 </style>
