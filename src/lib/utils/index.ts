@@ -11,16 +11,8 @@ const dateText = (date: Date): string => {
 };
 
 /**
- * サムネイルファイル名を参照すべきパスに変換する
- * @param filename 拡張子付きファイル名
- */
-const thumbnailPath = (filename: string): string => {
-  return `${import.meta.env.BASE_URL}blog/thumb/${filename}`;
-};
-
-/**
  * 1ページあたりの記事数
  */
 const POST_PER_PAGE = 9 as const satisfies number;
 
-export { getFilenameFromPath, dateText, thumbnailPath, POST_PER_PAGE };
+export { getFilenameFromPath, dateText, POST_PER_PAGE };
