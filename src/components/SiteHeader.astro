@@ -53,13 +53,12 @@ const currentPath = pathname.replace(import.meta.env.BASE_URL, "");
     right: 0;
     top: 0;
     background-color: var(--main-color);
+    /* モバイル表示時にoverflowを発生させないため（heightにborderの幅を足してもよい） */
+    box-sizing: content-box;
     backdrop-filter: blur(1rem);
     @media (max-width: 1024px) {
       flex-direction: column;
-      /* border分を足す（box-sizing: content-box;でもよい） */
-      height: calc(
-        var(--mobile-header-height) + var(--mobile-nav-height) + 2px
-      );
+      height: calc(var(--mobile-header-height) + var(--mobile-nav-height));
       border-bottom: 2px solid var(--main-color);
     }
   }
