@@ -94,7 +94,7 @@ const isLastPage = currentPage === lastPage;
       text-align: center;
       width: 2rem;
       height: 2rem;
-      border: 1px solid var(--main-color);
+      border: 1px solid var(--main-font-color);
       border-radius: 2px;
       background-color: var(--main-bg-color);
       & span {
@@ -104,10 +104,10 @@ const isLastPage = currentPage === lastPage;
       &:hover {
         cursor: pointer;
         color: var(--main-bg-color);
-        background-color: rgba(var(--main-color-params), 0.5);
+        background-color: rgba(var(--main-font-color-params), 0.5);
       }
       &.current {
-        background-color: var(--main-color);
+        background-color: var(--main-font-color);
         color: var(--main-bg-color);
         cursor: auto;
       }

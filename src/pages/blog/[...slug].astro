@@ -117,7 +117,7 @@ const ogp = {
 
 <style>
   .img-container {
-    border: 4px solid var(--main-color);
+    border: 4px solid var(--main-font-color);
     width: 100%;
     height: 45vh;
     clip: rect(0, 0, 0, 0);
@@ -162,12 +162,12 @@ const ogp = {
       margin: 0 1rem;
       /* paddingの縦が0だとpタグのmarginと相殺されるため微小量を設定する */
       padding: 1px 0.8rem;
-      background-color: rgba(var(--main-color-params), 0.2);
+      background-color: rgba(var(--main-font-color-params), 0.2);
       border-radius: 10px;
     }
     & :global(nav.toc) {
       & :global(.toc-link) {
-        color: var(--main-color);
+        color: var(--main-font-color);
         &:hover {
           color: orangered;
         }
@@ -212,15 +212,15 @@ const ogp = {
     flex-direction: column;
     margin: 1rem 0;
     & .article-link {
-      border: 1px solid var(--main-color);
+      border: 1px solid var(--main-font-color);
       border-bottom: 0;
-      background-color: rgba(var(--main-bg-params), 0.6);
+      background-color: rgba(var(--main-bg-color-params), 0.6);
       &:last-child {
-        border: 1px solid var(--main-color);
+        border: 1px solid var(--main-font-color);
       }
     }
     & .article-link:hover {
-      background-color: var(--main-color);
+      background-color: var(--main-font-color);
       color: var(--main-bg-color);
     }
     & .related-article {
