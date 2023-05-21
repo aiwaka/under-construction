@@ -26,14 +26,14 @@ const { href, highlight = false } = Astro.props;
   }
 
   .animated-link:hover {
-    color: rgb(172, 255, 244);
+    color: var(--page-link-hover-color);
   }
 
   .animated-link::before {
     content: "";
     width: 0;
     height: 0.1rem;
-    background: rgb(172, 255, 244);
+    background: var(--page-link-hover-color);
     position: absolute;
     left: 50%;
     bottom: 0;
@@ -46,10 +46,10 @@ const { href, highlight = false } = Astro.props;
   }
 
   .animated-link.current-page {
-    color: rgb(172, 255, 244);
+    color: var(--page-link-hover-color);
   }
   .animated-link.current-page::before {
     width: 100%;
-    background: rgb(100, 200, 255);
+    background: var(--current-page-link-color);
   }
 </style>
