@@ -1,10 +1,10 @@
 import { defineConfig } from "astro/config";
 
-// https://astro.build/config
 import svelte from "@astrojs/svelte";
 import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
+import sitemap from "@astrojs/sitemap";
 
 import remarkMath from "remark-math";
 import remarkCodeTitles from "remark-code-titles";
@@ -13,7 +13,6 @@ import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeToc from "rehype-toc";
-
 import remarkWordCountPlugin from "./plugins/remark-word-count-plugin.mjs";
 import rehypeHoverFootnote from "./plugins/rehype-hover-footnote";
 import rehypeModifyFnHeadingText from "./plugins/rehype-modify-fn-heading-text.mjs";
@@ -43,7 +42,12 @@ export default defineConfig({
         rehypeHoverFootnote,
         rehypeModifyFnHeadingText,
         rehypeSlug,
-        [rehypeToc, { headings: ["h1", "h2", "h3"] }],
+        [
+          rehypeToc,
+          {
+            headings: ["h1", "h2", "h3"],
+          },
+        ],
         [
           rehypeAutolinkHeadings,
           {
@@ -65,6 +69,7 @@ export default defineConfig({
       ],
     }),
     partytown(),
+    sitemap(),
   ],
   // trailingSlash: "always",
   site: "https://littleikawa.github.io",

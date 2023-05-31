@@ -60,6 +60,7 @@ const bgColor = currentPath.startsWith("blog")
       content="あいわかのウェブサイトです。 Here is Aiwaka's profile website."
     />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
+    <link rel="sitemap" href="/sitemap-index.xml">
     <meta name="generator" content={Astro.generator} />
     <meta property="og:url" content={ogp.url} />
     <meta property="og:type" content={ogp.type} />
@@ -98,19 +99,22 @@ const bgColor = currentPath.startsWith("blog")
   }
   :root {
     --header-height: 6rem;
-    --mobile-header-height: 4.6rem;
-    --mobile-nav-height: 1.8rem;
+    --mobile-header-height: 4rem;
+    --mobile-nav-height: 1.4rem;
 
-    --main-color-params: 72, 61, 139;
-    --main-bg-params: 244, 255, 255;
+    --main-font-color-params: 72, 61, 139;
+    --main-bg-color-params: 244, 255, 255;
 
-    --main-color: rgb(var(--main-color-params));
-    --main-bg-color: rgb(var(--main-bg-params));
+    --main-font-color: rgb(var(--main-font-color-params));
+    --main-bg-color: rgb(var(--main-bg-color-params));
+
+    --page-link-hover-color: rgb(172, 255, 244);
+    --current-page-link-color: rgb(100, 200, 255);
   }
   body {
     box-sizing: border-box;
     min-height: 100dvh;
-    color: var(--main-color);
+    color: var(--main-font-color);
     background-color: var(--bgColor);
     transition: color 0.5s, background-color 0.5s;
     font-family: "Noto Sans JP", sans-serif;
@@ -137,7 +141,7 @@ const bgColor = currentPath.startsWith("blog")
     max-width: 90vw;
   }
   .remark-code-title {
-    background-color: var(--main-color);
+    background-color: var(--main-font-color);
     color: var(--main-bg-color);
     padding: 0.2rem 1.2rem;
     border-radius: 10px 10px 0 0;
