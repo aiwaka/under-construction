@@ -1,0 +1,50 @@
+---
+title: ウェブサイトのAstroをアップデート
+description: v2.5が出ていたのでアップデートしました
+thumbnail: blue_square
+thumbnailFormat: png
+date: 2023-05-31
+tags:
+  - Astro
+  - 運営
+---
+
+## 概要
+
+この前ネットを見ていたら、偶然Astro v2.5の<a href="https://astro.build/blog/astro-250/" target="_blank" rel="noreferrer noopener">リリース記事</a>を発見。
+前回のv2.2に関してはあまり旨味がないなということで見送ったのですが、今回の「HTML minification」と「Parallelized rendering」、これらは即効性がありそうだと思ったので上げてみることにしました。
+
+「Data collections and references」もまだ使っていませんが、ますますCMSの代わりになりそうな気がします。
+データの自動生成とかしても面白そうです。
+
+## 手順
+
+手順というほど書くことはないです。
+
+```bash
+npm i astro@latest
+```
+
+でバージョンを上げて、
+
+```js:astro.config.mjs
+export default defineConfig({
+  compressHTML: true,
+})
+```
+
+を追加するだけです。
+
+## 最後に
+
+結果...そんなに変わったかというとわかりませんでした。
+というかリソースを見てもcompressHTMLが効いている感じがしないのですが何か間違っているかな...？
+（と思っていましたが部分的に効いている感じがします。謎。）
+時間が有り余っている時期は過ぎてしまったのでぼちぼち見ていくことにします。
+
+ちなみにこれとは関係なくサイトマップ等も整備してみました。
+そのうち検索で出てくるようになるかも...？
+デザインも少し変えたので、前のほうが良かったとかあったらリポジトリでIssueとかくだされば助かります。
+
+ということで中身が皆無な記事でした。
+お時間を取って申し訳ないです。
