@@ -71,6 +71,7 @@ export default defineConfig({
     partytown(),
     sitemap(),
   ],
+  compressHTML: true,
   // trailingSlash: "always",
   site: "https://littleikawa.github.io",
   base: "/under-construction",
