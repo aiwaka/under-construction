@@ -13,8 +13,8 @@
 
 <style>
   .article-tag {
-    background-color: rgba(var(--main-color-params), 0.8);
-    border: 1px solid var(--main-color);
+    background-color: rgba(var(--main-font-color-params), 0.8);
+    border: 1px solid var(--main-font-color);
     border-radius: 3px;
     font-size: 90%;
     color: var(--main-bg-color);
@@ -27,6 +27,6 @@
   .article-tag:hover {
     cursor: pointer;
     background-color: var(--main-bg-color);
-    color: var(--main-color);
+    color: var(--main-font-color);
   }
 </style>
