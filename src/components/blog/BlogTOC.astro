@@ -1,0 +1,14 @@
+---
+import { createTOCElement } from "@lib/blog/createTOC";
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+const rawTOCHtml = createTOCElement(headings, { target: [2, 3] });
+---
+
+{headings.length > 0 && <div class="toc-container" set:html={rawTOCHtml} />}
