@@ -12,7 +12,7 @@ import remarkJaRuby from "remark-jaruby";
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeToc from "rehype-toc";
+// import rehypeToc from "rehype-toc";
 import remarkWordCountPlugin from "./plugins/remark-word-count-plugin.mjs";
 import rehypeHoverFootnote from "./plugins/rehype-hover-footnote";
 import rehypeModifyFnHeadingText from "./plugins/rehype-modify-fn-heading-text.mjs";
@@ -42,12 +42,12 @@ export default defineConfig({
         rehypeHoverFootnote,
         rehypeModifyFnHeadingText,
         rehypeSlug,
-        [
-          rehypeToc,
-          {
-            headings: ["h1", "h2", "h3"],
-          },
-        ],
+        // [
+        //   rehypeToc,
+        //   {
+        //     headings: ["h1", "h2", "h3"],
+        //   },
+        // ],
         [
           rehypeAutolinkHeadings,
           {
