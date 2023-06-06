@@ -25,7 +25,6 @@
     "rehype-autolink-headings": "^6.1.1",
     "rehype-katex": "^6.0.2",
     "rehype-slug": "^5.1.0",
-    "rehype-toc": "^3.0.2",
     "remark-code-titles": "^0.1.2",
     "remark-jaruby": "^0.1.0",
     "remark-math": "^5.1.1",
