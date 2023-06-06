@@ -8,9 +8,7 @@ interface Props {
 
 const { headings } = Astro.props;
 
-const valid = headings.length > 0;
-
-const rawTOCHtml = createTOCElement(headings);
+const rawTOCHtml = createTOCElement(headings, { target: [2, 3] });
 ---
 
-<div set:html={rawTOCHtml} />
+<div class="toc-container" set:html={rawTOCHtml} />
