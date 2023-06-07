@@ -15,7 +15,7 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 ## 概要
 
 このブログはAstroのCollections APIで作られています。
-コレクション名を`blog`としたときに、それらのデータを表す型が`CollectionEntry<"blog">`で定義されますが、この型には`render()`という関数が実装されています。
+コレクション名を`blog`としたときに、それらのデータを表す型が`CollectionEntry<"blog">`で定義されますが、この型には`render()`というメソッドが実装されています。
 これによりコレクションの一つ一つのドキュメントをHTML文字列にしたり、Remarkを適用した結果の情報を取得したり、ということができます。
 
 この前ふとしたきっかけで、`render`が返す値の中に`headings`というものがあることに気づきました。
