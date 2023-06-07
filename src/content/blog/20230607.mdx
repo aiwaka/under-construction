@@ -1,0 +1,194 @@
+---
+title: ブログの目次を自作しました
+description: Astroだけで作るように変更しました（rehype不要）
+thumbnail: blue_square
+thumbnailFormat: png
+date: 2023-06-07
+tags:
+  - ブログ
+  - Astro
+  - プログラミング
+---
+
+import BlogImageList from "@components/blog/BlogImageList.astro";
+
+## 概要
+
+このブログはAstroのCollections APIで作られています。
+コレクション名を`blog`としたときに、それらのデータを表す型が`CollectionEntry<"blog">`で定義されますが、この型には`render()`という関数が実装されています。
+これによりコレクションの一つ一つのドキュメントをHTML文字列にしたり、Remarkを適用した結果の情報を取得したり、ということができます。
+
+この前ふとしたきっかけで、`render`が返す値の中に`headings`というものがあることに気づきました。
+一度全体を確認したはずなのですが、いつのまにか追加されたのか...？
+見落としていただけかもしれませんが、とりあえず見出し要素の一覧を取得できるということがわかります。
+
+ブログに目次は必要です。
+見出し要素を適当な形で集めてくるのが煩雑そうだったため、今までは`rehype-toc`を用いて生成していましたが、見出し一覧が提供されるならある程度簡単に目次を作ることが出来そうです。
+私は自分で作れそうなものは作ってみたいので、この機会に自作してみることにしました。
+
+## 準備
+
+`CollectionEntry.render()`が返すオブジェクトの`headings`の型は`MarkdownHeading[]`です。
+`MarkdownHeading`には`depth`、`slug`、`text`が含まれます。
+まあそのままですが、`depth`は`h2`なら`2`、`h3`なら`3`が入ります。
+`slug`は各見出しの`id`属性の値（所謂"slug"）であり、`text`は見出しテキストです。
+これらの配列が与えられたときに、目次を表すHTML文字列を作成するという問題です。
+
+## 実装
+
+初めに断っておきますが私はアルゴリズム系はめちゃくちゃ苦手なので非効率極まりないことをやっている気がします。
+改善意見ください。
+
+まず、マークアップの見出しは自然に木構造であるので、与えられた配列を各要素の`depth`をもとに木構造に変換します。
+恐らくRehypeのプラグインでもASTに変換するという同じことをやっています。
+その後で、木で与えられた見出し一覧をHTMLに変換するというように処理を分ければ、APIが変わっても汎用性が高くなると考えました。
+
+木のノードは、できるだけ`MarkdownHeading`をそのまま扱うことと参照関係を与えることを考えて次のように定義しています。
+
+```ts:createTOC.ts
+class TOCHeadingNode {
+  heading: MarkdownHeading;
+  parent: TOCHeadingNode | null;
+  children: TOCHeadingNode[];
+}
+```
+
+ただ、このように定義すると循環参照があらゆるところで起こるのでJSON文字列にはできなくなります。
+どうせJSはオブジェクトに対しては参照しか持たないのでこれでいいやという考えです。
+良い表し方がないものか...
+しかも後で書きますが関数内で定義したオブジェクトを返している（JSなので参照が返っている）という凄まじい実装です。
+Rustなら全部許されないけどJS（TS）はこれで動いてしまう、うーむ。
+
+ついでに、拡張のことまで（一応）考えてオプションを定義します。
+目次に含める見出しレベルを指定できるオプションです（最終的には2と3しか含めないように指定しました）。
+
+```ts
+type HeadingTagDepths = 2 | 3 | 4 | 5 | 6;
+interface TOCOptions {
+  target?: HeadingTagDepths[];
+}
+```
+
+この辺は`rehype-toc`の丸パクリです。
+ただしこちらは与えられている情報が強いので、それに合わせて型を変えています。
+
+木の生成は、ルートノードを用意して、配列の要素を順番に木に追加するだけです。
+
+```ts
+const createTOCTree = (headings: MarkdownHeading[], options?: TOCOptions) => {
+  // 適当なルートノードを作成しこれを起点とする.
+  const rootHeading: MarkdownHeading = {
+    depth: 1,
+    slug: "root",
+    text: "#root",
+  };
+  const root = new TOCHeadingNode(rootHeading, null);
+  // 注目するノード変数を作ってこれを中心に木をつくる.
+  let currentNode = root;
+  for (const heading of headings) {
+    // Array.includes()を使うと型エラーになるのでevery()を使う
+    if (options?.target && options.target.every((v) => v !== heading.depth)) {
+      continue;
+    }
+    if (heading.depth > currentNode.heading.depth) {
+      // より深い見出しなら注目対象を移す.
+      const nextNode = new TOCHeadingNode(heading, currentNode);
+      currentNode.children.push(nextNode);
+      currentNode = nextNode;
+    } else {
+      if (heading.depth < currentNode.heading.depth) {
+        // 浅い場合, 番号が一致するまで深さを戻す
+        while (currentNode.heading.depth !== heading.depth) {
+          if (currentNode.parent === null) {
+            throw new Error("the depth of tree is incorrect");
+          }
+          currentNode = currentNode.parent;
+        }
+      }
+      // このifは常にtrueになるはず. TSのエラー回避の明文化をしている.
+      if (currentNode.parent) {
+        // 兄弟ノードを作成する. 注目対象も移動する.
+        const nextNode = new TOCHeadingNode(heading, currentNode.parent);
+        currentNode.parent.children.push(nextNode);
+        currentNode = nextNode;
+      }
+    }
+  }
+  return root;
+};
+```
+
+雑に言うと、配列から要素を取り出して木に追加するたびに注目するノードを動かします。
+深さが大きくなった場合は注目ノードの子として追加し、それ以外の場合は兄弟として追加します。
+ただし、深さが小さくなった場合は追加する前に追加したいノードの`depth`と一致するまで木を祖先に遡ります。
+
+木が完成したら、子を優先的に展開する方法で再帰的にノードを文字列に変換していきます。
+これで、タグの入れ子構造になった文字列を実現できます。
+[こちら](https://tercel-tech.hatenablog.com/entry/2019/07/20/222833)を大いに参考にさせていただきました。
+
+```ts
+const createListBlockElement = (root: TOCHeadingNode): string => {
+  if (!root) return "";
+  const innerHtml = createListElement(root);
+  const classes = ["toc-level", `toc-level-${root.heading.depth}`];
+  return !innerHtml ? "" : `<ol class="${classes.join(" ")}">${innerHtml}</ol>`;
+};
+
+const createListElement = (root: TOCHeadingNode): string => {
+  if (!root) return "";
+  return root.children
+    .map((n) => {
+      const classes = ["toc-item", `toc-item-h${n.heading.depth}`];
+      return `<li class="${classes.join(" ")}">
+        ${createAnchorElement(n.heading)}${createListBlockElement(n)}</li>`;
+    })
+    .join("");
+};
+
+const createAnchorElement = (heading: MarkdownHeading): string => {
+  const { depth, slug, text } = heading;
+  // textには必ず`#`がついているので除去する.
+  const displayText = text.substring(1);
+  const classes = ["toc-link", `toc-link-h${depth}`];
+  return `<a class="${classes.join(" ")}" href="#${slug}">${displayText}</a>`;
+};
+```
+
+このHTML生成の部分をいじれば、極めて高い自由度で目次を生成できます。
+あとはこれを`<nav>`要素で包んだ文字列を返す関数を作れば完成です（省略）。
+
+## 仕上げ
+
+これをAstroコンポーネントにしておけば見た目が楽です。
+
+```astro:BlogTOC
+---
+import { createTOCElement } from "@lib/blog/createTOC";
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+const rawTOCHtml = createTOCElement(headings, { target: [2, 3] });
+---
+
+{headings.length > 0 && <div class="toc-container" set:html={rawTOCHtml} />}
+
+```
+
+このようなファイルを作成し、`[...slug].astro`ファイル内で見出し一覧を注入して使います。
+`length > 0`は、見出しが存在しない記事に対しては何も表示しないということをやりたいためです。
+実を言うと`rehype-toc`を用いた目次生成に対して一番どうにかしなければと思っていたのはこれでした。
+Astroの設定で適用するrehypeプラグインを決めてしまうので、細かいことをやるのが少し難しくなっていましたが、自分で作れば簡単に条件を付けることができます。
+例えば[この記事](./20230413)には見出しが無いため、以前は謎の空の四角が表示されていましたが、今回の実装により綺麗になったと思います。
+
+この段階で`rehype-toc`は不要になったためアンインストールしました。
+今までありがとう...
+
+## 終わり
+
+というわけで見出しから目次を作りました。
+なにかおかしかったらそれも教えていただければ非常に助かります。
