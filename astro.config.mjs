@@ -80,5 +80,6 @@ export default defineConfig({
     // これによりマークダウンの中で相対リンクを貼るようにすれば開発環境と同じリンク関係が保たれる.
     // GitHub Pagesはルートの`index.html`を探すが, このプロジェクトでは`index.astro`があるので問題ない.
     format: "file",
+    inlineStylesheets: "auto",
   },
 });
