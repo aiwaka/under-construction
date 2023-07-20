@@ -36,7 +36,6 @@
     "eslint": "^8.45.0",
     "eslint-plugin-astro": "^0.27.2",
     "prettier": "^3.0.0",
-    "prettier-plugin-astro": "^0.11.0",
-    "prettier-plugin-md-nocjsp": "^1.5.1"
+    "prettier-plugin-astro": "^0.11.0"
   }
 }
