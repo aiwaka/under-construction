@@ -229,7 +229,7 @@ impl AssetHandles for GameAssetsHandles {
 
 コンポーネントモジュールに`load.rs`を追加し,
 
-```rs: src/components/load.rs
+```rust:src/components/load.rs
 use bevy::prelude::*;
 
 #[derive(Component, Clone, Copy, Debug)]
@@ -241,7 +241,7 @@ pub struct NowLoadingText;
 
 システムモジュールに`load.rs`を追加して以下のようにします.
 
-```rs :src/systems/load.rs
+```rust:src/systems/load.rs
 use bevy::{asset::LoadState, prelude::*};
 
 use crate::{
