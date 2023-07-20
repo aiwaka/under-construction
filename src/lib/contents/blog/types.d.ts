@@ -11,7 +11,7 @@ export interface BlogPostEntry extends IsEntrySchema {
   /** 記事の説明文 */
   description: string;
   /** コンテンツで, HTML文字列. そのままページに埋め込む. */
-  content: string | AstroComponentFactory;
+  Content: string | AstroComponentFactory;
   /** サムネイル */
   thumbnail: ContentsImage;
   /** タグ一覧. 文字列の羅列にする（整合性等は別で担保する）. */

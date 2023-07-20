@@ -97,7 +97,7 @@ export class CollectionsBlogPostEntry
       createdAt: new Date(date),
       updatedAt: new Date(updateDate ?? date),
       isEntrySchema: null,
-      content: Content,
+      Content,
       ...rest,
     } satisfies BlogPostEntry;
   }

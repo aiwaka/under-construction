@@ -1,8 +1,8 @@
+import type { MicroCMSObjectContent } from "microcms-js-sdk";
 import type { ImagesInArticle } from "@lib/contents/images";
-import { ToEntryObject } from "./../../../types/entry";
+import type { ToEntryObject } from "@lib/types";
 import type { FieldsExcludeMethod } from "@lib/types";
 import type { MicroCMSImageComplete } from "@lib/contents/types";
-import { MicroCMSObjectContent } from "microcms-js-sdk";
 
 /**
  * microCMS上の画像カスタムフィールド.
