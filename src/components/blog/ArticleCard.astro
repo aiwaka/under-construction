@@ -2,52 +2,47 @@
 import { Image } from "@astrojs/image/components";
 
 import { dateText } from "@lib/utils";
-import type { FinalBlogCollectionEntry } from "@lib/schema";
 
 import TagContainer from "./TagContainer.svelte";
+import type { BlogPostEntry } from "@lib/contents/blog";
 
 interface Props {
-  entry: FinalBlogCollectionEntry;
+  entry: BlogPostEntry;
   /** サムネイルなどを省略した小さい形式にするかどうか */
   mini?: boolean;
 }
 
 const { entry, mini } = Astro.props;
 const {
-  slug,
-  data: {
-    title,
-    thumbnail,
-    date,
-    updateDate,
-    tags,
-    description,
-    wordCount,
-    thumbnailFormat,
-  },
+  id,
+  title,
+  thumbnail,
+  createdAt,
+  updatedAt,
+  tags,
+  description,
+  wordCount,
 } = entry;
 ---
 
-<a class="article-link" href={`${import.meta.env.BASE_URL}blog/${slug}`}>
+<a class="article-link" href={`${import.meta.env.BASE_URL}blog/${id}`}>
   <div class="article-card" class:list={{ mini }}>
     {
       !mini ? (
         <>
           <div class="img-container">
             <Image
-              src={import(
-                `../../blog-images/thumbnails/${thumbnail}.${thumbnailFormat}`
-              )}
+              src={import(`../../blog-images/thumbnails/${thumbnail.url}`)}
               alt="thumbnail"
               width={1024}
             />
           </div>
           <div class="card-contents">
             <h2>{title}</h2>
-            <span>{dateText(date)}</span>
-            {updateDate ? (
+            <span>{dateText(createdAt)}</span>
+            {dateText(createdAt) !== dateText(updatedAt) ? (
               <>
-                <span>（{`${dateText(updateDate)} 追記`}）</span>
+                <span>（{`${dateText(updatedAt)} 追記`}）</span>
               </>
             ) : null}
             <div class="word-count">
@@ -61,9 +56,7 @@ const {
         <>
           <div class="img-container">
             <Image
-              src={import(
-                `../../blog-images/thumbnails/${thumbnail}.${thumbnailFormat}`
-              )}
+              src={import(`../../blog-images/thumbnails/${thumbnail}`)}
               alt="thumbnail"
               width={512}
             />

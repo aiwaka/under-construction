@@ -1,4 +1,6 @@
 import type { IsEntrySchema, ContentsImage } from "@lib/types";
+import type { MarkdownHeading } from "astro";
+import type { AstroComponentFactory } from "astro/dist/runtime/server";
 
 /**
  * ブログ記事のオブジェクト
@@ -8,16 +10,16 @@ export interface BlogPostEntry extends IsEntrySchema {
   title: string;
   /** 記事の説明文 */
   description: string;
-  /** 著者 */
-  author: string;
   /** コンテンツで, HTML文字列. そのままページに埋め込む. */
-  content: string;
+  content: string | AstroComponentFactory;
   /** サムネイル */
   thumbnail: ContentsImage;
   /** タグ一覧. 文字列の羅列にする（整合性等は別で担保する）. */
   tags: string[];
-  /** 関連記事. 各記事のid, titleと, 関連した理由となるタグの列を持つ. */
-  related: RelatedBlogPost[];
+  /** （特別に指定する）関連記事. 記事のidの列. */
+  related: string[];
+  /** 見出しの列. */
+  headings: MarkdownHeading[];
   /** 文字数（remarkで付与される） */
   wordCount: number | null;
   /** LaTeXを使用するか */

@@ -1,5 +1,4 @@
-import type { FinalBlogCollectionEntry } from "@lib/schema";
-import type { RelatedBlogPost } from "./types";
+import type { BlogPostEntry, RelatedBlogPost } from "./types";
 
 /** 共通部分を取得する. */
 const intersection = <T>(x: T[], y: T[]) => {
@@ -13,51 +12,51 @@ const intersection = <T>(x: T[], y: T[]) => {
  * @param targetEntry 関連記事を作りたい記事のエントリー
  */
 export const createRelated = (
-  allEntries: FinalBlogCollectionEntry[],
-  targetEntry: FinalBlogCollectionEntry
+  allEntries: BlogPostEntry[],
+  targetEntry: BlogPostEntry
 ) => {
   // NOTE: できたら様々なタグから関連を作るようにしたい.
   // 関連記事のリストを作る. specifiedは最優先として最初に入れておく.
-  const relatedSlugList: Omit<RelatedEntry, "title" | "date">[] = [];
-  targetEntry.data.related.forEach((related) =>
-    relatedSlugList.push({ slug: related, whyRelated: "specified" })
+  const relatedPostList: Omit<RelatedBlogPost, "title" | "date">[] = [];
+  targetEntry.related.forEach((relatedId) =>
+    relatedPostList.push({ id: relatedId, factor: "specified" })
   );
-  const tags = [...targetEntry.data.tags];
+  const tags = [...targetEntry.tags];
   // 全記事とタグの重複数をチェックして重複度ごとに分ける
-  const tagDuplicatedEntries = [...Array(targetEntry.data.tags.length + 1)].map(
-    (_) => [] as FinalBlogCollectionEntry[]
+  const tagDuplicatedEntries = [...Array(targetEntry.tags.length + 1)].map(
+    (_) => [] as BlogPostEntry[]
   );
   for (const entry of allEntries) {
     // 自身は除く
-    if (targetEntry.slug === entry.slug) continue;
-    const multiplicity = intersection(entry.data.tags, tags).length;
+    if (targetEntry.id === entry.id) continue;
+    const multiplicity = intersection(entry.tags, tags).length;
     tagDuplicatedEntries[multiplicity].push(entry);
   }
   // 重複度が大きい順に取っていく.
   for (let i = tagDuplicatedEntries.length - 1; i > 0; i--) {
     // 5個以上なら終了
-    if (relatedSlugList.length >= 5) break;
+    if (relatedPostList.length >= 5) break;
     for (const entry of tagDuplicatedEntries[i]) {
       // 追加済みのものは除く（特別に指定されたものでなければ起こり得ない）
-      if (relatedSlugList.find((v) => v.slug === entry.slug)) continue;
-      relatedSlugList.push({
-        slug: entry.slug,
-        whyRelated: intersection(entry.data.tags, tags),
+      if (relatedPostList.find((v) => v.id === entry.id)) continue;
+      relatedPostList.push({
+        id: entry.id,
+        factor: intersection(entry.tags, tags),
       });
     }
   }
   // 得たslugのリストからエントリーを得て必要な形の配列に変換
-  const related = relatedSlugList.slice(0, 5).map(({ slug, whyRelated }) => {
-    const entry = allEntries.find((entry) => entry.slug === slug);
+  const related = relatedPostList.slice(0, 5).map(({ id, factor }) => {
+    const entry = allEntries.find((entry) => entry.id === id);
     if (entry === undefined) {
-      throw new Error(`slug '${slug}' is not defined`);
+      throw new Error(`slug '${id}' is not defined`);
     }
     return {
-      slug: entry.slug,
-      title: entry.data.title,
-      date: entry.data.date,
-      whyRelated,
-    } satisfies RelatedEntry;
+      id: entry.id,
+      title: entry.title,
+      date: entry.updatedAt,
+      factor,
+    } satisfies RelatedBlogPost;
   });
   return related;
 };

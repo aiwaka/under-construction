@@ -1,6 +1,5 @@
-import type { BlogImageProps } from "./image";
-import { getAllTagSet } from "./getTagSet";
-import { getBlogPostEntries } from "./getEntries";
-import { createRelated } from "./relatedPosts";
-
-export { BlogImageProps, getAllTagSet, getBlogPostEntries, createRelated };
+export type { BlogImageProps } from "./image";
+export { getBlogPostEntries } from "./getEntries";
+export { createRelated } from "./relatedPosts";
+export type { BlogPostEntry } from "./types";
+export { createTOCElement } from "./createTOC";

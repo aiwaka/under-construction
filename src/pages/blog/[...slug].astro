@@ -1,10 +1,8 @@
 ---
 import type { InferGetStaticPropsType } from "astro";
-import { getCollection } from "astro:content";
 import { getImage } from "@astrojs/image";
 
-import type { FrontmatterByRemarkPlugin } from "@lib/schema";
-import { getBlogPostEntries, createRelated } from "@lib/blog";
+import { getBlogPostEntries, createRelated } from "@lib/contents/blog";
 import { dateText } from "@lib/utils";
 
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
@@ -13,16 +11,14 @@ import TagContainer from "@components/blog/TagContainer.svelte";
 import BlogTOC from "@components/blog/BlogTOC.astro";
 
 export async function getStaticPaths() {
-  const allBlogPosts = await getCollection("blog");
-  const blogPostEntries = await getBlogPostEntries(allBlogPosts);
-  blogPostEntries.sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+  const blogPostEntries = await getBlogPostEntries();
 
   return blogPostEntries.map((entry, i, array) => {
     const next = i === 0 ? null : array.at(i - 1) ?? null;
     const prev = i === array.length ? null : array.at(i + 1) ?? null;
     const related = createRelated(array, entry);
     return {
-      params: { slug: entry.slug },
+      params: { slug: entry.id },
       props: { entry, next, prev, related },
     };
   });
@@ -31,36 +27,49 @@ export async function getStaticPaths() {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { entry, next, prev, related } = Astro.props;
-const { Content, headings, remarkPluginFrontmatter } = await entry.render();
 const {
   title,
   description,
-  date,
-  updateDate,
+  createdAt,
+  updatedAt,
   thumbnail,
-  thumbnailFormat,
   tags,
   latex,
-} = entry.data;
-const additionalFrontmatter =
-  remarkPluginFrontmatter as FrontmatterByRemarkPlugin;
-const wordCount = additionalFrontmatter.wordCount;
+  wordCount,
+  headings,
+  content,
+} = entry;
+// const { Content, headings, remarkPluginFrontmatter } = await entry.render();
+// const {
+//   title,
+//   description,
+//   date,
+//   updateDate,
+//   thumbnail,
+//   thumbnailFormat,
+//   tags,
+//   latex,
+// } = entry.data;
+// const additionalFrontmatter =
+//   remarkPluginFrontmatter as FrontmatterByRemarkPlugin;
+// const wordCount = additionalFrontmatter.wordCount;
 
-const img = await getImage({
-  src: import(`../../blog-images/thumbnails/${thumbnail}.${thumbnailFormat}`),
-  format: "webp",
-  width: 1024,
-  alt: "thumbnail",
-});
+// const img = await getImage({
+//   src: import(`../../blog-images/thumbnails/${thumbnail}.${thumbnailFormat}`),
+//   format: "webp",
+//   width: 1024,
+//   alt: "thumbnail",
+// });
 const ogp = {
   url: Astro.request.url,
   type: "blog",
   title: `Under Construction | blog | ${title}`,
   description,
   siteName: "Under Construction",
-  image:
-    "https://littleikawa.github.io" +
-    (img.src ?? "/under-construction/img/blue_2.png"),
+  image: "",
+  // image:
+  //   "https://littleikawa.github.io" +
+  //   (img.src ?? "/under-construction/img/blue_2.png"),
 };
 ---
 
@@ -68,8 +77,12 @@ const ogp = {
   <h1>{title}</h1>
   <div class="date-block">
     <span>
-      {dateText(date)}
-      {updateDate ? <>（{dateText(updateDate)} 追記）</> : null}
+      {dateText(createdAt)}
+      {
+        dateText(createdAt) === dateText(updatedAt) ? (
+          <>（{dateText(updatedAt)} 追記）</>
+        ) : null
+      }
     </span>
   </div>
 
@@ -81,34 +94,32 @@ const ogp = {
     <span>文字数：{wordCount}</span>
   </div>
   <div class="img-container">
-    <img
+    <!-- <img
       src={img.src}
       width={img.width}
       height={img.height}
       alt={img.alt}
       loading="eager"
       decoding="async"
-    />
+    /> -->
   </div>
   <div class="blog-article-content-container">
     <BlogTOC headings={headings} />
-    <Content />
+    {typeof content === "string" ? <div set:html={content} /> : <content />}
   </div>
   <SiblingsLinkContainer next={next} prev={prev} />
   <h2>関連記事</h2>
   <div class="related-articles-container">
     {
-      related.map(({ slug, title, whyRelated }) => {
+      related.map(({ id, title, factor }) => {
         return (
           <a
             class="article-link"
-            href={`${import.meta.env.BASE_URL}blog/${slug}`}
+            href={`${import.meta.env.BASE_URL}blog/${id}`}
           >
             <div class="related-article">
               <span>{title}</span>
-              {whyRelated !== "specified" && (
-                <TagContainer tagList={whyRelated} />
-              )}
+              {factor !== "specified" && <TagContainer tagList={factor} />}
             </div>
           </a>
         );

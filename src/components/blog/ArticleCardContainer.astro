@@ -1,10 +1,9 @@
 ---
-import type { FinalBlogCollectionEntry } from "@lib/schema";
-
 import ArticleCard from "@components/blog/ArticleCard.astro";
+import type { BlogPostEntry } from "@lib/contents/blog";
 
 interface Props {
-  cardList: FinalBlogCollectionEntry[];
+  cardList: BlogPostEntry[];
 }
 const { cardList } = Astro.props;
 ---

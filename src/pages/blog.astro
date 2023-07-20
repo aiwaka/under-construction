@@ -1,16 +1,12 @@
 ---
-import { getCollection } from "astro:content";
-
-import { getBlogPostEntries } from "@lib/blog";
+import { getBlogPostEntries } from "@lib/contents/blog";
 import { POST_PER_PAGE } from "@lib/utils";
 
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
 import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 
-const allBlogPosts = await getCollection("blog");
-const blogPostEntries = await getBlogPostEntries(allBlogPosts);
-blogPostEntries.sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+const blogPostEntries = await getBlogPostEntries();
 const pageNum = Math.ceil(blogPostEntries.length / POST_PER_PAGE);
 
 const ogp = {
