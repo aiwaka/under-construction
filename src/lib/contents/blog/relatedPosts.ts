@@ -1,12 +1,5 @@
 import type { FinalBlogCollectionEntry } from "@lib/schema";
-
-interface RelatedEntry {
-  slug: string;
-  title: string;
-  date: Date;
-  /** 関連に入れられる基準となったタグ, または'specified' */
-  whyRelated: string[] | "specified";
-}
+import type { RelatedBlogPost } from "./types";
 
 /** 共通部分を取得する. */
 const intersection = <T>(x: T[], y: T[]) => {

@@ -1,14 +1,3 @@
-/**
- * 記事内の画像オブジェクト
- */
-export interface ImageInArticle {
-  url: string;
-  width: number;
-  height: number;
-  alt: string;
-  caption?: string;
-}
-
 import type { IsEntrySchema, ContentsImage } from "@lib/types";
 
 /**
@@ -17,6 +6,8 @@ import type { IsEntrySchema, ContentsImage } from "@lib/types";
 export interface BlogPostEntry extends IsEntrySchema {
   /** 記事タイトル */
   title: string;
+  /** 記事の説明文 */
+  description: string;
   /** 著者 */
   author: string;
   /** コンテンツで, HTML文字列. そのままページに埋め込む. */
@@ -27,14 +18,17 @@ export interface BlogPostEntry extends IsEntrySchema {
   tags: string[];
   /** 関連記事. 各記事のid, titleと, 関連した理由となるタグの列を持つ. */
   related: RelatedBlogPost[];
+  /** 文字数（remarkで付与される） */
+  wordCount: number | null;
+  /** LaTeXを使用するか */
+  latex: boolean;
+  /** 下書きならばtrue */
+  draft: boolean;
 }
 export interface RelatedBlogPost {
   id: string;
   title: string;
-  reason: string[] | "specified";
+  date: Date;
+  /** 関連するに至った理由となるタグ文字列, または指定されていることを示す */
+  factor: string[] | "specified";
 }
-
-// /** `BlogPostEntry`に変換する */
-// export interface ToBlogPostEntry {
-//   toBlogPostEntry(): BlogPostEntry;
-// }

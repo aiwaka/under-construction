@@ -9,6 +9,7 @@ import type {
 interface FetchPostsOptions {
   tag?: string;
 }
+
 /**
  * Collections APIで得られたブログ記事のリストからdraftフラグがついたものを除き,
  * 各ページの情報をまとめたリストを返す（ソートは行わない）.
