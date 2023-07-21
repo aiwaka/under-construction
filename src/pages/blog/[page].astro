@@ -1,23 +1,19 @@
 ---
 import type { GetStaticPathsOptions, Page } from "astro";
-import { getCollection } from "astro:content";
 
-import type { FinalBlogCollectionEntry } from "@lib/schema";
-import { getBlogPostEntries } from "@lib/blog";
+import { BlogPostEntry, getBlogPostEntries } from "@lib/contents/blog";
 import { POST_PER_PAGE } from "@lib/utils";
 
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
+import BlogPageCardContainer from "@components/blog/BlogPageCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const allBlogPosts = await getCollection("blog");
-  const blogPostEntries = await getBlogPostEntries(allBlogPosts);
-  blogPostEntries.sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+  const blogPostEntries = await getBlogPostEntries();
   return paginate(blogPostEntries, { pageSize: POST_PER_PAGE });
 }
 interface Props {
-  page: Page<FinalBlogCollectionEntry>;
+  page: Page<BlogPostEntry>;
 }
 // ページ分割されたデータは、すべて "page" プロパティとして渡される
 const { page } = Astro.props;
@@ -34,7 +30,7 @@ const ogp = {
 <BlogGeneralLayout ogp={ogp} title="">
   <h2>Blog</h2>
   <h3>{page.currentPage}</h3>
-  <ArticleCardContainer cardList={page.data} />
+  <BlogPageCardContainer cardList={page.data} />
   <PaginationContainer
     subbase={"blog/"}
     currentPage={page.currentPage}

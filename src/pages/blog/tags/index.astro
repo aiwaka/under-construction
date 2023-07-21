@@ -1,13 +1,10 @@
 ---
-import { getCollection } from "astro:content";
-
-import { getAllTagSet } from "@lib/blog";
-
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import ArticleTag from "@components/blog/ArticleTag.svelte";
+import BlogTag from "@components/blog/BlogTag.svelte";
+import { getBlogPostEntries } from "@lib/contents/blog";
 
-const allBlogPosts = await getCollection("blog");
-const allTagList = Array.from(getAllTagSet(allBlogPosts));
+const allTagList = [] as string[];
+await getBlogPostEntries(allTagList);
 
 const ogp = {
   url: Astro.request.url,
@@ -24,7 +21,7 @@ const ogp = {
   <div class="tag-container">
     {
       allTagList.map((tag) => {
-        return <ArticleTag tag={tag} />;
+        return <BlogTag tag={tag} />;
       })
     }
   </div>

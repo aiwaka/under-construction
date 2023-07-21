@@ -1,7 +1,7 @@
 ---
 import { Image, warnForMissingAlt } from "@astrojs/image/components";
 
-import type { BlogImageProps } from "@lib/blog";
+import type { BlogImageProps } from "@lib/contents/blog";
 
 interface Props extends BlogImageProps {}
 const { src, width, height, alt, caption, ...attrs } = Astro.props;
