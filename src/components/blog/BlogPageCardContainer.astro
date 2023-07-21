@@ -1,5 +1,5 @@
 ---
-import ArticleCard from "@components/blog/ArticleCard.astro";
+import BlogPageCard from "@components/blog/BlogPageCard.astro";
 import type { BlogPostEntry } from "@lib/contents/blog";
 
 interface Props {
@@ -11,7 +11,7 @@ const { cardList } = Astro.props;
 <div class="contents-card-container">
   {
     cardList.map((entry) => {
-      return <ArticleCard entry={entry} />;
+      return <BlogPageCard entry={entry} />;
     })
   }
 </div>

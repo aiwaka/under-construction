@@ -5,7 +5,7 @@ import { BlogPostEntry, getBlogPostEntries } from "@lib/contents/blog";
 import { POST_PER_PAGE } from "@lib/utils";
 
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
+import BlogPageCardContainer from "@components/blog/BlogPageCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
@@ -43,7 +43,7 @@ const ogp = {
     タグ一覧へ
   </a>
   <h3>#{tag}の検索結果：{page.currentPage}</h3>
-  <ArticleCardContainer cardList={page.data} />
+  <BlogPageCardContainer cardList={page.data} />
   <PaginationContainer
     subbase={`blog/tags/${tag}/`}
     currentPage={page.currentPage}

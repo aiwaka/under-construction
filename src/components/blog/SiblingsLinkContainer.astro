@@ -1,6 +1,6 @@
 ---
 import type { BlogPostEntry } from "@lib/contents/blog";
-import ArticleCard from "./ArticleCard.astro";
+import BlogPageCard from "./BlogPageCard.astro";
 
 interface Props {
   next: BlogPostEntry | null;
@@ -18,7 +18,7 @@ const { next, prev } = Astro.props;
             <p>Next &larr;</p>
           </a>
         </div>
-        <ArticleCard entry={next} mini={true} />
+        <BlogPageCard entry={next} mini={true} />
       </div>
     )
   }
@@ -30,7 +30,7 @@ const { next, prev } = Astro.props;
             <p>&rarr; Prev</p>
           </a>
         </div>
-        <ArticleCard entry={prev} mini={true} />
+        <BlogPageCard entry={prev} mini={true} />
       </div>
     )
   }

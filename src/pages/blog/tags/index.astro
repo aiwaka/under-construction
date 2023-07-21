@@ -1,6 +1,6 @@
 ---
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import ArticleTag from "@components/blog/ArticleTag.svelte";
+import BlogTag from "@components/blog/BlogTag.svelte";
 import { getBlogPostEntries } from "@lib/contents/blog";
 
 const allTagList = [] as string[];
@@ -21,7 +21,7 @@ const ogp = {
   <div class="tag-container">
     {
       allTagList.map((tag) => {
-        return <ArticleTag tag={tag} />;
+        return <BlogTag tag={tag} />;
       })
     }
   </div>
