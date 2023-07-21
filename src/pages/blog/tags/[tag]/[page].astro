@@ -1,21 +1,19 @@
 ---
-import { getCollection } from "astro:content";
 import type { GetStaticPathsOptions, Page } from "astro";
 
-import type { FinalBlogCollectionEntry } from "@lib/schema";
-import { getBlogPostEntries, getAllTagSet } from "@lib/blog";
+import { BlogPostEntry, getBlogPostEntries } from "@lib/contents/blog";
 import { POST_PER_PAGE } from "@lib/utils";
 
 import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
-import ArticleCardContainer from "@components/blog/ArticleCardContainer.astro";
+import BlogPageCardContainer from "@components/blog/BlogPageCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
-  const allBlogPosts = await getCollection("blog");
-  const allTagList = Array.from(getAllTagSet(allBlogPosts));
+  const allTagList = [] as string[];
+  await getBlogPostEntries(allTagList);
   return Promise.all(
     allTagList.map(async (tag) => {
-      const blogPostEntries = await getBlogPostEntries(allBlogPosts, { tag });
+      const blogPostEntries = await getBlogPostEntries([], { tag });
       return paginate(blogPostEntries, {
         params: { tag },
         pageSize: POST_PER_PAGE,
@@ -25,7 +23,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 }
 
 interface Props {
-  page: Page<FinalBlogCollectionEntry>;
+  page: Page<BlogPostEntry>;
 }
 const { page } = Astro.props;
 const { tag } = Astro.params;
@@ -45,7 +43,7 @@ const ogp = {
     タグ一覧へ
   </a>
   <h3>#{tag}の検索結果：{page.currentPage}</h3>
-  <ArticleCardContainer cardList={page.data} />
+  <BlogPageCardContainer cardList={page.data} />
   <PaginationContainer
     subbase={`blog/tags/${tag}/`}
     currentPage={page.currentPage}

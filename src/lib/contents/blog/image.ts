@@ -5,6 +5,7 @@
 export interface BlogImageProps {
   src: ImageMetadata | Promise<{ default: ImageMetadata }>;
   width: number;
+  height?: number;
   alt?: string;
   caption?: string;
 }

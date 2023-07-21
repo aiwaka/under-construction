@@ -1,11 +1,10 @@
 ---
-import type { FinalBlogCollectionEntry } from "@lib/schema";
-
-import ArticleCard from "./ArticleCard.astro";
+import type { BlogPostEntry } from "@lib/contents/blog";
+import BlogPageCard from "./BlogPageCard.astro";
 
 interface Props {
-  next: FinalBlogCollectionEntry | null;
-  prev: FinalBlogCollectionEntry | null;
+  next: BlogPostEntry | null;
+  prev: BlogPostEntry | null;
 }
 const { next, prev } = Astro.props;
 ---
@@ -15,11 +14,11 @@ const { next, prev } = Astro.props;
     next && (
       <div class="card-box next">
         <div class="guide-text">
-          <a href={`${import.meta.env.BASE_URL}blog/${next.slug}`}>
+          <a href={`${import.meta.env.BASE_URL}blog/${next.id}`}>
             <p>Next &larr;</p>
           </a>
         </div>
-        <ArticleCard entry={next} mini={true} />
+        <BlogPageCard entry={next} mini={true} />
       </div>
     )
   }
@@ -27,11 +26,11 @@ const { next, prev } = Astro.props;
     prev && (
       <div class="card-box prev">
         <div class="guide-text">
-          <a href={`${import.meta.env.BASE_URL}blog/${prev.slug}`}>
+          <a href={`${import.meta.env.BASE_URL}blog/${prev.id}`}>
             <p>&rarr; Prev</p>
           </a>
         </div>
-        <ArticleCard entry={prev} mini={true} />
+        <BlogPageCard entry={prev} mini={true} />
       </div>
     )
   }
