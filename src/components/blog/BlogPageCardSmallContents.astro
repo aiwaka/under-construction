@@ -1,0 +1,43 @@
+---
+import { Image } from "@astrojs/image/components";
+
+import type { BlogPostEntry } from "@lib/contents/blog";
+
+interface Props {
+  entry: BlogPostEntry;
+}
+
+const { entry, } = Astro.props;
+const {
+  title,
+  thumbnail,
+} = entry;
+---
+
+<div class="img-container">
+  //
+</div>
+<div class="card-contents">
+  <h2>{title}</h2>
+</div>
+
+
+<style>
+  h2 {
+    font-size: 1rem;
+  }
+  .img-container {
+    border: 4px solid var(--main-font-color);
+    width: 100%;
+    height: 6rem;
+    clip: rect(0, 0, 0, 0);
+  }
+  .img-container > img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  .card-contents {
+    padding: 0.5rem 1rem;
+  }
+</style>
