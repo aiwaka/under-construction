@@ -1,6 +1,5 @@
 ---
 import type { InferGetStaticPropsType } from "astro";
-import { getImage } from "@astrojs/image";
 
 import { getBlogPostEntries, createRelated } from "@lib/contents/blog";
 import { dateText } from "@lib/utils";
@@ -40,12 +39,6 @@ const {
   headings,
 } = entry;
 
-// const img = await getImage({
-//   src: import(`../../blog-images/thumbnails/${thumbnail}.${thumbnailFormat}`),
-//   format: "webp",
-//   width: 1024,
-//   alt: "thumbnail",
-// });
 const ogp = {
   url: Astro.request.url,
   type: "blog",

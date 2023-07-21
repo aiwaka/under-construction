@@ -1,6 +1,4 @@
 ---
-import { Image } from "@astrojs/image/components";
-
 import { dateText } from "@lib/utils";
 
 import TagContainer from "./TagContainer.svelte";
@@ -23,11 +21,10 @@ const {
 ---
 
 <div class="img-container">
-  <Image
+  <img
     src={thumbnail.url}
     alt="thumbnail"
     width={thumbnail.width}
-    height="auto"
   />
 </div>
 <div class="card-contents">

@@ -1,6 +1,4 @@
 ---
-import { Image } from "@astrojs/image/components";
-
 import type { BlogPostEntry } from "@lib/contents/blog";
 
 interface Props {
@@ -15,11 +13,10 @@ const {
 ---
 
 <div class="img-container">
-  <Image
+  <img
     src={thumbnail.url}
     alt="thumbnail"
     width={thumbnail.width/2}
-    height="auto"
   />
 </div>
 <div class="card-contents">

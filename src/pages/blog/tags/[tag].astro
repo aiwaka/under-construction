@@ -29,7 +29,7 @@ type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { tag } = Astro.params as Params;
-const { blogPostEntries } = Astro.props;
+const { blogPostEntries } = Astro.props as Props;
 sortArrayByDate(blogPostEntries);
 
 const pageNum = Math.ceil(blogPostEntries.length / POST_PER_PAGE);
