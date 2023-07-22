@@ -1,6 +1,5 @@
 ---
 import type { InferGetStaticPropsType } from "astro";
-import { getImage } from "@astrojs/image";
 
 import { getBlogPostEntries, createRelated } from "@lib/contents/blog";
 import { dateText } from "@lib/utils";
@@ -39,37 +38,16 @@ const {
   wordCount,
   headings,
 } = entry;
-// const { Content, headings, remarkPluginFrontmatter } = await entry.render();
-// const {
-//   title,
-//   description,
-//   date,
-//   updateDate,
-//   thumbnail,
-//   thumbnailFormat,
-//   tags,
-//   latex,
-// } = entry.data;
-// const additionalFrontmatter =
-//   remarkPluginFrontmatter as FrontmatterByRemarkPlugin;
-// const wordCount = additionalFrontmatter.wordCount;
 
-// const img = await getImage({
-//   src: import(`../../blog-images/thumbnails/${thumbnail}.${thumbnailFormat}`),
-//   format: "webp",
-//   width: 1024,
-//   alt: "thumbnail",
-// });
 const ogp = {
   url: Astro.request.url,
   type: "blog",
   title: `Under Construction | blog | ${title}`,
   description,
   siteName: "Under Construction",
-  image: "",
-  // image:
-  //   "https://littleikawa.github.io" +
-  //   (img.src ?? "/under-construction/img/blue_2.png"),
+  image:
+    "https://littleikawa.github.io" +
+    (thumbnail.url ?? "/under-construction/img/blue_2.png"),
 };
 ---
 
@@ -94,14 +72,14 @@ const ogp = {
     <span>文字数：{wordCount}</span>
   </div>
   <div class="img-container">
-    <!-- <img
-      src={img.src}
-      width={img.width}
-      height={img.height}
-      alt={img.alt}
+    <img
+      src={thumbnail.url}
+      width={thumbnail.width}
+      height={thumbnail.height}
+      alt={thumbnail.alt}
       loading="eager"
       decoding="async"
-    /> -->
+    />
   </div>
   <div class="blog-article-content-container">
     <BlogTOC headings={headings} />

@@ -1,11 +1,11 @@
 <script lang="ts">
-  import ArticleTag from "./ArticleTag.svelte";
+  import BlogTag from "./BlogTag.svelte";
   export let tagList: string[];
 </script>
 
 <div class="tag-container">
   {#each tagList as tag}
-    <ArticleTag {tag} />
+    <BlogTag {tag} />
   {/each}
 </div>
 

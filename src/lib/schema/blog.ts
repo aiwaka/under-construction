@@ -5,6 +5,7 @@ import { z } from "astro:content";
 
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
+import { getImage } from "@astrojs/image";
 
 enum ThumbnailFormatEnum {
   png = "png",
@@ -31,18 +32,8 @@ export const CollectionBlogSchema = z.object({
   draft: z.boolean().default(false),
 });
 
-// /** Remarkによって書き換えられて追加される属性 */
-// export interface FrontmatterByRemarkPlugin {
-//   wordCount: number;
-// }
-
 /** ブログ記事のfrontmatterのスキーマを表す型 */
 export type CollectionBlogSchemaDataType = CollectionEntry<"blog">["data"];
-
-// /** コレクション情報のスキーマ部分にremarkによる加工を追加した型 */
-// export type FinalBlogCollectionEntry = Omit<CollectionEntry<"blog">, "data"> & {
-//   data: BlogArticleSchemaType & FrontmatterByRemarkPlugin;
-// };
 
 /** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
 export class CollectionsBlogPostEntry
@@ -63,7 +54,9 @@ export class CollectionsBlogPostEntry
   public latex: boolean;
   public draft: boolean;
 
-  constructor(rawEntry: CollectionEntry<"blog">) {
+  private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes;
+
+  private constructor(rawEntry: CollectionEntry<"blog">) {
     this.id = rawEntry.slug;
     const data = rawEntry.data;
     this.title = data.title;
@@ -84,15 +77,44 @@ export class CollectionsBlogPostEntry
     const { Content, headings, remarkPluginFrontmatter } = rendered;
     entry.Content = Content;
     entry.wordCount = remarkPluginFrontmatter.wordCount as number;
+    // parseとstringifyで完全に復元できるためこれでよい.
     entry.headings = JSON.parse(JSON.stringify(headings));
-    // entry.headings = headings;
+
+    entry.thumbnailImage = await getImage({
+      src: import(
+        `../../blog-images/thumbnails/${entry.thumbnail}.${entry.thumbnailFormat}`
+      ),
+      width: 1024,
+      format: "webp",
+      alt: "thumbnail",
+    });
     return entry;
   }
 
-  toEntryObject(): BlogPostEntry {
-    const { date, updateDate, id, Content, thumbnail, ...rest } = this;
+  toEntryObject() {
+    const {
+      date,
+      updateDate,
+      id,
+      Content,
+      thumbnail,
+      thumbnailFormat,
+      ...rest
+    } = this;
+    if (!this.thumbnailImage.src) {
+      throw Error(`thumbnail loading failed on ${this.title}`);
+    }
+    const thumbHeight =
+      typeof this.thumbnailImage.height! === "string"
+        ? parseInt(this.thumbnailImage.height)
+        : this.thumbnailImage.height!;
     return {
-      thumbnail: { url: thumbnail, width: 1200, height: -1, alt: "thumbnail" },
+      thumbnail: {
+        url: this.thumbnailImage.src,
+        width: 1024,
+        height: thumbHeight,
+        alt: "thumbnail",
+      },
       id,
       createdAt: new Date(date),
       updatedAt: new Date(updateDate ?? date),

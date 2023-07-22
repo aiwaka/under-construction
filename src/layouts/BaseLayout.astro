@@ -136,6 +136,7 @@ const bgColor = currentPath.startsWith("blog")
     padding: 0;
   }
   pre {
+    margin: 2rem 0;
     padding: 2rem 3rem;
     border-radius: 10px;
     max-width: 90vw;
@@ -145,7 +146,7 @@ const bgColor = currentPath.startsWith("blog")
     color: var(--main-bg-color);
     padding: 0.2rem 1.2rem;
     border-radius: 10px 10px 0 0;
-    margin-bottom: -10px;
+    margin-bottom: calc(-10px + -2rem);
     z-index: 10;
     font-family: "Noto Sans Mono", Consolas, monospace;
   }
