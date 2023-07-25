@@ -6,7 +6,7 @@ import BlogImage from "./BlogImage.astro";
 interface Props {
   images: BlogImageProps[] | BlogImageProps;
 }
-const { images, ...attrs } = Astro.props;
+const { images, ...globalAttrs } = Astro.props;
 // かならずArrayになるように型を操作する
 const list = Array.isArray(images) ? images : [images];
 ---
@@ -14,7 +14,7 @@ const list = Array.isArray(images) ? images : [images];
 <div class="image-container">
   {
     list.map((item) => {
-      const { src, width, alt, caption } = item;
+      const { src, width, alt, caption, ...attrs } = item;
       return (
         <BlogImage
           src={src}
@@ -22,6 +22,7 @@ const list = Array.isArray(images) ? images : [images];
           alt={alt}
           caption={caption}
           {...attrs}
+          {...globalAttrs}
         />
       );
     })

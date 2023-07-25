@@ -3,9 +3,10 @@
  * `alt`を省略した場合自動的に`caption`が用いられる.
  */
 export interface BlogImageProps {
-  src: ImageMetadata | Promise<{ default: ImageMetadata }>;
+  src: string | ImageMetadata | Promise<{ default: ImageMetadata }>;
   width: number;
   height?: number;
+  aspectRatio?: string;
   alt?: string;
   caption?: string;
 }
