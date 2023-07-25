@@ -5,6 +5,10 @@ import { createClient } from "microcms-js-sdk";
 
 const PKG_NAME = "astro-load-microcms-image";
 
+const consoleLogUsingPackageName = (...args: string[]) => {
+  console.log(`[${PKG_NAME}] `, ...args);
+};
+
 interface LoadMicroCMSImageOptions {
   skip?: boolean;
 }
@@ -30,7 +34,7 @@ const MicroCMSImagesDataSchema = z.array(
   })
 );
 /** このブログプロジェクトで利用したい形式のスキーマ */
-interface ImagesStorageSchema {
+export interface ImagesStorageSchema {
   [title: string]: {
     thumbnail: z.infer<typeof MicroCMSImageSchema>;
     images: {
@@ -38,6 +42,8 @@ interface ImagesStorageSchema {
     };
   };
 }
+
+const DATA_FILE_NAME: string = "images-data.json";
 
 export default function preload(
   options: LoadMicroCMSImageOptions = {}
@@ -71,7 +77,7 @@ export default function preload(
           queries: { fields: "id,title,thumbnail,images" },
         });
         const path = new URL(
-          "../../generated/images-data.json",
+          `../../generated/${DATA_FILE_NAME}`,
           import.meta.url
         );
         const contents = MicroCMSImagesDataSchema.parse(
@@ -89,6 +95,14 @@ export default function preload(
 
         fs.writeFileSync(path, JSON.stringify(resultContents));
         console.log("[load-microcms-image] fetch and dump finished.");
+      },
+      "astro:build:setup": () => {
+        consoleLogUsingPackageName("copying data file.");
+        fs.mkdirSync("dist/generated", { recursive: true });
+        fs.copyFileSync(
+          `src/generated/${DATA_FILE_NAME}`,
+          `dist/generated/${DATA_FILE_NAME}`
+        );
       },
     },
   };
