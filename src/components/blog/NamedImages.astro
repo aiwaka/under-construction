@@ -1,0 +1,50 @@
+---
+import BlogImageList from "@components/blog/BlogImageList.astro";
+import type { BlogImageProps } from "@lib/contents/blog";
+import fs from "fs"
+import type {ImagesStorageSchema} from "../../integrations/astro-load-microcms-image"
+
+interface MicroCMSImageQuery {}
+
+type NamedImageType = Omit<BlogImageProps, "src"> & {
+  name: string;
+};
+export type Props = { baseName: string, images: NamedImageType | NamedImageType[] }
+const { baseName, images: namedImagesProp } = Astro.props
+
+// 配列にする
+const namedImages = Array.isArray(namedImagesProp) ? namedImagesProp : [namedImagesProp];
+
+// NOTE: `import.meta.url`はこのコンポーネントの完全パスを返す. そこから`dist/...`までたどり着けるようにする.
+// `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
+const dataDir = import.meta.env.DEV ? "../../generated/images-data.json" : "../../dist/generated/images-data.json"
+const path = new URL(dataDir, import.meta.url)
+if (!fs.existsSync(path)) {
+  console.log("`import.meta.url` : ", import.meta.url)
+  console.log("referencing path (`path.href`) : ", path.href)
+  throw Error("the images data does not exist.")
+}
+const allImagesData: ImagesStorageSchema = JSON.parse(fs.readFileSync(path, "utf8"));
+
+const imagesData = allImagesData[baseName]
+if (imagesData === undefined) {
+  throw Error("Specified basename cannot be found.")
+}
+const images = namedImages.map((data) => {
+  const { name, ...rest } = data;
+  const image = imagesData.images[name];
+  // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
+  const queriedUrl = `${image.url}?w=${image.width}`
+  return {
+    src: queriedUrl,
+    aspectRatio: `${image.width}:${image.height}`,
+    ...rest
+  }
+})
+
+---
+
+<BlogImageList images={images} />
+
+
+
