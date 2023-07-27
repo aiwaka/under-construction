@@ -102,7 +102,7 @@ export class CollectionsBlogPostEntry
       ...rest
     } = this;
     if (!this.thumbnailImage.src) {
-      throw Error(`thumbnail loading failed on ${this.title}`);
+      throw Error(`thumbnail loading failed in \`${this.title}\``);
     }
     const thumbHeight =
       typeof this.thumbnailImage.height! === "string"
