@@ -1,3 +1,4 @@
+import fs from "fs";
 import type { MarkdownHeading } from "astro";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
 import type { CollectionEntry } from "astro:content";
@@ -6,31 +7,42 @@ import { z } from "astro:content";
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
 import { getImage } from "@astrojs/image";
+import type { ImagesStorageSchema } from "src/integrations/astro-load-microcms-image";
 
 enum ThumbnailFormatEnum {
   png = "png",
   jpg = "jpg",
 }
 const ThumbnailFormatSchema = z.nativeEnum(ThumbnailFormatEnum);
-export type ThumbnailFormatType = z.infer<typeof ThumbnailFormatSchema>;
+// export type ThumbnailFormatType = z.infer<typeof ThumbnailFormatSchema>;
 
-export const CollectionBlogSchema = z.object({
-  title: z.string(),
-  description: z.string(),
-  thumbnail: z.string(),
-  thumbnailFormat: ThumbnailFormatSchema,
-  date: z.date(),
-  updateDate: z.date().optional(),
-  tags: z.string().array(),
-  related: z
-    .string()
-    .array()
-    // 5個以上関連記事をセットできない
-    .refine((arg) => arg.length <= 5)
-    .default([]),
-  latex: z.boolean().default(false),
-  draft: z.boolean().default(false),
-});
+export const CollectionBlogSchema = z
+  .object({
+    title: z.string(),
+    description: z.string(),
+    thumbnail: z.string(),
+    thumbnailFormat: ThumbnailFormatSchema.nullable().default(null),
+    date: z.date(),
+    updateDate: z.date().optional(),
+    tags: z.string().array(),
+    related: z
+      .string()
+      .array()
+      // 5個以上関連記事をセットできない
+      .refine((arg) => arg.length <= 5)
+      .default([]),
+    latex: z.boolean().default(false),
+    draft: z.boolean().default(false),
+  })
+  .refine(
+    ({ thumbnail, thumbnailFormat }) => {
+      return thumbnail === "remote" || thumbnailFormat !== null;
+    },
+    {
+      path: ["thumbnailFormat"],
+      message: "`thumbnail`が`remote`でない場合`thumbnailFormat`は必須です。",
+    }
+  );
 
 /** ブログ記事のfrontmatterのスキーマを表す型 */
 export type CollectionBlogSchemaDataType = CollectionEntry<"blog">["data"];
@@ -44,7 +56,7 @@ export class CollectionsBlogPostEntry
   public description: string;
   public Content!: AstroComponentFactory;
   public thumbnail: string;
-  public thumbnailFormat: ThumbnailFormatEnum;
+  public thumbnailFormat: ThumbnailFormatEnum | null;
   public date: Date;
   public updateDate: Date | undefined;
   public tags: string[];
@@ -80,14 +92,57 @@ export class CollectionsBlogPostEntry
     // parseとstringifyで完全に復元できるためこれでよい.
     entry.headings = JSON.parse(JSON.stringify(headings));
 
-    entry.thumbnailImage = await getImage({
-      src: import(
-        `../../blog-images/thumbnails/${entry.thumbnail}.${entry.thumbnailFormat}`
-      ),
-      width: 1024,
-      format: "webp",
-      alt: "thumbnail",
-    });
+    if (entry.thumbnail !== "remote" && entry.thumbnailFormat === null) {
+      throw Error(
+        "サムネイルに関するバリデーションが不正です。`thumbnail`が`remote`であるか、そうでないなら`thumbnailFormat`が指定されている必要があります。"
+      );
+    }
+    // リモートの画像を取得する処理
+    const getImageFromRemote = async () => {
+      // ビルド時のバンドルされるファイルのURLがどうなるかはあまりわかっていないのでうまくいくようにしている.
+      // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
+      const dataDir = import.meta.env.DEV
+        ? "../../generated/images-data.json"
+        : "../../generated/images-data.json";
+      const path = new URL(dataDir, import.meta.url);
+      if (!fs.existsSync(path)) {
+        console.log("`import.meta.url` : ", import.meta.url);
+        console.log("referencing path (`path.href`) : ", path.href);
+        throw Error("the images data does not exist.");
+      }
+      const allImagesData: ImagesStorageSchema = JSON.parse(
+        fs.readFileSync(path, "utf8")
+      );
+
+      const imagesData = allImagesData[entry.id];
+      if (imagesData === undefined) {
+        throw Error("Specified id cannot be found.");
+      }
+      const image = imagesData.thumbnail;
+      // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
+      const queriedUrl = `${image.url}?w=${image.width}`;
+      return await getImage({
+        src: queriedUrl,
+        width: 1024,
+        aspectRatio: `${image.width}:${image.height}`,
+        format: "webp",
+        alt: "thumbnail",
+      });
+    };
+    const getImageFromLocal = async () => {
+      return await getImage({
+        src: import(
+          `../../blog-images/thumbnails/${entry.thumbnail}.${entry.thumbnailFormat}`
+        ),
+        width: 1024,
+        format: "webp",
+        alt: "thumbnail",
+      });
+    };
+    entry.thumbnailImage =
+      entry.thumbnail === "remote"
+        ? await getImageFromRemote()
+        : await getImageFromLocal();
     return entry;
   }
 
