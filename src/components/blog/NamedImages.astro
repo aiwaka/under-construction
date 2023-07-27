@@ -17,18 +17,23 @@ const namedImages = Array.isArray(namedImagesProp) ? namedImagesProp : [namedIma
 
 // NOTE: `import.meta.url`はこのコンポーネントの完全パスを返す. そこから`dist/...`までたどり着けるようにする.
 // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
-const dataDir = import.meta.env.DEV ? "../../generated/images-data.json" : "../../dist/generated/images-data.json"
+const dataDir = import.meta.env.DEV
+                  ? "../../generated/images-data.json"
+                  : "../../dist/generated/images-data.json"
 const path = new URL(dataDir, import.meta.url)
 if (!fs.existsSync(path)) {
   console.log("`import.meta.url` : ", import.meta.url)
   console.log("referencing path (`path.href`) : ", path.href)
-  throw Error("the images data does not exist.")
+  throw Error(
+    "Images data does not exist. \
+    Check the path settings output to the console."
+  )
 }
 const allImagesData: ImagesStorageSchema = JSON.parse(fs.readFileSync(path, "utf8"));
 
 const imagesData = allImagesData[baseName]
 if (imagesData === undefined) {
-  throw Error("Specified basename cannot be found.")
+  throw Error(`The specified basename \`${baseName}\` cannot be found.`)
 }
 const images = namedImages.map((data) => {
   const { name, ...rest } = data;

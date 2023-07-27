@@ -65,7 +65,9 @@ export default function preload(
         const MICROCMS_SERVICE_DOMAIN = process.env.MICROCMS_SERVICE_DOMAIN;
         const MICROCMS_API_KEY = process.env.MICROCMS_API_KEY;
         if (!(MICROCMS_SERVICE_DOMAIN && MICROCMS_API_KEY)) {
-          throw Error("MICROCMS_XXX_XXX variables are not defined in `.env`.");
+          throw Error(
+            "The variables named MICROCMS_XXX_XXX are not defined in `.env`."
+          );
         }
 
         const microCMSClient = createClient({

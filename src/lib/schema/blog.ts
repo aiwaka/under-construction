@@ -108,7 +108,10 @@ export class CollectionsBlogPostEntry
       if (!fs.existsSync(path)) {
         console.log("`import.meta.url` : ", import.meta.url);
         console.log("referencing path (`path.href`) : ", path.href);
-        throw Error("the images data does not exist.");
+        throw Error(
+          "Images data does not exist. \
+          Check the path settings output to the console."
+        );
       }
       const allImagesData: ImagesStorageSchema = JSON.parse(
         fs.readFileSync(path, "utf8")
@@ -116,7 +119,7 @@ export class CollectionsBlogPostEntry
 
       const imagesData = allImagesData[entry.id];
       if (imagesData === undefined) {
-        throw Error("Specified id cannot be found.");
+        throw Error(`The specified id \`${entry.id}\` cannot be found.`);
       }
       const image = imagesData.thumbnail;
       // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
@@ -157,7 +160,7 @@ export class CollectionsBlogPostEntry
       ...rest
     } = this;
     if (!this.thumbnailImage.src) {
-      throw Error(`thumbnail loading failed in \`${this.title}\``);
+      throw Error(`Failed to load thumbnail in \`${this.title}\``);
     }
     const thumbHeight =
       typeof this.thumbnailImage.height! === "string"
