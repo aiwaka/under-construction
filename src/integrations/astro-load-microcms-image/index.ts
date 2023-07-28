@@ -1,7 +1,7 @@
 import type { AstroIntegration } from "astro";
 import { z } from "astro/zod";
 import fs from "fs";
-import { createClient } from "microcms-js-sdk";
+import { MicroCMSListResponse, createClient } from "microcms-js-sdk";
 
 const PKG_NAME = "astro-load-microcms-image";
 
@@ -10,6 +10,7 @@ const consoleLogUsingPackageName = (...args: string[]) => {
 };
 
 interface LoadMicroCMSImageOptions {
+  /** 画像データのCMSからの取得をスキップするフラグ */
   skip?: boolean;
 }
 /** MicroCMSから取得する画像のスキーマ */
@@ -44,6 +45,8 @@ export interface ImagesStorageSchema {
 }
 
 const DATA_FILE_NAME: string = "images-data.json";
+/** 開発モード時にデータを取得できなかったが存在している状況を表す一つの単語 */
+const DATA_ALREADY_EXISTS_FLAG = "alreadyExists" as const satisfies string;
 
 export default function preload(
   options: LoadMicroCMSImageOptions = {}
@@ -69,19 +72,46 @@ export default function preload(
             "The variables named MICROCMS_XXX_XXX are not defined in `.env`."
           );
         }
-
-        const microCMSClient = createClient({
-          serviceDomain: MICROCMS_SERVICE_DOMAIN,
-          apiKey: MICROCMS_API_KEY,
-        });
-        const imageDataFromMicroCMS = await microCMSClient.get({
-          endpoint: "images-in-articles",
-          queries: { fields: "id,title,thumbnail,images" },
-        });
-        const path = new URL(
+        // データファイルのパス
+        const dataPath = new URL(
           `../../generated/${DATA_FILE_NAME}`,
           import.meta.url
         );
+
+        // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
+        const getImagesDataFromMicroCMS = async () => {
+          const microCMSClient = createClient({
+            serviceDomain: MICROCMS_SERVICE_DOMAIN,
+            apiKey: MICROCMS_API_KEY,
+          });
+          try {
+            const imageDataFromMicroCMS = await microCMSClient.get<
+              MicroCMSListResponse<z.infer<typeof MicroCMSImagesDataSchema>>
+            >({
+              endpoint: "images-in-articles",
+              queries: { fields: "id,title,thumbnail,images" },
+            });
+            return imageDataFromMicroCMS;
+          } catch (e) {
+            if (import.meta.env.DEV && fs.existsSync(dataPath)) {
+              return DATA_ALREADY_EXISTS_FLAG;
+            } else {
+              throw e;
+            }
+          }
+        };
+        console.log(
+          "[load-microcms-image] attempt to fetch data from microCMS."
+        );
+        const imageDataFromMicroCMS = await getImagesDataFromMicroCMS();
+        if (imageDataFromMicroCMS === DATA_ALREADY_EXISTS_FLAG) {
+          console.log(
+            "[load-microcms-image] fetch failed, but data file already exists. using it in dev mode."
+          );
+          return;
+        }
+
+        // TODO: コンテンツが増えると一度で取得しきれないため, 逐次取得する処理が必要.
         const contents = MicroCMSImagesDataSchema.parse(
           imageDataFromMicroCMS["contents"]
         );
@@ -95,7 +125,7 @@ export default function preload(
           };
         });
 
-        fs.writeFileSync(path, JSON.stringify(resultContents));
+        fs.writeFileSync(dataPath, JSON.stringify(resultContents));
         console.log("[load-microcms-image] fetch and dump finished.");
       },
       "astro:build:setup": () => {
