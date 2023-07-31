@@ -27,7 +27,7 @@ export default defineConfig({
     },
   },
   integrations: [
-    // loadMicroCMSImage({ ignoreNoData: true }),
+    loadMicroCMSImage(),
     svelte(),
     image({
       serviceEntryPoint: "@astrojs/image/sharp",

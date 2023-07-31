@@ -101,6 +101,7 @@ export default function preload(
               });
               return imageDataFromMicroCMS;
             } catch (e) {
+              consoleLogUsingPackageName("data fetch failed...");
               if (import.meta.env.DEV && fs.existsSync(dataPath)) {
                 return DATA_ALREADY_EXISTS_FLAG;
               } else {
