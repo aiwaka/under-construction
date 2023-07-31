@@ -13,7 +13,10 @@ const consoleLogUsingPackageName = (...args: string[]) => {
 interface LoadMicroCMSImageOptions {
   /** 画像データのCMSからの取得をスキップするフラグ（デフォルト：`false`） */
   skip?: boolean;
-  // TODO: 画像データ無しで続行できるかどうか（default: false）
+  /** 画像データ取得時エラーが出ても続行可能かどうか.
+   * devモードのみ有効で, buildモードなら強制的に`false`になる.（デフォルト：`false`）
+   */
+  ignoreNoData?: boolean;
 }
 /** MicroCMSから取得する画像のスキーマ */
 const MicroCMSImageSchema = z.object({
@@ -53,7 +56,9 @@ const DATA_ALREADY_EXISTS_FLAG = "alreadyExists" as const satisfies string;
 export default function preload(
   options: LoadMicroCMSImageOptions = {}
 ): AstroIntegration {
-  const { skip = false } = options;
+  const { skip = false, ignoreNoData: _ignore = false } = options;
+  // devモードかつオプションがtrueのときに無視できる.
+  const ignoreNoData = import.meta.env.DEV && _ignore;
   return {
     name: PKG_NAME,
     hooks: {
@@ -66,69 +71,80 @@ export default function preload(
           console.log("[load-microcms-image] fetch skipped when restarting.");
           return;
         }
-        (await import("dotenv")).config();
-        const MICROCMS_SERVICE_DOMAIN = process.env.MICROCMS_SERVICE_DOMAIN;
-        const MICROCMS_API_KEY = process.env.MICROCMS_API_KEY;
-        if (!(MICROCMS_SERVICE_DOMAIN && MICROCMS_API_KEY)) {
-          throw Error(
-            "The variables named MICROCMS_XXX_XXX are not defined in `.env`."
-          );
-        }
-        // データファイルのパス
-        const dataPath = new URL(
-          `../../generated/${DATA_FILE_NAME}`,
-          import.meta.url
-        );
-
-        // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
-        const getImagesDataFromMicroCMS = async () => {
-          const microCMSClient = createClient({
-            serviceDomain: MICROCMS_SERVICE_DOMAIN,
-            apiKey: MICROCMS_API_KEY,
-          });
-          try {
-            const imageDataFromMicroCMS = await microCMSClient.get<
-              MicroCMSListResponse<z.infer<typeof MicroCMSImagesDataSchema>>
-            >({
-              endpoint: "images-in-articles",
-              queries: { fields: "id,title,thumbnail,images" },
-            });
-            return imageDataFromMicroCMS;
-          } catch (e) {
-            if (import.meta.env.DEV && fs.existsSync(dataPath)) {
-              return DATA_ALREADY_EXISTS_FLAG;
-            } else {
-              throw e;
-            }
+        try {
+          (await import("dotenv")).config();
+          const MICROCMS_SERVICE_DOMAIN = process.env.MICROCMS_SERVICE_DOMAIN;
+          const MICROCMS_API_KEY = process.env.MICROCMS_API_KEY;
+          if (!(MICROCMS_SERVICE_DOMAIN && MICROCMS_API_KEY)) {
+            throw Error(
+              "The variables named MICROCMS_XXX_XXX are not defined in `.env`."
+            );
           }
-        };
-        console.log(
-          "[load-microcms-image] attempt to fetch data from microCMS."
-        );
-        const imageDataFromMicroCMS = await getImagesDataFromMicroCMS();
-        if (imageDataFromMicroCMS === DATA_ALREADY_EXISTS_FLAG) {
-          console.log(
-            "[load-microcms-image] fetch failed, but data file already exists. using it in dev mode."
+          // データファイルのパス
+          const dataPath = new URL(
+            `../../generated/${DATA_FILE_NAME}`,
+            import.meta.url
           );
-          return;
-        }
 
-        // TODO: コンテンツが増えると一度で取得しきれないため, 逐次取得する処理が必要.
-        const contents = MicroCMSImagesDataSchema.parse(
-          imageDataFromMicroCMS["contents"]
-        );
-        const resultContents: ImagesStorageSchema = {};
-        contents.forEach((content) => {
-          resultContents[content.title] = {
-            thumbnail: content.thumbnail,
-            images: Object.fromEntries(
-              content.images.map((image) => [image.name, image.image])
-            ),
+          // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
+          const getImagesDataFromMicroCMS = async () => {
+            const microCMSClient = createClient({
+              serviceDomain: MICROCMS_SERVICE_DOMAIN,
+              apiKey: MICROCMS_API_KEY,
+            });
+            try {
+              const imageDataFromMicroCMS = await microCMSClient.get<
+                MicroCMSListResponse<z.infer<typeof MicroCMSImagesDataSchema>>
+              >({
+                endpoint: "images-in-articles",
+                queries: { fields: "id,title,thumbnail,images" },
+              });
+              return imageDataFromMicroCMS;
+            } catch (e) {
+              if (import.meta.env.DEV && fs.existsSync(dataPath)) {
+                return DATA_ALREADY_EXISTS_FLAG;
+              } else {
+                throw e;
+              }
+            }
           };
-        });
+          console.log(
+            "[load-microcms-image] attempt to fetch data from microCMS."
+          );
+          const imageDataFromMicroCMS = await getImagesDataFromMicroCMS();
+          if (imageDataFromMicroCMS === DATA_ALREADY_EXISTS_FLAG) {
+            console.log(
+              "[load-microcms-image] fetch failed, but data file already exists. using it in dev mode."
+            );
+            return;
+          }
 
-        fs.writeFileSync(dataPath, JSON.stringify(resultContents));
-        console.log("[load-microcms-image] fetch and dump finished.");
+          // TODO: コンテンツが増えると一度で取得しきれないため, 逐次取得する処理が必要.
+          const contents = MicroCMSImagesDataSchema.parse(
+            imageDataFromMicroCMS["contents"]
+          );
+          const resultContents: ImagesStorageSchema = {};
+          contents.forEach((content) => {
+            resultContents[content.title] = {
+              thumbnail: content.thumbnail,
+              images: Object.fromEntries(
+                content.images.map((image) => [image.name, image.image])
+              ),
+            };
+          });
+
+          fs.writeFileSync(dataPath, JSON.stringify(resultContents));
+          console.log("[load-microcms-image] fetch and dump finished.");
+        } catch (e) {
+          if (ignoreNoData) {
+            console.error(e);
+            consoleLogUsingPackageName(
+              "An error occurs while loading image-data, but ignore option is enabled."
+            );
+          } else {
+            throw e;
+          }
+        }
       },
       "astro:build:setup": () => {
         consoleLogUsingPackageName("copying data file.");
