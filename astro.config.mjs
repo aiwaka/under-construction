@@ -5,6 +5,7 @@ import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
+import loadMicroCMSImage from "./src/integrations/astro-load-microcms-image";
 
 import remarkMath from "remark-math";
 import remarkCodeTitles from "remark-code-titles";
@@ -26,6 +27,7 @@ export default defineConfig({
     },
   },
   integrations: [
+    loadMicroCMSImage({ ignoreNoData: true }),
     svelte(),
     image({
       serviceEntryPoint: "@astrojs/image/sharp",

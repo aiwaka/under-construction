@@ -1,0 +1,80 @@
+---
+import BlogImageList from "@components/blog/BlogImageList.astro";
+import type { BlogImageProps } from "@lib/contents/blog";
+import fs from "fs"
+import type {ImagesStorageSchema} from "../../integrations/astro-load-microcms-image"
+
+type NamedImageType = Omit<BlogImageProps, "src"> & {
+  name: string;
+};
+export type Props = { baseName: string, images: NamedImageType | NamedImageType[] }
+const { baseName, images: namedImagesProp } = Astro.props
+
+// 配列にする
+const namedImages = Array.isArray(namedImagesProp) ? namedImagesProp : [namedImagesProp];
+
+/** 何らかの理由で取得に失敗した瞬間`true`になる */
+let imagesDataFetchFailed = false;
+
+// NOTE: `import.meta.url`はこのコンポーネントの完全パスを返す. そこから`dist/...`までたどり着けるようにする.
+// `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
+const dataDir = import.meta.env.DEV
+                  ? "../../generated/images-data.json"
+                  : "../../dist/generated/images-data.json"
+const path = new URL(dataDir, import.meta.url)
+if (!fs.existsSync(path)) {
+  const errorMessage =
+          "Images data does not exist. Check the path settings output to the console." +
+          `\n\`import.meta.url\` : ${import.meta.url}` +
+          `\nreferencing path (\`path.href\`) : ${path.href}`;
+  console.error(errorMessage)
+  imagesDataFetchFailed = true;
+}
+
+let allImagesData: ImagesStorageSchema | null = null;
+if (!imagesDataFetchFailed) {
+  allImagesData = JSON.parse(fs.readFileSync(path, "utf8")) as ImagesStorageSchema;
+}
+
+const imagesData = allImagesData?.[baseName]
+if (allImagesData && imagesData === undefined) {
+  const errorMessage = `The specified basename \`${baseName}\` cannot be found.`
+  console.error(errorMessage)
+  imagesDataFetchFailed = true;
+}
+const notFoundImageList: string[] = [];
+// 取得できない画像は除外してリストを整形する.
+const images = namedImages.flatMap((data) => {
+  const { name, ...rest } = data;
+  const image = imagesData?.images[name];
+  if (!image) {
+    notFoundImageList.push(name)
+    return [];
+  }
+  // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
+  const queriedUrl = `${image.url}?w=${image.width}`
+  return {
+    src: queriedUrl,
+    aspectRatio: `${image.width}:${image.height}`,
+    ...rest
+  }
+})
+
+if (notFoundImageList.length > 0) {
+  console.warn(`[NamedImages.astro] in ${baseName}, following named images were not found.`)
+  notFoundImageList.map((image) => {
+    console.log(image)
+  })
+}
+
+---
+
+{
+  imagesDataFetchFailed && (
+    <div style='color: red; border: 1px solid red;'>Images Not Found</div>
+  )
+}
+<BlogImageList images={images} />
+
+
+

@@ -30,11 +30,9 @@ const {
 <div class="card-contents">
   <h2>{title}</h2>
   <span>{dateText(createdAt)}</span>
-  {dateText(createdAt) !== dateText(updatedAt) ? (
-    <>
-      <span>（{`${dateText(updatedAt)} 追記`}）</span>
-    </>
-  ) : null}
+  {dateText(createdAt) !== dateText(updatedAt) &&
+    <span>（{`${dateText(updatedAt)} 追記`}）</span>
+  }
   <div class="word-count">
     <span>文字数：{wordCount}</span>
   </div>
