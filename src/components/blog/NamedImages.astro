@@ -4,8 +4,6 @@ import type { BlogImageProps } from "@lib/contents/blog";
 import fs from "fs"
 import type {ImagesStorageSchema} from "../../integrations/astro-load-microcms-image"
 
-interface MicroCMSImageQuery {}
-
 type NamedImageType = Omit<BlogImageProps, "src"> & {
   name: string;
 };
@@ -15,6 +13,8 @@ const { baseName, images: namedImagesProp } = Astro.props
 // 配列にする
 const namedImages = Array.isArray(namedImagesProp) ? namedImagesProp : [namedImagesProp];
 
+let imagesDataFetchFinished = true;
+
 // NOTE: `import.meta.url`はこのコンポーネントの完全パスを返す. そこから`dist/...`までたどり着けるようにする.
 // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
 const dataDir = import.meta.env.DEV
@@ -22,18 +22,19 @@ const dataDir = import.meta.env.DEV
                   : "../../dist/generated/images-data.json"
 const path = new URL(dataDir, import.meta.url)
 if (!fs.existsSync(path)) {
-  console.log("`import.meta.url` : ", import.meta.url)
-  console.log("referencing path (`path.href`) : ", path.href)
-  throw Error(
-    "Images data does not exist. \
-    Check the path settings output to the console."
-  )
+  const errorMessage =
+          "Images data does not exist. Check the path settings output to the console." +
+          `\n\`import.meta.url\` : ${import.meta.url}` +
+          `\nreferencing path (\`path.href\`) : ${path.href}`;
+  throw Error(errorMessage)
 }
 const allImagesData: ImagesStorageSchema = JSON.parse(fs.readFileSync(path, "utf8"));
 
 const imagesData = allImagesData[baseName]
 if (imagesData === undefined) {
-  throw Error(`The specified basename \`${baseName}\` cannot be found.`)
+  const errorMessage = `The specified basename \`${baseName}\` cannot be found.`
+  console.error(errorMessage)
+  throw Error(errorMessage)
 }
 const images = namedImages.map((data) => {
   const { name, ...rest } = data;

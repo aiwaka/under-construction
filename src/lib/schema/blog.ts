@@ -106,12 +106,11 @@ export class CollectionsBlogPostEntry
         : "../../generated/images-data.json";
       const path = new URL(dataDir, import.meta.url);
       if (!fs.existsSync(path)) {
-        console.log("`import.meta.url` : ", import.meta.url);
-        console.log("referencing path (`path.href`) : ", path.href);
-        throw Error(
-          "Images data does not exist. \
-          Check the path settings output to the console."
-        );
+        const errorMessage =
+          "Images data does not exist. Check the path settings output to the console." +
+          `\n\`import.meta.url\` : ${import.meta.url}` +
+          `\nreferencing path (\`path.href\`) : ${path.href}`;
+        throw Error(errorMessage);
       }
       const allImagesData: ImagesStorageSchema = JSON.parse(
         fs.readFileSync(path, "utf8")

@@ -9,9 +9,11 @@ const consoleLogUsingPackageName = (...args: string[]) => {
   console.log(`[${PKG_NAME}] `, ...args);
 };
 
+/** このインテグレーションのオプション */
 interface LoadMicroCMSImageOptions {
-  /** 画像データのCMSからの取得をスキップするフラグ */
+  /** 画像データのCMSからの取得をスキップするフラグ（デフォルト：`false`） */
   skip?: boolean;
+  // TODO: 画像データ無しで続行できるかどうか（default: false）
 }
 /** MicroCMSから取得する画像のスキーマ */
 const MicroCMSImageSchema = z.object({
