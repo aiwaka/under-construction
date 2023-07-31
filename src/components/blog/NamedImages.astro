@@ -13,7 +13,8 @@ const { baseName, images: namedImagesProp } = Astro.props
 // 配列にする
 const namedImages = Array.isArray(namedImagesProp) ? namedImagesProp : [namedImagesProp];
 
-let imagesDataFetchFinished = true;
+/** 何らかの理由で取得に失敗した瞬間`true`になる */
+let imagesDataFetchFailed = false;
 
 // NOTE: `import.meta.url`はこのコンポーネントの完全パスを返す. そこから`dist/...`までたどり着けるようにする.
 // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
@@ -26,19 +27,30 @@ if (!fs.existsSync(path)) {
           "Images data does not exist. Check the path settings output to the console." +
           `\n\`import.meta.url\` : ${import.meta.url}` +
           `\nreferencing path (\`path.href\`) : ${path.href}`;
-  throw Error(errorMessage)
+  console.error(errorMessage)
+  imagesDataFetchFailed = true;
 }
-const allImagesData: ImagesStorageSchema = JSON.parse(fs.readFileSync(path, "utf8"));
 
-const imagesData = allImagesData[baseName]
-if (imagesData === undefined) {
+let allImagesData: ImagesStorageSchema | null = null;
+if (!imagesDataFetchFailed) {
+  allImagesData = JSON.parse(fs.readFileSync(path, "utf8")) as ImagesStorageSchema;
+}
+
+const imagesData = allImagesData?.[baseName]
+if (allImagesData && imagesData === undefined) {
   const errorMessage = `The specified basename \`${baseName}\` cannot be found.`
   console.error(errorMessage)
-  throw Error(errorMessage)
+  imagesDataFetchFailed = true;
 }
-const images = namedImages.map((data) => {
+const notFoundImageList: string[] = [];
+// 取得できない画像は除外してリストを整形する.
+const images = namedImages.flatMap((data) => {
   const { name, ...rest } = data;
-  const image = imagesData.images[name];
+  const image = imagesData?.images[name];
+  if (!image) {
+    notFoundImageList.push(name)
+    return [];
+  }
   // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
   const queriedUrl = `${image.url}?w=${image.width}`
   return {
@@ -48,8 +60,20 @@ const images = namedImages.map((data) => {
   }
 })
 
+if (notFoundImageList.length > 0) {
+  console.warn(`[NamedImages.astro] in ${baseName}, following named images were not found.`)
+  notFoundImageList.map((image) => {
+    console.log(image)
+  })
+}
+
 ---
 
+{
+  imagesDataFetchFailed && (
+    <div style='color: red; border: 1px solid red;'>Images Not Found</div>
+  )
+}
 <BlogImageList images={images} />
 
 

@@ -66,7 +66,7 @@ export class CollectionsBlogPostEntry
   public latex: boolean;
   public draft: boolean;
 
-  private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes;
+  private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
 
   private constructor(rawEntry: CollectionEntry<"blog">) {
     this.id = rawEntry.slug;
@@ -98,7 +98,7 @@ export class CollectionsBlogPostEntry
       );
     }
     // リモートの画像を取得する処理
-    const getImageFromRemote = async () => {
+    const getThumbImageFromRemote = async () => {
       // ビルド時のバンドルされるファイルのURLがどうなるかはあまりわかっていないのでうまくいくようにしている.
       // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
       const dataDir = import.meta.env.DEV
@@ -131,7 +131,7 @@ export class CollectionsBlogPostEntry
         alt: "thumbnail",
       });
     };
-    const getImageFromLocal = async () => {
+    const getThumbImageFromLocal = async () => {
       return await getImage({
         src: import(
           `../../blog-images/thumbnails/${entry.thumbnail}.${entry.thumbnailFormat}`
@@ -141,10 +141,17 @@ export class CollectionsBlogPostEntry
         alt: "thumbnail",
       });
     };
-    entry.thumbnailImage =
-      entry.thumbnail === "remote"
-        ? await getImageFromRemote()
-        : await getImageFromLocal();
+    const getThumbImage = async () => {
+      try {
+        return entry.thumbnail === "remote"
+          ? await getThumbImageFromRemote()
+          : await getThumbImageFromLocal();
+      } catch (e) {
+        console.log(e);
+        return null;
+      }
+    };
+    entry.thumbnailImage = await getThumbImage();
     return entry;
   }
 
@@ -158,20 +165,32 @@ export class CollectionsBlogPostEntry
       thumbnailFormat,
       ...rest
     } = this;
-    if (!this.thumbnailImage.src) {
-      throw Error(`Failed to load thumbnail in \`${this.title}\``);
-    }
-    const thumbHeight =
-      typeof this.thumbnailImage.height! === "string"
-        ? parseInt(this.thumbnailImage.height)
-        : this.thumbnailImage.height!;
+    const createThumbData = () => {
+      if (!this.thumbnailImage?.src) {
+        // throw Error(`Failed to load thumbnail in \`${this.title}\``);
+        console.error(`Failed to load thumbnail in \`${this.title}\``);
+        return {
+          url: "no-image", // このURLはダミーで必ず404が出る.
+          width: 1024,
+          height: 1024,
+          alt: "no-image",
+        };
+      } else {
+        const thumbHeight =
+          typeof this.thumbnailImage.height! === "string"
+            ? parseInt(this.thumbnailImage.height)
+            : this.thumbnailImage.height!;
+        return {
+          url: this.thumbnailImage.src,
+          width: 1024,
+          height: thumbHeight,
+          alt: "thumbnail",
+        };
+      }
+    };
+
     return {
-      thumbnail: {
-        url: this.thumbnailImage.src,
-        width: 1024,
-        height: thumbHeight,
-        alt: "thumbnail",
-      },
+      thumbnail: createThumbData(),
       id,
       createdAt: new Date(date),
       updatedAt: new Date(updateDate ?? date),
