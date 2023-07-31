@@ -57,9 +57,9 @@ const ogp = {
     <span>
       {dateText(createdAt)}
       {
-        dateText(createdAt) === dateText(updatedAt) ? (
-          <>（{dateText(updatedAt)} 追記）</>
-        ) : null
+        dateText(createdAt) !== dateText(updatedAt) && (
+          <Fragment>（{dateText(updatedAt)} 追記）</Fragment>
+        )
       }
     </span>
   </div>
