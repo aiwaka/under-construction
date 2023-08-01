@@ -1,0 +1,27 @@
+---
+interface Props {
+  /** "https://www.youtube.com/embed/xxx" のxxxの部分 */
+  id: string;
+}
+const { id } = Astro.props
+---
+
+<iframe
+  class="embed-youtube"
+  src={`https://www.youtube.com/embed/${id}`}
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen
+></iframe>
+
+<style>
+  iframe.embed-youtube {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    max-width: 800px;
+    display: block;
+    margin: auto;
+  }
+</style>
