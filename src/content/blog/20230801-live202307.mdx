@@ -8,6 +8,7 @@ tags:
 ---
 
 import NamedImages from "@components/blog/NamedImages.astro";
+import EmbedYoutube from "@components/works/EmbedYoutube.astro";
 
 export const ARTICLE_ID = "20230801-live202307";
 
@@ -15,15 +16,7 @@ export const ARTICLE_ID = "20230801-live202307";
 
 私が所属している京都大学軽音楽部でライブが開催され、これに出演しました。
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/J8dWwdjeNRg"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-  allowfullscreen
-></iframe>
+<EmbedYoutube id="J8dWwdjeNRg" />
 
 こんな感じです。
 照明やPA、配信まですべて自前で済ませる圧倒的なポテンシャルに感動です。
