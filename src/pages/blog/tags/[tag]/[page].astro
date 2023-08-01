@@ -27,17 +27,18 @@ interface Props {
 }
 const { page } = Astro.props;
 const { tag } = Astro.params;
+const propTitle = `#${tag}の検索結果`
 const ogp = {
   url: Astro.request.url,
   type: "blog",
-  title: `Under Construction | Blog | #${tag}の検索結果`,
+  title: `Under Construction | Blog | ${propTitle}`,
   description: "ブログ記事のタグ検索結果",
   siteName: "Under Construction",
   image: "https://littleikawa.github.io/under-construction/img/blue_2.png",
 };
 ---
 
-<BlogGeneralLayout ogp={ogp}>
+<BlogGeneralLayout ogp={ogp} title={propTitle}>
   <h2>Blog</h2>
   <a class="to-tag-list" href={`${import.meta.env.BASE_URL}blog/tags`}>
     タグ一覧へ
