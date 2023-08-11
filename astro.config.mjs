@@ -75,7 +75,7 @@ export default defineConfig({
   ],
   compressHTML: true,
   // trailingSlash: "always",
-  site: "https://littleikawa.github.io",
+  site: "https://aiwaka.github.io",
   base: "/under-construction",
   build: {
     // NOTE: ビルド時ページファイルとして`foo/index.html`が作られるのを防ぎ, 代わりに`foo.html`を作る.

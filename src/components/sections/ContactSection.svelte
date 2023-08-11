@@ -23,12 +23,14 @@
         <th>GitHub</th>
         <td>
           <a
-            href="https://github.com/littleIkawa"
+            href="https://github.com/aiwaka"
             target="_blank"
             rel="noopener noreferrer"
           >
-            @littleIkawa
+            @aiwaka
           </a>
+          <br />
+          （ユーザー名を@littleIkawaから変更しました）
         </td>
       </tr>
     </tbody>
@@ -45,7 +47,7 @@
       </div>
     </a>
     <a
-      href="https://github.com/littleIkawa"
+      href="https://github.com/aiwaka"
       target="_blank"
       rel="noopener noreferrer"
     >
