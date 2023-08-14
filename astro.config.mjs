@@ -20,6 +20,9 @@ import rehypeModifyFnHeadingText from "./plugins/rehype-modify-fn-heading-text.m
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    assets: true,
+  },
   markdown: {
     shikiConfig: {
       theme: "dracula",
@@ -27,7 +30,7 @@ export default defineConfig({
     },
   },
   integrations: [
-    loadMicroCMSImage(),
+    loadMicroCMSImage({ skip: true }),
     svelte(),
     image({
       serviceEntryPoint: "@astrojs/image/sharp",
