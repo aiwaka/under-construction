@@ -1,8 +1,9 @@
 ---
+import fs from "fs"
+
 import BlogImageList from "@components/blog/BlogImageList.astro";
 import type { BlogImageProps } from "@lib/contents/blog";
-import fs from "fs"
-import type {ImagesStorageSchema} from "../../integrations/astro-load-microcms-image"
+import type { ImagesStorageSchema } from "../../integrations/astro-load-microcms-image"
 
 type NamedImageType = Omit<BlogImageProps, "src"> & {
   name: string;
@@ -45,19 +46,23 @@ if (allImagesData && imagesData === undefined) {
 const notFoundImageList: string[] = [];
 // 取得できない画像は除外してリストを整形する.
 const images = namedImages.flatMap((data) => {
-  const { name, ...rest } = data;
+  const { name, width: specifiedWidth, height: specifiedHeight, ...rest } = data;
   const image = imagesData?.images[name];
   if (!image) {
     notFoundImageList.push(name)
+    // []を返せばflatMapによりmapの結果から除外できる
     return [];
   }
   // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
-  const queriedUrl = `${image.url}?w=${image.width}`
+  const queriedUrl = `${image.url}?w=${specifiedWidth}`
+  // 高さは指定されていればそれを使い, そうでなければ画像の大きさから計算する.
+  const resultHeight = specifiedHeight ?? (specifiedWidth * image.height) / image.width;
   return {
     src: queriedUrl,
-    aspectRatio: `${image.width}:${image.height}`,
+    width: specifiedWidth,
+    height: resultHeight,
     ...rest
-  }
+  } satisfies BlogImageProps
 })
 
 if (notFoundImageList.length > 0) {

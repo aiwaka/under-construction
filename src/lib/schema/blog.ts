@@ -1,12 +1,12 @@
 import fs from "fs";
-import type { MarkdownHeading } from "astro";
+import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
+import { getImage } from "astro:assets";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
 import type { CollectionEntry } from "astro:content";
 import { z } from "astro:content";
 
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
-import { getImage } from "@astrojs/image";
 import type { ImagesStorageSchema } from "src/integrations/astro-load-microcms-image";
 
 enum ThumbnailFormatEnum {
@@ -66,7 +66,8 @@ export class CollectionsBlogPostEntry
   public latex: boolean;
   public draft: boolean;
 
-  private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
+  // private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
+  private thumbnailImage!: GetImageResult | null;
 
   private constructor(rawEntry: CollectionEntry<"blog">) {
     this.id = rawEntry.slug;
@@ -101,9 +102,10 @@ export class CollectionsBlogPostEntry
     const getThumbImageFromRemote = async () => {
       // ビルド時のバンドルされるファイルのURLがどうなるかはあまりわかっていないのでうまくいくようにしている.
       // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
-      const dataDir = import.meta.env.DEV
-        ? "../../generated/images-data.json"
-        : "../../generated/images-data.json";
+      // const dataDir = import.meta.env.DEV
+      //   ? "../../generated/images-data.json"
+      //   : "../../generated/images-data.json";
+      const dataDir = "../../generated/images-data.json";
       const path = new URL(dataDir, import.meta.url);
       if (!fs.existsSync(path)) {
         const errorMessage =
@@ -121,23 +123,28 @@ export class CollectionsBlogPostEntry
         throw Error(`The specified id \`${entry.id}\` cannot be found.`);
       }
       const image = imagesData.thumbnail;
-      // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
-      const queriedUrl = `${image.url}?w=${image.width}`;
+      // widthはURLクエリで指定し取得時点で縮小する（基本元の画像より小さめのサイズを指定するはずなので）.
+      const queriedUrl = `${image.url}?w=1024`;
+      // srcが`string`型のリモート画像の場合は`height`が必要. 従来の`aspectRatio`は受け付けなくなった.
+      // microCMSから大きさ情報を取得できるので計算して渡す.
       return await getImage({
         src: queriedUrl,
         width: 1024,
-        aspectRatio: `${image.width}:${image.height}`,
-        format: "webp",
+        height: (1024 * image.height) / image.width,
         alt: "thumbnail",
       });
     };
     const getThumbImageFromLocal = async () => {
+      // NOTE: 実装は不明だがdynamic importのlocalImageのdefaultプロパティはImageMetaData型になっている. これを用いて動的にローカル画像を取得できる.
+      // import文を使った場合はVite側でImageMetaData形式を直接取得することになっている？
+      const localImage = await import(
+        `../../blog-images/thumbnails/${entry.thumbnail}.${entry.thumbnailFormat}`
+      );
+      const localImageMetaData = localImage.default as ImageMetadata;
+      // ImageMetaDataを直接与える場合`height`は不要
       return await getImage({
-        src: import(
-          `../../blog-images/thumbnails/${entry.thumbnail}.${entry.thumbnailFormat}`
-        ),
+        src: localImageMetaData,
         width: 1024,
-        format: "webp",
         alt: "thumbnail",
       });
     };
@@ -168,7 +175,7 @@ export class CollectionsBlogPostEntry
     const createThumbData = () => {
       if (!this.thumbnailImage?.src) {
         // throw Error(`Failed to load thumbnail in \`${this.title}\``);
-        console.error(`Failed to load thumbnail in \`${this.title}\``);
+        console.error(`Failed to load thumbnail in \'${this.title}\'`);
         return {
           url: "no-image", // このURLはダミーで必ず404が出る.
           width: 1024,
@@ -176,14 +183,10 @@ export class CollectionsBlogPostEntry
           alt: "no-image",
         };
       } else {
-        const thumbHeight =
-          typeof this.thumbnailImage.height! === "string"
-            ? parseInt(this.thumbnailImage.height)
-            : this.thumbnailImage.height!;
         return {
           url: this.thumbnailImage.src,
           width: 1024,
-          height: thumbHeight,
+          height: this.thumbnailImage.attributes["height"],
           alt: "thumbnail",
         };
       }
