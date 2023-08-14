@@ -10,7 +10,7 @@ tags:
 ---
 
 import BlogImageList from "@components/blog/BlogImageList.astro";
-import NamedImages from "@components/blog/NamedImages.astro";
+import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
 
 export const ARTICLE_ID = "20230728-images-from-cms";
 
@@ -70,7 +70,8 @@ interface ImagesStorageSchema {
 このようなスキーマを定義してこれに従うJSONをファイルで保存します。
 これで、ブログ記事の名前とその中での名前を指定すればURLを取得することができます（`MicroCMSImageSchema`はサムネイルのURLと画像の情報の配列を持ちます）。
 
-次に`NamedImages`というコンポーネントを定義します。
+次に~~`NamedImages`というコンポーネントを定義します。~~
+`BlogImagesRemote`に変更。
 ブログの画像を並べるためのコンポーネントを包んでいるだけなのですが、先程生成したJSONを読んでURLを取得して画像データを生成する処理を行います。
 Astroの画像インテグレーションはリモートURLを指定しても問題なく動作するため、既存のものにはほとんど手を加えずに実装できました。
 
@@ -78,7 +79,7 @@ Astroの画像インテグレーションはリモートURLを指定しても問
 色々脆弱だと思うので今後勉強したいところです。
 
 ```mdx
-<NamedImages
+<BlogImagesRemote
   baseName={ARTICLE_ID}
   images={[
     { name: "test", width: 1000, caption: "alt" },
@@ -90,7 +91,7 @@ Astroの画像インテグレーションはリモートURLを指定しても問
 このような形でブログ記事のMDXファイル内で利用すると、以下のように画像が生成されます。
 この画像はローカルには存在しませんが、大きさやキャプションも従来と同じように指定できています。
 
-<NamedImages
+<BlogImagesRemote
   baseName={ARTICLE_ID}
   images={[
     { name: "test", width: 1000, caption: "alt" },
