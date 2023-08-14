@@ -1,7 +1,7 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, sharpImageService } from "astro/config";
 
 import svelte from "@astrojs/svelte";
-import image from "@astrojs/image";
+// import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
@@ -29,12 +29,15 @@ export default defineConfig({
       wrap: false,
     },
   },
+  image: {
+    service: sharpImageService(),
+  },
   integrations: [
     loadMicroCMSImage({ skip: true }),
     svelte(),
-    image({
-      serviceEntryPoint: "@astrojs/image/sharp",
-    }),
+    // image({
+    //   serviceEntryPoint: "@astrojs/image/sharp",
+    // }),
     mdx({
       remarkPlugins: [
         remarkCodeTitles,
