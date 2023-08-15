@@ -1,0 +1,35 @@
+---
+import type { BlogImageProps } from "@lib/contents/blog";
+
+import BlogImageList from "@components/blog/BlogImageList.astro";
+
+type AllowedImageExtension = "jpg" | "png";
+
+type LocalImageType = Omit<BlogImageProps, "src"> & {
+  src: `${string}.${AllowedImageExtension}`;
+};
+export type Props = {
+  images: LocalImageType | LocalImageType[];
+};
+
+const { images: localImagesProp } = Astro.props;
+
+// 配列にする
+const localImages = Array.isArray(localImagesProp)
+  ? localImagesProp
+  : [localImagesProp];
+
+const images = await Promise.all(
+  localImages.map(async (data) => {
+    const { src, ...rest } = data;
+    const localImage = await import(`../../blog-images/${src}`);
+    const localImageMetaData = localImage.default as ImageMetadata;
+    return {
+      src: localImageMetaData,
+      ...rest,
+    } satisfies BlogImageProps;
+  }),
+);
+---
+
+<BlogImageList images={images} />

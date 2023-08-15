@@ -12,6 +12,7 @@ tags:
 ---
 
 import BlogImageList from "@components/blog/BlogImageList.astro";
+import BlogImagesLocal from "@components/blog/BlogImagesLocal.astro";
 
 6月ともなるといよいよ研究のことを考えねばならなくなってきたが、本日は予定通り道楽に耽る所存。
 
@@ -41,10 +42,10 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 以前から思っていましたがJR西は奈良向けの特急にはそれなりに積極的なようです。
 しかしビジネス利用をどうしても取り込めなさそうな辺り、奈良の悲哀です（そりゃあ奈良に行くくらいだったら大阪で良い）。
 
-<BlogImageList
+<BlogImagesLocal
   images={[
     {
-      src: import("@blog-images/20230611/IMG_2296.jpg"),
+      src: "20230611/IMG_2296.jpg",
       width: 1000,
       caption: "大阪駅 特急まほろば号",
     },
@@ -91,9 +92,9 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 私がチケットを受け取っていなかったらどうなっていたのでしょうか。
 案外適当でもいいのかもしれないです。
 
-<BlogImageList
+<BlogImagesLocal
   images={{
-    src: import("@blog-images/20230611/IMG_2307.jpg"),
+    src: "20230611/IMG_2307.jpg",
     width: 1100,
     caption: "奈良駅5番ホーム",
   }}
@@ -103,20 +104,20 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 レトロな電話が置いてあったり、出汁がすごく独特な香り（味醂が結構強い感じ）がしたり、面白い店でした。
 値段もお手頃で満足です。
 
-<BlogImageList
+<BlogImagesLocal
   images={[
     {
-      src: import("@blog-images/20230611/IMG_2320.jpg"),
+      src: "20230611/IMG_2320.jpg",
       width: 900,
       caption: "手打うどん重乃井 奈良店",
     },
     {
-      src: import("@blog-images/20230611/IMG_2319.jpg"),
+      src: "20230611/IMG_2319.jpg",
       width: 600,
       caption: "謎のレトロ電話",
     },
     {
-      src: import("@blog-images/20230611/IMG_2318.jpg"),
+      src: "20230611/IMG_2318.jpg",
       width: 1000,
       caption: "釜揚げうどん",
     },
