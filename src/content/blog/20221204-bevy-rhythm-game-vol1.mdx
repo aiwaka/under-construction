@@ -11,7 +11,7 @@ tags:
   - Bevy
 ---
 
-import BlogImage from "@components/blog/BlogImage.astro";
+import BlogImagesLocal from "@components/blog/BlogImagesLocal.astro";
 
 ## はじめに
 
@@ -23,10 +23,12 @@ Rustのゲームエンジンはいくつか開発されていますが, その�
 nannouはゲームエンジンというよりはprocessingのようなクリエイティブプログラミングフレームワークです.
 Pistonは...知らないです（ごめんなさい）
 
-<BlogImage
-  src={import("@blog-images/rust-game-engine-comparing.png")}
-  width="1576"
-  alt="エンジン比較"
+<BlogImagesLocal
+  images={{
+    src: "rust-game-engine-comparing.png",
+    width: 1576,
+    alt: "エンジン比較",
+  }}
 />
 
 さて, 私もBevyでゲームを作って ~~（作ろうとして）~~ いますが, 凄まじいスピードでバージョンが変わります.

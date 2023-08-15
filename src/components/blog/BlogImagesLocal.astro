@@ -3,7 +3,7 @@ import type { BlogImageProps } from "@lib/contents/blog";
 
 import BlogImageList from "@components/blog/BlogImageList.astro";
 
-type AllowedImageExtension = "jpg" | "png";
+type AllowedImageExtension = "jpg" | "jpeg" | "png";
 
 type LocalImageType = Omit<BlogImageProps, "src"> & {
   src: `${string}.${AllowedImageExtension}`;

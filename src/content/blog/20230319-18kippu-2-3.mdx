@@ -15,7 +15,7 @@ related:
 # draft: true
 ---
 
-import BlogImageList from "@components/blog/BlogImageList.astro";
+import BlogImagesLocal from "@components/blog/BlogImagesLocal.astro";
 
 ## 概要
 
@@ -36,23 +36,23 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 すだれの隙間から写真を撮ったら素早く逃げてしまった.
 驚かせてしまったかもしれない.
 
-<BlogImageList
+<BlogImagesLocal
   images={{
-    src: import("@blog-images/202303-18kippu-picts/IMG_1104.jpg"),
+    src: "202303-18kippu-picts/IMG_1104.jpg",
     width: 1200,
     caption: "いづもなんきん種の金魚",
   }}
 />
-<BlogImageList
+<BlogImagesLocal
   images={[
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1105.jpg"),
+      src: "202303-18kippu-picts/IMG_1105.jpg",
       width: 1200,
       alt: "木次線列車と米子行き列車",
       caption: "乗ってきて折り返す木次線列車（奥）と米子行き列車（手前）",
     },
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1106.jpg"),
+      src: "202303-18kippu-picts/IMG_1106.jpg",
       width: 1200,
       caption: "宍道駅外観",
     },
@@ -65,37 +65,37 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 ここは宍道湖の南西端である.
 少し雲が出る中傾き始めた陽と湖面が非常に美しい.
 
-<BlogImageList
+<BlogImagesLocal
   images={[
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1107.jpg"),
+      src: "202303-18kippu-picts/IMG_1107.jpg",
       width: 1200,
       caption: "宍道湖",
     },
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1109.jpg"),
+      src: "202303-18kippu-picts/IMG_1109.jpg",
       width: 1200,
       alt: "宍道湖と信号機",
       caption: "こういうのが好き",
     },
   ]}
 />
-<BlogImageList
+<BlogImagesLocal
   images={{
-    src: import("@blog-images/202303-18kippu-picts/IMG_1111.jpg"),
+    src: "202303-18kippu-picts/IMG_1111.jpg",
     width: 2500,
     caption: "宍道湖のパノラマ写真",
   }}
 />
-<BlogImageList
+<BlogImagesLocal
   images={[
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1113.jpg"),
+      src: "202303-18kippu-picts/IMG_1113.jpg",
       width: 1200,
       caption: "宍道湖",
     },
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1115.jpg"),
+      src: "202303-18kippu-picts/IMG_1115.jpg",
       width: 1200,
       caption: "船着き場から北西方向を見る",
     },
@@ -121,9 +121,9 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 この手のものにしては珍しく作者や寄贈者が記載されていなかったが, 地元の美術部あたりの作品であろう.
 地域が愛されていることを感じられ, こういうものはとても好きである.
 
-<BlogImageList
+<BlogImagesLocal
   images={{
-    src: import("@blog-images/202303-18kippu-picts/IMG_1122.jpg"),
+    src: "202303-18kippu-picts/IMG_1122.jpg",
     width: 2500,
     caption: "瑞風を題材にした絵. 切り紙と水彩がある",
   }}
@@ -142,15 +142,15 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 
 [^stop]: 駅や信号場で停止するが, 客の扱いを行わないこと. 時刻表ではもちろん通過扱いになる.
 
-<BlogImageList
+<BlogImagesLocal
   images={[
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1119.jpg"),
+      src: "202303-18kippu-picts/IMG_1119.jpg",
       width: 1200,
       caption: "魔改造されたパノラマ型やくも",
     },
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1120.jpg"),
+      src: "202303-18kippu-picts/IMG_1120.jpg",
       width: 1200,
       alt: "やくもとスーパーまつかぜ",
       caption:
@@ -209,15 +209,15 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 さて, 特急は予定通りに入線してきた.
 専用車両285系を用いた14両編成, やはり周辺を走るどの列車とも違う威容である.
 
-<BlogImageList
+<BlogImagesLocal
   images={[
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1129.jpg"),
+      src: "202303-18kippu-picts/IMG_1129.jpg",
       width: 900,
       caption: "乗ってきたキハ126系",
     },
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1134.jpg"),
+      src: "202303-18kippu-picts/IMG_1134.jpg",
       width: 900,
       caption: "285系電車：寝台特急サンライズ出雲",
     },
@@ -254,15 +254,15 @@ import BlogImageList from "@components/blog/BlogImageList.astro";
 これは期待できそうである.
 少しすると定食が提供された.
 
-<BlogImageList
+<BlogImagesLocal
   images={[
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1141.jpg"),
+      src: "202303-18kippu-picts/IMG_1141.jpg",
       width: 1100,
       caption: "つきだしの手羽元煮込み",
     },
     {
-      src: import("@blog-images/202303-18kippu-picts/IMG_1144.jpg"),
+      src: "202303-18kippu-picts/IMG_1144.jpg",
       width: 1200,
       caption: "おまかせ刺し身盛り合わせ定食と柚子酒",
     },
