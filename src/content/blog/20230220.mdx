@@ -9,7 +9,7 @@ tags:
   - "ゲーム"
 ---
 
-import BlogImage from "@components/blog/BlogImage.astro";
+import BlogImagesLocal from "@components/blog/BlogImagesLocal.astro";
 
 たまには日記でも書こうと思った.
 思ったより私は三日坊主であった.
@@ -27,10 +27,12 @@ import BlogImage from "@components/blog/BlogImage.astro";
 今日は友人がカレーうどんを注文していたので便乗してカレーうどんを食した.
 カレーうどんとからあげと白米, 実に頭の悪い最高のセットである.
 
-<BlogImage
-  src={import("@blog-images/20230220-curry-udon.png")}
-  width="1478"
-  alt="うどん"
+<BlogImagesLocal
+  images={{
+    src: "20230220-curry-udon.png",
+    width: 1478,
+    alt: "うどん",
+  }}
 />
 
 その後研究室に戻り, 友人にファイナルファンタジー7のプレイを見せた.

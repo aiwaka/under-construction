@@ -1,7 +1,6 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, sharpImageService } from "astro/config";
 
 import svelte from "@astrojs/svelte";
-import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
@@ -20,18 +19,21 @@ import rehypeModifyFnHeadingText from "./plugins/rehype-modify-fn-heading-text.m
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    assets: true,
+  },
   markdown: {
     shikiConfig: {
       theme: "dracula",
       wrap: false,
     },
   },
+  image: {
+    service: sharpImageService(),
+  },
   integrations: [
-    loadMicroCMSImage(),
+    loadMicroCMSImage({}),
     svelte(),
-    image({
-      serviceEntryPoint: "@astrojs/image/sharp",
-    }),
     mdx({
       remarkPlugins: [
         remarkCodeTitles,
@@ -73,7 +75,6 @@ export default defineConfig({
     partytown(),
     sitemap(),
   ],
-  compressHTML: true,
   // trailingSlash: "always",
   site: "https://aiwaka.github.io",
   base: "/under-construction",
@@ -82,6 +83,7 @@ export default defineConfig({
     // これによりマークダウンの中で相対リンクを貼るようにすれば開発環境と同じリンク関係が保たれる.
     // GitHub Pagesはルートの`index.html`を探すが, このプロジェクトでは`index.astro`があるので問題ない.
     format: "file",
+    compressHTML: true,
     inlineStylesheets: "auto",
   },
 });

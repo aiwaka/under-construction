@@ -9,7 +9,7 @@ tags:
   - "Astro"
 ---
 
-import BlogImage from "@components/blog/BlogImage.astro";
+import BlogImagesLocal from "@components/blog/BlogImagesLocal.astro";
 
 ## 概要
 
@@ -170,11 +170,13 @@ Partytownというものをさっき初めて知っただけで何ができる�
 以上の感じで、このウェブサイトはとても新しくなりました。
 パフォーマンス分析してみたところ、PC画面ではこのようになりました。
 
-<BlogImage
-  src={import("@blog-images/20220312-performance.jpeg")}
-  width="1998"
-  alt="パフォーマンス分析結果"
-  quality={70}
+<BlogImagesLocal
+  images={{
+    src: "20220312-performance.jpeg",
+    width: 1998,
+    alt: "パフォーマンス分析結果",
+    quality: 70,
+  }}
 />
 
 これはめでたい。
@@ -184,11 +186,13 @@ Partytownというものをさっき初めて知っただけで何ができる�
 （20230313追記）
 この追記部分の変更後、試しに計測してみたところモバイル版も安定領域に入りました。
 
-<BlogImage
-  src={import("@blog-images/20220313-mobile-performance.jpeg")}
-  width="1998"
-  alt="パフォーマンス分析結果"
-  quality={70}
+<BlogImagesLocal
+  images={{
+    src: "20220313-mobile-performance.jpeg",
+    width: 1998,
+    alt: "パフォーマンス分析結果",
+    quality: 70,
+  }}
 />
 
 めでたい。
