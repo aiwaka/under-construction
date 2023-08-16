@@ -14,7 +14,7 @@ function findFootnoteHeading(node, options) {
       isHtmlElementNode(node) &&
       node.tagName === "h2" &&
       "id" in node.properties &&
-      node.properties.id === "footnote-label"
+      node.properties.id === "footnote-label",
   );
   return footnoteHeadingNodes;
 }
@@ -29,7 +29,7 @@ export default function miniProcessor() {
     const fnHeadingNodes = findFootnoteHeading(root, {});
     if (fnHeadingNodes.length) {
       const targetTextNode = fnHeadingNodes[0].children.find(
-        (node) => node.type === "text" && node.value === "Footnotes"
+        (node) => node.type === "text" && node.value === "Footnotes",
       );
       targetTextNode.value = "脚注";
     }

@@ -6,7 +6,7 @@ import { microCMSClient } from "../client";
 // TODO: zodを用いてバリデーションしても良さそう
 /** microCMSからAPIを呼び出してデータを取得し、型を付けて返す. */
 export const getMicroCMSImagesInArticleResponse = async (
-  queries?: MicroCMSQueries
+  queries?: MicroCMSQueries,
 ): Promise<MicroCMSListResponse<MicroCMSImagesInArticle>> => {
   const { contents: rawContents, ...rest } = await microCMSClient.get<
     MicroCMSListResponse<MicroCMSImagesInArticleSchema>
@@ -21,7 +21,7 @@ export const getMicroCMSImagesInArticleResponse = async (
 
 export const getOneMicroCMSImagesInArticleContent = async (
   id: string,
-  queries?: MicroCMSQueries
+  queries?: MicroCMSQueries,
 ) => {
   const rawContents = await microCMSClient.get<MicroCMSImagesInArticleSchema>({
     endpoint: "blogs",

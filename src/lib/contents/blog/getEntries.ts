@@ -17,7 +17,7 @@ interface FetchPostsOptions {
  */
 export const getBlogPostEntries = async (
   tagListRef?: string[],
-  options: FetchPostsOptions = {}
+  options: FetchPostsOptions = {},
 ): Promise<BlogPostEntry[]> => {
   // ビルド時のみdraftがtrueのものを除く
   const allBlogPosts = await getCollection("blog", (post) => {
@@ -33,7 +33,7 @@ export const getBlogPostEntries = async (
       const collectionsEntry = await CollectionsBlogPostEntry.create(post);
       const blogEntry = collectionsEntry.toEntryObject();
       return blogEntry;
-    })
+    }),
   );
   // 日付順にソート
   sortArrayByDate(postEntries);
