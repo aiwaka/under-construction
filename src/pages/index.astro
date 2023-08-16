@@ -8,20 +8,23 @@ import WorksSection from "@components/sections/WorksSection.astro";
 import ContactSection from "@components/sections/ContactSection.svelte";
 import "@fontsource/noto-sans-jp/700.css";
 
-import myIcon from "../assets/my-icon.png"
-import blueImage from "../assets/blue_2.png"
+import myIcon from "../assets/my-icon.png";
+import blueImage from "../assets/blue_2.png";
 ---
 
 <BaseLayout title="Under Construction">
-  <Image
-    class={"background-image"}
-    src={myIcon}
-    alt="illust-background"
-    width={1024}
-    height={1024}
-    loading="eager"
-    fetchpriority="high"
-  />
+  <div class="background-image-container">
+    <Image
+      class={"background-image"}
+      src={myIcon}
+      alt="illust-background"
+      width={1024}
+      height={1024}
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+
   <div class="title-container">
     <div class="title-card">
       <h1 class="title">UNDER CONSTRUCTION</h1>
@@ -80,6 +83,14 @@ import blueImage from "../assets/blue_2.png"
     gap: 1rem;
     padding: 0;
   } */
+  .background-image-container {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: black;
+  }
   .background-image {
     pointer-events: none;
     user-drag: none;
