@@ -3,7 +3,6 @@
 import { Image } from "astro:assets";
 
 import type { BlogImageProps } from "@lib/contents/blog";
-import type { ImageMetadata } from "astro";
 
 interface Props extends BlogImageProps {}
 const { src, width, height, alt, caption, ...attrs } = Astro.props;
@@ -11,7 +10,7 @@ const { src, width, height, alt, caption, ...attrs } = Astro.props;
 const resultAlt = alt !== undefined ? alt : caption ? caption : "_";
 if (!caption && !alt) {
   console.warn(
-    `\n[BlogImage.astro] "alt" text was not provided for an <Image> or <Picture> component.\n`,
+    `\n[BlogImage.astro] in "${src}", "alt" text was not provided for an <Image> component.\n`,
   );
 }
 ---

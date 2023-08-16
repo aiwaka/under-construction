@@ -67,9 +67,10 @@ const images = namedRemoteImages.flatMap((data) => {
   }
   // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
   const queriedUrl = `${image.url}?w=${specifiedWidth}`;
-  // 高さは指定されていればそれを使い, そうでなければ画像の大きさから計算する.
-  const resultHeight =
-    specifiedHeight ?? (specifiedWidth * image.height) / image.width;
+  // 高さは指定されていればそれを使い, そうでなければ画像の大きさから計算する（整数にする）.
+  const resultHeight = Math.round(
+    specifiedHeight ?? (specifiedWidth * image.height) / image.width,
+  );
   return {
     src: queriedUrl,
     width: specifiedWidth,

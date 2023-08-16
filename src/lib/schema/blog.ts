@@ -41,7 +41,7 @@ export const CollectionBlogSchema = z
     {
       path: ["thumbnailFormat"],
       message: "`thumbnail`が`remote`でない場合`thumbnailFormat`は必須です。",
-    }
+    },
   );
 
 /** ブログ記事のfrontmatterのスキーマを表す型 */
@@ -95,7 +95,7 @@ export class CollectionsBlogPostEntry
 
     if (entry.thumbnail !== "remote" && entry.thumbnailFormat === null) {
       throw Error(
-        "サムネイルに関するバリデーションが不正です。`thumbnail`が`remote`であるか、そうでないなら`thumbnailFormat`が指定されている必要があります。"
+        "サムネイルに関するバリデーションが不正です。`thumbnail`が`remote`であるか、そうでないなら`thumbnailFormat`が指定されている必要があります。",
       );
     }
     // リモートの画像を取得する処理
@@ -115,7 +115,7 @@ export class CollectionsBlogPostEntry
         throw Error(errorMessage);
       }
       const allImagesData: ImagesStorageSchema = JSON.parse(
-        fs.readFileSync(path, "utf8")
+        fs.readFileSync(path, "utf8"),
       );
 
       const imagesData = allImagesData[entry.id];
@@ -135,12 +135,16 @@ export class CollectionsBlogPostEntry
       });
     };
     const getThumbImageFromLocal = async () => {
-      // NOTE: 実装は不明だがdynamic importのlocalImageのdefaultプロパティはImageMetaData型になっている. これを用いて動的にローカル画像を取得できる.
-      // import文を使った場合はVite側でImageMetaData形式を直接取得することになっている？
-      const localImage = await import(
-        `../../blog-images/thumbnails/${entry.thumbnail}.${entry.thumbnailFormat}`
+      const filename = `${entry.thumbnail}.${entry.thumbnailFormat}`;
+      const localImagePath = `../../blog-images/thumbnails/${filename}`;
+
+      // NOTE: ここの処理は"../../components/blog/BlogImagesLocal.astro"を参照.
+      const globImages = import.meta.glob<ImageMetadata>(
+        "../../blog-images/**/*",
+        { import: "default" },
       );
-      const localImageMetaData = localImage.default as ImageMetadata;
+      const localImageMetaData = await globImages[localImagePath]();
+
       // ImageMetaDataを直接与える場合`height`は不要
       return await getImage({
         src: localImageMetaData,
