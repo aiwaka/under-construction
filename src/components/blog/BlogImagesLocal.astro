@@ -1,0 +1,48 @@
+---
+import type { ImageMetadata } from "astro";
+
+import type { BlogImageProps } from "@lib/contents/blog";
+import BlogImageList from "@components/blog/BlogImageList.astro";
+
+type AllowedImageExtension = "jpg" | "jpeg" | "png";
+
+type LocalImageType = Omit<BlogImageProps, "src"> & {
+  src: `${string}.${AllowedImageExtension}`;
+};
+export type Props = {
+  images: LocalImageType | LocalImageType[];
+};
+
+const { images: localImagesProp } = Astro.props;
+
+// 配列にする
+const localImages = Array.isArray(localImagesProp)
+  ? localImagesProp
+  : [localImagesProp];
+
+const images = await Promise.all(
+  localImages.map(async (data) => {
+    const { src, ...rest } = data;
+    const localImagePath = `../../blog-images/${src}`;
+
+    // NOTE: 画像をdynamic importすることはViteの制約によりできない.
+    // https://github.com/withastro/astro/issues/3373
+    // このリンクを参考に, globを取得し, パスからモジュールを取得する構成にするとうまくビルドされた.
+    // "../../lib/schema/blog.ts"の処理も同様.
+    // なお, Viteによる画像のdynamic importのdefaultプロパティはImageMetaData型を満たしている.
+    // TODO: 何度もglobを呼び出すことになっていないか？機会があれば検討する.
+    const globImages = import.meta.glob<ImageMetadata>(
+      "../../blog-images/**/*",
+      { import: "default" },
+    );
+    const localImageMetaData = await globImages[localImagePath]();
+
+    return {
+      src: localImageMetaData,
+      ...rest,
+    } satisfies BlogImageProps;
+  }),
+);
+---
+
+<BlogImageList images={images} />

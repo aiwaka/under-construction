@@ -1,5 +1,6 @@
 ---
-import { Image, warnForMissingAlt } from "@astrojs/image/components";
+// import { Image, warnForMissingAlt } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 
 import type { BlogImageProps } from "@lib/contents/blog";
 
@@ -8,7 +9,9 @@ const { src, width, height, alt, caption, ...attrs } = Astro.props;
 // altがなければキャプションを使い, それもなければ適当に設定するが警告を出す.
 const resultAlt = alt !== undefined ? alt : caption ? caption : "_";
 if (!caption && !alt) {
-  warnForMissingAlt();
+  console.warn(
+    `\n[BlogImage.astro] in "${src}", "alt" text was not provided for an <Image> component.\n`,
+  );
 }
 ---
 

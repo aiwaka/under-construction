@@ -1,12 +1,12 @@
 import fs from "fs";
-import type { MarkdownHeading } from "astro";
+import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
+import { getImage } from "astro:assets";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
 import type { CollectionEntry } from "astro:content";
 import { z } from "astro:content";
 
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
-import { getImage } from "@astrojs/image";
 import type { ImagesStorageSchema } from "src/integrations/astro-load-microcms-image";
 
 enum ThumbnailFormatEnum {
@@ -41,7 +41,7 @@ export const CollectionBlogSchema = z
     {
       path: ["thumbnailFormat"],
       message: "`thumbnail`が`remote`でない場合`thumbnailFormat`は必須です。",
-    }
+    },
   );
 
 /** ブログ記事のfrontmatterのスキーマを表す型 */
@@ -66,7 +66,8 @@ export class CollectionsBlogPostEntry
   public latex: boolean;
   public draft: boolean;
 
-  private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
+  // private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
+  private thumbnailImage!: GetImageResult | null;
 
   private constructor(rawEntry: CollectionEntry<"blog">) {
     this.id = rawEntry.slug;
@@ -94,16 +95,17 @@ export class CollectionsBlogPostEntry
 
     if (entry.thumbnail !== "remote" && entry.thumbnailFormat === null) {
       throw Error(
-        "サムネイルに関するバリデーションが不正です。`thumbnail`が`remote`であるか、そうでないなら`thumbnailFormat`が指定されている必要があります。"
+        "サムネイルに関するバリデーションが不正です。`thumbnail`が`remote`であるか、そうでないなら`thumbnailFormat`が指定されている必要があります。",
       );
     }
     // リモートの画像を取得する処理
     const getThumbImageFromRemote = async () => {
       // ビルド時のバンドルされるファイルのURLがどうなるかはあまりわかっていないのでうまくいくようにしている.
       // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
-      const dataDir = import.meta.env.DEV
-        ? "../../generated/images-data.json"
-        : "../../generated/images-data.json";
+      // const dataDir = import.meta.env.DEV
+      //   ? "../../generated/images-data.json"
+      //   : "../../generated/images-data.json";
+      const dataDir = "../../generated/images-data.json";
       const path = new URL(dataDir, import.meta.url);
       if (!fs.existsSync(path)) {
         const errorMessage =
@@ -113,7 +115,7 @@ export class CollectionsBlogPostEntry
         throw Error(errorMessage);
       }
       const allImagesData: ImagesStorageSchema = JSON.parse(
-        fs.readFileSync(path, "utf8")
+        fs.readFileSync(path, "utf8"),
       );
 
       const imagesData = allImagesData[entry.id];
@@ -121,23 +123,32 @@ export class CollectionsBlogPostEntry
         throw Error(`The specified id \`${entry.id}\` cannot be found.`);
       }
       const image = imagesData.thumbnail;
-      // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
-      const queriedUrl = `${image.url}?w=${image.width}`;
+      // widthはURLクエリで指定し取得時点で縮小する（基本元の画像より小さめのサイズを指定するはずなので）.
+      const queriedUrl = `${image.url}?w=1024`;
+      // srcが`string`型のリモート画像の場合は`height`が必要. 従来の`aspectRatio`は受け付けなくなった.
+      // microCMSから大きさ情報を取得できるので計算して渡す.
       return await getImage({
         src: queriedUrl,
         width: 1024,
-        aspectRatio: `${image.width}:${image.height}`,
-        format: "webp",
+        height: (1024 * image.height) / image.width,
         alt: "thumbnail",
       });
     };
     const getThumbImageFromLocal = async () => {
+      const filename = `${entry.thumbnail}.${entry.thumbnailFormat}`;
+      const localImagePath = `../../blog-images/thumbnails/${filename}`;
+
+      // NOTE: ここの処理は"../../components/blog/BlogImagesLocal.astro"を参照.
+      const globImages = import.meta.glob<ImageMetadata>(
+        "../../blog-images/**/*",
+        { import: "default" },
+      );
+      const localImageMetaData = await globImages[localImagePath]();
+
+      // ImageMetaDataを直接与える場合`height`は不要
       return await getImage({
-        src: import(
-          `../../blog-images/thumbnails/${entry.thumbnail}.${entry.thumbnailFormat}`
-        ),
+        src: localImageMetaData,
         width: 1024,
-        format: "webp",
         alt: "thumbnail",
       });
     };
@@ -168,7 +179,7 @@ export class CollectionsBlogPostEntry
     const createThumbData = () => {
       if (!this.thumbnailImage?.src) {
         // throw Error(`Failed to load thumbnail in \`${this.title}\``);
-        console.error(`Failed to load thumbnail in \`${this.title}\``);
+        console.error(`Failed to load thumbnail in \'${this.title}\'`);
         return {
           url: "no-image", // このURLはダミーで必ず404が出る.
           width: 1024,
@@ -176,14 +187,10 @@ export class CollectionsBlogPostEntry
           alt: "no-image",
         };
       } else {
-        const thumbHeight =
-          typeof this.thumbnailImage.height! === "string"
-            ? parseInt(this.thumbnailImage.height)
-            : this.thumbnailImage.height!;
         return {
           url: this.thumbnailImage.src,
           width: 1024,
-          height: thumbHeight,
+          height: this.thumbnailImage.attributes["height"],
           alt: "thumbnail",
         };
       }
