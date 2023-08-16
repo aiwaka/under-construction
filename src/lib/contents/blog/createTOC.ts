@@ -66,7 +66,7 @@ const createTOCTree = (headings: MarkdownHeading[], options?: TOCOptions) => {
  */
 const createTOCElement = (
   headings: MarkdownHeading[],
-  options?: TOCOptions
+  options?: TOCOptions,
 ) => {
   const root = createTOCTree(headings, options);
   const list = createListBlockElement(root);

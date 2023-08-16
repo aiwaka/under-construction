@@ -35,9 +35,9 @@ const MicroCMSImagesDataSchema = z.array(
         fieldId: z.literal("image"),
         name: z.string(),
         image: MicroCMSImageSchema,
-      })
+      }),
     ),
-  })
+  }),
 );
 /** このブログプロジェクトで利用したい形式のスキーマ */
 export interface ImagesStorageSchema {
@@ -54,7 +54,7 @@ const DATA_FILE_NAME: string = "images-data.json";
 const DATA_ALREADY_EXISTS_FLAG = "alreadyExists" as const satisfies string;
 
 export default function preload(
-  options: LoadMicroCMSImageOptions = {}
+  options: LoadMicroCMSImageOptions = {},
 ): AstroIntegration {
   const { skip = false, ignoreNoData: _ignore = false } = options;
   // devモードかつオプションがtrueのときに無視できる.
@@ -77,13 +77,13 @@ export default function preload(
           const MICROCMS_API_KEY = process.env.MICROCMS_API_KEY;
           if (!(MICROCMS_SERVICE_DOMAIN && MICROCMS_API_KEY)) {
             throw Error(
-              "The variables named MICROCMS_XXX_XXX are not defined in `.env`."
+              "The variables named MICROCMS_XXX_XXX are not defined in `.env`.",
             );
           }
           // データファイルのパス
           const dataPath = new URL(
             `../../generated/${DATA_FILE_NAME}`,
-            import.meta.url
+            import.meta.url,
           );
 
           // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
@@ -110,26 +110,26 @@ export default function preload(
             }
           };
           console.log(
-            "[load-microcms-image] attempt to fetch data from microCMS."
+            "[load-microcms-image] attempt to fetch data from microCMS.",
           );
           const imageDataFromMicroCMS = await getImagesDataFromMicroCMS();
           if (imageDataFromMicroCMS === DATA_ALREADY_EXISTS_FLAG) {
             console.log(
-              "[load-microcms-image] fetch failed, but data file already exists. using it in dev mode."
+              "[load-microcms-image] fetch failed, but data file already exists. using it in dev mode.",
             );
             return;
           }
 
           // TODO: コンテンツが増えると一度で取得しきれないため, 逐次取得する処理が必要.
           const contents = MicroCMSImagesDataSchema.parse(
-            imageDataFromMicroCMS["contents"]
+            imageDataFromMicroCMS["contents"],
           );
           const resultContents: ImagesStorageSchema = {};
           contents.forEach((content) => {
             resultContents[content.title] = {
               thumbnail: content.thumbnail,
               images: Object.fromEntries(
-                content.images.map((image) => [image.name, image.image])
+                content.images.map((image) => [image.name, image.image]),
               ),
             };
           });
@@ -140,7 +140,7 @@ export default function preload(
           if (ignoreNoData) {
             console.error(e);
             consoleLogUsingPackageName(
-              "An error occurs while loading image-data, but ignore option is enabled."
+              "An error occurs while loading image-data, but ignore option is enabled.",
             );
           } else {
             throw e;
@@ -152,7 +152,7 @@ export default function preload(
         fs.mkdirSync("dist/generated", { recursive: true });
         fs.copyFileSync(
           `src/generated/${DATA_FILE_NAME}`,
-          `dist/generated/${DATA_FILE_NAME}`
+          `dist/generated/${DATA_FILE_NAME}`,
         );
       },
     },

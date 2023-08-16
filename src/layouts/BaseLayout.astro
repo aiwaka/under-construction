@@ -24,9 +24,7 @@ const defaultOgp = {
 
 const { title, ogp = defaultOgp } = Astro.props;
 
-const bgColor = currentPath.startsWith("blog")
-  ? "var(--main-bg-color)"
-  : "black";
+const bgColor = "var(--main-bg-color)";
 ---
 
 <!DOCTYPE html>

@@ -13,18 +13,18 @@ const intersection = <T>(x: T[], y: T[]) => {
  */
 export const createRelated = (
   allEntries: BlogPostEntry[],
-  targetEntry: BlogPostEntry
+  targetEntry: BlogPostEntry,
 ) => {
   // NOTE: できたら様々なタグから関連を作るようにしたい.
   // 関連記事のリストを作る. specifiedは最優先として最初に入れておく.
   const relatedPostList: Omit<RelatedBlogPost, "title" | "date">[] = [];
   targetEntry.related.forEach((relatedId) =>
-    relatedPostList.push({ id: relatedId, factor: "specified" })
+    relatedPostList.push({ id: relatedId, factor: "specified" }),
   );
   const tags = [...targetEntry.tags];
   // 全記事とタグの重複数をチェックして重複度ごとに分ける
   const tagDuplicatedEntries = [...Array(targetEntry.tags.length + 1)].map(
-    (_) => [] as BlogPostEntry[]
+    (_) => [] as BlogPostEntry[],
   );
   for (const entry of allEntries) {
     // 自身は除く

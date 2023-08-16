@@ -1,0 +1,7 @@
+node_modules/
+.astro/
+.github/
+.vscode/
+dist/
+
+package*.json
