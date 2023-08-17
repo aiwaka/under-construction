@@ -1,0 +1,38 @@
+---
+title: AstroでPrettierバージョン3を使う
+description: "Prettierそんなに好きじゃなくなりそう"
+thumbnail: blue_square
+thumbnailFormat: png
+date: 2023-08-17
+tags:
+  - Astro
+  - プログラミング
+  - Prettier
+---
+
+今回は本当に雑な記事です。
+
+Prettierは言わずとしれたJavascriptを始めとする多数の言語に対するフォーマッタです。
+近頃バージョン3が出たのがアナウンスされていました。
+
+Prettier関連では以前にも記事を書いたことがあり、[この記事](./20230330-plugin-for-md-formatting)で日本語に関する微妙な仕様に煩わされていることを書きました。
+バージョン3ではこれが解消されているとのことで、お世話になったプラグインも不要になるとのこと。
+というわけでインストールしました。
+
+ところが、なぜかほとんどのファイルでPrettierが動作しなくなってしまいました。
+自分の環境が悪いとか、VSCodeの機能と不整合があるとか考えたのですがあまりよくわかりません。
+調べてみたところ、普通は`node_modules`から自動で推定されるパーサーの検出がAstroに対して上手くできないようです。
+というわけで、半角スペース除去抑止プラグインを削除したときに削除した`.prettierrc`を復活させ、`parser`を設定する必要があるようでした。
+
+```yaml:.prettierrc.yaml
+plugins:
+  - prettier-plugin-astro
+overrides:
+  - files:
+      - "*.astro"
+    options:
+      parser: "astro"
+```
+
+これでVSCodeでファイル保存時にAstroファイルでもフォーマットされるようになりました。
+やっぱりフロントエンド周りはよくわかりません。
