@@ -1,6 +1,6 @@
 import fs from "fs";
-import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
-import { getImage } from "astro:assets";
+import type { ImageMetadata, MarkdownHeading } from "astro";
+import { getImage } from "@astrojs/image";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
 import type { CollectionEntry } from "astro:content";
 import { z } from "astro:content";
@@ -67,7 +67,7 @@ export class CollectionsBlogPostEntry
   public draft: boolean;
 
   // private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
-  private thumbnailImage!: GetImageResult | null;
+  private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
 
   private constructor(rawEntry: CollectionEntry<"blog">) {
     this.id = rawEntry.slug;
@@ -131,6 +131,7 @@ export class CollectionsBlogPostEntry
         src: queriedUrl,
         width: 1024,
         height: (1024 * image.height) / image.width,
+        format: "webp",
         alt: "thumbnail",
       });
     };
@@ -149,6 +150,7 @@ export class CollectionsBlogPostEntry
       return await getImage({
         src: localImageMetaData,
         width: 1024,
+        format: "webp",
         alt: "thumbnail",
       });
     };
@@ -190,7 +192,7 @@ export class CollectionsBlogPostEntry
         return {
           url: this.thumbnailImage.src,
           width: 1024,
-          height: this.thumbnailImage.attributes["height"],
+          height: Math.round((this.thumbnailImage.height as number) + 0),
           alt: "thumbnail",
         };
       }
