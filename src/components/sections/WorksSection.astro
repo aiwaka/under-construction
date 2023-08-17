@@ -28,15 +28,15 @@ import IndexBar from "@components/IndexBar.astro";
     <ul>
       <li>
         <a href="https://www.nicovideo.jp/watch/sm33454945"> 青の幻燈</a>
-        [<time datetime="2018-07-01T20:46"> 2018/7/1</time>]
+         [<time datetime="2018-07-01T20:46"> 2018/7/1</time>]
       </li>
       <li>
         <a href="https://www.nicovideo.jp/watch/sm38351407">汐見橋</a>
-        [<time datetime="2021-03-01T20:12"> 2021/3/1</time>]
+         [<time datetime="2021-03-01T20:12"> 2021/3/1</time>]
       </li>
       <li>
         <a href="https://www.nicovideo.jp/watch/sm40095155">忘却の河</a>
-        [<time datetime="2022-02-25T20:28"> 2022/2/25</time>]
+         [<time datetime="2022-02-25T20:28"> 2022/2/25</time>]
       </li>
     </ul>
   </div>
@@ -45,7 +45,10 @@ import IndexBar from "@components/IndexBar.astro";
   <span>
     一部の制作物はタイトルがリンクになっておりGitHubリポジトリに飛べます。
   </span>
-  <AppItem langList={["ts", "svelte", "astro", "postcss"]} href="">
+  <AppItem
+    langList={["ts", "svelte", "astro", "postcss"]}
+    href="https://github.com/aiwaka/under-construction"
+  >
     <svelte:fragment slot="title">当ウェブサイト</svelte:fragment>
     <svelte:fragment slot="work-period">2022年11月〜</svelte:fragment>
     <p>制作物を公開するサイトです。昔からやりたかったので勢いで作りました。</p>
@@ -55,7 +58,27 @@ import IndexBar from "@components/IndexBar.astro";
     <p>
       2023年3月にAstroを導入してリニューアルしました。
       SvelteKitで自分で考えないといけなかった部分をかなり簡単に実現でき、さらにSvelteのコンポーネントをそのまま使えたので感動しています。
-      ついでにAstroはPostCSSも組み込みらしいので使っています。
+      Astroの機能発展とともに自分でも改良し続け、ブログに関して現在はmicroCMS上の画像とローカル画像を自由に混ぜて用い、最適化を行うことができます。
+    </p>
+  </AppItem>
+  <AppItem
+    langList={["astro", "ts", "docker", "shell", "nginx", "python"]}
+    href={"https://www.kulmc.info/"}
+  >
+    <svelte:fragment slot="title">
+      京都大学軽音楽部公式Webサイト
+    </svelte:fragment>
+    <svelte:fragment slot="work-period">2023年〜</svelte:fragment>
+    <p>
+      この自身のウェブサイト制作で得たノウハウを活かして部活のウェブサイトを作りました。
+      Astroで制作し、Dockerコンテナを用いて公開しています。
+      部員が自由に記事を執筆・公開できる環境を整えることを意識して現在も改良中です。
+      また後続の部員が開発できるようにコードの品質に気を配っています。
+      元部長が実機サーバーとDNSの環境を整えてくれたため非常にスムーズに開発できました。感謝。
+    </p>
+    <p>
+      サーバーがあるのでSSRやAPIサーバーの開発も試してみました。
+      Pythonを用いたり、SSR向けのDocker環境を作ったりしています。
     </p>
   </AppItem>
   <AppItem
@@ -74,9 +97,9 @@ import IndexBar from "@components/IndexBar.astro";
       APIを構築しました。
     </p>
     <p>
-      一つ下に書いているTako
-      Boardの次にSvelteKitに移行しました。同じくSASSの利用をやめました。このアップデートで,
-      ダークモードに対応し、リクエストにLaTeX記法が使えるようになりました。
+      一つ下に書いているTako Boardの次にSvelteKitに移行しました。
+      同じくSASSの利用をやめました。
+      このアップデートでダークモードに対応し、リクエストにLaTeX記法が使えるようになりました。
     </p>
   </AppItem>
 
@@ -141,10 +164,7 @@ import IndexBar from "@components/IndexBar.astro";
       卒業論文が終わって余裕ができたので、境界要素法による数値計算をRustで試してみたものです。
     </p>
   </AppItem>
-  <AppItem
-    langList={["rust"]}
-    href={"https://github.com/aiwaka/block_golf"}
-  >
+  <AppItem langList={["rust"]} href={"https://github.com/aiwaka/block_golf"}>
     <svelte:fragment slot="title">Block Golf （仮）</svelte:fragment>
     <svelte:fragment slot="work-period">2022年6月〜</svelte:fragment>
     <p>Rust製ゲームエンジンBevyを用いたアクションパズルゲームです。</p>
@@ -197,10 +217,7 @@ import IndexBar from "@components/IndexBar.astro";
       ゲーム本体とは関係ない部分で、デバッグ機能を充実させ、開発がスムーズに進められるように設計を考えてみました。
     </p>
   </AppItem>
-  <AppItem
-    langList={["rust"]}
-    href={"https://github.com/aiwaka/memo_cli_rust"}
-  >
+  <AppItem langList={["rust"]} href={"https://github.com/aiwaka/memo_cli_rust"}>
     <svelte:fragment slot="title">memocr</svelte:fragment>
     <svelte:fragment slot="work-period">2022年11月</svelte:fragment>
     <p>コマンドラインでメモを管理できるツールです。</p>
@@ -210,7 +227,8 @@ import IndexBar from "@components/IndexBar.astro";
     <p>
       Cargoのコマンドとして
       <a href="https://crates.io/crates/memocr">crates.io</a>
-      で公開しているので誰でもインストールできます。よかったら使ってみてください（一応100回ダウンロードされたようです）。
+       で公開しているので誰でもインストールできます。
+      よかったら使ってみてください（一応100回ダウンロードされたようです）。
     </p>
   </AppItem>
   <AppItem
