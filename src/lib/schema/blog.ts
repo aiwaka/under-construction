@@ -1,6 +1,6 @@
 import fs from "fs";
 import type { ImageMetadata, MarkdownHeading } from "astro";
-import { getImage } from "@astrojs/image";
+import { getImage } from "astro:assets";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
 import type { CollectionEntry } from "astro:content";
 import { z } from "astro:content";
@@ -68,6 +68,7 @@ export class CollectionsBlogPostEntry
 
   // private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
   private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
+  private THUMB_WIDTH: number = 1024;
 
   private constructor(rawEntry: CollectionEntry<"blog">) {
     this.id = rawEntry.slug;
@@ -125,12 +126,13 @@ export class CollectionsBlogPostEntry
       const image = imagesData.thumbnail;
       // widthはURLクエリで指定し取得時点で縮小する（基本元の画像より小さめのサイズを指定するはずなので）.
       const queriedUrl = `${image.url}?w=1024`;
+      const thumbHeight = (entry.THUMB_WIDTH * image.height) / image.width;
       // srcが`string`型のリモート画像の場合は`height`が必要. 従来の`aspectRatio`は受け付けなくなった.
       // microCMSから大きさ情報を取得できるので計算して渡す.
       return await getImage({
         src: queriedUrl,
-        width: 1024,
-        height: (1024 * image.height) / image.width,
+        width: entry.THUMB_WIDTH,
+        height: thumbHeight,
         format: "webp",
         alt: "thumbnail",
       });
