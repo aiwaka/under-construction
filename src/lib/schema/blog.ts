@@ -1,5 +1,5 @@
 import fs from "fs";
-import type { ImageMetadata, MarkdownHeading } from "astro";
+import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
 import { getImage } from "astro:assets";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
 import type { CollectionEntry } from "astro:content";
@@ -8,6 +8,7 @@ import { z } from "astro:content";
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
 import type { ImagesStorageSchema } from "src/integrations/astro-load-microcms-image";
+import { convertImage, downloadImage } from "@lib/utils";
 
 enum ThumbnailFormatEnum {
   png = "png",
@@ -67,7 +68,7 @@ export class CollectionsBlogPostEntry
   public draft: boolean;
 
   // private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
-  private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
+  private thumbnailImage!: GetImageResult | null;
   private THUMB_WIDTH: number = 1024;
 
   private constructor(rawEntry: CollectionEntry<"blog">) {
@@ -126,15 +127,26 @@ export class CollectionsBlogPostEntry
       const image = imagesData.thumbnail;
       // widthはURLクエリで指定し取得時点で縮小する（基本元の画像より小さめのサイズを指定するはずなので）.
       const queriedUrl = `${image.url}?w=1024`;
-      const thumbHeight = (entry.THUMB_WIDTH * image.height) / image.width;
+      // 最終的な画像のURL（最初はリモートURL）
+      let resultImageUrl = queriedUrl;
+      if (import.meta.env.PROD) {
+        // ビルドモードなら画像をダウンロードし, webpに変換した結果のファイルパスをURLとする
+        const preloadPath = await downloadImage(image.url);
+        if (preloadPath === undefined) {
+          throw Error("thumbnail download failed.");
+        }
+        resultImageUrl = await convertImage(preloadPath);
+      }
+
+      const thumbHeight = Math.round(
+        (entry.THUMB_WIDTH * image.height) / image.width,
+      );
       // srcが`string`型のリモート画像の場合は`height`が必要. 従来の`aspectRatio`は受け付けなくなった.
       // microCMSから大きさ情報を取得できるので計算して渡す.
       return await getImage({
-        src: queriedUrl,
+        src: resultImageUrl,
         width: entry.THUMB_WIDTH,
         height: thumbHeight,
-        format: "webp",
-        alt: "thumbnail",
       });
     };
     const getThumbImageFromLocal = async () => {
@@ -153,7 +165,6 @@ export class CollectionsBlogPostEntry
         src: localImageMetaData,
         width: 1024,
         format: "webp",
-        alt: "thumbnail",
       });
     };
     const getThumbImage = async () => {
@@ -194,7 +205,7 @@ export class CollectionsBlogPostEntry
         return {
           url: this.thumbnailImage.src,
           width: 1024,
-          height: Math.round((this.thumbnailImage.height as number) + 0),
+          height: this.thumbnailImage.options.height as number,
           alt: "thumbnail",
         };
       }

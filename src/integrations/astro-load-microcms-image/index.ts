@@ -20,7 +20,7 @@ interface LoadMicroCMSImageOptions {
 }
 /** MicroCMSから取得する画像のスキーマ */
 const MicroCMSImageSchema = z.object({
-  url: z.string(),
+  url: z.string().url(),
   width: z.number(),
   height: z.number(),
 });
