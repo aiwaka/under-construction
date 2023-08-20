@@ -131,11 +131,14 @@ export class CollectionsBlogPostEntry
       let resultImageUrl = queriedUrl;
       if (import.meta.env.PROD) {
         // ビルドモードなら画像をダウンロードし, webpに変換した結果のファイルパスをURLとする
-        const preloadPath = await downloadImage(image.url);
-        if (preloadPath === undefined) {
-          throw Error("thumbnail download failed.");
+        const downloadedPath = await downloadImage(image.url);
+        if (downloadedPath === undefined) {
+          throw Error("[blog.ts] thumbnail download failed.");
         }
-        resultImageUrl = await convertImage(preloadPath);
+        const convertedImageUrl = await convertImage(downloadedPath);
+        resultImageUrl = convertedImageUrl;
+      } else {
+        console.log("[blog.ts] 開発モードのためリモートURLを用いています。");
       }
 
       const thumbHeight = Math.round(

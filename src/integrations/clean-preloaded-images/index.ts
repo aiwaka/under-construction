@@ -14,7 +14,7 @@ const consoleLogUsingPackageName = (...args: string[]) => {
 /** このインテグレーションのオプション */
 interface CleanPreloadedImagesOptions {}
 
-const PRELOAD_DIR: string = "public/assets/preloaded";
+export const PRELOAD_DIR: string = "public/assets/preloaded" as const;
 
 export default function preload(
   options: CleanPreloadedImagesOptions = {},

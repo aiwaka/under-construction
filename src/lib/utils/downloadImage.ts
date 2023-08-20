@@ -1,11 +1,10 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-
-export const PRELOAD_DIR = "public/assets/preloaded";
+import { PRELOAD_DIR } from "src/integrations/clean-preloaded-images";
 
 /**
- * 指定したURLのファイルを`public/assets/preloaded`にダウンロードする.
+ * 指定したURLのファイルをPRELOAD_DIR（`public`以下）にダウンロードする.
  * @param url
  */
 export const downloadImage = async (url: string) => {
@@ -21,6 +20,9 @@ export const downloadImage = async (url: string) => {
     if (!fs.existsSync(PRELOAD_DIR)) {
       // ディレクトリが存在しない場合作成
       fs.mkdirSync(PRELOAD_DIR, { recursive: true });
+      console.log(
+        `[downloadImage] '${PRELOAD_DIR}'ディレクトリを作成しました。`,
+      );
     }
 
     try {
@@ -34,12 +36,14 @@ export const downloadImage = async (url: string) => {
       return preloadPath;
     } catch (e) {
       console.log(
-        `[downloadImage]: リモート画像のダウンロードに失敗したため、代わりに'${url}'をそのまま使用します。`,
+        `[downloadImage]: リモート画像のダウンロードに失敗したため、代わりに'${url}'をそのまま使用します。エラー内容を次に表示します。`,
       );
       console.log(e);
     }
   } else {
-    console.log(`[downloadImage] skip '${basename}' download`);
+    console.log(
+      `[downloadImage] '${basename}'はすでに存在するためダウンロードをスキップします。`,
+    );
     return preloadPath;
   }
 };
