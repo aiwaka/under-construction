@@ -23,5 +23,6 @@ pnpm-debug.log*
 .vscode/settings.json
 
 *.HEIC
+*.webp
 uncompressed/
 **/generated/images-data.json

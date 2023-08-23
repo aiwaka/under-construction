@@ -1,6 +1,7 @@
-import fs from "fs";
-import type { ImageMetadata, MarkdownHeading } from "astro";
-import { getImage } from "@astrojs/image";
+import fs from "node:fs";
+import path from "node:path";
+import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
+import { getImage } from "astro:assets";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
 import type { CollectionEntry } from "astro:content";
 import { z } from "astro:content";
@@ -8,6 +9,7 @@ import { z } from "astro:content";
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
 import type { ImagesStorageSchema } from "src/integrations/astro-load-microcms-image";
+import { convertImage, downloadImage } from "@lib/utils";
 
 enum ThumbnailFormatEnum {
   png = "png",
@@ -67,7 +69,8 @@ export class CollectionsBlogPostEntry
   public draft: boolean;
 
   // private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
-  private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
+  private thumbnailImage!: GetImageResult | null;
+  private THUMB_WIDTH: number = 1024;
 
   private constructor(rawEntry: CollectionEntry<"blog">) {
     this.id = rawEntry.slug;
@@ -106,16 +109,17 @@ export class CollectionsBlogPostEntry
       //   ? "../../generated/images-data.json"
       //   : "../../generated/images-data.json";
       const dataDir = "../../generated/images-data.json";
-      const path = new URL(dataDir, import.meta.url);
-      if (!fs.existsSync(path)) {
+      // TODO: new URLではなくpathToFileURLを使うべし
+      const resolvedDataPath = new URL(dataDir, import.meta.url);
+      if (!fs.existsSync(resolvedDataPath)) {
         const errorMessage =
           "Images data does not exist. Check the path settings output to the console." +
           `\n\`import.meta.url\` : ${import.meta.url}` +
-          `\nreferencing path (\`path.href\`) : ${path.href}`;
+          `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
         throw Error(errorMessage);
       }
       const allImagesData: ImagesStorageSchema = JSON.parse(
-        fs.readFileSync(path, "utf8"),
+        fs.readFileSync(resolvedDataPath, "utf8"),
       );
 
       const imagesData = allImagesData[entry.id];
@@ -124,15 +128,31 @@ export class CollectionsBlogPostEntry
       }
       const image = imagesData.thumbnail;
       // widthはURLクエリで指定し取得時点で縮小する（基本元の画像より小さめのサイズを指定するはずなので）.
-      const queriedUrl = `${image.url}?w=1024`;
+      const queriedUrl = `${image.url}?w=1024&fm=webp`;
+      // 最終的な画像のURL（最初はリモートURL）
+      let resultImageUrl = queriedUrl;
+      if (import.meta.env.PROD) {
+        // ビルドモードなら画像をダウンロードし, webpに変換した結果のファイルパスをURLとする
+        const filename = `thumb-${entry.id}`;
+        const downloadedPath = await downloadImage(filename, queriedUrl);
+        if (downloadedPath === undefined) {
+          throw Error("[blog.ts] thumbnail download failed.");
+        }
+        const convertedImageUrl = await convertImage(downloadedPath);
+        resultImageUrl = convertedImageUrl;
+      } else {
+        console.log("[blog.ts] 開発モードのためリモートURLを用いています。");
+      }
+
+      const thumbHeight = Math.round(
+        (entry.THUMB_WIDTH * image.height) / image.width,
+      );
       // srcが`string`型のリモート画像の場合は`height`が必要. 従来の`aspectRatio`は受け付けなくなった.
       // microCMSから大きさ情報を取得できるので計算して渡す.
       return await getImage({
-        src: queriedUrl,
-        width: 1024,
-        height: (1024 * image.height) / image.width,
-        format: "webp",
-        alt: "thumbnail",
+        src: resultImageUrl,
+        width: entry.THUMB_WIDTH,
+        height: thumbHeight,
       });
     };
     const getThumbImageFromLocal = async () => {
@@ -151,7 +171,6 @@ export class CollectionsBlogPostEntry
         src: localImageMetaData,
         width: 1024,
         format: "webp",
-        alt: "thumbnail",
       });
     };
     const getThumbImage = async () => {
@@ -192,7 +211,7 @@ export class CollectionsBlogPostEntry
         return {
           url: this.thumbnailImage.src,
           width: 1024,
-          height: Math.round((this.thumbnailImage.height as number) + 0),
+          height: this.thumbnailImage.options.height as number,
           alt: "thumbnail",
         };
       }

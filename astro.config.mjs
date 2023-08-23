@@ -1,11 +1,12 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, sharpImageService } from "astro/config";
 
 import svelte from "@astrojs/svelte";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 import loadMicroCMSImage from "./src/integrations/astro-load-microcms-image";
-import image from "@astrojs/image";
+import downloadRemoteImages from "./src/integrations/download-remote-images";
+// import image from "@astrojs/image";
 
 import remarkMath from "remark-math";
 import remarkCodeTitles from "remark-code-titles";
@@ -20,6 +21,12 @@ import rehypeModifyFnHeadingText from "./plugins/rehype-modify-fn-heading-text.m
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    assets: true,
+  },
+  image: {
+    service: sharpImageService(),
+  },
   markdown: {
     shikiConfig: {
       theme: "dracula",
@@ -27,7 +34,8 @@ export default defineConfig({
     },
   },
   integrations: [
-    loadMicroCMSImage({}),
+    loadMicroCMSImage({ skip: true }),
+    downloadRemoteImages(),
     svelte(),
     mdx({
       remarkPlugins: [
@@ -69,9 +77,9 @@ export default defineConfig({
     }),
     partytown(),
     sitemap(),
-    image({
-      serviceEntryPoint: "@astrojs/image/sharp",
-    }),
+    // image({
+    //   serviceEntryPoint: "@astrojs/image/sharp",
+    // }),
   ],
   // trailingSlash: "always",
   site: "https://aiwaka.github.io",
