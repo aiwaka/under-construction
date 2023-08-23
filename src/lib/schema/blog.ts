@@ -1,4 +1,5 @@
-import fs from "fs";
+import fs from "node:fs";
+import path from "node:path";
 import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
 import { getImage } from "astro:assets";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
@@ -108,16 +109,17 @@ export class CollectionsBlogPostEntry
       //   ? "../../generated/images-data.json"
       //   : "../../generated/images-data.json";
       const dataDir = "../../generated/images-data.json";
-      const path = new URL(dataDir, import.meta.url);
-      if (!fs.existsSync(path)) {
+      // TODO: new URLではなくpathToFileURLを使うべし
+      const resolvedDataPath = new URL(dataDir, import.meta.url);
+      if (!fs.existsSync(resolvedDataPath)) {
         const errorMessage =
           "Images data does not exist. Check the path settings output to the console." +
           `\n\`import.meta.url\` : ${import.meta.url}` +
-          `\nreferencing path (\`path.href\`) : ${path.href}`;
+          `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
         throw Error(errorMessage);
       }
       const allImagesData: ImagesStorageSchema = JSON.parse(
-        fs.readFileSync(path, "utf8"),
+        fs.readFileSync(resolvedDataPath, "utf8"),
       );
 
       const imagesData = allImagesData[entry.id];
@@ -126,12 +128,13 @@ export class CollectionsBlogPostEntry
       }
       const image = imagesData.thumbnail;
       // widthはURLクエリで指定し取得時点で縮小する（基本元の画像より小さめのサイズを指定するはずなので）.
-      const queriedUrl = `${image.url}?w=1024`;
+      const queriedUrl = `${image.url}?w=1024&fm=webp`;
       // 最終的な画像のURL（最初はリモートURL）
       let resultImageUrl = queriedUrl;
       if (import.meta.env.PROD) {
         // ビルドモードなら画像をダウンロードし, webpに変換した結果のファイルパスをURLとする
-        const downloadedPath = await downloadImage(image.url);
+        const filename = `thumb-${entry.id}`;
+        const downloadedPath = await downloadImage(filename, queriedUrl);
         if (downloadedPath === undefined) {
           throw Error("[blog.ts] thumbnail download failed.");
         }

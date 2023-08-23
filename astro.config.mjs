@@ -5,7 +5,7 @@ import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 import loadMicroCMSImage from "./src/integrations/astro-load-microcms-image";
-import cleanPreloadedImages from "./src/integrations/clean-preloaded-images";
+import downloadRemoteImages from "./src/integrations/download-remote-images";
 // import image from "@astrojs/image";
 
 import remarkMath from "remark-math";
@@ -35,7 +35,7 @@ export default defineConfig({
   },
   integrations: [
     loadMicroCMSImage({ skip: true }),
-    cleanPreloadedImages(),
+    downloadRemoteImages(),
     svelte(),
     mdx({
       remarkPlugins: [
