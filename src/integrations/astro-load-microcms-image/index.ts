@@ -20,7 +20,7 @@ interface LoadMicroCMSImageOptions {
 }
 /** MicroCMSから取得する画像のスキーマ */
 const MicroCMSImageSchema = z.object({
-  url: z.string(),
+  url: z.string().url(),
   width: z.number(),
   height: z.number(),
 });
@@ -53,7 +53,7 @@ const DATA_FILE_NAME: string = "images-data.json";
 /** 開発モード時にデータを取得できなかったが存在している状況を表す一つの単語 */
 const DATA_ALREADY_EXISTS_FLAG = "alreadyExists" as const satisfies string;
 
-export default function preload(
+export default function loadMicroCMSImageData(
   options: LoadMicroCMSImageOptions = {},
 ): AstroIntegration {
   const { skip = false, ignoreNoData: _ignore = false } = options;
