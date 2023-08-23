@@ -4,6 +4,7 @@ import fs from "fs";
 import BlogImageList from "@components/blog/BlogImageList.astro";
 import type { BlogImageProps } from "@lib/contents/blog";
 import type { ImagesStorageSchema } from "../../integrations/astro-load-microcms-image";
+import { convertImage, downloadImage } from "@lib/utils";
 
 type NamedRemoteImageType = Omit<BlogImageProps, "src"> & {
   name: string;
@@ -52,7 +53,7 @@ if (allImagesData && imagesData === undefined) {
 }
 const notFoundImageList: string[] = [];
 // 取得できない画像は除外してリストを整形する.
-const images = namedRemoteImages.flatMap((data) => {
+const resolvedRemoteImages = namedRemoteImages.flatMap((data) => {
   const {
     name,
     width: specifiedWidth,
@@ -66,7 +67,7 @@ const images = namedRemoteImages.flatMap((data) => {
     return [];
   }
   // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
-  const queriedUrl = `${image.url}?w=${specifiedWidth}`;
+  const queriedUrl = `${image.url}?w=${specifiedWidth}&fm=webp`;
   // 高さは指定されていればそれを使い, そうでなければ画像の大きさから計算する（整数にする）.
   const resultHeight = Math.round(
     specifiedHeight ?? (specifiedWidth * image.height) / image.width,
@@ -75,9 +76,35 @@ const images = namedRemoteImages.flatMap((data) => {
     src: queriedUrl,
     width: specifiedWidth,
     height: resultHeight,
+    name,
     ...rest,
-  } satisfies BlogImageProps;
+  } satisfies BlogImageProps & { name: string };
 });
+
+// ビルドモードなら各画像をダウンロードする.
+const images = import.meta.env.DEV
+  ? resolvedRemoteImages
+  : await Promise.all(
+      resolvedRemoteImages.map(async (image) => {
+        const { src, name, ...rest } = image;
+        const urlObj = new URL(src);
+        // クエリパラメータから一意に文字列を作成
+        const params = urlObj.searchParams;
+        const queryStringForFilename =
+          (params.get("w") ? `w${params.get("w")}` : "") +
+          (params.get("h") ? `h${params.get("h")}` : "");
+        const filename = `${baseName}-${name}${queryStringForFilename}`;
+        const downloadedPath = await downloadImage(filename, image.src);
+        if (downloadedPath === undefined) {
+          throw Error(`[BlogImagesRemote] image '${src}' download failed.`);
+        }
+        const resultImageUrl = await convertImage(downloadedPath);
+        return {
+          src: resultImageUrl,
+          ...rest,
+        } satisfies BlogImageProps;
+      }),
+    );
 
 if (notFoundImageList.length > 0) {
   console.warn(
