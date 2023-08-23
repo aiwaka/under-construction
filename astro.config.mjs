@@ -34,7 +34,7 @@ export default defineConfig({
     },
   },
   integrations: [
-    loadMicroCMSImage({ skip: true }),
+    loadMicroCMSImage({}),
     downloadRemoteImages(),
     svelte(),
     mdx({
