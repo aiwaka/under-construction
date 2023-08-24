@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import path from "node:path";
 import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
 import { getImage } from "astro:assets";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
@@ -10,6 +9,8 @@ import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
 import type { ImagesStorageSchema } from "src/integrations/astro-load-microcms-image";
 import { convertImage, downloadImage } from "@lib/utils";
+
+let alreadyWarnedUsingRemote = false;
 
 enum ThumbnailFormatEnum {
   png = "png",
@@ -141,7 +142,10 @@ export class CollectionsBlogPostEntry
         const convertedImageUrl = await convertImage(downloadedPath);
         resultImageUrl = convertedImageUrl;
       } else {
-        console.log("[blog.ts] 開発モードのためリモートURLを用いています。");
+        if (!alreadyWarnedUsingRemote) {
+          console.log("[blog.ts] 開発モードのためリモートURLを用いています。");
+          alreadyWarnedUsingRemote = true;
+        }
       }
 
       const thumbHeight = Math.round(
