@@ -15,6 +15,7 @@ export const downloadImage = async (filename: string, urlStr: string) => {
   const url = new URL(urlStr);
   // フォーマット指定がされていたら取得
   const format = url.searchParams.get("fm");
+  // TODO: 存在するなら`.`付きとし、しないなら空文字列とした上で`preloadPath`に`.`を含めないようにする。
   // 拡張子は存在するなら`.`を除いたもの, しないなら空文字列.
   const extension = path.extname(url.pathname).startsWith(".")
     ? path.extname(url.pathname).substring(1)
