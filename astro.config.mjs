@@ -21,12 +21,6 @@ import rehypeModifyFnHeadingText from "./plugins/rehype-modify-fn-heading-text.m
 
 // https://astro.build/config
 export default defineConfig({
-  experimental: {
-    assets: true,
-  },
-  image: {
-    service: sharpImageService(),
-  },
   markdown: {
     shikiConfig: {
       theme: "dracula",
@@ -77,13 +71,9 @@ export default defineConfig({
     }),
     partytown(),
     sitemap(),
-    // image({
-    //   serviceEntryPoint: "@astrojs/image/sharp",
-    // }),
   ],
-  // trailingSlash: "always",
   site: "https://aiwaka.github.io",
-  base: "/under-construction",
+  base: "/under-construction/",
   build: {
     // NOTE: ビルド時ページファイルとして`foo/index.html`が作られるのを防ぎ, 代わりに`foo.html`を作る.
     // これによりマークダウンの中で相対リンクを貼るようにすれば開発環境と同じリンク関係が保たれる.
