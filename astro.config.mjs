@@ -19,6 +19,10 @@ import rehypeModifyFnHeadingText from "./plugins/rehype-modify-fn-heading-text.m
 
 // https://astro.build/config
 export default defineConfig({
+  image: {
+    remotePatterns: [{ protocol: "http s" }],
+    domains: ["images.microcms-assets.io"],
+  },
   markdown: {
     shikiConfig: {
       theme: "dracula",
