@@ -1,15 +1,15 @@
 import fs from "node:fs";
-import path from "node:path";
 import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
 import { getImage } from "astro:assets";
-import type { AstroComponentFactory } from "astro/dist/runtime/server";
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 import type { CollectionEntry } from "astro:content";
 import { z } from "astro:content";
 
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
 import type { ImagesStorageSchema } from "src/integrations/astro-load-microcms-image";
-import { convertImage, downloadImage } from "@lib/utils";
+
+let alreadyWarnedUsingRemote = false;
 
 enum ThumbnailFormatEnum {
   png = "png",
@@ -105,11 +105,8 @@ export class CollectionsBlogPostEntry
     const getThumbImageFromRemote = async () => {
       // ビルド時のバンドルされるファイルのURLがどうなるかはあまりわかっていないのでうまくいくようにしている.
       // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
-      // const dataDir = import.meta.env.DEV
-      //   ? "../../generated/images-data.json"
-      //   : "../../generated/images-data.json";
       const dataDir = "../../generated/images-data.json";
-      // TODO: new URLではなくpathToFileURLを使うべし
+      // TODO: new URLではなくpathToFileURLを使う
       const resolvedDataPath = new URL(dataDir, import.meta.url);
       if (!fs.existsSync(resolvedDataPath)) {
         const errorMessage =
@@ -131,23 +128,27 @@ export class CollectionsBlogPostEntry
       const queriedUrl = `${image.url}?w=1024&fm=webp`;
       // 最終的な画像のURL（最初はリモートURL）
       let resultImageUrl = queriedUrl;
-      if (import.meta.env.PROD) {
-        // ビルドモードなら画像をダウンロードし, webpに変換した結果のファイルパスをURLとする
-        const filename = `thumb-${entry.id}`;
-        const downloadedPath = await downloadImage(filename, queriedUrl);
-        if (downloadedPath === undefined) {
-          throw Error("[blog.ts] thumbnail download failed.");
-        }
-        const convertedImageUrl = await convertImage(downloadedPath);
-        resultImageUrl = convertedImageUrl;
-      } else {
-        console.log("[blog.ts] 開発モードのためリモートURLを用いています。");
-      }
+      // NOTE: Astroのasset機能がリモート画像のダウンロードをサポートしたのでこれらの処理は不要
+      // if (import.meta.env.PROD) {
+      //   // ビルドモードなら画像をダウンロードし, webpに変換した結果のファイルパスをURLとする
+      //   const filename = `thumb-${entry.id}`;
+      //   const downloadedPath = await downloadImage(filename, queriedUrl);
+      //   if (downloadedPath === undefined) {
+      //     throw Error("[blog.ts] thumbnail download failed.");
+      //   }
+      //   const convertedImageUrl = await convertImage(downloadedPath);
+      //   resultImageUrl = convertedImageUrl;
+      // } else {
+      //   if (!alreadyWarnedUsingRemote) {
+      //     console.log("[blog.ts] 開発モードのためリモートURLを用いています。");
+      //     alreadyWarnedUsingRemote = true;
+      //   }
+      // }
 
       const thumbHeight = Math.round(
         (entry.THUMB_WIDTH * image.height) / image.width,
       );
-      // srcが`string`型のリモート画像の場合は`height`が必要. 従来の`aspectRatio`は受け付けなくなった.
+      // srcが`string`型のリモート画像の場合は`height`が必要.
       // microCMSから大きさ情報を取得できるので計算して渡す.
       return await getImage({
         src: resultImageUrl,

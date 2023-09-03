@@ -11,15 +11,17 @@ import PaginationContainer from "@components/blog/PaginationContainer.astro";
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allTagList = [] as string[];
   await getBlogPostEntries(allTagList);
-  return Promise.all(
-    allTagList.map(async (tag) => {
-      const blogPostEntries = await getBlogPostEntries([], { tag });
-      return paginate(blogPostEntries, {
-        params: { tag },
-        pageSize: POST_PER_PAGE,
-      });
-    })
-  );
+  return (
+    await Promise.all(
+      allTagList.map(async (tag) => {
+        const blogPostEntries = await getBlogPostEntries([], { tag });
+        return paginate(blogPostEntries, {
+          params: { tag },
+          pageSize: POST_PER_PAGE,
+        });
+      }),
+    )
+  ).flat();
 }
 
 interface Props {
@@ -27,7 +29,7 @@ interface Props {
 }
 const { page } = Astro.props;
 const { tag } = Astro.params;
-const propTitle = `#${tag}の検索結果`
+const propTitle = `#${tag}の検索結果`;
 const ogp = {
   url: Astro.request.url,
   type: "blog",
