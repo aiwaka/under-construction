@@ -29,7 +29,7 @@ export default defineConfig({
     },
   },
   integrations: [
-    loadMicroCMSImage({ skip: true }),
+    loadMicroCMSImage({}),
     svelte(),
     mdx({
       remarkPlugins: [
