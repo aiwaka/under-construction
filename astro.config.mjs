@@ -5,7 +5,6 @@ import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 import loadMicroCMSImage from "./src/integrations/astro-load-microcms-image";
-import downloadRemoteImages from "./src/integrations/download-remote-images";
 
 import remarkMath from "remark-math";
 import remarkCodeTitles from "remark-code-titles";
@@ -20,7 +19,7 @@ import rehypeModifyFnHeadingText from "./plugins/rehype-modify-fn-heading-text.m
 // https://astro.build/config
 export default defineConfig({
   image: {
-    remotePatterns: [{ protocol: "http s" }],
+    remotePatterns: [{ protocol: "https" }],
     domains: ["images.microcms-assets.io"],
   },
   markdown: {
@@ -30,8 +29,7 @@ export default defineConfig({
     },
   },
   integrations: [
-    loadMicroCMSImage({}),
-    downloadRemoteImages(),
+    loadMicroCMSImage({ skip: true }),
     svelte(),
     mdx({
       remarkPlugins: [
