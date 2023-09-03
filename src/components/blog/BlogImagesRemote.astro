@@ -4,7 +4,6 @@ import fs from "fs";
 import BlogImageList from "@components/blog/BlogImageList.astro";
 import type { BlogImageProps } from "@lib/contents/blog";
 import type { ImagesStorageSchema } from "../../integrations/astro-load-microcms-image";
-import { convertImage, downloadImage } from "@lib/utils";
 
 type NamedRemoteImageType = Omit<BlogImageProps, "src"> & {
   name: string;
@@ -81,30 +80,7 @@ const resolvedRemoteImages = namedRemoteImages.flatMap((data) => {
   } satisfies BlogImageProps & { name: string };
 });
 
-// ビルドモードなら各画像をダウンロードする.
-const images = import.meta.env.DEV
-  ? resolvedRemoteImages
-  : await Promise.all(
-      resolvedRemoteImages.map(async (image) => {
-        const { src, name, ...rest } = image;
-        const urlObj = new URL(src);
-        // クエリパラメータから一意に文字列を作成
-        const params = urlObj.searchParams;
-        const queryStringForFilename =
-          (params.get("w") ? `w${params.get("w")}` : "") +
-          (params.get("h") ? `h${params.get("h")}` : "");
-        const filename = `${baseName}-${name}${queryStringForFilename}`;
-        const downloadedPath = await downloadImage(filename, image.src);
-        if (downloadedPath === undefined) {
-          throw Error(`[BlogImagesRemote] image '${src}' download failed.`);
-        }
-        const resultImageUrl = await convertImage(downloadedPath);
-        return {
-          src: resultImageUrl,
-          ...rest,
-        } satisfies BlogImageProps;
-      }),
-    );
+const images = resolvedRemoteImages;
 
 if (notFoundImageList.length > 0) {
   console.warn(
