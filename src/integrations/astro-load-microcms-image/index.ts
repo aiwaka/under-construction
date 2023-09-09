@@ -1,7 +1,15 @@
+import fs from "fs";
 import type { AstroIntegration } from "astro";
 import { z } from "astro/zod";
-import fs from "fs";
-import { MicroCMSListResponse, createClient } from "microcms-js-sdk";
+import type { MicroCMSListResponse } from "microcms-js-sdk";
+import { createClient } from "microcms-js-sdk";
+
+import {
+  MicroCMSImagesDataSchema,
+  type ImagesStorageSchema,
+} from "./blog-image-collections";
+
+export type { ImagesStorageSchema };
 
 const PKG_NAME = "astro-load-microcms-image";
 
@@ -17,36 +25,6 @@ interface LoadMicroCMSImageOptions {
    * devモードのみ有効で, buildモードなら強制的に`false`になる.（デフォルト：`false`）
    */
   ignoreNoData?: boolean;
-}
-/** MicroCMSから取得する画像のスキーマ */
-const MicroCMSImageSchema = z.object({
-  url: z.string().url(),
-  width: z.number(),
-  height: z.number(),
-});
-/** microCMSから取得するブログ用画像コンテンツのスキーマ */
-const MicroCMSImagesDataSchema = z.array(
-  z.object({
-    id: z.string(),
-    title: z.string(),
-    thumbnail: MicroCMSImageSchema,
-    images: z.array(
-      z.object({
-        fieldId: z.literal("image"),
-        name: z.string(),
-        image: MicroCMSImageSchema,
-      }),
-    ),
-  }),
-);
-/** このブログプロジェクトで利用したい形式のスキーマ */
-export interface ImagesStorageSchema {
-  [title: string]: {
-    thumbnail: z.infer<typeof MicroCMSImageSchema>;
-    images: {
-      [name: string]: z.infer<typeof MicroCMSImageSchema>;
-    };
-  };
 }
 
 const DATA_FILE_NAME: string = "images-data.json";
