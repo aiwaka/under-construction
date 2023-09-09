@@ -1,10 +1,9 @@
 ---
-// ブログページだけ背景を変えたいので背景スタイルを当てるためにレイアウトを作成する.
+// ブログページの一般レイアウトを作成する.
 // またブログ記事タイトルを受け取った処理も行う.
 
 import type { OGPInfo } from "@lib/types";
-
-import BaseLayout from "./BaseLayout.astro";
+import GeneralPageLayout from "./GeneralPageLayout.astro";
 
 export interface Props {
   title?: string;
@@ -18,7 +17,7 @@ const title =
     : "Under Construction | Blog";
 ---
 
-<BaseLayout ogp={ogp} title={title}>
+<GeneralPageLayout ogp={ogp} title={title}>
   {
     usingLatex && (
       <link
@@ -32,11 +31,8 @@ const title =
     )
   }
 
-  <div class="header-margin"></div>
-  <main class="main-container">
-    <slot />
-  </main>
-</BaseLayout>
+  <slot />
+</GeneralPageLayout>
 
 <script>
   // タグをクリックした際カードコンポーネントによる遷移を阻止する処理
@@ -58,33 +54,3 @@ const title =
     });
   });
 </script>
-
-<style>
-  .header-margin {
-    height: 8rem;
-  }
-  body::before {
-    content: "";
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -50;
-    width: 100%;
-    height: 100vh;
-    background-repeat: no-repeat;
-    background-image: url("/img/blue_2.png");
-    background-position: 100% 0%;
-    background-size: cover;
-    @media (max-width: 1024px) {
-      background-position: center 0%;
-    }
-  }
-  .main-container {
-    width: 70%;
-    margin: auto;
-    @media (max-width: 1024px) {
-      width: 90%;
-    }
-  }
-</style>
