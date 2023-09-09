@@ -1,5 +1,5 @@
 import { z } from "astro/zod";
-import { MicroCMSImageSchema } from "./microcms-image-schema";
+import { MicroCMSImageSchema } from "../../lib/schema/image";
 
 /** microCMSから取得するブログ用画像コンテンツのスキーマ */
 export const MicroCMSImagesDataSchema = z.array(
