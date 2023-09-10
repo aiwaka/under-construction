@@ -1,0 +1,67 @@
+---
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
+import LineContainer from "@components/more/station-collections/LineContainer.svelte";
+
+import stationList from "./stationList";
+
+const ogp = {
+  url: Astro.request.url,
+  type: "website",
+  title: "Under Construction | 鉄道駅コレクション",
+  description: "行ったことのある鉄道駅のまとめページです",
+  siteName: "Under Construction",
+  image: "https://aiwaka.github.io/under-construction/img/blue_2.png",
+};
+const getLineNamesList = (nameStr: string) => {
+  return nameStr.split("/");
+};
+type A = Omit<Object, "a">;
+---
+
+<GeneralPageLayout title="鉄道駅コレクション" ogp={ogp}>
+  <h2>鉄道駅コレクション</h2>
+  <p>
+    私が訪れたことのある鉄道駅について写真を載せたりしてまとめたいと思います。
+  </p>
+  <p>作成中なのでレイアウトはちょくちょく変わると思います。</p>
+  <h3>JR</h3>
+  <h4>JR西日本</h4>
+  {
+    Object.values(stationList["JRWest"]).map((dat) => {
+      return <LineContainer lineData={dat} />;
+    })
+  }
+
+  <h4>JR東海</h4>
+  {
+    Object.values(stationList["JRCentral"]).map((dat) => {
+      return <LineContainer lineData={dat} />;
+    })
+  }
+</GeneralPageLayout>
+
+<style>
+  p {
+    margin: 1rem auto;
+  }
+  h3 {
+    margin-left: 0.2rem;
+    margin-bottom: 0.8rem;
+  }
+  h4 {
+    margin: 0.5rem auto;
+    margin-left: 0.4rem;
+  }
+  details {
+    width: 90%;
+    height: fit-content;
+  }
+  details > summary {
+    list-style: none;
+    padding: 2px 6px;
+    width: 15em;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+  }
+</style>

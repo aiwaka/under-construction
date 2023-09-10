@@ -106,7 +106,10 @@ export default function loadMicroCMSImageData(
           const contents = MicroCMSStationCollectionsSchema.parse(
             staCollectionsFromMicroCMS["contents"],
           );
-          const resultContents: StationCollectionsSchema = contents;
+          const resultContents: StationCollectionsSchema = {};
+          contents.forEach((content) => {
+            resultContents[content.id] = content;
+          });
 
           fs.writeFileSync(dataPath, JSON.stringify(resultContents));
           consoleLogUsingPackageName("fetch and dump finished.");

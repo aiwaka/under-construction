@@ -1,7 +1,7 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
 import LinkCard from "@components/more/LinkCard.astro";
 import testImg from "@assets/blue_2.png";
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 
 const ogp = {
   url: Astro.request.url,
@@ -13,7 +13,7 @@ const ogp = {
 };
 ---
 
-<BaseLayout title="ページ一覧" ogp={ogp}>
+<GeneralPageLayout title="ページ一覧" ogp={ogp}>
   <h2>ページ一覧</h2>
   <p>趣味で作ったページをここに載せます。</p>
   <div class="card-box">
@@ -25,9 +25,13 @@ const ogp = {
       <p>私が訪れたことのある鉄道駅について写真を載せるだけのページです。</p>
     </LinkCard>
   </div>
-</BaseLayout>
+</GeneralPageLayout>
 
 <style>
+  p {
+    margin: 1rem auto;
+  }
+
   .card-container {
     margin: 1.4rem auto;
     padding-bottom: 2rem;

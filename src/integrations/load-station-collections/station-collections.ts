@@ -28,9 +28,10 @@ export const MicroCMSStationCollectionsSchema = z.array(
     ),
     firstVisitDate: z.string().datetime().optional(),
     comment: z.string().optional(),
+    updatedAt: z.string().datetime(),
   }),
 );
 /** 利用したい形式の鉄道駅コレクションのスキーマ */
-export type StationCollectionsSchema = z.infer<
-  typeof MicroCMSStationCollectionsSchema
->;
+export type StationCollectionsSchema = {
+  [id: string]: z.infer<typeof MicroCMSStationCollectionsSchema>[number];
+};

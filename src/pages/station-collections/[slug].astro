@@ -1,0 +1,68 @@
+---
+import type { InferGetStaticPropsType } from "astro";
+import { getImage } from "astro:assets";
+
+import { dateText } from "@lib/utils";
+
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
+import type { StationCollectionsSchema } from "src/integrations/load-station-collections";
+import { getStationCollectionsData } from "@lib/more/station-collections";
+
+export async function getStaticPaths() {
+  /** 何らかの理由で取得に失敗した瞬間`true`になる */
+  let stationCollectionsFetchFailed = false;
+  let stationCollectionsData: StationCollectionsSchema | null = null;
+  try {
+    stationCollectionsData = getStationCollectionsData();
+  } catch (e) {
+    console.error(e);
+    stationCollectionsFetchFailed = true;
+  }
+
+  if (stationCollectionsFetchFailed || stationCollectionsData === null) {
+    return [];
+  }
+  return Object.keys(stationCollectionsData).map((id) => {
+    // const next = i === 0 ? null : array.at(i - 1) ?? null;
+    // const prev = i === array.length ? null : array.at(i + 1) ?? null;
+    return {
+      params: { slug: id },
+      props: { data: stationCollectionsData![id] },
+    };
+  });
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { data } = Astro.props;
+const { name, comment, updatedAt, images, firstVisitDate } = data;
+
+const thumb = await getImage({
+  src: images[0].image.url,
+  height: images[0].image.height,
+  width: images[0].image.width,
+});
+
+const PAGE_NAME = `Under Construction | 鉄道駅コレクション ${name}` as const;
+
+const ogp = {
+  url: Astro.request.url,
+  type: "blog",
+  title: PAGE_NAME,
+  description: "訪問した鉄道駅をまとめたページです",
+  siteName: "Under Construction",
+  image:
+    "https://aiwaka.github.io" +
+    (thumb.src ?? "/under-construction/img/blue_2.png"),
+};
+---
+
+<GeneralPageLayout ogp={ogp} title={PAGE_NAME}>
+  <h1>{name}</h1>
+  <div class="date-block">
+    <!--  -->
+  </div>
+  <div class="img-container">
+    <!--  -->
+  </div>
+</GeneralPageLayout>

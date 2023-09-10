@@ -1,0 +1,1 @@
+export { getStationCollectionsData } from "./getData";
