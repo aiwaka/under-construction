@@ -1,0 +1,43 @@
+---
+import LinkCard from "@components/more/LinkCard.astro";
+import testImg from "@assets/blue_2.png";
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
+
+const ogp = {
+  url: Astro.request.url,
+  type: "blog",
+  title: "Under Construction",
+  description: "趣味のページです",
+  siteName: "Under Construction",
+  image: "https://aiwaka.github.io/under-construction/img/blue_2.png",
+};
+---
+
+<GeneralPageLayout title="ページ一覧" ogp={ogp}>
+  <h2>ページ一覧</h2>
+  <p>趣味で作ったページをここに載せます。</p>
+  <div class="card-box">
+    <LinkCard
+      title="鉄道駅コレクション"
+      image={testImg}
+      href="station-collections"
+    >
+      <p>私が訪れたことのある鉄道駅について写真を載せるだけのページです。</p>
+    </LinkCard>
+  </div>
+</GeneralPageLayout>
+
+<style>
+  p {
+    margin: 1rem auto;
+  }
+
+  .card-container {
+    margin: 1.4rem auto;
+    padding-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 1.4rem;
+    column-gap: 5%;
+  }
+</style>

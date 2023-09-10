@@ -5,6 +5,7 @@ import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 import loadMicroCMSImage from "./src/integrations/astro-load-microcms-image";
+import loadStationCollections from "./src/integrations/load-station-collections";
 
 import remarkMath from "remark-math";
 import remarkCodeTitles from "remark-code-titles";
@@ -30,6 +31,7 @@ export default defineConfig({
   },
   integrations: [
     loadMicroCMSImage({}),
+    loadStationCollections({}),
     svelte(),
     mdx({
       remarkPlugins: [

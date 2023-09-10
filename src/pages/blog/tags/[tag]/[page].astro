@@ -1,10 +1,10 @@
 ---
 import type { GetStaticPathsOptions, Page } from "astro";
 
-import { BlogPostEntry, getBlogPostEntries } from "@lib/contents/blog";
+import { type BlogPostEntry, getBlogPostEntries } from "@lib/contents/blog";
 import { POST_PER_PAGE } from "@lib/utils";
 
-import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import BlogLayout from "@layouts/BlogLayout.astro";
 import BlogPageCardContainer from "@components/blog/BlogPageCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 
@@ -40,7 +40,7 @@ const ogp = {
 };
 ---
 
-<BlogGeneralLayout ogp={ogp} title={propTitle}>
+<BlogLayout ogp={ogp} title={propTitle}>
   <h2>Blog</h2>
   <a class="to-tag-list" href={`${import.meta.env.BASE_URL}blog/tags`}>
     タグ一覧へ
@@ -52,7 +52,7 @@ const ogp = {
     currentPage={page.currentPage}
     lastPage={page.lastPage}
   />
-</BlogGeneralLayout>
+</BlogLayout>
 
 <style>
   .to-tag-list {

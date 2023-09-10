@@ -1,5 +1,5 @@
 ---
-import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import BlogLayout from "@layouts/BlogLayout.astro";
 import BlogTag from "@components/blog/BlogTag.svelte";
 import { getBlogPostEntries } from "@lib/contents/blog";
 
@@ -16,7 +16,7 @@ const ogp = {
 };
 ---
 
-<BlogGeneralLayout ogp={ogp} title="タグ一覧">
+<BlogLayout ogp={ogp} title="タグ一覧">
   <h2>Blog タグ一覧</h2>
   <div class="tag-container">
     {
@@ -25,7 +25,7 @@ const ogp = {
       })
     }
   </div>
-</BlogGeneralLayout>
+</BlogLayout>
 
 <style>
   .tag-container {

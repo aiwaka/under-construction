@@ -27,12 +27,12 @@ let imagesDataFetchFailed = false;
 const dataDir = import.meta.env.DEV
   ? "../../generated/images-data.json"
   : "../../dist/generated/images-data.json";
-const path = new URL(dataDir, import.meta.url);
-if (!fs.existsSync(path)) {
+const resolvedDataPath = new URL(dataDir, import.meta.url);
+if (!fs.existsSync(resolvedDataPath)) {
   const errorMessage =
     "Images data does not exist. Check the path settings output to the console." +
     `\n\`import.meta.url\` : ${import.meta.url}` +
-    `\nreferencing path (\`path.href\`) : ${path.href}`;
+    `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
   console.error(errorMessage);
   imagesDataFetchFailed = true;
 }
@@ -40,7 +40,7 @@ if (!fs.existsSync(path)) {
 let allImagesData: ImagesStorageSchema | null = null;
 if (!imagesDataFetchFailed) {
   allImagesData = JSON.parse(
-    fs.readFileSync(path, "utf8"),
+    fs.readFileSync(resolvedDataPath, "utf8"),
   ) as ImagesStorageSchema;
 }
 

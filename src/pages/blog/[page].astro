@@ -1,10 +1,10 @@
 ---
 import type { GetStaticPathsOptions, Page } from "astro";
 
-import { BlogPostEntry, getBlogPostEntries } from "@lib/contents/blog";
+import { type BlogPostEntry, getBlogPostEntries } from "@lib/contents/blog";
 import { POST_PER_PAGE } from "@lib/utils";
 
-import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import BlogLayout from "@layouts/BlogLayout.astro";
 import BlogPageCardContainer from "@components/blog/BlogPageCardContainer.astro";
 import PaginationContainer from "@components/blog/PaginationContainer.astro";
 
@@ -27,7 +27,7 @@ const ogp = {
 };
 ---
 
-<BlogGeneralLayout ogp={ogp}>
+<BlogLayout ogp={ogp}>
   <h2>Blog</h2>
   <h3>{page.currentPage}</h3>
   <BlogPageCardContainer cardList={page.data} />
@@ -36,4 +36,4 @@ const ogp = {
     currentPage={page.currentPage}
     lastPage={page.lastPage}
   />
-</BlogGeneralLayout>
+</BlogLayout>
