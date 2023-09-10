@@ -31,7 +31,16 @@ export const MicroCMSStationCollectionsSchema = z.array(
     updatedAt: z.string().datetime(),
   }),
 );
+type OmitImageType = Omit<
+  z.infer<typeof MicroCMSStationCollectionsSchema>[number],
+  "images"
+>;
+// fieldIdはリテラルで特に意味がないため除外したい
+type LiteralRemovedImageType = Omit<
+  z.infer<typeof MicroCMSStationCollectionsSchema>[number]["images"][number],
+  "fieldId"
+>;
 /** 利用したい形式の鉄道駅コレクションのスキーマ */
 export type StationCollectionsSchema = {
-  [id: string]: z.infer<typeof MicroCMSStationCollectionsSchema>[number];
+  [id: string]: OmitImageType & { images: LiteralRemovedImageType[] };
 };

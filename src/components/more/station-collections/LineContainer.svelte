@@ -20,7 +20,7 @@
   {/each}
 </div>
 
-<style>
+<style lang="postcss">
   .line-container {
     padding: 1rem 1.2rem;
     border: 1px solid #777;

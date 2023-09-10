@@ -108,7 +108,16 @@ export default function loadMicroCMSImageData(
           );
           const resultContents: StationCollectionsSchema = {};
           contents.forEach((content) => {
-            resultContents[content.id] = content;
+            // imagesから`fieldId`を除く
+            const { images, ...rest } = content;
+            const literalRemovedImages = images.map((img) => {
+              const { fieldId, ...temp } = img;
+              return temp;
+            });
+            resultContents[content.id] = {
+              images: literalRemovedImages,
+              ...rest,
+            };
           });
 
           fs.writeFileSync(dataPath, JSON.stringify(resultContents));

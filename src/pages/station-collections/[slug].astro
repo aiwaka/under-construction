@@ -6,14 +6,18 @@ import { dateText } from "@lib/utils";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 import type { StationCollectionsSchema } from "src/integrations/load-station-collections";
-import { getStationCollectionsData } from "@lib/more/station-collections";
+import {
+  getLocalStationCollectionsData,
+  toBlogImageList,
+} from "@lib/more/station-collections";
+import CollectionPictureList from "@components/more/station-collections/CollectionPictureList.astro";
 
 export async function getStaticPaths() {
   /** 何らかの理由で取得に失敗した瞬間`true`になる */
   let stationCollectionsFetchFailed = false;
   let stationCollectionsData: StationCollectionsSchema | null = null;
   try {
-    stationCollectionsData = getStationCollectionsData();
+    stationCollectionsData = getLocalStationCollectionsData();
   } catch (e) {
     console.error(e);
     stationCollectionsFetchFailed = true;
@@ -27,20 +31,23 @@ export async function getStaticPaths() {
     // const prev = i === array.length ? null : array.at(i + 1) ?? null;
     return {
       params: { slug: id },
-      props: { data: stationCollectionsData![id] },
+      props: { stationData: stationCollectionsData![id] },
     };
   });
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { data } = Astro.props;
-const { name, comment, updatedAt, images, firstVisitDate } = data;
+const { stationData } = Astro.props as Props;
+const { name, comment, updatedAt, images, firstVisitDate } = stationData;
 
-const thumb = await getImage({
-  src: images[0].image.url,
-  height: images[0].image.height,
-  width: images[0].image.width,
+// typeが駅舎のものを探す。無ければのものを使う
+const thumbImage =
+  images.find((img) => img.type.includes("駅舎"))?.image || images[0].image;
+const thumbnail = await getImage({
+  src: thumbImage.url,
+  height: thumbImage.height,
+  width: thumbImage.width,
 });
 
 const PAGE_NAME = `Under Construction | 鉄道駅コレクション ${name}` as const;
@@ -53,16 +60,69 @@ const ogp = {
   siteName: "Under Construction",
   image:
     "https://aiwaka.github.io" +
-    (thumb.src ?? "/under-construction/img/blue_2.png"),
+    (thumbnail.src ?? "/under-construction/img/blue_2.png"),
 };
 ---
 
 <GeneralPageLayout ogp={ogp} title={PAGE_NAME}>
   <h1>{name}</h1>
   <div class="date-block">
-    <!--  -->
+    <span>
+      初訪問日：{firstVisitDate ? dateText(new Date(firstVisitDate)) : "不明"}
+    </span>
+  </div>
+  <div class="update-date-block">
+    <span>
+      {dateText(new Date(updatedAt))}更新
+    </span>
   </div>
   <div class="img-container">
-    <!--  -->
+    <img
+      src={thumbnail.src}
+      width={thumbnail.attributes.width}
+      height={thumbnail.attributes.height}
+      alt={thumbnail.attributes.alt}
+      loading="eager"
+      decoding="async"
+    />
   </div>
+
+  <h3>コメント</h3>
+  <p class="comment">{comment}</p>
+
+  <h3>駅舎</h3>
+  <CollectionPictureList images={toBlogImageList(images, "駅舎")} />
+
+  <h3>構内</h3>
+  <CollectionPictureList images={toBlogImageList(images, "駅構内")} />
+
+  <h3>駅前</h3>
+  <CollectionPictureList images={toBlogImageList(images, "駅前")} />
+  <h3>駅名標</h3>
+  <CollectionPictureList images={toBlogImageList(images, "駅名標")} />
+  <h3>車両</h3>
+  <CollectionPictureList images={toBlogImageList(images, "車両")} />
+  <h3>路線図</h3>
+  <CollectionPictureList images={toBlogImageList(images, "路線図")} />
+  <h3>スタンプ</h3>
+  <CollectionPictureList images={toBlogImageList(images, "スタンプ")} />
 </GeneralPageLayout>
+
+<style>
+  .img-container {
+    border: 4px solid var(--main-font-color);
+    width: 100%;
+    height: 45vh;
+    clip: rect(0, 0, 0, 0);
+    margin: 3rem auto;
+  }
+  .img-container > img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  p.comment {
+    margin: 1.2rem auto;
+    margin-left: 0.4rem;
+  }
+</style>

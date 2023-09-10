@@ -1,5 +1,5 @@
 import type { LineData } from "@lib/types";
-import { getStationCollectionsData } from "@lib/more/station-collections";
+import { getLocalStationCollectionsData } from "@lib/more/station-collections";
 
 const createLineObject = (
   lineName: string,
@@ -150,7 +150,7 @@ const stationList = {
       ["福井", "fukui"],
       ["武生", "takefu"],
       ["敦賀", "tsuruga"],
-      ["高月", "takatsuki-shiga"],
+      ["高月", "takatsuki--shiga"],
     ),
     wakayama: createLineObject(
       "和歌山線",
@@ -194,7 +194,7 @@ const stationList = {
   },
 };
 
-const stationCollections = getStationCollectionsData();
+const stationCollections = getLocalStationCollectionsData();
 const staKeys = Object.keys(stationCollections);
 /** データに見当たらないものはdisabledとする */
 Object.values(stationList).forEach((lines) => {

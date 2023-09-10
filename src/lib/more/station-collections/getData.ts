@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import type { StationCollectionsSchema } from "src/integrations/load-station-collections";
 
-export const getStationCollectionsData = () => {
+export const getLocalStationCollectionsData = () => {
   // ファイル読み込み作業
   const dataDir = import.meta.env.DEV
     ? "../../../generated/station-collections.json"
