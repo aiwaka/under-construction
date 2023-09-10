@@ -1,0 +1,56 @@
+---
+// トップページの特殊エフェクトを考慮しないでよい別背景のレイアウト
+// 背景も上書きする
+
+import type { OGPInfo } from "@lib/types";
+
+import BaseLayout from "./BaseLayout.astro";
+import SiteHeader from "@components/SiteHeader.astro";
+import SiteFooter from "@components/SiteFooter.astro";
+
+export interface Props {
+  title: string;
+  ogp?: OGPInfo;
+}
+const { title, ogp } = Astro.props;
+---
+
+<BaseLayout ogp={ogp} title={title}>
+  <slot name="extra-header" slot="extra-header" />
+  <SiteHeader />
+  <div class="header-margin"></div>
+  <main class="main-container">
+    <slot />
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .header-margin {
+    height: 8rem;
+  }
+  body::before {
+    content: "";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -50;
+    width: 100%;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-image: url("/under-construction/img/blue_2.png");
+    background-position: 100% 0%;
+    background-size: cover;
+    @media (max-width: 1024px) {
+      background-position: center 0%;
+    }
+  }
+  .main-container {
+    width: 70%;
+    margin: auto;
+    @media (max-width: 1024px) {
+      width: 90%;
+    }
+  }
+</style>

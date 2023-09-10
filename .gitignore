@@ -26,3 +26,4 @@ pnpm-debug.log*
 *.webp
 uncompressed/
 **/generated/images-data.json
+**/generated/station-collections.json

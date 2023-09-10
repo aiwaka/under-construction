@@ -1,0 +1,42 @@
+---
+// ほぼブログ用のコピペだがマイナーチェンジもあり
+import { Image } from "astro:assets";
+
+import type { BlogImageProps } from "@lib/contents/blog";
+
+interface Props extends Required<BlogImageProps> {}
+const { src, width, height, alt, caption, ...attrs } = Astro.props;
+---
+
+<figure>
+  <Image
+    src={src}
+    width={width}
+    height={height}
+    format="webp"
+    alt={alt}
+    {...attrs}
+  />
+  {caption ? <figcaption>{caption}</figcaption> : null}
+</figure>
+
+<style>
+  figure {
+    border: 3px double var(--main-font-color);
+    margin: 1.7rem 1rem;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+  }
+  figure > img {
+    height: 15rem;
+    width: auto;
+    max-width: 100%;
+  }
+  figcaption {
+    background-color: rgba(var(--main-font-color-params), 0.8);
+    color: var(--main-bg-color);
+    padding: 3px;
+    text-align: center;
+  }
+</style>

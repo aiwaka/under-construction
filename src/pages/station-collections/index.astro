@@ -1,0 +1,73 @@
+---
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
+import LineContainer from "@components/more/station-collections/LineContainer.svelte";
+
+import stationList from "./stationList";
+
+const ogp = {
+  url: Astro.request.url,
+  type: "website",
+  title: "Under Construction | 鉄道駅コレクション",
+  description: "行ったことのある鉄道駅のまとめページです",
+  siteName: "Under Construction",
+  image: "https://aiwaka.github.io/under-construction/img/blue_2.png",
+};
+---
+
+<GeneralPageLayout title="鉄道駅コレクション" ogp={ogp}>
+  <h1>鉄道駅コレクション</h1>
+  <p>
+    私が訪れたことのある鉄道駅について写真を載せたりしてまとめたいと思います。
+    路線別に訪れた駅がまとまっています。
+    駅名をタップまたはクリックすると写真の載った個別ページへ移動します。
+    文字が薄い場合はページがまだ作られていません。
+  </p>
+  <p>
+    訪れた、とは、基本的には下車を指します。
+    ホーム上に降り立ったのみの場合もときには含みますが、車窓のみの場合は基本的に含めないようにするつもりです。
+    並び順は路線は五十音順、駅は並び順です（一応下り方向のつもりですがあまり厳密ではありません）。
+    趣味なので多少曖昧な部分は残るかと思いますがご容赦ください。
+  </p>
+  <p>作成中なのでレイアウトはちょくちょく変わると思います。</p>
+  {/* TODO: 目次を作る */}
+  <h2>JR</h2>
+  <h3>JR西日本</h3>
+  {
+    Object.values(stationList["JRWest"]).map((dat) => {
+      return <LineContainer lineData={dat} />;
+    })
+  }
+
+  <h3>JR東海</h3>
+  {
+    Object.values(stationList["JRCentral"]).map((dat) => {
+      return <LineContainer lineData={dat} />;
+    })
+  }
+</GeneralPageLayout>
+
+<style>
+  p {
+    margin: 1rem auto;
+  }
+  h2 {
+    margin-left: 0.2rem;
+    margin-bottom: 0.8rem;
+  }
+  h3 {
+    margin: 0.5rem auto;
+    margin-left: 0.4rem;
+  }
+  details {
+    width: 90%;
+    height: fit-content;
+  }
+  details > summary {
+    list-style: none;
+    padding: 2px 6px;
+    width: 15em;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+  }
+</style>

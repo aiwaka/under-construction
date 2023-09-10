@@ -10,9 +10,12 @@ import "@fontsource/noto-sans-jp/700.css";
 
 import myIcon from "../assets/my-icon.png";
 import blueImage from "../assets/blue_2.png";
+import SiteHeader from "@components/SiteHeader.astro";
+import SiteFooter from "@components/SiteFooter.astro";
 ---
 
 <BaseLayout title="Under Construction">
+  <SiteHeader />
   <div class="background-image-container">
     <Image
       class={"background-image"}
@@ -48,6 +51,7 @@ import blueImage from "../assets/blue_2.png";
       <ContactSection />
     </div>
   </main>
+  <SiteFooter />
 </BaseLayout>
 
 <style>
