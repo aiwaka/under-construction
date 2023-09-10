@@ -5,13 +5,13 @@ import type { MicroCMSListResponse } from "microcms-js-sdk";
 import { createClient } from "microcms-js-sdk";
 
 import {
-  MicroCMSImagesDataSchema,
-  type ImagesStorageSchema,
-} from "./blog-image-collections";
+  MicroCMSStationCollectionsSchema,
+  type StationCollectionsSchema,
+} from "./station-collections";
 
-export type { ImagesStorageSchema };
+export type { StationCollectionsSchema };
 
-const PKG_NAME = "astro-load-microcms-image";
+const PKG_NAME = "load-station-collections";
 
 const consoleLogUsingPackageName = (...args: string[]) => {
   console.log(`[${PKG_NAME}] `, ...args);
@@ -27,7 +27,7 @@ interface LoadMicroCMSImageOptions {
   ignoreNoData?: boolean;
 }
 
-const DATA_FILE_NAME: string = "images-data.json";
+const DATA_FILE_NAME = "station-collections.json" as const satisfies string;
 /** 開発モード時にデータを取得できなかったが存在している状況を表す一つの単語 */
 const DATA_ALREADY_EXISTS_FLAG = "alreadyExists" as const satisfies string;
 
@@ -42,11 +42,11 @@ export default function loadMicroCMSImageData(
     hooks: {
       "astro:config:setup": async ({ command, isRestart }) => {
         if (skip) {
-          console.log("[load-microcms-image] fetch skipped.");
+          consoleLogUsingPackageName("fetch skipped.");
           return;
         }
         if (isRestart) {
-          console.log("[load-microcms-image] fetch skipped when restarting.");
+          consoleLogUsingPackageName("fetch skipped when restarting.");
           return;
         }
         try {
@@ -65,19 +65,24 @@ export default function loadMicroCMSImageData(
           );
 
           // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
-          const getImagesDataFromMicroCMS = async () => {
+          const getStationCollectionsFromMicroCMS = async () => {
             const microCMSClient = createClient({
               serviceDomain: MICROCMS_SERVICE_DOMAIN,
               apiKey: MICROCMS_API_KEY,
             });
             try {
-              const imageDataFromMicroCMS = await microCMSClient.get<
-                MicroCMSListResponse<z.infer<typeof MicroCMSImagesDataSchema>>
+              const dataFromMicroCMS = await microCMSClient.get<
+                MicroCMSListResponse<
+                  z.infer<typeof MicroCMSStationCollectionsSchema>
+                >
               >({
-                endpoint: "images-in-articles",
-                queries: { fields: "id,title,thumbnail,images" },
+                endpoint: "station-collections",
+                queries: {
+                  fields:
+                    "id,name,lineNames,images,firstVisitDate,comment,updatedAt",
+                },
               });
-              return imageDataFromMicroCMS;
+              return dataFromMicroCMS;
             } catch (e) {
               consoleLogUsingPackageName("data fetch failed...");
               if (import.meta.env.DEV && fs.existsSync(dataPath)) {
@@ -87,33 +92,36 @@ export default function loadMicroCMSImageData(
               }
             }
           };
-          console.log(
-            "[load-microcms-image] attempt to fetch data from microCMS.",
-          );
-          const imageDataFromMicroCMS = await getImagesDataFromMicroCMS();
-          if (imageDataFromMicroCMS === DATA_ALREADY_EXISTS_FLAG) {
-            console.log(
-              "[load-microcms-image] fetch failed, but data file already exists. using it in dev mode.",
+          consoleLogUsingPackageName("attempt to fetch data from microCMS.");
+          const staCollectionsFromMicroCMS =
+            await getStationCollectionsFromMicroCMS();
+          if (staCollectionsFromMicroCMS === DATA_ALREADY_EXISTS_FLAG) {
+            consoleLogUsingPackageName(
+              "fetch failed, but data file already exists. using it in dev mode.",
             );
             return;
           }
 
           // TODO: コンテンツが増えると一度で取得しきれないため, 逐次取得する処理が必要.
-          const contents = MicroCMSImagesDataSchema.parse(
-            imageDataFromMicroCMS["contents"],
+          const contents = MicroCMSStationCollectionsSchema.parse(
+            staCollectionsFromMicroCMS["contents"],
           );
-          const resultContents: ImagesStorageSchema = {};
+          const resultContents: StationCollectionsSchema = {};
           contents.forEach((content) => {
-            resultContents[content.title] = {
-              thumbnail: content.thumbnail,
-              images: Object.fromEntries(
-                content.images.map((image) => [image.name, image.image]),
-              ),
+            // imagesから`fieldId`を除く
+            const { images, ...rest } = content;
+            const literalRemovedImages = images.map((img) => {
+              const { fieldId, ...temp } = img;
+              return temp;
+            });
+            resultContents[content.id] = {
+              images: literalRemovedImages,
+              ...rest,
             };
           });
 
           fs.writeFileSync(dataPath, JSON.stringify(resultContents));
-          console.log("[load-microcms-image] fetch and dump finished.");
+          consoleLogUsingPackageName("fetch and dump finished.");
         } catch (e) {
           if (ignoreNoData) {
             console.error(e);

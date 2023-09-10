@@ -1,10 +1,10 @@
 ---
+// ヘッダーや最低限のレイアウトを指定するために使う最下層のレイアウト。
 import type { OGPInfo } from "@lib/types";
 
 import SiteFooter from "@components/SiteFooter.astro";
 import SiteHeader from "@components/SiteHeader.astro";
-// TODO: フォント読み込みは各ページで行ったほうが都合がいいのではないか？
-import "@fontsource/noto-sans-jp";
+// 日本語フォントはCDNで読み込む（バンドルされるときの容量が凄まじくなる）
 import "@fontsource/noto-sans-mono";
 
 const pathname = new URL(Astro.request.url).pathname;
@@ -28,39 +28,39 @@ const { title, ogp = defaultOgp } = Astro.props;
 const bgColor = "var(--main-bg-color)";
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
   <head>
-    {
-      // NOTE: ビルド時のみ含められるようにしたが意味ある？
-      // Google tag (gtag.js)
-      import.meta.env.PROD &&
-      (
-        <script
-          type="text/partytown"
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-XRK0L39370"
-        ></script>
-        <script type="text/partytown">
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag("js", new Date());
+    <script
+      type="text/partytown"
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-XRK0L39370"></script>
+    <script type="text/partytown">
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-          gtag("config", "G-XRK0L39370");
-        </script>
-      )
-    }
+      gtag("config", "G-XRK0L39370");
+    </script>
+    <title>{title}</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta
       name="description"
       content="あいわかのウェブサイトです。 Here is Aiwaka's profile website."
     />
+    {/* フォント読み込み */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
-    <link rel="sitemap" href="/sitemap-index.xml">
-    <meta name="generator" content={Astro.generator} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {/* OGP設定 */}
     <meta property="og:url" content={ogp.url} />
     <meta property="og:type" content={ogp.type} />
     <meta property="og:title" content={ogp.title} />
@@ -68,13 +68,12 @@ const bgColor = "var(--main-bg-color)";
     <meta property="og:site_name" content="Under Construction" />
     <meta property="og:image" content={ogp.image} />
     <meta name="twitter:card" content="summary_large_image" />
+    {/* スロットに入れてHTMLを追加可能 */}
     <slot name="extra-header" />
-    <title>{title}</title>
+    <meta name="generator" content={Astro.generator} />
   </head>
   <body>
-    <SiteHeader />
     <slot />
-    <SiteFooter />
   </body>
 </html>
 
@@ -115,7 +114,9 @@ const bgColor = "var(--main-bg-color)";
     min-height: 100dvh;
     color: var(--main-font-color);
     background-color: var(--bgColor);
-    transition: color 0.5s, background-color 0.5s;
+    transition:
+      color 0.5s,
+      background-color 0.5s;
     font-family: "Noto Sans JP", sans-serif;
   }
   a {

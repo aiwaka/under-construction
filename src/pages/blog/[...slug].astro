@@ -4,7 +4,7 @@ import type { InferGetStaticPropsType } from "astro";
 import { getBlogPostEntries, createRelated } from "@lib/contents/blog";
 import { dateText } from "@lib/utils";
 
-import BlogGeneralLayout from "@layouts/BlogGeneralLayout.astro";
+import BlogLayout from "@layouts/BlogLayout.astro";
 import SiblingsLinkContainer from "@components/blog/SiblingsLinkContainer.astro";
 import TagContainer from "@components/blog/TagContainer.svelte";
 import BlogTOC from "@components/blog/BlogTOC.astro";
@@ -51,7 +51,7 @@ const ogp = {
 };
 ---
 
-<BlogGeneralLayout ogp={ogp} title={title} usingLatex={latex}>
+<BlogLayout ogp={ogp} title={title} usingLatex={latex}>
   <h1>{title}</h1>
   <div class="date-block">
     <span>
@@ -104,7 +104,7 @@ const ogp = {
       })
     }
   </div>
-</BlogGeneralLayout>
+</BlogLayout>
 
 <style>
   .img-container {

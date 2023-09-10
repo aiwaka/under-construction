@@ -1,0 +1,62 @@
+---
+// リモート画像を使う前提とする
+import type { BlogImageProps } from "@lib/contents/blog";
+
+import CollectionPicture from "./CollectionPicture.astro";
+
+interface Props {
+  images: Required<BlogImageProps>[] | Required<BlogImageProps>;
+}
+const { images, ...globalAttrs } = Astro.props;
+// かならずArrayになるように型を操作する
+const list = Array.isArray(images) ? images : [images];
+---
+
+<div class="image-container">
+  {
+    list.length === 0 ? (
+      <p class="no-image">写真がありません。</p>
+    ) : (
+      list.map((item) => {
+        const {
+          src,
+          width: originalWidth,
+          height: originalHeight,
+          alt,
+          caption,
+          ...attrs
+        } = item;
+        // 高さを一定にする. リモート画像なのでheightがundefinedにはならないはず
+        const height = 700;
+        const width = Math.round((700 * originalWidth) / originalHeight!);
+
+        return (
+          <CollectionPicture
+            src={src}
+            width={width}
+            height={height}
+            alt={alt}
+            caption={caption}
+            {...attrs}
+            {...globalAttrs}
+          />
+        );
+      })
+    )
+  }
+</div>
+
+<style>
+  .image-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-end;
+    @media (max-width: 1024px) {
+      flex-direction: column;
+    }
+  }
+  .no-image {
+    margin: 1.5rem auto;
+  }
+</style>

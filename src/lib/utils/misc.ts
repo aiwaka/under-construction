@@ -1,13 +1,16 @@
+import { DateTime } from "luxon";
+
 export const getFilenameFromPath = (path: string): string | null => {
   const matched = path.match(".+/(.+?).[a-z]+([?#;].*)?$");
   return matched ? matched[1] : null;
 };
 
 /**
- * 日付をこのサイトで用いる書式に変換する
+ * 日付をこのサイトで用いる書式に変換する. Dateは標準時で解釈された前提とする
  */
 export const dateText = (date: Date): string => {
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  const luxonDate = DateTime.fromJSDate(date, { zone: "Asia/Tokyo" });
+  return luxonDate.toFormat("yyyy-L-d");
 };
 
 /**
