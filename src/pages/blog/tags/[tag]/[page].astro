@@ -41,11 +41,11 @@ const ogp = {
 ---
 
 <BlogLayout ogp={ogp} title={propTitle}>
-  <h2>Blog</h2>
+  <h1>Blog</h1>
+  <h2>#{tag}の検索結果：{page.currentPage}</h2>
   <a class="to-tag-list" href={`${import.meta.env.BASE_URL}blog/tags`}>
     タグ一覧へ
   </a>
-  <h3>#{tag}の検索結果：{page.currentPage}</h3>
   <BlogPageCardContainer cardList={page.data} />
   <PaginationContainer
     subbase={`blog/tags/${tag}/`}

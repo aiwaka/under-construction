@@ -20,7 +20,8 @@ const ogp = {
 ---
 
 <BlogLayout ogp={ogp}>
-  <h2>Blog</h2>
+  <h1>Blog</h1>
+  <p>ブログ記事を書いています。暇つぶしにお読みくだされば幸いです。</p>
   <a class="to-tag-list" href={`${import.meta.env.BASE_URL}blog/tags`}>
     タグ一覧へ
   </a>
@@ -28,3 +29,9 @@ const ogp = {
 
   <PaginationContainer subbase={"blog/"} currentPage={1} lastPage={pageNum} />
 </BlogLayout>
+
+<style>
+  .to-tag-list {
+    text-decoration: underline;
+  }
+</style>

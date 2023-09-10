@@ -154,7 +154,7 @@ const stationList = {
     ),
     wakayama: createLineObject(
       "和歌山線",
-      ["王寺", "oji-jrw"],
+      ["王寺", "oji--jrw"],
       ["高田", "takada"],
       ["五条", "gojo-jrw"],
     ),

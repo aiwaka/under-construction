@@ -19,6 +19,7 @@ export const MicroCMSStationCollectionsSchema = z.array(
             z.literal("車両"),
             z.literal("路線図"),
             z.literal("スタンプ"),
+            z.literal("切符"),
           ])
           .array(),
         image: MicroCMSImageSchema,

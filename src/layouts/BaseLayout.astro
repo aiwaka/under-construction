@@ -51,7 +51,7 @@ const bgColor = "var(--main-bg-color)";
       name="description"
       content="あいわかのウェブサイトです。 Here is Aiwaka's profile website."
     />
-    <!-- フォント読み込み -->
+    {/* フォント読み込み */}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -60,6 +60,7 @@ const bgColor = "var(--main-bg-color)";
     />
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    {/* OGP設定 */}
     <meta property="og:url" content={ogp.url} />
     <meta property="og:type" content={ogp.type} />
     <meta property="og:title" content={ogp.title} />
@@ -67,6 +68,7 @@ const bgColor = "var(--main-bg-color)";
     <meta property="og:site_name" content="Under Construction" />
     <meta property="og:image" content={ogp.image} />
     <meta name="twitter:card" content="summary_large_image" />
+    {/* スロットに入れてHTMLを追加可能 */}
     <slot name="extra-header" />
     <meta name="generator" content={Astro.generator} />
   </head>

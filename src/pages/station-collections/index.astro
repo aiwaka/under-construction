@@ -12,27 +12,33 @@ const ogp = {
   siteName: "Under Construction",
   image: "https://aiwaka.github.io/under-construction/img/blue_2.png",
 };
-const getLineNamesList = (nameStr: string) => {
-  return nameStr.split("/");
-};
-type A = Omit<Object, "a">;
 ---
 
 <GeneralPageLayout title="鉄道駅コレクション" ogp={ogp}>
-  <h2>鉄道駅コレクション</h2>
+  <h1>鉄道駅コレクション</h1>
   <p>
     私が訪れたことのある鉄道駅について写真を載せたりしてまとめたいと思います。
+    路線別に訪れた駅がまとまっています。
+    駅名をタップまたはクリックすると写真の載った個別ページへ移動します。
+    文字が薄い場合はページがまだ作られていません。
+  </p>
+  <p>
+    訪れた、とは、基本的には下車を指します。
+    ホーム上に降り立ったのみの場合もときには含みますが、車窓のみの場合は基本的に含めないようにするつもりです。
+    並び順は路線は五十音順、駅は並び順です（一応下り方向のつもりですがあまり厳密ではありません）。
+    趣味なので多少曖昧な部分は残るかと思いますがご容赦ください。
   </p>
   <p>作成中なのでレイアウトはちょくちょく変わると思います。</p>
-  <h3>JR</h3>
-  <h4>JR西日本</h4>
+  {/* TODO: 目次を作る */}
+  <h2>JR</h2>
+  <h3>JR西日本</h3>
   {
     Object.values(stationList["JRWest"]).map((dat) => {
       return <LineContainer lineData={dat} />;
     })
   }
 
-  <h4>JR東海</h4>
+  <h3>JR東海</h3>
   {
     Object.values(stationList["JRCentral"]).map((dat) => {
       return <LineContainer lineData={dat} />;
@@ -44,11 +50,11 @@ type A = Omit<Object, "a">;
   p {
     margin: 1rem auto;
   }
-  h3 {
+  h2 {
     margin-left: 0.2rem;
     margin-bottom: 0.8rem;
   }
-  h4 {
+  h3 {
     margin: 0.5rem auto;
     margin-left: 0.4rem;
   }

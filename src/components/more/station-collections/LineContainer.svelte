@@ -5,7 +5,7 @@
 </script>
 
 <div class="line-container">
-  <h5>{lineData.lineName}</h5>
+  <h4>{lineData.lineName}</h4>
   {#each lineData.stations as { name, slug, disabled }, i}
     {#if disabled}
       <span class="disabled">{name}</span>

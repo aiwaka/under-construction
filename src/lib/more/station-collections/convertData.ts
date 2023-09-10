@@ -19,7 +19,7 @@ export const toBlogImageList = (
         src: img.image.url,
         width: img.image.width,
         height: img.image.height,
-        alt: `駅舎の画像${i + 1}`,
+        alt: `${filter}の画像${i + 1}`,
         caption:
           `${photoDateText}撮影` + (img.comment ? "：" + img.comment : ""),
       };
