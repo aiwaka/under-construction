@@ -64,19 +64,39 @@ export default function loadMicroCMSImageData(
             import.meta.url,
           );
 
+          type MicroCMSImagesDataSchemaType = z.infer<
+            typeof MicroCMSImagesDataSchema
+          >;
           // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
-          const getImagesDataFromMicroCMS = async () => {
+          const getImagesDataFromMicroCMS = async (): Promise<
+            typeof DATA_ALREADY_EXISTS_FLAG | MicroCMSImagesDataSchemaType[]
+          > => {
             const microCMSClient = createClient({
               serviceDomain: MICROCMS_SERVICE_DOMAIN,
               apiKey: MICROCMS_API_KEY,
             });
             try {
-              const imageDataFromMicroCMS = await microCMSClient.get<
-                MicroCMSListResponse<z.infer<typeof MicroCMSImagesDataSchema>>
-              >({
-                endpoint: "images-in-articles",
-                queries: { fields: "id,title,thumbnail,images" },
-              });
+              // コンテンツが増えると一度で取得しきれないため, 逐次取得する.
+              const dataFromMicroCMS: MicroCMSImagesDataSchemaType[] = [];
+              const NUMBER_LIMIT = 10 as const satisfies number;
+              // totalCountは最初大きい数字としておき, レスポンスから得られる総数で更新する。
+              let offset = 0;
+              let totalCount = 10000000;
+              while (offset < totalCount) {
+                const partialResponse = await microCMSClient.get<
+                  MicroCMSListResponse<MicroCMSImagesDataSchemaType>
+                >({
+                  endpoint: "images-in-articles",
+                  queries: {
+                    fields: "id,title,thumbnail,images",
+                    limit: NUMBER_LIMIT,
+                    offset,
+                  },
+                });
+                dataFromMicroCMS.push(...partialResponse.contents);
+                totalCount = partialResponse.totalCount;
+                offset += NUMBER_LIMIT;
+              }
               return imageDataFromMicroCMS;
             } catch (e) {
               consoleLogUsingPackageName("data fetch failed...");
@@ -98,9 +118,8 @@ export default function loadMicroCMSImageData(
             return;
           }
 
-          // TODO: コンテンツが増えると一度で取得しきれないため, 逐次取得する処理が必要.
           const contents = MicroCMSImagesDataSchema.parse(
-            imageDataFromMicroCMS["contents"],
+            imageDataFromMicroCMS,
           );
           const resultContents: ImagesStorageSchema = {};
           contents.forEach((content) => {

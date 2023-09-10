@@ -64,24 +64,43 @@ export default function loadMicroCMSImageData(
             import.meta.url,
           );
 
+          type MicroCMSStationCollectionsSchemaType = z.infer<
+            typeof MicroCMSStationCollectionsSchema
+          >;
           // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
-          const getStationCollectionsFromMicroCMS = async () => {
+          const getStationCollectionsFromMicroCMS = async (): Promise<
+            | typeof DATA_ALREADY_EXISTS_FLAG
+            | MicroCMSStationCollectionsSchemaType[]
+          > => {
             const microCMSClient = createClient({
               serviceDomain: MICROCMS_SERVICE_DOMAIN,
               apiKey: MICROCMS_API_KEY,
             });
             try {
-              const dataFromMicroCMS = await microCMSClient.get<
-                MicroCMSListResponse<
-                  z.infer<typeof MicroCMSStationCollectionsSchema>
-                >
-              >({
-                endpoint: "station-collections",
-                queries: {
-                  fields:
-                    "id,name,lineNames,images,firstVisitDate,comment,updatedAt",
-                },
-              });
+              // コンテンツが増えると一度で取得しきれないため, 逐次取得する.
+              const dataFromMicroCMS: MicroCMSStationCollectionsSchemaType[] =
+                [];
+              const NUMBER_LIMIT = 10 as const satisfies number;
+              // totalCountは最初大きい数字としておき, レスポンスから得られる総数で更新する。
+              let offset = 0;
+              let totalCount = 10000000;
+              while (offset < totalCount) {
+                const partialResponse = await microCMSClient.get<
+                  MicroCMSListResponse<MicroCMSStationCollectionsSchemaType>
+                >({
+                  endpoint: "station-collections",
+                  queries: {
+                    fields:
+                      "id,name,lineNames,images,firstVisitDate,comment,updatedAt",
+                    limit: NUMBER_LIMIT,
+                    offset,
+                  },
+                });
+                dataFromMicroCMS.push(...partialResponse.contents);
+                totalCount = partialResponse.totalCount;
+                offset += NUMBER_LIMIT;
+              }
+
               return dataFromMicroCMS;
             } catch (e) {
               consoleLogUsingPackageName("data fetch failed...");
@@ -102,9 +121,8 @@ export default function loadMicroCMSImageData(
             return;
           }
 
-          // TODO: コンテンツが増えると一度で取得しきれないため, 逐次取得する処理が必要.
           const contents = MicroCMSStationCollectionsSchema.parse(
-            staCollectionsFromMicroCMS["contents"],
+            staCollectionsFromMicroCMS,
           );
           const resultContents: StationCollectionsSchema = {};
           contents.forEach((content) => {
