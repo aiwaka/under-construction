@@ -5,9 +5,10 @@ import type { MicroCMSImageComplete } from "@lib/contents/types";
 const imageTypeOptionsSchema = z.union([
   z.literal("駅舎"),
   z.literal("駅構内"),
-  z.literal("駅前"),
+  z.literal("駅周辺"),
   z.literal("駅名標"),
   z.literal("車両"),
+  z.literal("時刻表"),
   z.literal("路線図"),
   z.literal("スタンプ"),
   z.literal("切符"),
