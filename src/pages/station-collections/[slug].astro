@@ -2,24 +2,18 @@
 import type { InferGetStaticPropsType } from "astro";
 import { getImage } from "astro:assets";
 
+import type { DownloadedStationCollection } from "src/integrations/load-station-collections";
 import { dateText } from "@lib/utils";
+import { getStationEntries } from "@lib/more/station-collections";
+import { getLocalStationCollectionsData } from "@lib/more/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
-import type { StationCollectionsSchema } from "src/integrations/load-station-collections";
-import {
-  getLocalStationCollectionsData,
-  toBlogImageList,
-} from "@lib/more/station-collections";
 import CollectionPictureList from "@components/more/station-collections/CollectionPictureList.astro";
-
-const getLineNamesList = (nameStr: string) => {
-  return nameStr.split("/");
-};
 
 export async function getStaticPaths() {
   /** 何らかの理由で取得に失敗した瞬間`true`になる */
   let stationCollectionsFetchFailed = false;
-  let stationCollectionsData: StationCollectionsSchema | null = null;
+  let stationCollectionsData: DownloadedStationCollection | null = null;
   try {
     stationCollectionsData = getLocalStationCollectionsData();
   } catch (e) {
@@ -30,27 +24,28 @@ export async function getStaticPaths() {
   if (stationCollectionsFetchFailed || stationCollectionsData === null) {
     return [];
   }
-  return Object.keys(stationCollectionsData).map((id) => {
+  const stationEntries = await getStationEntries(stationCollectionsData);
+  return stationEntries.map((entry) => {
+    const id = entry.id;
     // const next = i === 0 ? null : array.at(i - 1) ?? null;
     // const prev = i === array.length ? null : array.at(i + 1) ?? null;
     return {
       params: { slug: id },
-      props: { stationData: stationCollectionsData![id] },
+      props: { entry: entry },
     };
   });
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { stationData } = Astro.props as Props;
-const { name, lineNames, comment, updatedAt, images, firstVisitDate } =
-  stationData;
+const { entry } = Astro.props as Props;
+const { name, lineNames, CommentContent, updatedAt, images, firstVisitDate } =
+  entry;
 
 // typeが駅舎のものを探す。無ければのものを使う
-const thumbImage =
-  images.find((img) => img.type.includes("駅舎"))?.image || images[0].image;
+const thumbImage = images.find((img) => img.type.includes("駅舎")) || images[0];
 const thumbnail = await getImage({
-  src: thumbImage.url,
+  src: thumbImage.src,
   height: thumbImage.height,
   width: thumbImage.width,
 });
@@ -76,7 +71,7 @@ const ogp = {
   >
   <h1>{name}</h1>
   <div class="station-lines-block">
-    <span>所属路線：{getLineNamesList(lineNames).join("・")}</span>
+    <span>所属路線：{lineNames.join("・")}</span>
   </div>
   <div class="date-block">
     <span>
@@ -100,28 +95,46 @@ const ogp = {
   </div>
 
   <h2>コメント</h2>
-  <p class="comment">{comment}</p>
+  <CommentContent class="comment" />
 
   <h2>駅舎</h2>
-  <CollectionPictureList images={toBlogImageList(images, "駅舎")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("駅舎"))}
+  />
 
   <h2>構内</h2>
-  <CollectionPictureList images={toBlogImageList(images, "駅構内")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("駅構内"))}
+  />
 
   <h2>駅周辺</h2>
-  <CollectionPictureList images={toBlogImageList(images, "駅周辺")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("駅周辺"))}
+  />
   <h2>駅名標</h2>
-  <CollectionPictureList images={toBlogImageList(images, "駅名標")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("駅名標"))}
+  />
   <h2>車両</h2>
-  <CollectionPictureList images={toBlogImageList(images, "車両")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("車両"))}
+  />
   <h2>時刻表</h2>
-  <CollectionPictureList images={toBlogImageList(images, "時刻表")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("時刻表"))}
+  />
   <h2>路線図</h2>
-  <CollectionPictureList images={toBlogImageList(images, "路線図")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("路線図"))}
+  />
   <h2>スタンプ</h2>
-  <CollectionPictureList images={toBlogImageList(images, "スタンプ")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("スタンプ"))}
+  />
   <h2>切符</h2>
-  <CollectionPictureList images={toBlogImageList(images, "切符")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("切符"))}
+  />
   <a
     href={`${import.meta.env.BASE_URL}station-collections`}
     class="to-top-anchor">コレクショントップへ戻る</a

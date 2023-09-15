@@ -1,15 +1,17 @@
 import fs from "fs";
+
 import type { AstroIntegration } from "astro";
 import { z } from "astro/zod";
 import type { MicroCMSListResponse } from "microcms-js-sdk";
 import { createClient } from "microcms-js-sdk";
 
 import {
-  MicroCMSStationCollectionsSchema,
-  type StationCollectionsSchema,
+  MicroCMSStationCollectionSchema,
+  type DownloadedStationCollection,
 } from "./station-collections";
 
-export type { StationCollectionsSchema };
+export type { DownloadedStationCollection };
+export type { DownloadedStationImage } from "./station-collections";
 
 const PKG_NAME = "load-station-collections";
 
@@ -65,7 +67,7 @@ export default function loadMicroCMSImageData(
           );
 
           type MicroCMSStationCollectionsSchemaType = z.infer<
-            typeof MicroCMSStationCollectionsSchema
+            typeof MicroCMSStationCollectionSchema
           >;
           // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
           const getStationCollectionsFromMicroCMS = async (): Promise<
@@ -90,8 +92,7 @@ export default function loadMicroCMSImageData(
                 >({
                   endpoint: "station-collections",
                   queries: {
-                    fields:
-                      "id,name,lineNames,images,firstVisitDate,comment,updatedAt",
+                    fields: "id,images,createdAt,updatedAt",
                     limit: NUMBER_LIMIT,
                     offset,
                   },
@@ -121,10 +122,10 @@ export default function loadMicroCMSImageData(
             return;
           }
 
-          const contents = MicroCMSStationCollectionsSchema.parse(
+          const contents = MicroCMSStationCollectionSchema.parse(
             staCollectionsFromMicroCMS,
           );
-          const resultContents: StationCollectionsSchema = {};
+          const resultContents: DownloadedStationCollection = {};
           contents.forEach((content) => {
             // imagesから`fieldId`を除く
             const { images, ...rest } = content;

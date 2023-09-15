@@ -1,5 +1,6 @@
 import type { LineData } from "@lib/types";
 import { getLocalStationCollectionsData } from "@lib/more/station-collections";
+import { getCollection } from "astro:content";
 
 const createLineObject = (
   lineName: string,
@@ -194,13 +195,13 @@ const stationList = {
   },
 };
 
-const stationCollections = getLocalStationCollectionsData();
-const staKeys = Object.keys(stationCollections);
+const stationCollections = await getCollection("station");
+const staIDs = stationCollections.map((sta) => sta.slug);
 /** データに見当たらないものはdisabledとする */
 Object.values(stationList).forEach((lines) => {
   Object.values(lines).forEach((line) => {
     line.stations.forEach((sta) => {
-      if (!staKeys.includes(sta.slug)) {
+      if (!(staIDs as readonly string[]).includes(sta.slug)) {
         sta["disabled"] = true;
       }
     });

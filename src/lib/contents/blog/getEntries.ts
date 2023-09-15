@@ -1,8 +1,9 @@
-import { sortArrayByDate } from "@lib/utils";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 
 import type { BlogPostEntry } from "./types";
+
 import { CollectionsBlogPostEntry } from "@lib/schema/blog";
+import { sortArrayByDate } from "@lib/utils";
 
 interface FetchPostsOptions {
   tag?: string;
@@ -10,9 +11,10 @@ interface FetchPostsOptions {
 
 /**
  * Collections APIで得られたブログ記事のリストからdraftフラグがついたものを除き,
- * 各ページの情報をまとめたリストを返す（ソートは行わない）.
+ * 各ページの情報をまとめたリストを返す.
+ * この時点でupdatedAtによるソートを行う.
  * オプションでタグによるフィルタリングができる.
- * @param posts `getCollection`で取得したデータ列
+ * @param tagListRef この引数に配列を渡すとタグ一覧がセットされる
  * @param options
  */
 export const getBlogPostEntries = async (
