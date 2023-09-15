@@ -37,6 +37,7 @@ const {
   latex,
   wordCount,
   headings,
+  draft: isDraft,
 } = entry;
 
 const ogp = {
@@ -52,6 +53,13 @@ const ogp = {
 ---
 
 <BlogLayout ogp={ogp} title={title} usingLatex={latex}>
+  {
+    isDraft && (
+      <p style="color: red;">
+        この記事はdraftです。ビルド結果には含まれません。
+      </p>
+    )
+  }
   <h1>{title}</h1>
   <div class="date-block">
     <span>
