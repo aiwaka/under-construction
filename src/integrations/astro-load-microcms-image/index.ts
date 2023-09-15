@@ -97,7 +97,7 @@ export default function loadMicroCMSImageData(
                 totalCount = partialResponse.totalCount;
                 offset += NUMBER_LIMIT;
               }
-              return imageDataFromMicroCMS;
+              return dataFromMicroCMS;
             } catch (e) {
               consoleLogUsingPackageName("data fetch failed...");
               if (import.meta.env.DEV && fs.existsSync(dataPath)) {

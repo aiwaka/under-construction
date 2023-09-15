@@ -1,5 +1,5 @@
 import type { LineData } from "@lib/types";
-import { getLocalStationCollectionsData } from "@lib/more/station-collections";
+import { getCollection } from "astro:content";
 
 const createLineObject = (
   lineName: string,
@@ -14,7 +14,7 @@ const createLineObject = (
 };
 
 /** 行ったことのある駅データ */
-const stationList = {
+const stationList: { [company: string]: { [lineId: string]: LineData } } = {
   JRWest: {
     ako: createLineObject(
       "赤穂線",
@@ -185,6 +185,15 @@ const stationList = {
       ["松阪", "matsusaka"],
       ["亀山", "kameyama"],
     ),
+    tokaido: createLineObject(
+      "東海道本線",
+      ["豊橋", "toyohashi"],
+      ["名古屋", "nagoya"],
+      ["尾張一宮", "owari-ichinomiya"],
+      ["岐阜", "gifu"],
+      ["大垣", "ogaki"],
+      ["米原", "maibara"],
+    ),
     meisho: createLineObject(
       "名松線",
       ["松阪", "matsusaka"],
@@ -194,13 +203,13 @@ const stationList = {
   },
 };
 
-const stationCollections = getLocalStationCollectionsData();
-const staKeys = Object.keys(stationCollections);
+const stationCollections = await getCollection("station");
+const staIDs = stationCollections.map((sta) => sta.slug);
 /** データに見当たらないものはdisabledとする */
 Object.values(stationList).forEach((lines) => {
   Object.values(lines).forEach((line) => {
     line.stations.forEach((sta) => {
-      if (!staKeys.includes(sta.slug)) {
+      if (!(staIDs as readonly string[]).includes(sta.slug)) {
         sta["disabled"] = true;
       }
     });
