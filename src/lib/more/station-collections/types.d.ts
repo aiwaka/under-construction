@@ -15,12 +15,12 @@ export interface StationImage {
 export interface StationEntry extends IsEntrySchema {
   /** 駅名 */
   name: string;
-  /** 所属路線 */
-  lineNames: string[];
+  /** 所属路線IDの列 */
+  lineIds: string[];
   /** 画像・タイプ・コメントデータ */
   images: (Required<BlogImageProps> & Omit<StationImage, "image">)[];
   /** 初訪問日 */
   firstVisitDate?: Date;
-  /** 駅の説明文. コンテンツで, HTML文字列. そのままページに埋め込む. */
+  /** 駅の説明文. コンポーネントまたはHTML文字列とし, そのままページに埋め込む. */
   CommentContent: string | AstroComponentFactory;
 }

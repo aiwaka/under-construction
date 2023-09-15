@@ -29,6 +29,7 @@ export class CollectionsStationEntry
 {
   public id: string;
   public name: string;
+  /** 路線ID文字列の列 */
   public lines: string[];
   public firstVisitDate?: Date;
   /** UTC文字列で保持 */
@@ -64,8 +65,6 @@ export class CollectionsStationEntry
 
   toEntryObject() {
     const {
-      id,
-      CommentContent,
       updatedAt,
       createdAt,
       lines,
@@ -87,15 +86,13 @@ export class CollectionsStationEntry
       };
     });
     return {
-      id,
-      lineNames: lines,
+      lineIds: lines,
       createdAt: DateTime.fromISO(createdAt, {
         zone: "Asia/Tokyo",
       }).toJSDate(),
       updatedAt: DateTime.fromISO(updatedAt, {
         zone: "Asia/Tokyo",
       }).toJSDate(),
-      CommentContent,
       images,
       ...rest,
       isEntrySchema: null,
