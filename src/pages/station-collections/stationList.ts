@@ -81,6 +81,8 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       ["新見", "niimi"],
       ["備後落合", "bingo-ochiai"],
       ["三次", "miyoshi"],
+      ["下深川", "shimofukawa"],
+      ["広島", "hiroshima"],
     ),
     sakai: createLineObject(
       "境線",

@@ -11,10 +11,11 @@ interface Props {
 }
 
 const { entry, mini } = Astro.props;
+const draft = entry.draft;
 ---
 
 <a class="article-link" href={`${import.meta.env.BASE_URL}blog/${entry.id}`}>
-  <div class="article-card" class:list={{ mini }}>
+  <div class="article-card" class:list={{ draft }}>
     {
       !mini ? (
         <BlogPageCardLargeContents entry={entry} />
@@ -44,5 +45,8 @@ const { entry, mini } = Astro.props;
   .article-card:hover {
     background-color: var(--main-font-color);
     color: var(--main-bg-color);
+  }
+  .article-card.draft {
+    background-color: lightgray;
   }
 </style>
