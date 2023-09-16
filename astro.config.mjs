@@ -17,6 +17,9 @@ import remarkWordCountPlugin from "./plugins/remark-word-count-plugin.mjs";
 import rehypeHoverFootnote from "./plugins/rehype-hover-footnote";
 import rehypeModifyFnHeadingText from "./plugins/rehype-modify-fn-heading-text.mjs";
 
+// 2つ分skipを設定するのが面倒なのでここにまとめる
+const myFetchSkipFlag = false;
+
 // https://astro.build/config
 export default defineConfig({
   image: {
@@ -30,8 +33,8 @@ export default defineConfig({
     },
   },
   integrations: [
-    loadMicroCMSImage({}),
-    loadStationCollections({}),
+    loadMicroCMSImage({ skip: myFetchSkipFlag }),
+    loadStationCollections({ skip: myFetchSkipFlag }),
     svelte(),
     mdx({
       remarkPlugins: [

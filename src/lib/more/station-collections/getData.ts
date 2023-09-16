@@ -1,5 +1,32 @@
 import fs from "node:fs";
-import type { StationCollectionsSchema } from "src/integrations/load-station-collections";
+
+import { getCollection } from "astro:content";
+
+import type { StationEntry } from "./types";
+
+import type { DownloadedStationCollection } from "src/integrations/load-station-collections";
+import { CollectionsStationEntry } from "@lib/schema/station";
+
+/**
+ * 駅コレクションのリストを返す.
+ */
+export const getStationEntries = async (
+  downloadedData: DownloadedStationCollection,
+): Promise<StationEntry[]> => {
+  const allStations = await getCollection("station");
+  // スキーマに従ったオブジェクトのリストにremarkで追加される情報を付与する
+  const stationEntries = await Promise.all(
+    allStations.map(async (sta) => {
+      const collectionsEntry = await CollectionsStationEntry.create(
+        sta,
+        downloadedData,
+      );
+      const stationEntry = collectionsEntry.toEntryObject();
+      return stationEntry;
+    }),
+  );
+  return stationEntries;
+};
 
 export const getLocalStationCollectionsData = () => {
   // ファイル読み込み作業
@@ -14,7 +41,7 @@ export const getLocalStationCollectionsData = () => {
       `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
     throw errorMessage;
   }
-  const stationCollectionsData: StationCollectionsSchema = JSON.parse(
+  const stationCollectionsData: DownloadedStationCollection = JSON.parse(
     fs.readFileSync(resolvedDataPath, "utf8"),
   );
   return stationCollectionsData;

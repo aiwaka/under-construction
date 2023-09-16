@@ -1,5 +1,6 @@
 import { defineCollection } from "astro:content";
-import { CollectionBlogSchema } from "@lib/schema";
+
+import { CollectionBlogSchema, CollectionStationSchema } from "@lib/schema";
 
 // ブログコレクション用スキーマ定義
 const blogCollection = defineCollection({
@@ -7,6 +8,13 @@ const blogCollection = defineCollection({
   schema: CollectionBlogSchema,
 });
 
+// 駅コレクション用データスキーマ
+const stationcCollection = defineCollection({
+  type: "content",
+  schema: CollectionStationSchema,
+});
+
 export const collections = {
   blog: blogCollection,
+  station: stationcCollection,
 };
