@@ -13,10 +13,12 @@ import { CollectionsStationEntry } from "@lib/schema/station";
 export const getStationEntries = async (
   downloadedData: DownloadedStationCollection,
 ): Promise<StationEntry[]> => {
-  const allStations = await getCollection("station");
+  const allValidStations = await getCollection("station", (entry) => {
+    return entry.slug in downloadedData;
+  });
   // スキーマに従ったオブジェクトのリストにremarkで追加される情報を付与する
   const stationEntries = await Promise.all(
-    allStations.map(async (sta) => {
+    allValidStations.map(async (sta) => {
       const collectionsEntry = await CollectionsStationEntry.create(
         sta,
         downloadedData,

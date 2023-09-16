@@ -60,6 +60,13 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       ["佐用", "sayo"],
       ["津山", "tsuyama"],
     ),
+    kisuki: createLineObject(
+      "木次線",
+      ["備後落合", "bingo-ochiai"],
+      ["出雲横田", "izumo-yokota"],
+      ["木次", "kisuki"],
+      ["宍道", "shinji"],
+    ),
     kisei: createLineObject(
       "紀勢本線",
       ["白浜", "shirahama"],
@@ -67,6 +74,7 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       ["紀伊勝浦", "kii-katsuura"],
       ["新宮", "singu"],
     ),
+    kibi: createLineObject("吉備線", ["岡山", "okayama"], ["総社", "soja"]),
     kure: createLineObject("呉線", ["三原", "mihara"]),
     geibi: createLineObject(
       "芸備線",
@@ -130,8 +138,18 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       ["城陽", "joyo"],
       ["京都", "kyoto"],
     ),
-    hakubi: createLineObject("伯備線", ["岡山", "okayama"], ["新見", "niimi"]),
-    hanwa: createLineObject("阪和線", ["天王寺", "tennnoji"]),
+    hakubi: createLineObject(
+      "伯備線",
+      ["岡山", "okayama"],
+      ["総社", "soja"],
+      ["新見", "niimi"],
+    ),
+    hanwa: createLineObject(
+      "阪和線",
+      ["天王寺", "tennnoji"],
+      ["長居", "nagai"],
+      ["和歌山", "wakayama"],
+    ),
     bantan: createLineObject(
       "播但線",
       ["姫路", "himeji"],

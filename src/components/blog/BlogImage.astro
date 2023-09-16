@@ -29,12 +29,26 @@ if (!caption && !alt) {
 <style>
   figure {
     border: 3px double var(--main-font-color);
+    border-bottom: 0;
     margin: 1.7rem 1rem;
-    display: flex;
-    flex-direction: column;
+    display: table;
     height: fit-content;
+    max-width: 100%;
+  }
+  figure > img {
+    object-fit: contain;
+    vertical-align: bottom;
+    max-width: 100%;
+    @media (max-width: 1024px) {
+      height: auto;
+    }
   }
   figcaption {
+    caption-side: bottom;
+    display: table-caption;
+    background-clip: padding-box;
+    border: 3px double var(--main-font-color);
+    border-top: 0;
     background-color: rgba(var(--main-font-color-params), 0.8);
     color: var(--main-bg-color);
     padding: 3px;
