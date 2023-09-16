@@ -2,24 +2,22 @@
 import type { InferGetStaticPropsType } from "astro";
 import { getImage } from "astro:assets";
 
+import allStationList from "./stationList";
+
+import type { LineData } from "@lib/types";
+import type { DownloadedStationCollection } from "src/integrations/load-station-collections";
 import { dateText } from "@lib/utils";
+import { getStationEntries } from "@lib/more/station-collections";
+import { getLocalStationCollectionsData } from "@lib/more/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
-import type { StationCollectionsSchema } from "src/integrations/load-station-collections";
-import {
-  getLocalStationCollectionsData,
-  toBlogImageList,
-} from "@lib/more/station-collections";
 import CollectionPictureList from "@components/more/station-collections/CollectionPictureList.astro";
-
-const getLineNamesList = (nameStr: string) => {
-  return nameStr.split("/");
-};
+import StationPageLink from "@components/more/station-collections/StationPageLink.svelte";
 
 export async function getStaticPaths() {
   /** 何らかの理由で取得に失敗した瞬間`true`になる */
   let stationCollectionsFetchFailed = false;
-  let stationCollectionsData: StationCollectionsSchema | null = null;
+  let stationCollectionsData: DownloadedStationCollection | null = null;
   try {
     stationCollectionsData = getLocalStationCollectionsData();
   } catch (e) {
@@ -30,27 +28,99 @@ export async function getStaticPaths() {
   if (stationCollectionsFetchFailed || stationCollectionsData === null) {
     return [];
   }
-  return Object.keys(stationCollectionsData).map((id) => {
-    // const next = i === 0 ? null : array.at(i - 1) ?? null;
-    // const prev = i === array.length ? null : array.at(i + 1) ?? null;
+  const stationEntries = await getStationEntries(stationCollectionsData);
+  return stationEntries.map((entry) => {
+    const id = entry.id;
+    // 企業ごとにこの駅の路線IDを持つ路線をリストアップする（全データの部分集合を作る）
+    const linesAboutCompany: typeof allStationList = {};
+    Object.keys(allStationList).forEach((company) => {
+      Object.keys(allStationList[company]).forEach((lineId) => {
+        if (
+          entry.lineIds.includes(lineId) &&
+          allStationList[company][lineId].stations.find((sta) => {
+            return sta.slug === entry.id;
+          })
+        ) {
+          if (!(company in linesAboutCompany)) {
+            linesAboutCompany[company] = {};
+          }
+          linesAboutCompany[company][lineId] = allStationList[company][lineId];
+        }
+      });
+    });
+    // 日本語の路線名リストを作る. 路線ごとに名前を取得し, ユニークにする.
+    const jaLineNames = Array.from(
+      new Set(
+        Object.values(linesAboutCompany).flatMap((lines) => {
+          return Object.keys(lines).flatMap((lineId) => {
+            return lines[lineId].lineName;
+          });
+        }),
+      ),
+    );
+    // 路線ごとに隣の駅を算出する
+    interface SiblingStationType {
+      lineName: string;
+      prev?: LineData["stations"][number];
+      next?: LineData["stations"][number];
+    }
+    const siblingsStations: SiblingStationType[] = [];
+    // すでに処理した路線名リスト. 重複検知に使う.
+    const treatedLineNames: string[] = [];
+    Object.values(linesAboutCompany).forEach((lines) => {
+      Object.values(lines).forEach((line) => {
+        const lineName = line.lineName;
+        if (treatedLineNames.includes(lineName)) {
+          // 処理済みとされている場合はJRの重複であるため特殊処理.
+          // prevかnextのいずれかがundefinedのはずである（亀山とかは考えずデータ側で除外）.
+          // NOTE: ここは未検証なためエラーが起きたら疑う
+          const existing = siblingsStations.find(
+            (sta) => sta.lineName === lineName,
+          );
+          if (existing === undefined)
+            throw Error("隣接駅の登録に誤りがあります。");
+          const prevIsUndef = existing.prev === undefined;
+          const index = line.stations.findIndex((sta) => sta.slug === entry.id);
+          const prev = index === 0 ? undefined : line.stations[index - 1];
+          const next =
+            index === line.stations.length - 1
+              ? undefined
+              : line.stations[index + 1];
+          if (prevIsUndef && prev !== undefined) {
+            existing.prev = prev;
+          } else if (!prevIsUndef && next !== undefined) {
+            existing.next = next;
+          }
+        } else {
+          treatedLineNames.push(lineName);
+          const index = line.stations.findIndex((sta) => sta.slug === entry.id);
+          if (index === -1) throw Error("路線の検出に誤りがあります。");
+          const prev = index === 0 ? undefined : line.stations[index - 1];
+          const next =
+            index === line.stations.length - 1
+              ? undefined
+              : line.stations[index + 1];
+          siblingsStations.push({ lineName, prev, next });
+        }
+      });
+    });
+
     return {
       params: { slug: id },
-      props: { stationData: stationCollectionsData![id] },
+      props: { entry: entry, jaLineNames, siblingsStations },
     };
   });
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { stationData } = Astro.props as Props;
-const { name, lineNames, comment, updatedAt, images, firstVisitDate } =
-  stationData;
+const { entry, jaLineNames, siblingsStations } = Astro.props as Props;
+const { name, CommentContent, updatedAt, images, firstVisitDate } = entry;
 
 // typeが駅舎のものを探す。無ければのものを使う
-const thumbImage =
-  images.find((img) => img.type.includes("駅舎"))?.image || images[0].image;
+const thumbImage = images.find((img) => img.type.includes("駅舎")) || images[0];
 const thumbnail = await getImage({
-  src: thumbImage.url,
+  src: thumbImage.src,
   height: thumbImage.height,
   width: thumbImage.width,
 });
@@ -74,9 +144,10 @@ const ogp = {
     href={`${import.meta.env.BASE_URL}station-collections`}
     class="to-top-anchor">コレクショントップへ戻る</a
   >
+  {/* TODO: 駅名標っぽくしたい */}
   <h1>{name}</h1>
   <div class="station-lines-block">
-    <span>所属路線：{getLineNamesList(lineNames).join("・")}</span>
+    <span>所属路線：{jaLineNames.join("・")}</span>
   </div>
   <div class="date-block">
     <span>
@@ -100,26 +171,73 @@ const ogp = {
   </div>
 
   <h2>コメント</h2>
-  <p class="comment">{comment}</p>
+  <CommentContent class="comment" />
 
   <h2>駅舎</h2>
-  <CollectionPictureList images={toBlogImageList(images, "駅舎")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("駅舎"))}
+  />
 
   <h2>構内</h2>
-  <CollectionPictureList images={toBlogImageList(images, "駅構内")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("駅構内"))}
+  />
 
-  <h2>駅前</h2>
-  <CollectionPictureList images={toBlogImageList(images, "駅前")} />
+  <h2>駅周辺</h2>
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("駅周辺"))}
+  />
   <h2>駅名標</h2>
-  <CollectionPictureList images={toBlogImageList(images, "駅名標")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("駅名標"))}
+  />
   <h2>車両</h2>
-  <CollectionPictureList images={toBlogImageList(images, "車両")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("車両"))}
+  />
+  <h2>時刻表</h2>
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("時刻表"))}
+  />
   <h2>路線図</h2>
-  <CollectionPictureList images={toBlogImageList(images, "路線図")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("路線図"))}
+  />
   <h2>スタンプ</h2>
-  <CollectionPictureList images={toBlogImageList(images, "スタンプ")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("スタンプ"))}
+  />
   <h2>切符</h2>
-  <CollectionPictureList images={toBlogImageList(images, "切符")} />
+  <CollectionPictureList
+    images={images.filter((i) => i.type.includes("切符"))}
+  />
+  <h2>隣の訪れた駅</h2>
+  {
+    siblingsStations.map((line) => {
+      return (
+        <>
+          <h3>{line.lineName}</h3>
+          <div class="siblings-container">
+            {line.prev && (
+              <div class="sibling-link prev">
+                <div class="link-text">
+                  &larr; <StationPageLink data={line.prev} />
+                </div>
+              </div>
+            )}
+            {line.next && (
+              <div class="siblings-link next">
+                <div class="link-text">
+                  <StationPageLink data={line.next} /> &rarr;
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      );
+    })
+  }
+
   <a
     href={`${import.meta.env.BASE_URL}station-collections`}
     class="to-top-anchor">コレクショントップへ戻る</a
@@ -145,5 +263,25 @@ const ogp = {
   p.comment {
     margin: 1.2rem auto;
     margin-left: 0.4rem;
+  }
+  .siblings-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 25%;
+    margin: 1rem 0;
+
+    @media (max-width: 1024px) {
+      column-gap: 1rem;
+    }
+  }
+  .siblings-link {
+    display: flex;
+  }
+  .prev {
+    grid-column: 1 / 2;
+  }
+  .next {
+    grid-column: -2 / -1;
+    justify-self: flex-end;
   }
 </style>
