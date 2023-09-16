@@ -18,17 +18,7 @@ const list = Array.isArray(images) ? images : [images];
       <p class="no-image">写真がありません。</p>
     ) : (
       list.map((item) => {
-        const {
-          src,
-          width: originalWidth,
-          height: originalHeight,
-          alt,
-          caption,
-          ...attrs
-        } = item;
-        // 高さを一定にする. リモート画像なのでheightがundefinedにはならないはず
-        const height = 700;
-        const width = Math.round((700 * originalWidth) / originalHeight!);
+        const { src, width, height, alt, caption, ...attrs } = item;
 
         return (
           <CollectionPicture
@@ -51,7 +41,7 @@ const list = Array.isArray(images) ? images : [images];
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    align-items: flex-end;
+    align-items: flex-start;
     @media (max-width: 1024px) {
       flex-direction: column;
     }
