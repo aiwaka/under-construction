@@ -6,12 +6,9 @@ import type { MicroCMSListResponse } from "microcms-js-sdk";
 import { createClient } from "microcms-js-sdk";
 
 import {
-  MicroCMSStationCollectionSchema,
+  MicroCMSStationCollectionZod,
   type DownloadedStationCollection,
-} from "./station-collections";
-
-export type { DownloadedStationCollection };
-export type { DownloadedStationImage } from "./station-collections";
+} from "../../lib/schema/station/image";
 
 const PKG_NAME = "load-station-collections";
 
@@ -66,13 +63,12 @@ export default function loadMicroCMSImageData(
             import.meta.url,
           );
 
-          type MicroCMSStationCollectionsSchemaType = z.infer<
-            typeof MicroCMSStationCollectionSchema
+          type MicroCMSStationCollectionsSchema = z.infer<
+            typeof MicroCMSStationCollectionZod
           >;
           // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
           const getStationCollectionsFromMicroCMS = async (): Promise<
-            | typeof DATA_ALREADY_EXISTS_FLAG
-            | MicroCMSStationCollectionsSchemaType[]
+            typeof DATA_ALREADY_EXISTS_FLAG | MicroCMSStationCollectionsSchema[]
           > => {
             const microCMSClient = createClient({
               serviceDomain: MICROCMS_SERVICE_DOMAIN,
@@ -80,15 +76,14 @@ export default function loadMicroCMSImageData(
             });
             try {
               // コンテンツが増えると一度で取得しきれないため, 逐次取得する.
-              const dataFromMicroCMS: MicroCMSStationCollectionsSchemaType[] =
-                [];
+              const dataFromMicroCMS: MicroCMSStationCollectionsSchema[] = [];
               const NUMBER_LIMIT = 10 as const satisfies number;
               // totalCountは最初大きい数字としておき, レスポンスから得られる総数で更新する。
               let offset = 0;
               let totalCount = 10000000;
               while (offset < totalCount) {
                 const partialResponse = await microCMSClient.get<
-                  MicroCMSListResponse<MicroCMSStationCollectionsSchemaType>
+                  MicroCMSListResponse<MicroCMSStationCollectionsSchema>
                 >({
                   endpoint: "station-collections",
                   queries: {
@@ -122,7 +117,7 @@ export default function loadMicroCMSImageData(
             return;
           }
 
-          const contents = MicroCMSStationCollectionSchema.parse(
+          const contents = MicroCMSStationCollectionZod.parse(
             staCollectionsFromMicroCMS,
           );
           const resultContents: DownloadedStationCollection = {};

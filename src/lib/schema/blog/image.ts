@@ -1,8 +1,8 @@
-import { z } from "astro/zod";
-import { MicroCMSImageSchema } from "../../lib/schema/image";
+import { z } from "zod";
+import { MicroCMSImageSchema } from "../image";
 
-/** microCMSから取得するブログ用画像コンテンツのスキーマ */
-export const MicroCMSImagesDataSchema = z.array(
+/** microCMSから取得するブログ用画像コンテンツのZodスキーマ */
+export const MicroCMSImagesDataZod = z.array(
   z.object({
     id: z.string(),
     title: z.string(),
