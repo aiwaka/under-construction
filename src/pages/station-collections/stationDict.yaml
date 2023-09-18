@@ -1,0 +1,15 @@
+# 駅idと駅名の対応オブジェクトを作成する.
+# 検索性は悪いが諦める.
+# とりあえずIDのアルファベット順とする.
+
+aioi: 相生
+banshu-ako: 播州赤穂
+echizen-ono: 越前大野
+fukui: 福井
+itoigawa: 糸魚川
+kuzuryuko: 九頭竜湖
+mihama: 美浜
+minami-otari: 南小谷
+osaka: 大阪
+saidaiji: 西大寺
+tennnoji: 天王寺

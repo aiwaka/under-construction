@@ -1,5 +1,12 @@
+import fs from "node:fs";
+import yaml from "yaml";
+
 import type { LineData } from "@lib/types";
 import { getCollection } from "astro:content";
+
+const stationDict: { [id: string]: string } = yaml.parse(
+  fs.readFileSync("src/pages/station-collections/stationDict.yaml", "utf8"),
+);
 
 const createLineObject = (
   lineName: string,
@@ -49,6 +56,7 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       ["木津", "kizu"],
       ["奈良", "nara"],
       ["王寺", "oji--jrw"],
+      ["河内堅上", "kawachi-katakami"],
       ["柏原", "kashiwara"],
       ["天王寺", "tennnoji"],
       ["JR難波", "jr-namba"],
