@@ -1,9 +1,10 @@
-import { z } from "astro/zod";
+import { z } from "zod";
 
-import type { MicroCMSImageComplete } from "../../lib/contents/types";
-import { MicroCMSImageSchema } from "../../lib/schema/image";
+import { MicroCMSImageSchema } from "../image";
 
-const stationImageTypeOptionsSchema = z.union([
+import type { MicroCMSImageComplete } from "@lib/contents/types";
+
+const stationImageTypeOptionsZodSchema = z.union([
   z.literal("駅舎"),
   z.literal("駅構内"),
   z.literal("駅周辺"),
@@ -14,15 +15,15 @@ const stationImageTypeOptionsSchema = z.union([
   z.literal("スタンプ"),
   z.literal("切符"),
 ]);
-export type StationImageTypeOptionsType = z.infer<
-  typeof stationImageTypeOptionsSchema
+export type StationImageTypeOptions = z.infer<
+  typeof stationImageTypeOptionsZodSchema
 >;
 
 /** microCMSの鉄道駅コレクションAPI上のカスタムフィールドを表すスキーマ */
 const microCMSStationImageSchema = z.array(
   z.object({
     fieldId: z.literal("images"),
-    type: stationImageTypeOptionsSchema.array(),
+    type: stationImageTypeOptionsZodSchema.array(),
     image: MicroCMSImageSchema,
     comment: z.string().optional(),
     date: z.string().datetime().optional(),
@@ -30,7 +31,7 @@ const microCMSStationImageSchema = z.array(
 );
 
 /** microCMSから取得する鉄道駅コレクションコンテンツのスキーマ */
-export const MicroCMSStationCollectionSchema = z.array(
+export const MicroCMSStationCollectionZod = z.array(
   z.object({
     id: z.string(),
     images: microCMSStationImageSchema,
@@ -41,7 +42,7 @@ export const MicroCMSStationCollectionSchema = z.array(
 
 /** ダウンロードされた一つの画像データの形式 */
 export interface DownloadedStationImage {
-  type: StationImageTypeOptionsType[];
+  type: StationImageTypeOptions[];
   image: MicroCMSImageComplete;
   date?: string;
   comment?: string;
