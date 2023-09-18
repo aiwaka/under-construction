@@ -1,31 +1,20 @@
 import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 import type { CollectionEntry } from "astro:content";
-import { z } from "astro/zod";
 import { DateTime } from "luxon";
 
 import type {
   DownloadedStationCollection,
   DownloadedStationImage,
-} from "./../../integrations/load-station-collections";
+} from "./image";
+import type { CollectionStationSchema } from "./collectionSchema";
 
 import type { StationEntry } from "@lib/more/station-collections";
 import type { ToEntryObject } from "@lib/types";
 import { dateText } from "@lib/utils";
 
-/** 鉄道駅コレクションコンテンツのスキーマ */
-export const CollectionStationSchema = z.object({
-  name: z.string(),
-  lines: z.string().array(),
-  firstVisitDate: z.date().optional(),
-  comment: z.string().optional(),
-});
-
-export type CollectionStationSchemaDataType =
-  CollectionEntry<"station">["data"];
-
 /** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
 export class CollectionsStationEntry
-  implements ToEntryObject<StationEntry>, CollectionStationSchemaDataType
+  implements ToEntryObject<StationEntry>, CollectionStationSchema
 {
   public id: string;
   public name: string;

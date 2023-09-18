@@ -3,8 +3,7 @@ import fs from "node:fs";
 import { getCollection } from "astro:content";
 
 import type { StationEntry } from "./types";
-
-import type { DownloadedStationCollection } from "src/integrations/load-station-collections";
+import type { DownloadedStationCollection } from "@lib/schema/station";
 import { CollectionsStationEntry } from "@lib/schema/station";
 
 /**

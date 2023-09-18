@@ -25,3 +25,4 @@ pnpm-debug.log*
 *.HEIC
 *.webp
 uncompressed/
+src/generated/*.json

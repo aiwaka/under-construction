@@ -1,64 +1,28 @@
 import fs from "node:fs";
 import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
-import { getImage } from "astro:assets";
 import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import { getImage } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
-import { z } from "astro:content";
+
+import type {
+  BlogThumbFormatEnum,
+  CollectionBlogSchema,
+} from "./collectionSchema";
 
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
-import type { ImagesStorageSchema } from "src/integrations/astro-load-microcms-image";
-
-let alreadyWarnedUsingRemote = false;
-
-enum ThumbnailFormatEnum {
-  png = "png",
-  jpg = "jpg",
-}
-const ThumbnailFormatSchema = z.nativeEnum(ThumbnailFormatEnum);
-// export type ThumbnailFormatType = z.infer<typeof ThumbnailFormatSchema>;
-
-export const CollectionBlogSchema = z
-  .object({
-    title: z.string(),
-    description: z.string(),
-    thumbnail: z.string(),
-    thumbnailFormat: ThumbnailFormatSchema.nullable().default(null),
-    date: z.date(),
-    updateDate: z.date().optional(),
-    tags: z.string().array(),
-    related: z
-      .string()
-      .array()
-      // 5個以上関連記事をセットできない
-      .refine((arg) => arg.length <= 5)
-      .default([]),
-    latex: z.boolean().default(false),
-    draft: z.boolean().default(false),
-  })
-  .refine(
-    ({ thumbnail, thumbnailFormat }) => {
-      return thumbnail === "remote" || thumbnailFormat !== null;
-    },
-    {
-      path: ["thumbnailFormat"],
-      message: "`thumbnail`が`remote`でない場合`thumbnailFormat`は必須です。",
-    },
-  );
-
-/** ブログ記事のfrontmatterのスキーマを表す型 */
-export type CollectionBlogSchemaDataType = CollectionEntry<"blog">["data"];
+import type { ImagesStorageSchema } from "./image";
 
 /** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
 export class CollectionsBlogPostEntry
-  implements ToEntryObject<BlogPostEntry>, CollectionBlogSchemaDataType
+  implements ToEntryObject<BlogPostEntry>, CollectionBlogSchema
 {
   public id: string;
   public title: string;
   public description: string;
   public Content!: AstroComponentFactory;
   public thumbnail: string;
-  public thumbnailFormat: ThumbnailFormatEnum | null;
+  public thumbnailFormat: BlogThumbFormatEnum | null;
   public date: Date;
   public updateDate: Date | undefined;
   public tags: string[];
@@ -68,7 +32,6 @@ export class CollectionsBlogPostEntry
   public latex: boolean;
   public draft: boolean;
 
-  // private thumbnailImage!: astroHTML.JSX.ImgHTMLAttributes | null;
   private thumbnailImage!: GetImageResult | null;
   private THUMB_WIDTH: number = 1024;
 
@@ -105,7 +68,7 @@ export class CollectionsBlogPostEntry
     const getThumbImageFromRemote = async () => {
       // ビルド時のバンドルされるファイルのURLがどうなるかはあまりわかっていないのでうまくいくようにしている.
       // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
-      const dataDir = "../../generated/images-data.json";
+      const dataDir = "../../../generated/images-data.json";
       // TODO: new URLではなくpathToFileURLを使う
       const resolvedDataPath = new URL(dataDir, import.meta.url);
       if (!fs.existsSync(resolvedDataPath)) {
@@ -158,11 +121,11 @@ export class CollectionsBlogPostEntry
     };
     const getThumbImageFromLocal = async () => {
       const filename = `${entry.thumbnail}.${entry.thumbnailFormat}`;
-      const localImagePath = `../../blog-images/thumbnails/${filename}`;
+      const localImagePath = `../../../blog-images/thumbnails/${filename}`;
 
-      // NOTE: ここの処理は"../../components/blog/BlogImagesLocal.astro"を参照.
+      // NOTE: ここの処理は"@components/blog/BlogImagesLocal.astro"を参照.
       const globImages = import.meta.glob<ImageMetadata>(
-        "../../blog-images/**/*",
+        "../../../blog-images/**/*",
         { import: "default" },
       );
       const localImageMetaData = await globImages[localImagePath]();

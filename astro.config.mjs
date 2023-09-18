@@ -4,7 +4,7 @@ import svelte from "@astrojs/svelte";
 import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
-import loadMicroCMSImage from "./src/integrations/astro-load-microcms-image";
+import loadMicroCMSImage from "./src/integrations/load-microcms-image";
 import loadStationCollections from "./src/integrations/load-station-collections";
 
 import remarkMath from "remark-math";

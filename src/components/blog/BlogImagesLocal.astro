@@ -28,7 +28,7 @@ const images = await Promise.all(
     // NOTE: 画像をdynamic importすることはViteの制約によりできない.
     // https://github.com/withastro/astro/issues/3373
     // このリンクを参考に, globを取得し, パスからモジュールを取得する構成にするとうまくビルドされた.
-    // "../../lib/schema/blog.ts"の処理も同様.
+    // "@lib/schema/blog.ts"の処理も同様.
     // なお, Viteによる画像のdynamic importのdefaultプロパティはImageMetaData型を満たしている.
     // TODO: 何度もglobを呼び出すことになっていないか？機会があれば検討する.
     const globImages = import.meta.glob<ImageMetadata>(

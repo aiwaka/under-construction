@@ -3,15 +3,12 @@ import type { AstroIntegration } from "astro";
 import { z } from "astro/zod";
 import type { MicroCMSListResponse } from "microcms-js-sdk";
 import { createClient } from "microcms-js-sdk";
-
 import {
-  MicroCMSImagesDataSchema,
+  MicroCMSImagesDataZod,
   type ImagesStorageSchema,
-} from "./blog-image-collections";
+} from "../../lib/schema/blog/image";
 
-export type { ImagesStorageSchema };
-
-const PKG_NAME = "astro-load-microcms-image";
+const PKG_NAME = "load-microcms-image";
 
 const consoleLogUsingPackageName = (...args: string[]) => {
   console.log(`[${PKG_NAME}] `, ...args);
@@ -64,12 +61,12 @@ export default function loadMicroCMSImageData(
             import.meta.url,
           );
 
-          type MicroCMSImagesDataSchemaType = z.infer<
-            typeof MicroCMSImagesDataSchema
+          type MicroCMSImagesDataZodType = z.infer<
+            typeof MicroCMSImagesDataZod
           >;
           // 取得エラーの場合, 開発モードかつデータファイルが既にあれば続行する. なければ終了させる.
           const getImagesDataFromMicroCMS = async (): Promise<
-            typeof DATA_ALREADY_EXISTS_FLAG | MicroCMSImagesDataSchemaType[]
+            typeof DATA_ALREADY_EXISTS_FLAG | MicroCMSImagesDataZodType[]
           > => {
             const microCMSClient = createClient({
               serviceDomain: MICROCMS_SERVICE_DOMAIN,
@@ -77,14 +74,14 @@ export default function loadMicroCMSImageData(
             });
             try {
               // コンテンツが増えると一度で取得しきれないため, 逐次取得する.
-              const dataFromMicroCMS: MicroCMSImagesDataSchemaType[] = [];
+              const dataFromMicroCMS: MicroCMSImagesDataZodType[] = [];
               const NUMBER_LIMIT = 10 as const satisfies number;
               // totalCountは最初大きい数字としておき, レスポンスから得られる総数で更新する。
               let offset = 0;
               let totalCount = 10000000;
               while (offset < totalCount) {
                 const partialResponse = await microCMSClient.get<
-                  MicroCMSListResponse<MicroCMSImagesDataSchemaType>
+                  MicroCMSListResponse<MicroCMSImagesDataZodType>
                 >({
                   endpoint: "images-in-articles",
                   queries: {
@@ -118,9 +115,7 @@ export default function loadMicroCMSImageData(
             return;
           }
 
-          const contents = MicroCMSImagesDataSchema.parse(
-            imageDataFromMicroCMS,
-          );
+          const contents = MicroCMSImagesDataZod.parse(imageDataFromMicroCMS);
           const resultContents: ImagesStorageSchema = {};
           contents.forEach((content) => {
             resultContents[content.title] = {
