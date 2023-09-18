@@ -37,6 +37,7 @@ export const getLocalStationCollectionsData = () => {
   const resolvedDataPath = new URL(dataDir, import.meta.url);
   if (!fs.existsSync(resolvedDataPath)) {
     const errorMessage =
+      "[station-collections/getData.ts]: " +
       "Station collections data does not exist. Check the path settings output to the console." +
       `\n\`import.meta.url\` : ${import.meta.url}` +
       `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;

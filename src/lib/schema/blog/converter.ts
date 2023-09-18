@@ -68,12 +68,14 @@ export class CollectionsBlogPostEntry
     const getThumbImageFromRemote = async () => {
       // ビルド時のバンドルされるファイルのURLがどうなるかはあまりわかっていないのでうまくいくようにしている.
       // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
-      const dataDir = "../../../generated/images-data.json";
+      const dataDir = import.meta.env.DEV
+        ? "../../../generated/images-data.json"
+        : "../../../dist/generated/images-data.json";
       // TODO: new URLではなくpathToFileURLを使う
       const resolvedDataPath = new URL(dataDir, import.meta.url);
       if (!fs.existsSync(resolvedDataPath)) {
         const errorMessage =
-          "Images data does not exist. Check the path settings output to the console." +
+          "[blog/converter.ts]: Images data does not exist. Check the path settings output to the console." +
           `\n\`import.meta.url\` : ${import.meta.url}` +
           `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
         throw Error(errorMessage);
@@ -84,7 +86,9 @@ export class CollectionsBlogPostEntry
 
       const imagesData = allImagesData[entry.id];
       if (imagesData === undefined) {
-        throw Error(`The specified id \`${entry.id}\` cannot be found.`);
+        throw Error(
+          `[blog/converter.ts]: The specified id \`${entry.id}\` cannot be found.`,
+        );
       }
       const image = imagesData.thumbnail;
       // widthはURLクエリで指定し取得時点で縮小する（基本元の画像より小さめのサイズを指定するはずなので）.
