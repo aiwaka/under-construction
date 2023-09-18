@@ -52,7 +52,7 @@ jobs:
 
       - name: Save cached data
         id: cache-data-save
-        uses: actions/cache/save@3
+        uses: actions/cache/save@v3
         with:
           path: src/generated/
           key: ${{ env.cache-version }}-data-${{ hashFiles('src/generated/*.json') }}
