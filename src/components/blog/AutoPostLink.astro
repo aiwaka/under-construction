@@ -1,0 +1,33 @@
+---
+// 引数のブログIDが存在すればリンクとし、存在しなければ無効であることを示す。
+import { getCollection } from "astro:content";
+
+const allPosts = await getCollection("blog", (post) => !post.data.draft);
+const slugList = allPosts.map((post) => post.slug);
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+
+const available = (slugList as string[]).includes(slug);
+---
+
+{
+  available ? (
+    <a href={`${import.meta.env.BASE_URL}blog/${slug}`}>
+      <slot />
+    </a>
+  ) : (
+    <span class="disabled-link">
+      <slot />
+    </span>
+  )
+}
+
+<style>
+  .disabled-link {
+    color: rgba(var(--main-font-color-params), 0.3);
+  }
+</style>
