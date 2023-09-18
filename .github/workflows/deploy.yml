@@ -1,15 +1,13 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
   push:
     branches: [main]
   # Allows you to run this workflow manually from the Actions tab on GitHub.
   workflow_dispatch:
 
 env:
-  cache-version: v0
+  cache-version: v0.1
 
 # Allow this job to clone the repo and create a page deployment
 permissions:
@@ -24,12 +22,25 @@ jobs:
       - name: Checkout your repository using git
         uses: actions/checkout@v3
 
+      - name: Restore data cache
+        uses: actions/cache/restore@v3
+        id: restore-data-cache
+        with:
+          path: src/generated/
+          key: ${{ env.cache-version }}-data-${{ hashFiles('src/generated/*.json') }}
+          restore-keys: |
+            ${{ env.cache-version }}-data-
+
+      # - name: Fetch data from microCMS
+      #   run:
+
       - name: Restore cached images
         id: cache-images-restore
         uses: actions/cache/restore@v3
         with:
           path: node_modules/.astro/
           key: ${{ env.cache-version }}-images-${{ hashFiles('**/generated/images-data.json', '**/generated/station-collections.json') }}
+          restore-keys: ${{ env.cache-version }}-images-
 
       - name: Install, build, and upload your site
         env:
@@ -39,10 +50,16 @@ jobs:
         with:
           node-version: 18
 
+      - name: Save cached data
+        id: cache-data-save
+        uses: actions/cache/save@3
+        with:
+          path: src/generated/
+          key: ${{ env.cache-version }}-data-${{ hashFiles('src/generated/*.json') }}
+
       - name: Save cached images
         id: cache-images-save
         uses: actions/cache/save@v3
-        if: always()
         with:
           path: node_modules/.astro/
           key: ${{ steps.cache-images-restore.outputs.cache-primary-key }}
