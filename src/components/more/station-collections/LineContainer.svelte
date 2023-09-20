@@ -8,8 +8,8 @@
 
 <div class="line-container">
   <h4>{lineData.lineName}</h4>
-  {#each lineData.stations as data, i}
-    <StationPageLink {data} />
+  {#each lineData.stations as sta, i}
+    <StationPageLink data={sta} />
     {#if i !== lineData.stations.length - 1}
       <span>&mdash;</span>
     {/if}

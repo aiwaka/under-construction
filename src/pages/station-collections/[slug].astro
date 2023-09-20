@@ -4,11 +4,13 @@ import { getImage } from "astro:assets";
 
 import allStationList from "./stationList";
 
+import type { DownloadedStationCollection } from "@lib/schema/station";
 import type { LineData } from "@lib/types";
-import type { DownloadedStationCollection } from "src/integrations/load-station-collections";
 import { dateText } from "@lib/utils";
-import { getStationEntries } from "@lib/more/station-collections";
-import { getLocalStationCollectionsData } from "@lib/more/station-collections";
+import {
+  getStationEntries,
+  getLocalStationCollectionsData,
+} from "@lib/more/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 import CollectionPictureList from "@components/more/station-collections/CollectionPictureList.astro";
@@ -171,7 +173,9 @@ const ogp = {
   </div>
 
   <h2>コメント</h2>
-  <CommentContent class="comment" />
+  <div class="comment-container">
+    <CommentContent class="comment" />
+  </div>
 
   <h2>駅舎</h2>
   <CollectionPictureList
@@ -245,7 +249,14 @@ const ogp = {
 </GeneralPageLayout>
 
 <style>
+  .comment-container :global(a) {
+    color: darkgoldenrod;
+    &:hover {
+      color: orangered;
+    }
+  }
   .to-top-anchor {
+    color: var(--main-font-color);
     text-decoration: underline;
   }
   .img-container {

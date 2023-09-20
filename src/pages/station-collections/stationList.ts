@@ -4,240 +4,267 @@ import yaml from "yaml";
 import type { LineData } from "@lib/types";
 import { getCollection } from "astro:content";
 
+/** 全駅のIDと駅名対応マップ */
 const stationDict: { [id: string]: string } = yaml.parse(
   fs.readFileSync("src/pages/station-collections/stationDict.yaml", "utf8"),
 );
 
-const createLineObject = (
-  lineName: string,
-  ...stations: [string, string][]
-) => {
+const createLineObject = (lineName: string, stationIDs: string[]) => {
   return {
     lineName,
-    stations: stations.map((st) => {
-      return { name: st[0], slug: st[1] };
+    stations: stationIDs.flatMap((id) => {
+      if (id in stationDict) {
+        return { name: stationDict[id], slug: id };
+      } else {
+        console.warn(
+          `[station/index.astro]: slug id '${id}' undefined (in yaml dict).`,
+        );
+        return [];
+      }
     }),
   } as LineData;
 };
 
-/** 行ったことのある駅データ */
+/**
+ * 行ったことのある駅の路線別データ.
+ * 企業ごと、路線ごとに登録される.
+ */
 const stationList: { [company: string]: { [lineId: string]: LineData } } = {
   JRWest: {
-    ako: createLineObject(
-      "赤穂線",
-      ["播州赤穂", "banshu-ako"],
-      ["西大寺", "saidaiji"],
-    ),
-    etsumiNorth: createLineObject(
-      "越美北線",
-      ["福井", "fukui"],
-      ["越前大野", "echizen-ono"],
-      ["九頭竜湖", "kuzuryuko"],
-    ),
-    oito: createLineObject(
-      "大糸線",
-      ["南小谷", "minami-otari"],
-      ["糸魚川", "itoigawa"],
-    ),
-    osakaLoop: createLineObject(
-      "大阪環状線",
-      ["天王寺", "tennnoji"],
-      ["大阪", "osaka"],
-    ),
-    osakaEast: createLineObject("おおさか東線", ["大阪", "osaka"]),
-    obama: createLineObject("小浜線", ["敦賀", "tsuruga"], ["美浜", "mihama"]),
-    katamachi: createLineObject("片町線", ["木津", "kizu"]),
-    kansai: createLineObject(
-      "関西本線",
-      ["亀山", "kameyama"],
-      ["柘植", "tsuge"],
-      ["伊賀上野", "iga-ueno"],
-      ["加茂", "kamo"],
-      ["木津", "kizu"],
-      ["奈良", "nara"],
-      ["王寺", "oji--jrw"],
-      ["河内堅上", "kawachi-katakami"],
-      ["柏原", "kashiwara"],
-      ["天王寺", "tennnoji"],
-      ["JR難波", "jr-namba"],
-    ),
-    kishin: createLineObject(
-      "姫新線",
-      ["姫路", "himeji"],
-      ["播磨新宮", "harima-singu"],
-      ["佐用", "sayo"],
-      ["津山", "tsuyama"],
-    ),
-    kisuki: createLineObject(
-      "木次線",
-      ["備後落合", "bingo-ochiai"],
-      ["出雲横田", "izumo-yokota"],
-      ["木次", "kisuki"],
-      ["宍道", "shinji"],
-    ),
-    kisei: createLineObject(
-      "紀勢本線",
-      ["白浜", "shirahama"],
-      ["串本", "kushimoto"],
-      ["紀伊勝浦", "kii-katsuura"],
-      ["新宮", "singu"],
-    ),
-    kibi: createLineObject("吉備線", ["岡山", "okayama"], ["総社", "soja"]),
-    kure: createLineObject("呉線", ["三原", "mihara"]),
-    geibi: createLineObject(
-      "芸備線",
-      ["新見", "niimi"],
-      ["備後落合", "bingo-ochiai"],
-      ["三次", "miyoshi"],
-      ["下深川", "shimofukawa"],
-      ["広島", "hiroshima"],
-    ),
-    sakai: createLineObject(
-      "境線",
-      ["米子", "yonago"],
-      ["境港", "sakai-minato"],
-    ),
-    sannin: createLineObject(
-      "山陰本線",
-      ["京都", "kyoto"],
-      ["福知山", "fukuchiyama"],
-      ["上川口", "kamikawaguchi"],
-      ["和田山", "wadayama"],
-      ["浜坂", "hamasaka"],
-      ["鳥取", "tottori"],
-      ["米子", "yonago"],
-      ["松江", "matsue"],
-      ["出雲市", "izumoshi"],
-      ["幡生", "hatabu"],
-    ),
-    sanyo: createLineObject(
-      "山陽本線",
-      ["姫路", "himeji"],
-      ["相生", "aioi"],
-      ["岡山", "okayama"],
-      ["倉敷", "kurashiki"],
-      ["三原", "mihara"],
-      ["白市", "shiraichi"],
-      ["西条", "saijo"],
-      ["広島", "hiroshima"],
-      ["下関", "shimonoseki"],
-    ),
-    takayama: createLineObject(
-      "高山本線",
-      ["富山", "toyama"],
-      ["越中八尾", "echu-yatsuo"],
-    ),
-    tsuyama: createLineObject(
-      "津山線",
-      ["津山", "tsuyama"],
-      ["金川", "kanagawa"],
-      ["岡山", "okayama"],
-    ),
-    tokaido: createLineObject(
-      "東海道本線",
-      ["米原", "maibara"],
-      ["大津", "otsu"],
-      ["京都", "kyoto"],
-      ["大阪", "osaka"],
-      ["三ノ宮", "sannnomiya"],
-    ),
-    nanao: createLineObject("七尾線", ["和倉温泉", "wakura-onsenn"]),
-    nara: createLineObject(
-      "奈良線",
-      ["木津", "kizu"],
-      ["城陽", "joyo"],
-      ["京都", "kyoto"],
-    ),
-    hakubi: createLineObject(
-      "伯備線",
-      ["岡山", "okayama"],
-      ["総社", "soja"],
-      ["新見", "niimi"],
-    ),
-    hanwa: createLineObject(
-      "阪和線",
-      ["天王寺", "tennnoji"],
-      ["長居", "nagai"],
-      ["和歌山", "wakayama"],
-    ),
-    bantan: createLineObject(
-      "播但線",
-      ["姫路", "himeji"],
-      ["寺前", "teramae"],
-      ["竹田", "takeda-jrw"],
-      ["和田山", "wadayama"],
-    ),
-    fukuchiyama: createLineObject(
-      "福知山線",
-      ["福知山", "fukuchiyama"],
-      ["篠山口", "sasayamaguchi"],
-    ),
-    hokuriku: createLineObject(
-      "北陸本線",
-      ["金沢", "kanazawa"],
-      ["福井", "fukui"],
-      ["武生", "takefu"],
-      ["敦賀", "tsuruga"],
-      ["高月", "takatsuki--shiga"],
-    ),
-    wakayama: createLineObject(
-      "和歌山線",
-      ["王寺", "oji--jrw"],
-      ["高田", "takada"],
-      ["五条", "gojo-jrw"],
-    ),
+    ako: createLineObject("赤穂線", ["aioi", "banshu-ako", "saidaiji"]),
+    etsumiNorth: createLineObject("越美北線", [
+      "fukui",
+      "echizen-ono",
+      "kuzuryuko",
+    ]),
+    oito: createLineObject("大糸線", ["minamiotari", "itoigawa"]),
+    osakaLoop: createLineObject("大阪環状線", [
+      "tennnoji",
+      "kyobashi",
+      "osaka",
+    ]),
+    osakaEast: createLineObject("おおさか東線", [
+      "osaka",
+      "jr-awaji",
+      "hanaten",
+      "takaida-chuo",
+      "kyuhoji",
+    ]),
+    obama: createLineObject("小浜線", ["tsuruga", "mihama"]),
+    katamachi: createLineObject("片町線", ["kizu", "hanaten", "kyobashi"]),
+    kansai: createLineObject("関西本線", [
+      "kameyama",
+      "tsuge",
+      "iga-ueno",
+      "kamo",
+      "kizu",
+      "nara",
+      "oji",
+      "kawachi-katakami",
+      "kashiwara",
+      "tennnoji",
+      "jr-namba",
+    ]),
+    kishin: createLineObject("姫新線", [
+      "himeji",
+      "harima-shingu",
+      "sayo",
+      "tsuyama",
+    ]),
+    kisuki: createLineObject("木次線", [
+      "bingo-ochiai",
+      "izumo-sakane",
+      "izumo-yokota",
+      "kisuki",
+      "kamonaka",
+      "shinji",
+    ]),
+    kisei: createLineObject("紀勢本線", [
+      "shirahama",
+      "kushimoto",
+      "kii-katsuura",
+      "shingu",
+    ]),
+    kibi: createLineObject("吉備線", ["okayama", "soja"]),
+    geibi: createLineObject("芸備線", [
+      "niimi",
+      "bingo-ochiai",
+      "miyoshi",
+      "shimofukawa",
+      "hiroshima",
+    ]),
+    sakai: createLineObject("境線", ["yonago", "sakai-minato"]),
+    sannin: createLineObject("山陰本線", [
+      "kyoto",
+      "umekoji-kyotonishi",
+      "nijo",
+      "ayabe",
+      "fukuchiyama",
+      "kamikawaguchi",
+      "wadayama",
+      "hamasaka",
+      "tottori",
+      "yonago",
+      "matsue",
+      "shinji",
+      "izumoshi",
+      "masuda",
+      "hatabu",
+    ]),
+    sanyo: createLineObject("山陽本線", [
+      "himeji",
+      "aioi",
+      "okayama",
+      "kurashiki",
+      "mihara",
+      "shiraichi",
+      "saijo",
+      "hiroshima",
+      "shin-yamaguchi",
+      "hatabu",
+      "shimonoseki",
+    ]),
+    takayama: createLineObject("高山本線", ["toyama", "ecchu-yatsuo"]),
+    tsuyama: createLineObject("津山線", ["tsuyama", "kanagawa", "okayama"]),
+    tokaido: createLineObject("東海道本線", [
+      "maibara",
+      "otsu",
+      "kyoto",
+      "kishibe",
+      "shin-osaka",
+      "osaka",
+      "sannnomiya",
+    ]),
+    nanao: createLineObject("七尾線", ["wakura-onsen"]),
+    nara: createLineObject("奈良線", ["kizu", "joyo", "kyoto"]),
+    hakubi: createLineObject("伯備線", ["okayama", "soja", "niimi"]),
+    hanwa: createLineObject("阪和線", ["tennnoji", "nagai", "wakayama"]),
+    bantan: createLineObject("播但線", [
+      "himeji",
+      "teramae",
+      "takeda--jrw",
+      "wadayama",
+    ]),
+    fukuchiyama: createLineObject("福知山線", ["fukuchiyama", "sasayamaguchi"]),
+    hokuriku: createLineObject("北陸本線", [
+      "kanazawa",
+      "fukui",
+      "takefu",
+      "tsuruga",
+      "takatsuki--shiga",
+      "maibara",
+    ]),
+    wakayama: createLineObject("和歌山線", [
+      "oji",
+      "takada",
+      "gojo--jrw",
+      "hashimoto",
+      "wakayama",
+    ]),
   },
   JRCentral: {
-    iida: createLineObject(
-      "飯田線",
-      ["豊橋", "toyohashi"],
-      ["本長篠", "honnnagashino"],
-      ["東栄", "touei"],
-      ["中部天竜", "tyubu-tenryu"],
-      ["水窪", "misakubo"],
-      ["天竜峡", "tenryukyo"],
-    ),
-    kansai: createLineObject(
-      "関西本線",
-      ["亀山", "kameyama"],
-      ["四日市", "yokkaichi"],
-      ["名古屋", "nagoya"],
-    ),
-    kisei: createLineObject(
-      "紀勢本線",
-      ["新宮", "singu"],
-      ["熊野市", "kumanoshi"],
-      ["新鹿", "atashika"],
-      ["紀伊長島", "kii-nagashima"],
-      ["多気", "taki"],
-      ["松阪", "matsusaka"],
-      ["亀山", "kameyama"],
-    ),
-    tokaido: createLineObject(
-      "東海道本線",
-      ["豊橋", "toyohashi"],
-      ["名古屋", "nagoya"],
-      ["尾張一宮", "owari-ichinomiya"],
-      ["岐阜", "gifu"],
-      ["大垣", "ogaki"],
-      ["米原", "maibara"],
-    ),
-    meisho: createLineObject(
-      "名松線",
-      ["松阪", "matsusaka"],
-      ["家城", "ieki"],
-      ["伊勢奥津", "ise-okitsu"],
-    ),
+    iida: createLineObject("飯田線", [
+      "toyohashi",
+      "honnnagashino",
+      "touei",
+      "chubu-tenryu",
+      "misakubo",
+      "tenryukyo",
+    ]),
+    kansai: createLineObject("関西本線", ["kameyama", "yokkaichi", "nagoya"]),
+    kisei: createLineObject("紀勢本線", [
+      "shingu",
+      "kumanoshi",
+      "kii-nagashima",
+      "taki",
+      "matsusaka",
+      "kameyama",
+    ]),
+    tokaido: createLineObject("東海道本線", [
+      "toyohashi",
+      "nagoya",
+      "owari-ichinomiya",
+      "gifu",
+      "ogaki",
+      "maibara",
+    ]),
+    meisho: createLineObject("名松線", ["matsusaka", "ieki", "ise-okitsu"]),
+  },
+  JREast: {
+    oito: createLineObject("大糸線", [
+      "matsumoto",
+      "kitamatsumoto",
+      "shinano-omachi",
+      "minamiotari",
+    ]),
+    shinonoi: createLineObject("篠ノ井線", ["shiojiri", "matsumoto"]),
+    chuo: createLineObject("中央本線", [
+      "shinjuku",
+      "takao",
+      "kobuchizawa",
+      "kofu",
+      "okaya",
+      "shiojiri",
+    ]),
+  },
+  kintetsu: {
+    osaka: createLineObject("近鉄大阪線", [
+      "osaka-uehommachi",
+      "tsuruhashi",
+      "fuse",
+      "yamato-takada",
+      "yamato-yagi",
+      "ise-nakagawa",
+    ]),
+    nagano: createLineObject("近鉄長野線", ["furuichi", "kawachi-nagano"]),
+    nara: createLineObject("近鉄奈良線", [
+      "osaka-namba",
+      "kintetsu-nippombashi",
+      "tsuruhashi",
+      "fuse",
+      "ishikiri",
+      "ikoma",
+      "gakuenmae",
+      "yamato-saidaiji",
+      "kintetsu-nara",
+    ]),
+  },
+  keihan: {
+    keihan: createLineObject("京阪本線", [
+      "yodoyabashi",
+      "kitahama",
+      "temmabashi",
+      "kyobashi",
+      "noe",
+      "hirakatashi",
+      "tambabashi",
+      "fushimiinari",
+      "tobakaido",
+      "shichijo",
+      "gion-shijo",
+      "sanjo",
+      "jingumarutamachi",
+      "demachiyanagi",
+    ]),
+  },
+
+  ichibata: {
+    kitamatsue: createLineObject("北松江線", [
+      "dentetsu-izumoshi",
+      "kawato",
+      "matsue-shinjiko-onsen",
+    ]),
+    taisha: createLineObject("大社線", ["kawato", "izumotaishamae"]),
   },
 };
 
 const stationCollections = await getCollection("station");
-const staIDs = stationCollections.map((sta) => sta.slug);
+const stationIDsInCollections = stationCollections.map((sta) => sta.slug);
 /** データに見当たらないものはdisabledとする */
 Object.values(stationList).forEach((lines) => {
   Object.values(lines).forEach((line) => {
     line.stations.forEach((sta) => {
-      if (!(staIDs as readonly string[]).includes(sta.slug)) {
+      if (!(stationIDsInCollections as readonly string[]).includes(sta.slug)) {
         sta["disabled"] = true;
       }
     });
