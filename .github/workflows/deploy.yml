@@ -39,7 +39,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: node_modules/.astro/
-          key: ${{ env.cache-version }}-images-${{ hashFiles('**/generated/images-data.json', '**/generated/station-collections.json') }}
+          key: ${{ env.cache-version }}-images-${{ hashFiles('src/generated/*.json') }}
           restore-keys: ${{ env.cache-version }}-images-
 
       - name: Install, build, and upload your site
@@ -62,7 +62,7 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: node_modules/.astro/
-          key: ${{ steps.cache-images-restore.outputs.cache-primary-key }}
+          key: ${{ env.cache-version }}-images-${{ hashFiles('src/generated/*.json') }}
 
   deploy:
     needs: build
