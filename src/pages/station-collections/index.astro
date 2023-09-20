@@ -44,6 +44,21 @@ const ogp = {
       return <LineContainer lineData={dat} />;
     })
   }
+
+  <h3>JR東日本</h3>
+  {
+    Object.values(stationList["JREast"]).map((dat) => {
+      return <LineContainer lineData={dat} />;
+    })
+  }
+
+  <h2>その他私鉄</h2>
+  <h3>一畑電鉄</h3>
+  {
+    Object.values(stationList["ichibata"]).map((dat) => {
+      return <LineContainer lineData={dat} />;
+    })
+  }
 </GeneralPageLayout>
 
 <style>
