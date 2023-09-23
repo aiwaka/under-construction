@@ -147,12 +147,12 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
     ]),
     fukuchiyama: createLineObject("福知山線", ["fukuchiyama", "sasayamaguchi"]),
     hokuriku: createLineObject("北陸本線", [
-      "kanazawa",
-      "fukui",
-      "takefu",
-      "tsuruga",
-      "takatsuki--shiga",
       "maibara",
+      "takatsuki--shiga",
+      "tsuruga",
+      "takefu",
+      "fukui",
+      "kanazawa",
     ]),
     wakayama: createLineObject("和歌山線", [
       "oji",
@@ -169,6 +169,7 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "touei",
       "chubu-tenryu",
       "misakubo",
+      "ozore",
       "tenryukyo",
     ]),
     kansai: createLineObject("関西本線", ["kameyama", "yokkaichi", "nagoya"]),
@@ -191,6 +192,7 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
     meisho: createLineObject("名松線", ["matsusaka", "ieki", "ise-okitsu"]),
   },
   JREast: {
+    // FIXME: この松本などが検知されていない
     oito: createLineObject("大糸線", [
       "matsumoto",
       "kitamatsumoto",
@@ -206,6 +208,12 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "okaya",
       "shiojiri",
     ]),
+  },
+  ainokaze: {
+    ainokaze: createLineObject("あいの風とやま鉄道線", ["toyama", "tomari"]),
+  },
+  tokimeki: {
+    "hisui-line": createLineObject("糸魚川ひすいライン", ["itoigawa"]),
   },
   kintetsu: {
     osaka: createLineObject("近鉄大阪線", [
