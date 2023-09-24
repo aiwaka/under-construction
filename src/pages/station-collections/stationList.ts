@@ -192,7 +192,6 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
     meisho: createLineObject("名松線", ["matsusaka", "ieki", "ise-okitsu"]),
   },
   JREast: {
-    // FIXME: この松本などが検知されていない
     oito: createLineObject("大糸線", [
       "matsumoto",
       "kitamatsumoto",
