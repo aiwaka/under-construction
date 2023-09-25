@@ -32,7 +32,7 @@ const createLineObject = (lineName: string, stationIDs: string[]) => {
 const stationList: { [company: string]: { [lineId: string]: LineData } } = {
   JRWest: {
     ako: createLineObject("赤穂線", ["aioi", "banshu-ako", "saidaiji"]),
-    etsumiNorth: createLineObject("越美北線", [
+    "etsumi-north": createLineObject("越美北線", [
       "fukui",
       "echizen-ono",
       "kuzuryuko",
@@ -136,7 +136,7 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "sannnomiya",
     ]),
     nanao: createLineObject("七尾線", ["wakura-onsen"]),
-    nara: createLineObject("奈良線", ["kizu", "joyo", "kyoto"]),
+    nara: createLineObject("奈良線", ["kizu", "joyo", "tofukuji", "kyoto"]),
     hakubi: createLineObject("伯備線", ["okayama", "soja", "niimi"]),
     hanwa: createLineObject("阪和線", ["tennnoji", "nagai", "wakayama"]),
     bantan: createLineObject("播但線", [
@@ -149,9 +149,12 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
     hokuriku: createLineObject("北陸本線", [
       "maibara",
       "takatsuki--shiga",
+      "omi-shiotsu",
       "tsuruga",
       "takefu",
       "fukui",
+      "awazu",
+      "komatsu",
       "kanazawa",
     ]),
     wakayama: createLineObject("和歌山線", [
@@ -192,7 +195,6 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
     meisho: createLineObject("名松線", ["matsusaka", "ieki", "ise-okitsu"]),
   },
   JREast: {
-    // FIXME: この松本などが検知されていない
     oito: createLineObject("大糸線", [
       "matsumoto",
       "kitamatsumoto",
