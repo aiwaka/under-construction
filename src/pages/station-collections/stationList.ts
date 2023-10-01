@@ -16,9 +16,9 @@ const createLineObject = (lineName: string, stationIDs: string[]) => {
       if (id in stationDict) {
         return { name: stationDict[id], slug: id };
       } else {
-        console.warn(
-          `[station/index.astro]: slug id '${id}' undefined (in yaml dict).`,
-        );
+        // console.warn(
+        //   `[station/index.astro]: slug id '${id}' undefined (in yaml dict).`,
+        // );
         return [];
       }
     }),
@@ -175,7 +175,7 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "ozore",
       "tenryukyo",
     ]),
-    kansai: createLineObject("関西本線", ["kameyama", "yokkaichi", "nagoya"]),
+    kansai: createLineObject("関西本線", ["nagoya", "yokkaichi", "kameyama"]),
     kisei: createLineObject("紀勢本線", [
       "shingu",
       "kumanoshi",
