@@ -10,11 +10,11 @@ import {
   type DownloadedStationCollection,
 } from "../../lib/schema/station/image";
 
+import { getLogger } from "../utils";
+
 const PKG_NAME = "load-station-collections";
 
-const consoleLogUsingPackageName = (...args: string[]) => {
-  console.log(`[${PKG_NAME}] `, ...args);
-};
+const consoleLogUsingPackageName = getLogger(PKG_NAME);
 
 /** このインテグレーションのオプション */
 interface LoadMicroCMSImageOptions {
@@ -134,8 +134,14 @@ export default function loadMicroCMSImageData(
             };
           });
 
-          fs.writeFileSync(dataPath, JSON.stringify(resultContents));
-          consoleLogUsingPackageName("fetch and dump finished.");
+          const stringified = JSON.stringify(resultContents);
+          fs.writeFileSync(dataPath, stringified);
+          const byteLength = Buffer.byteLength(stringified);
+          consoleLogUsingPackageName(
+            `fetch and dump finished. (${
+              Math.round(byteLength / 10.24) / 100
+            } KiB)`,
+          );
         } catch (e) {
           if (ignoreNoData) {
             console.error(e);

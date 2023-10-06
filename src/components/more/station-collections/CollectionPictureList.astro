@@ -12,31 +12,39 @@ const { images, ...globalAttrs } = Astro.props;
 const list = Array.isArray(images) ? images : [images];
 ---
 
-<div class="image-container">
+<div class="picture-list-container">
   {
     list.length === 0 ? (
       <p class="no-image">写真がありません。</p>
     ) : (
-      list.map((item) => {
-        const { src, width, height, alt, caption, ...attrs } = item;
+      <div class="image-container">
+        {list.map((item) => {
+          const { src, width, height, alt, caption, ...attrs } = item;
 
-        return (
-          <CollectionPicture
-            src={src}
-            width={width}
-            height={height}
-            alt={alt}
-            caption={caption}
-            {...attrs}
-            {...globalAttrs}
-          />
-        );
-      })
+          return (
+            <CollectionPicture
+              src={src}
+              width={width}
+              height={height}
+              alt={alt}
+              caption={caption}
+              {...attrs}
+              {...globalAttrs}
+            />
+          );
+        })}
+      </div>
     )
   }
 </div>
 
 <style>
+  .picture-list-container {
+    margin: 1.5rem auto;
+    @media (max-width: 1024px) {
+      margin: 0.7rem auto;
+    }
+  }
   .image-container {
     display: flex;
     flex-wrap: wrap;
@@ -45,8 +53,5 @@ const list = Array.isArray(images) ? images : [images];
     @media (max-width: 1024px) {
       flex-direction: column;
     }
-  }
-  .no-image {
-    margin: 1.5rem auto;
   }
 </style>

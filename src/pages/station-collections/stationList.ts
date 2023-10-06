@@ -1,13 +1,15 @@
-import fs from "node:fs";
-import yaml from "yaml";
+import {
+  getDownloadedStationCollectionsData,
+  getStationDict,
+} from "@lib/more/station-collections/getData";
 
 import type { LineData } from "@lib/types";
-import { getCollection } from "astro:content";
 
 /** 全駅のIDと駅名対応マップ */
-const stationDict: { [id: string]: string } = yaml.parse(
-  fs.readFileSync("src/pages/station-collections/stationDict.yaml", "utf8"),
-);
+// const stationDict: { [id: string]: string } = yaml.parse(
+//   fs.readFileSync("src/pages/station-collections/stationDict.yaml", "utf8"),
+// );
+const stationDict = await getStationDict();
 
 const createLineObject = (lineName: string, stationIDs: string[]) => {
   return {
@@ -17,7 +19,7 @@ const createLineObject = (lineName: string, stationIDs: string[]) => {
         return { name: stationDict[id], slug: id };
       } else {
         // console.warn(
-        //   `[station/index.astro]: slug id '${id}' undefined (in yaml dict).`,
+        //   `[station/index.astro]: slug id '${id}' undefined.`,
         // );
         return [];
       }
@@ -268,13 +270,12 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
   },
 };
 
-const stationCollections = await getCollection("station");
-const stationIDsInCollections = stationCollections.map((sta) => sta.slug);
-/** データに見当たらないものはdisabledとする */
+const downloadedData = getDownloadedStationCollectionsData();
+/** リモートのデータに無いものはdisabledとする */
 Object.values(stationList).forEach((lines) => {
   Object.values(lines).forEach((line) => {
     line.stations.forEach((sta) => {
-      if (!(stationIDsInCollections as readonly string[]).includes(sta.slug)) {
+      if (!Object.keys(downloadedData).includes(sta.slug)) {
         sta["disabled"] = true;
       }
     });
