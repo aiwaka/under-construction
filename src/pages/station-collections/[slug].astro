@@ -4,12 +4,15 @@ import { getImage } from "astro:assets";
 
 import allStationList from "./stationList";
 
-import type { DownloadedStationCollection } from "@lib/schema/station";
+import type {
+  DownloadedStationCollection,
+  StationImageTypeOptions,
+} from "@lib/schema/station";
 import type { LineData } from "@lib/types";
 import { dateText } from "@lib/utils";
 import {
   getStationEntries,
-  getLocalStationCollectionsData,
+  getDownloadedStationCollectionsData,
 } from "@lib/more/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
@@ -21,7 +24,7 @@ export async function getStaticPaths() {
   let stationCollectionsFetchFailed = false;
   let stationCollectionsData: DownloadedStationCollection | null = null;
   try {
-    stationCollectionsData = getLocalStationCollectionsData();
+    stationCollectionsData = getDownloadedStationCollectionsData();
   } catch (e) {
     console.error(e);
     stationCollectionsFetchFailed = true;
@@ -117,7 +120,8 @@ export async function getStaticPaths() {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { entry, jaLineNames, siblingsStations } = Astro.props as Props;
-const { name, CommentContent, updatedAt, images, firstVisitDate } = entry;
+const { name, CommentContent, updatedAt, images, firstVisitDate, noDataFlag } =
+  entry;
 
 // typeが駅舎のものを探す。無ければのものを使う
 const thumbImage = images.find((img) => img.type.includes("駅舎")) || images[0];
@@ -126,6 +130,18 @@ const thumbnail = await getImage({
   height: thumbImage.height,
   width: thumbImage.width,
 });
+
+const imageOptions = [
+  "駅舎",
+  "駅構内",
+  "駅周辺",
+  "駅名標",
+  "車両",
+  "時刻表",
+  "路線図",
+  "スタンプ",
+  "切符",
+] satisfies StationImageTypeOptions[];
 
 const PAGE_NAME = `Under Construction | 鉄道駅コレクション ${name}` as const;
 
@@ -172,49 +188,29 @@ const ogp = {
     />
   </div>
 
-  <h2>コメント</h2>
   <div class="comment-container">
     <CommentContent class="comment" />
   </div>
 
-  <h2>駅舎</h2>
-  <CollectionPictureList
-    images={images.filter((i) => i.type.includes("駅舎"))}
-  />
+  {
+    imageOptions.map((opt) => {
+      return (
+        <>
+          <h2>{opt}</h2>
+          {noDataFlag.includes(opt) ? (
+            <div style="margin: 1.5rem auto;">
+              <p>この駅には該当するものがありません。</p>
+            </div>
+          ) : (
+            <CollectionPictureList
+              images={images.filter((i) => i.type.includes(opt))}
+            />
+          )}
+        </>
+      );
+    })
+  }
 
-  <h2>構内</h2>
-  <CollectionPictureList
-    images={images.filter((i) => i.type.includes("駅構内"))}
-  />
-
-  <h2>駅周辺</h2>
-  <CollectionPictureList
-    images={images.filter((i) => i.type.includes("駅周辺"))}
-  />
-  <h2>駅名標</h2>
-  <CollectionPictureList
-    images={images.filter((i) => i.type.includes("駅名標"))}
-  />
-  <h2>車両</h2>
-  <CollectionPictureList
-    images={images.filter((i) => i.type.includes("車両"))}
-  />
-  <h2>時刻表</h2>
-  <CollectionPictureList
-    images={images.filter((i) => i.type.includes("時刻表"))}
-  />
-  <h2>路線図</h2>
-  <CollectionPictureList
-    images={images.filter((i) => i.type.includes("路線図"))}
-  />
-  <h2>スタンプ</h2>
-  <CollectionPictureList
-    images={images.filter((i) => i.type.includes("スタンプ"))}
-  />
-  <h2>切符</h2>
-  <CollectionPictureList
-    images={images.filter((i) => i.type.includes("切符"))}
-  />
   <h2>隣の訪れた駅</h2>
   {
     siblingsStations.map((line) => {
@@ -249,6 +245,9 @@ const ogp = {
 </GeneralPageLayout>
 
 <style>
+  .comment-container {
+    margin: 1.5rem auto;
+  }
   .comment-container :global(a) {
     color: darkgoldenrod;
     &:hover {

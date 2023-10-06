@@ -1,2 +1,5 @@
-export { getStationEntries, getLocalStationCollectionsData } from "./getData";
+export {
+  getStationEntries,
+  getDownloadedStationCollectionsData,
+} from "./getData";
 export type { StationEntry, StationImage } from "./types";
