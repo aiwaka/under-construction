@@ -29,7 +29,7 @@ export const getStationEntries = async (
   return stationEntries;
 };
 
-export const getLocalStationCollectionsData = () => {
+const getDownloadedStationCollectionsPath = () => {
   // ファイル読み込み作業
   const dataDir = import.meta.env.DEV
     ? "../../../generated/station-collections.json"
@@ -43,6 +43,11 @@ export const getLocalStationCollectionsData = () => {
       `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
     throw errorMessage;
   }
+  return resolvedDataPath;
+};
+
+export const getDownloadedStationCollectionsData = () => {
+  const resolvedDataPath = getDownloadedStationCollectionsPath();
   const stationCollectionsData: DownloadedStationCollection = JSON.parse(
     fs.readFileSync(resolvedDataPath, "utf8"),
   );

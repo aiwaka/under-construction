@@ -5,6 +5,7 @@ import { DateTime } from "luxon";
 import type {
   DownloadedStationCollection,
   DownloadedStationImage,
+  StationImageTypeOptions,
 } from "./image";
 import type { CollectionStationSchema } from "./collectionSchema";
 
@@ -21,6 +22,7 @@ export class CollectionsStationEntry
   /** 路線ID文字列の列 */
   public lines: string[];
   public firstVisitDate?: Date;
+  public noDataFlag: StationImageTypeOptions[];
   /** UTC文字列で保持 */
   public createdAt!: string;
   public updatedAt!: string;
@@ -33,6 +35,7 @@ export class CollectionsStationEntry
     this.name = data.name;
     this.lines = data.lines;
     this.firstVisitDate = data.firstVisitDate;
+    this.noDataFlag = data.noDataFlag;
   }
 
   public static async create(
@@ -60,19 +63,15 @@ export class CollectionsStationEntry
       images: microCMSImages,
       ...rest
     } = this;
-    const images = microCMSImages.map((img) => {
-      const photoOrStampText = img.type.includes("スタンプ") ? "押印" : "撮影";
-      const photoDateText = img.date
-        ? dateText(new Date(img.date)) + photoOrStampText
-        : photoOrStampText + "日不明";
-      const captionText =
-        photoDateText + (img.comment ? "：" + img.comment : "");
+    const images = microCMSImages.map((img, i) => {
+      const photoDateText = img.date ? dateText(new Date(img.date)) : "不明";
       return {
         src: img.image.url,
         width: img.image.width,
         height: img.image.height,
-        alt: `${img.type}の画像`,
-        caption: captionText,
+        alt: `${img.type.join("・")}の画像`,
+        caption:
+          `${photoDateText}撮影` + (img.comment ? "：" + img.comment : ""),
         type: img.type,
         comment: img.comment,
         date: img.date,
