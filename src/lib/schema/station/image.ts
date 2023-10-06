@@ -4,7 +4,7 @@ import { MicroCMSImageSchema } from "../image";
 
 import type { MicroCMSImageComplete } from "@lib/contents/types";
 
-export const stationImageTypeOptionsZodSchema = z.union([
+const stationImageTypeOptionsZodSchema = z.union([
   z.literal("駅舎"),
   z.literal("駅構内"),
   z.literal("駅周辺"),

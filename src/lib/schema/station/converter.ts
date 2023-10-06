@@ -5,7 +5,6 @@ import { DateTime } from "luxon";
 import type {
   DownloadedStationCollection,
   DownloadedStationImage,
-  StationImageTypeOptions,
 } from "./image";
 import type { CollectionStationSchema } from "./collectionSchema";
 
@@ -22,7 +21,6 @@ export class CollectionsStationEntry
   /** 路線ID文字列の列 */
   public lines: string[];
   public firstVisitDate?: Date;
-  public noDataFlag: StationImageTypeOptions[];
   /** UTC文字列で保持 */
   public createdAt!: string;
   public updatedAt!: string;
@@ -35,7 +33,6 @@ export class CollectionsStationEntry
     this.name = data.name;
     this.lines = data.lines;
     this.firstVisitDate = data.firstVisitDate;
-    this.noDataFlag = data.noDataFlag;
   }
 
   public static async create(

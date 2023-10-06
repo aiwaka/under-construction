@@ -1,15 +1,13 @@
-import {
-  getDownloadedStationCollectionsData,
-  getStationDict,
-} from "@lib/more/station-collections/getData";
+import fs from "node:fs";
+import yaml from "yaml";
 
 import type { LineData } from "@lib/types";
+import { getCollection } from "astro:content";
 
 /** 全駅のIDと駅名対応マップ */
-// const stationDict: { [id: string]: string } = yaml.parse(
-//   fs.readFileSync("src/pages/station-collections/stationDict.yaml", "utf8"),
-// );
-const stationDict = await getStationDict();
+const stationDict: { [id: string]: string } = yaml.parse(
+  fs.readFileSync("src/pages/station-collections/stationDict.yaml", "utf8"),
+);
 
 const createLineObject = (lineName: string, stationIDs: string[]) => {
   return {
@@ -270,12 +268,13 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
   },
 };
 
-const downloadedData = getDownloadedStationCollectionsData();
-/** リモートのデータに無いものはdisabledとする */
+const stationCollections = await getCollection("station");
+const stationIDsInCollections = stationCollections.map((sta) => sta.slug);
+/** データに見当たらないものはdisabledとする */
 Object.values(stationList).forEach((lines) => {
   Object.values(lines).forEach((line) => {
     line.stations.forEach((sta) => {
-      if (!Object.keys(downloadedData).includes(sta.slug)) {
+      if (!(stationIDsInCollections as readonly string[]).includes(sta.slug)) {
         sta["disabled"] = true;
       }
     });

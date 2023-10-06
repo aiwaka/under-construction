@@ -23,6 +23,4 @@ export interface StationEntry extends IsEntrySchema {
   firstVisitDate?: Date;
   /** 駅の説明文. コンポーネントまたはHTML文字列とし, そのままページに埋め込む. */
   CommentContent: string | AstroComponentFactory;
-  /** 特定の項目が存在しない場合は明示することを可能にする */
-  noDataFlag: StationImageTypeOptions[];
 }

@@ -11,7 +11,7 @@
   {#each lineData.stations as sta, i}
     <StationPageLink data={sta} />
     {#if i !== lineData.stations.length - 1}
-      <span>&mdash; </span>
+      <span>&mdash;</span>
     {/if}
   {/each}
 </div>
