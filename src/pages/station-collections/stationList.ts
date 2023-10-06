@@ -18,7 +18,9 @@ const createLineObject = (lineName: string, stationIDs: string[]) => {
       if (id in stationDict) {
         return { name: stationDict[id], slug: id };
       } else {
-        console.warn(`[station/index.astro]: slug id '${id}' undefined.`);
+        // console.warn(
+        //   `[station/index.astro]: slug id '${id}' undefined.`,
+        // );
         return [];
       }
     }),
@@ -32,7 +34,7 @@ const createLineObject = (lineName: string, stationIDs: string[]) => {
 const stationList: { [company: string]: { [lineId: string]: LineData } } = {
   JRWest: {
     ako: createLineObject("赤穂線", ["aioi", "banshu-ako", "saidaiji"]),
-    etsumiNorth: createLineObject("越美北線", [
+    "etsumi-north": createLineObject("越美北線", [
       "fukui",
       "echizen-ono",
       "kuzuryuko",
@@ -136,7 +138,7 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "sannnomiya",
     ]),
     nanao: createLineObject("七尾線", ["wakura-onsen"]),
-    nara: createLineObject("奈良線", ["kizu", "joyo", "kyoto"]),
+    nara: createLineObject("奈良線", ["kizu", "joyo", "tofukuji", "kyoto"]),
     hakubi: createLineObject("伯備線", ["okayama", "soja", "niimi"]),
     hanwa: createLineObject("阪和線", ["tennnoji", "nagai", "wakayama"]),
     bantan: createLineObject("播但線", [
@@ -147,12 +149,15 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
     ]),
     fukuchiyama: createLineObject("福知山線", ["fukuchiyama", "sasayamaguchi"]),
     hokuriku: createLineObject("北陸本線", [
-      "kanazawa",
-      "fukui",
-      "takefu",
-      "tsuruga",
-      "takatsuki--shiga",
       "maibara",
+      "takatsuki--shiga",
+      "omi-shiotsu",
+      "tsuruga",
+      "takefu",
+      "fukui",
+      "awazu",
+      "komatsu",
+      "kanazawa",
     ]),
     wakayama: createLineObject("和歌山線", [
       "oji",
@@ -169,9 +174,10 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "touei",
       "chubu-tenryu",
       "misakubo",
+      "ozore",
       "tenryukyo",
     ]),
-    kansai: createLineObject("関西本線", ["kameyama", "yokkaichi", "nagoya"]),
+    kansai: createLineObject("関西本線", ["nagoya", "yokkaichi", "kameyama"]),
     kisei: createLineObject("紀勢本線", [
       "shingu",
       "kumanoshi",
@@ -206,6 +212,12 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "okaya",
       "shiojiri",
     ]),
+  },
+  ainokaze: {
+    ainokaze: createLineObject("あいの風とやま鉄道線", ["toyama", "tomari"]),
+  },
+  tokimeki: {
+    "hisui-line": createLineObject("糸魚川ひすいライン", ["itoigawa"]),
   },
   kintetsu: {
     osaka: createLineObject("近鉄大阪線", [

@@ -63,15 +63,19 @@ export class CollectionsStationEntry
       images: microCMSImages,
       ...rest
     } = this;
-    const images = microCMSImages.map((img, i) => {
-      const photoDateText = img.date ? dateText(new Date(img.date)) : "不明";
+    const images = microCMSImages.map((img) => {
+      const photoOrStampText = img.type.includes("スタンプ") ? "押印" : "撮影";
+      const photoDateText = img.date
+        ? dateText(new Date(img.date)) + photoOrStampText
+        : photoOrStampText + "日不明";
+      const captionText =
+        photoDateText + (img.comment ? "：" + img.comment : "");
       return {
         src: img.image.url,
         width: img.image.width,
         height: img.image.height,
         alt: `${img.type.join("・")}の画像`,
-        caption:
-          `${photoDateText}撮影` + (img.comment ? "：" + img.comment : ""),
+        caption: captionText,
         type: img.type,
         comment: img.comment,
         date: img.date,
