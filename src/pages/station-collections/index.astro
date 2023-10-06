@@ -67,6 +67,13 @@ const ogp = {
     })
   }
 
+  <h2>大手私鉄</h2>
+  <h3>近畿日本鉄道</h3>
+  {
+    Object.values(stationList["kintetsu"]).map((dat) => {
+      return <LineContainer lineData={dat} />;
+    })
+  }
   <h2>その他私鉄</h2>
   <h3>一畑電鉄</h3>
   {
