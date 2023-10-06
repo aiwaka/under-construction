@@ -134,7 +134,6 @@ export default function loadMicroCMSImageData(
               Math.round(byteLength / 10.24) / 100
             } KiB)`,
           );
-          consoleLogUsingPackageName("fetch and dump finished.");
         } catch (e) {
           if (ignoreNoData) {
             console.error(e);

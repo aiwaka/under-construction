@@ -2,7 +2,7 @@
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 import LineContainer from "@components/more/station-collections/LineContainer.svelte";
 
-import stationList from "./stationList";
+import stationList from "@lib/more/station-collections/data/stationList";
 
 const ogp = {
   url: Astro.request.url,
@@ -25,8 +25,9 @@ const ogp = {
   <p>
     訪れた、とは、基本的には下車を指します。
     ホーム上に降り立ったのみの場合もときには含みますが、車窓のみの場合は基本的に含めないようにするつもりです。
-    並び順は路線は五十音順、駅は並び順です（一応下り方向のつもりですがあまり厳密ではありません）。
-    趣味なので多少曖昧な部分は残るかと思いますがご容赦ください。
+    並び順は路線は五十音順、駅は下り方向に並び順です（上り下りは厳密ではない場合があります）。
+    また、厳密にはその路線に含まれない駅も隣の駅を辿れるように系統によっては含めている場合があります。
+    いずれにせよ趣味なので多少曖昧な部分は残るかと思いますがご容赦ください。
   </p>
   <p>作成中なのでレイアウトはちょくちょく変わると思います。</p>
   {/* TODO: 目次を作る */}
