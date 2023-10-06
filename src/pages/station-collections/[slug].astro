@@ -9,7 +9,7 @@ import type { LineData } from "@lib/types";
 import { dateText } from "@lib/utils";
 import {
   getStationEntries,
-  getLocalStationCollectionsData,
+  getDownloadedStationCollectionsData,
 } from "@lib/more/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
@@ -21,7 +21,7 @@ export async function getStaticPaths() {
   let stationCollectionsFetchFailed = false;
   let stationCollectionsData: DownloadedStationCollection | null = null;
   try {
-    stationCollectionsData = getLocalStationCollectionsData();
+    stationCollectionsData = getDownloadedStationCollectionsData();
   } catch (e) {
     console.error(e);
     stationCollectionsFetchFailed = true;
