@@ -91,11 +91,13 @@ export class CollectionsBlogPostEntry
         );
       }
       const image = imagesData.thumbnail;
+      const specifiedWidth = Math.min(Math.round(image.width), 1200);
       // widthはURLクエリで指定し取得時点で縮小する（基本元の画像より小さめのサイズを指定するはずなので）.
-      const queriedUrl = `${image.url}?w=1024&fm=webp`;
+      const queriedUrl = `${image.url}?w=${specifiedWidth}&fm=webp`;
       // 最終的な画像のURL（最初はリモートURL）
       let resultImageUrl = queriedUrl;
       // NOTE: Astroのasset機能がリモート画像のダウンロードをサポートしたのでこれらの処理は不要
+      // コード自体不要だが一応コメントで残しておく.
       // if (import.meta.env.PROD) {
       //   // ビルドモードなら画像をダウンロードし, webpに変換した結果のファイルパスをURLとする
       //   const filename = `thumb-${entry.id}`;
