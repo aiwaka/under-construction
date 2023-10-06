@@ -54,7 +54,13 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "kyuhoji",
     ]),
     obama: createLineObject("小浜線", ["tsuruga", "mihama"]),
-    katamachi: createLineObject("片町線", ["kizu", "hanaten", "kyobashi"]),
+    katamachi: createLineObject("片町線", [
+      "kizu",
+      "hosono",
+      "doshishamae",
+      "hanaten",
+      "kyobashi",
+    ]),
     kansai: createLineObject("関西本線", [
       "kameyama",
       "tsuge",
@@ -139,7 +145,13 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "sannnomiya",
     ]),
     nanao: createLineObject("七尾線", ["wakura-onsen"]),
-    nara: createLineObject("奈良線", ["kizu", "joyo", "tofukuji", "kyoto"]),
+    nara: createLineObject("奈良線", [
+      "kizu",
+      "joyo",
+      "uji",
+      "tofukuji",
+      "kyoto",
+    ]),
     hakubi: createLineObject("伯備線", ["okayama", "soja", "niimi"]),
     hanwa: createLineObject("阪和線", ["tennnoji", "nagai", "wakayama"]),
     bantan: createLineObject("播但線", [
@@ -221,7 +233,7 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
     "hisui-line": createLineObject("糸魚川ひすいライン", ["itoigawa"]),
   },
   kintetsu: {
-    osaka: createLineObject("近鉄大阪線", [
+    osaka: createLineObject("大阪線", [
       "osaka-uehommachi",
       "tsuruhashi",
       "fuse",
@@ -229,8 +241,8 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "yamato-yagi",
       "ise-nakagawa",
     ]),
-    nagano: createLineObject("近鉄長野線", ["furuichi", "kawachi-nagano"]),
-    nara: createLineObject("近鉄奈良線", [
+    nagano: createLineObject("長野線", ["furuichi", "kawachi-nagano"]),
+    "kintetsu-nara": createLineObject("奈良線", [
       "osaka-namba",
       "kintetsu-nippombashi",
       "tsuruhashi",
@@ -240,6 +252,15 @@ const stationList: { [company: string]: { [lineId: string]: LineData } } = {
       "gakuenmae",
       "yamato-saidaiji",
       "kintetsu-nara",
+    ]),
+    // TODO: 路線名のみやすさと正式名称を両立させる仕組みを考える.
+    "kintetsu-kyoto": createLineObject("近鉄京都線", [
+      "yamato-saidaiji",
+      "takanohara",
+      "shin-hosono",
+      "kintetsu-tambabashi",
+      "jujo--kintetsu",
+      "kyoto",
     ]),
   },
   keihan: {
