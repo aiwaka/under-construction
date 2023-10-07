@@ -1,0 +1,25 @@
+---
+import type { CompanyDataSchema } from "@lib/types";
+
+import LineContainer from "./LineContainer.svelte";
+
+interface Props {
+  company: CompanyDataSchema;
+}
+
+const { company } = Astro.props;
+---
+
+<h3>{company.companyName}</h3>
+{
+  Object.values(company.lines).map((dat) => {
+    return <LineContainer lineData={dat} />;
+  })
+}
+
+<style>
+  h3 {
+    margin: 0.5rem auto;
+    margin-left: 0.4rem;
+  }
+</style>

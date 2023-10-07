@@ -1,18 +1,19 @@
 <script lang="ts">
-  import type { LineData } from "@lib/types";
+  import type { LineDataSchema } from "@lib/types";
 
   import StationPageLink from "./StationPageLink.svelte";
 
-  export let lineData: LineData;
+  export let lineData: LineDataSchema;
 </script>
 
 <div class="line-container">
-  <h4>{lineData.lineName}</h4>
+  <h4>{lineData.formalLineName}</h4>
   {#each lineData.stations as sta, i}
-    <StationPageLink data={sta} />
-    {#if i !== lineData.stations.length - 1}
-      <span>&mdash; </span>
-    {/if}
+    {#if sta.notBelongs}({/if}<StationPageLink
+      data={sta}
+    />{#if sta.notBelongs}){/if}{#if i !== lineData.stations.length - 1}<span
+        >&mdash;</span
+      >{/if}
   {/each}
 </div>
 

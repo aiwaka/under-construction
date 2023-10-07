@@ -8,11 +8,7 @@ import {
   type ImagesStorageSchema,
 } from "../../lib/schema/blog/image";
 
-import { getLogger } from "../utils";
-
 const PKG_NAME = "load-microcms-image";
-
-const consoleLogUsingPackageName = getLogger(PKG_NAME);
 
 /** このインテグレーションのオプション */
 interface LoadMicroCMSImageOptions {
@@ -37,13 +33,14 @@ export default function loadMicroCMSImageData(
   return {
     name: PKG_NAME,
     hooks: {
-      "astro:config:setup": async ({ command, isRestart }) => {
+      "astro:config:setup": async ({ command, isRestart, logger }) => {
         if (skip) {
-          consoleLogUsingPackageName("fetch skipped.");
+          logger.info("fetch skipped.");
+          // consoleLogUsingPackageName("fetch skipped.");
           return;
         }
         if (isRestart) {
-          consoleLogUsingPackageName("fetch skipped when restarting.");
+          logger.info("fetch skipped when restarting.");
           return;
         }
         try {
@@ -96,7 +93,7 @@ export default function loadMicroCMSImageData(
               }
               return dataFromMicroCMS;
             } catch (e) {
-              consoleLogUsingPackageName("data fetch failed...");
+              logger.error("data fetch failed...");
               if (import.meta.env.DEV && fs.existsSync(dataPath)) {
                 return DATA_ALREADY_EXISTS_FLAG;
               } else {
@@ -104,10 +101,10 @@ export default function loadMicroCMSImageData(
               }
             }
           };
-          consoleLogUsingPackageName("attempt to fetch data from microCMS.");
+          logger.info("attempt to fetch data from microCMS.");
           const imageDataFromMicroCMS = await getImagesDataFromMicroCMS();
           if (imageDataFromMicroCMS === DATA_ALREADY_EXISTS_FLAG) {
-            consoleLogUsingPackageName(
+            logger.warn(
               "fetch failed, but data file already exists. using it in dev mode.",
             );
             return;
@@ -129,7 +126,7 @@ export default function loadMicroCMSImageData(
           const stringified = JSON.stringify(resultContents);
           fs.writeFileSync(dataPath, stringified);
           const byteLength = Buffer.byteLength(stringified);
-          consoleLogUsingPackageName(
+          logger.info(
             `fetch and dump finished. (${
               Math.round(byteLength / 10.24) / 100
             } KiB)`,
@@ -137,7 +134,7 @@ export default function loadMicroCMSImageData(
         } catch (e) {
           if (ignoreNoData) {
             console.error(e);
-            consoleLogUsingPackageName(
+            logger.warn(
               "An error occurs while loading image-data, but ignore option is enabled.",
             );
           } else {
@@ -145,8 +142,8 @@ export default function loadMicroCMSImageData(
           }
         }
       },
-      "astro:build:setup": () => {
-        consoleLogUsingPackageName("copying data file.");
+      "astro:build:setup": ({ logger }) => {
+        logger.info("copying data file.");
         fs.mkdirSync("dist/generated", { recursive: true });
         fs.copyFileSync(
           `src/generated/${DATA_FILE_NAME}`,
