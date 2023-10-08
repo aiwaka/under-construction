@@ -1,8 +1,32 @@
 ---
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
-import LineContainer from "@components/more/station-collections/LineContainer.svelte";
+import CompanyContainer from "@components/more/station-collections/CompanyContainer.astro";
 
 import stationList from "@lib/more/station-collections/data/stationList";
+
+/**
+ * タグ文字列を用いて条件を満たす事業者の配列を返す.
+ * @param targetTagList 求めるタグ
+ * @param excludeTagList 除外するタグ
+ */
+const searchCompaniesByTag = (
+  targetTagList: string[],
+  excludeTagList: string[],
+) => {
+  return Object.values(stationList).filter((company) => {
+    return (
+      targetTagList.every((targetTag) => company.tag.has(targetTag)) &&
+      !excludeTagList.some((excludeTag) => company.tag.has(excludeTag))
+    );
+  });
+};
+
+const companyTagSetList: [string[], string[], string][] = [
+  [["JR"], [], "JR"],
+  [["semi-public"], [], "第三セクター"],
+  [["major-private"], [], "大手私鉄"],
+  [["private"], ["major-private"], "その他私鉄"],
+];
 
 const ogp = {
   url: Astro.request.url,
@@ -21,6 +45,8 @@ const ogp = {
     路線別に訪れた駅がまとまっています。
     駅名をタップまたはクリックすると写真の載った個別ページへ移動します。
     文字が薄い場合はページがまだ作られていません。
+    また、カッコで囲まれた駅は厳密にはその路線に属していないものです。
+    隣の駅を見やすいように各路線にそのような駅が含まれていることがあります。
   </p>
   <p>
     訪れた、とは、基本的には下車を指します。
@@ -31,54 +57,19 @@ const ogp = {
   </p>
   <p>作成中なのでレイアウトはちょくちょく変わると思います。</p>
   {/* TODO: 目次を作る */}
-  <h2>JR</h2>
-  <h3>JR西日本</h3>
-  {
-    Object.values(stationList["JRWest"]).map((dat) => {
-      return <LineContainer lineData={dat} />;
-    })
-  }
 
-  <h3>JR東海</h3>
   {
-    Object.values(stationList["JRCentral"]).map((dat) => {
-      return <LineContainer lineData={dat} />;
-    })
-  }
-
-  <h3>JR東日本</h3>
-  {
-    Object.values(stationList["JREast"]).map((dat) => {
-      return <LineContainer lineData={dat} />;
-    })
-  }
-
-  <h2>第三セクター鉄道</h2>
-  <h3>あいの風とやま鉄道</h3>
-  {
-    Object.values(stationList["ainokaze"]).map((dat) => {
-      return <LineContainer lineData={dat} />;
-    })
-  }
-  <h3>えちごトキめき鉄道</h3>
-  {
-    Object.values(stationList["tokimeki"]).map((dat) => {
-      return <LineContainer lineData={dat} />;
-    })
-  }
-
-  <h2>大手私鉄</h2>
-  <h3>近畿日本鉄道</h3>
-  {
-    Object.values(stationList["kintetsu"]).map((dat) => {
-      return <LineContainer lineData={dat} />;
-    })
-  }
-  <h2>その他私鉄</h2>
-  <h3>一畑電鉄</h3>
-  {
-    Object.values(stationList["ichibata"]).map((dat) => {
-      return <LineContainer lineData={dat} />;
+    companyTagSetList.map(([targetTagList, excludeTagList, sectionName]) => {
+      return (
+        <>
+          <h2>{sectionName}</h2>
+          {searchCompaniesByTag(targetTagList, excludeTagList).map(
+            (company) => {
+              return <CompanyContainer company={company} />;
+            },
+          )}
+        </>
+      );
     })
   }
 </GeneralPageLayout>
@@ -91,11 +82,7 @@ const ogp = {
     margin-left: 0.2rem;
     margin-bottom: 0.8rem;
   }
-  h3 {
-    margin: 0.5rem auto;
-    margin-left: 0.4rem;
-  }
-  details {
+  /* details {
     width: 90%;
     height: fit-content;
   }
@@ -106,5 +93,5 @@ const ogp = {
     background-color: #ddd;
     border: none;
     cursor: pointer;
-  }
+  } */
 </style>

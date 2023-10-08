@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { LineData } from "@lib/types";
+  import type { LineDataSchema } from "@lib/types";
 
-  export let data: LineData["stations"][number];
+  export let data: LineDataSchema["stations"][number];
   const { name, slug, disabled } = data;
 </script>
 
