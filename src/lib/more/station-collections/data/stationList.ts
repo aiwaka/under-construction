@@ -161,6 +161,7 @@ JRWestData.addLineData("tokaido", "東海道本線", [
 ]);
 JRWestData.addLineData("nanao", "七尾線", ["wakura-onsen"]);
 JRWestData.addLineData("nara", "奈良線", [
+  "nara",
   "kizu",
   "joyo",
   "uji",
