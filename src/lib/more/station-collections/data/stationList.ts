@@ -41,6 +41,9 @@ const keihanData = new CompanyData("keihan", "京阪電気鉄道", stationDict, 
 const ichibataData = new CompanyData("ichibata", "一畑電鉄", stationDict, [
   "private",
 ]);
+const eizanData = new CompanyData("eizan", "叡山電鉄", stationDict, [
+  "private",
+]);
 
 JRWestData.addLineData("ako", "赤穂線", ["aioi", "banshu-ako", "saidaiji"]);
 JRWestData.addLineData("etsumi-north", "越美北線", [
@@ -116,8 +119,10 @@ JRWestData.addLineData("kosei", "湖西線", [
   "omi-maiko",
   "omi-imazu",
   "omi-shiotsu",
+  "tsuruga",
 ]);
 JRWestData.addLineData("sakai", "境線", ["yonago", "sakai-minato"]);
+JRWestData.addLineData("sakurai", "桜井線", ["takada", "kanahashi", "nara"]);
 JRWestData.addLineData("sannin", "山陰本線", [
   "kyoto",
   "umekoji-kyotonishi",
@@ -157,6 +162,7 @@ JRWestData.addLineData("tokaido", "東海道本線", [
   "kishibe",
   "shin-osaka",
   "osaka",
+  "nishinomiya",
   "sannnomiya",
 ]);
 JRWestData.addLineData("nanao", "七尾線", ["wakura-onsen"]);
@@ -194,6 +200,7 @@ JRWestData.addLineData("hokuriku", "北陸本線", [
 JRWestData.addLineData("wakayama", "和歌山線", [
   "oji",
   "takada",
+  "yamato-shinjo",
   "gojo--jrw",
   "hashimoto",
   "wakayama",
@@ -207,6 +214,7 @@ JRCentralData.addLineData("iida", "飯田線", [
   "misakubo",
   "ozore",
   "tenryukyo",
+  "okaya",
 ]);
 JRCentralData.addLineData("kansai", "関西本線", [
   "nagoya",
@@ -318,6 +326,11 @@ keihanData.addLineData("keihan", "京阪本線", [
   "demachiyanagi",
 ]);
 keihanData.addLineData(
+  "oto",
+  ["京阪鴨東線", "鴨東線"],
+  ["sanjo", "jingumarutamachi", "demachiyanagi"],
+);
+keihanData.addLineData(
   "uji",
   ["京阪宇治線", "宇治線"],
   ["chushojima", "uji--keihan"],
@@ -333,6 +346,10 @@ ichibataData.addLineData(
   ["一畑電鉄大社線", "大社線"],
   ["kawato", "izumotaishamae"],
 );
+eizanData.addLineData("eizan", "叡山本線", [
+  "demachiyanagi",
+  "chayama-kyotogeijutsudaigaku",
+]);
 
 const stationList: { [companyId: string]: CompanyDataSchema } = {};
 
@@ -350,6 +367,7 @@ addCompanyData(tokitetsuData);
 addCompanyData(kintetsuData);
 addCompanyData(keihanData);
 addCompanyData(ichibataData);
+addCompanyData(eizanData);
 
 const downloadedData = getDownloadedStationCollectionsData();
 /** リモートのデータに無いものはdisabledとする */
