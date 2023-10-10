@@ -13,38 +13,38 @@ const stationDict = Object.fromEntries(
   stationCollections.map((sta) => [sta.slug, sta.data]),
 );
 
-const JRWestData = new CompanyData("JRWest", "JR西日本", stationDict, ["JR"]);
-const JRCentralData = new CompanyData("JRCentral", "JR東海", stationDict, [
-  "JR",
+const createCompanyData = (id: string, name: string, tags: string[]) => {
+  return new CompanyData(id, name, stationDict, tags);
+};
+
+// 企業データを定義
+const JRWestData = createCompanyData("JRWest", "JR西日本", ["JR"]);
+const JRCentralData = createCompanyData("JRCentral", "JR東海", ["JR"]);
+const JREastData = createCompanyData("JREast", "JR東日本", ["JR"]);
+const JRShikokuData = createCompanyData("JRShikoku", "JR四国", ["JR"]);
+const JRKyushuData = createCompanyData("JRKyushu", "JR九州", ["JR"]);
+const ainokazeData = createCompanyData("ainokaze", "あいの風とやま鉄道", [
+  "semi-public",
 ]);
-const JREastData = new CompanyData("JREast", "JR東日本", stationDict, ["JR"]);
-const ainokazeData = new CompanyData(
-  "ainokaze",
-  "あいの風とやま鉄道",
-  stationDict,
-  ["semi-public"],
-);
-const tokitetsuData = new CompanyData(
-  "tokitetsu",
-  "えちごトキめき鉄道",
-  stationDict,
-  ["semi-public"],
-);
-const kintetsuData = new CompanyData("kintetsu", "近畿日本鉄道", stationDict, [
+const tokitetsuData = createCompanyData("tokitetsu", "えちごトキめき鉄道", [
+  "semi-public",
+]);
+const kintetsuData = createCompanyData("kintetsu", "近畿日本鉄道", [
   "major-private",
   "private",
 ]);
-const keihanData = new CompanyData("keihan", "京阪電気鉄道", stationDict, [
+const keihanData = createCompanyData("keihan", "京阪電気鉄道", [
   "major-private",
   "private",
 ]);
-const ichibataData = new CompanyData("ichibata", "一畑電鉄", stationDict, [
-  "private",
-]);
-const eizanData = new CompanyData("eizan", "叡山電鉄", stationDict, [
+const ichibataData = createCompanyData("ichibata", "一畑電鉄", ["private"]);
+const eizanData = createCompanyData("eizan", "叡山電鉄", ["private"]);
+const iyotetsuData = createCompanyData("iyotetsu", "伊予鉄道", ["private"]);
+const kumamotoDentetsuData = createCompanyData("kumamoto", "熊本電鉄", [
   "private",
 ]);
 
+// ここから駅追加
 JRWestData.addLineData("ako", "赤穂線", ["aioi", "banshu-ako", "saidaiji"]);
 JRWestData.addLineData("etsumi-north", "越美北線", [
   "fukui",
@@ -100,6 +100,9 @@ JRWestData.addLineData("kisuki", "木次線", [
   "shinji",
 ]);
 JRWestData.addLineData("kisei", "紀勢本線", [
+  "wakayamashi",
+  "wakayama",
+  "kainan",
   "shirahama",
   "kushimoto",
   "kii-katsuura",
@@ -137,7 +140,7 @@ JRWestData.addLineData("sannin", "山陰本線", [
   "matsue",
   "shinji",
   "izumoshi",
-  "masuda",
+  "yunotsu",
   "hatabu",
 ]);
 JRWestData.addLineData("sanyo", "山陽本線", [
@@ -183,8 +186,9 @@ JRWestData.addLineData("bantan", "播但線", [
   "wadayama",
 ]);
 JRWestData.addLineData("fukuchiyama", "福知山線", [
-  "fukuchiyama",
+  "osaka",
   "sasayamaguchi",
+  "fukuchiyama",
 ]);
 JRWestData.addLineData("hokuriku", "北陸本線", [
   "maibara",
@@ -202,7 +206,7 @@ JRWestData.addLineData("wakayama", "和歌山線", [
   "takada",
   "yamato-shinjo",
   "gojo--jrw",
-  "hashimoto",
+  "hashimoto--wakayama",
   "wakayama",
 ]);
 
@@ -248,20 +252,43 @@ JREastData.addLineData("oito", "大糸線", [
   "kitamatsumoto",
   "shinano-omachi",
   "minamiotari",
-]),
-  JREastData.addLineData("shinonoi", "篠ノ井線", ["shiojiri", "matsumoto"]),
-  JREastData.addLineData("chuo", "中央本線", [
-    "shinjuku",
-    "takao",
-    "kobuchizawa",
-    "kofu",
-    "okaya",
-    "shiojiri",
-  ]),
-  ainokazeData.addLineData("ainokaze", "あいの風とやま鉄道線", [
-    "toyama",
-    "tomari",
-  ]);
+]);
+JREastData.addLineData("shinonoi", "篠ノ井線", ["shiojiri", "matsumoto"]);
+JREastData.addLineData("chuo", "中央本線", [
+  "shinjuku",
+  "takao",
+  "kobuchizawa",
+  "kofu",
+  "okaya",
+  "shiojiri",
+]);
+
+JRShikokuData.addLineData("yosan", "予讃線", [
+  "takamatsu",
+  "tadotsu",
+  "matsuyama",
+]);
+JRShikokuData.addLineData("dosan", "土讃線", ["tadotsu", "kochi"]);
+JRShikokuData.addLineData("tokushima", "徳島線", ["gaku", "tokushima"]);
+JRShikokuData.addLineData("kotoku", "高徳線", ["takamatsu", "tokushima"]);
+
+JRKyushuData.addLineData("hohi", "豊肥本線", ["kumamoto", "musashizuka"]);
+JRKyushuData.addLineData("kagoshima", "鹿児島本線", [
+  "mojiko",
+  "moji",
+  "kokura",
+  "orio",
+  "hakata",
+  "kurume",
+  "kamikumamoto",
+  "kumamoto",
+]);
+JRKyushuData.addLineData("sanyo", "山陽本線", ["shimonoseki", "moji"]);
+
+ainokazeData.addLineData("ainokaze", "あいの風とやま鉄道線", [
+  "toyama",
+  "tomari",
+]);
 tokitetsuData.addLineData("hisui-line", "糸魚川ひすいライン", ["itoigawa"]);
 
 kintetsuData.addLineData(
@@ -274,6 +301,30 @@ kintetsuData.addLineData(
     "yamato-takada",
     "yamato-yagi",
     "ise-nakagawa",
+  ],
+);
+kintetsuData.addLineData(
+  "kashihara",
+  ["近鉄橿原線", "橿原線"],
+  [
+    "yamato-saidaiji",
+    "kintetsu-koriyama",
+    "tawaramoto",
+    "ninokuchi",
+    "yamato-yagi",
+    "kashiharajingumae",
+  ],
+);
+kintetsuData.addLineData(
+  "kintetsu-kyoto",
+  ["近鉄京都線", "京都線"],
+  [
+    "kyoto",
+    "jujo--kintetsu",
+    "kintetsu-tambabashi",
+    "shin-hosono",
+    "takanohara",
+    "yamato-saidaiji",
   ],
 );
 kintetsuData.addLineData(
@@ -297,17 +348,11 @@ kintetsuData.addLineData(
   ],
 );
 kintetsuData.addLineData(
-  "kintetsu-kyoto",
-  ["近鉄京都線", "京都線"],
-  [
-    "yamato-saidaiji",
-    "takanohara",
-    "shin-hosono",
-    "kintetsu-tambabashi",
-    "jujo--kintetsu",
-    "kyoto",
-  ],
+  "yoshino",
+  ["近鉄吉野線", "吉野線"],
+  ["kashiharajingumae", "yoshino"],
 );
+
 keihanData.addLineData("keihan", "京阪本線", [
   "yodoyabashi",
   "kitahama",
@@ -350,6 +395,23 @@ eizanData.addLineData("eizan", "叡山本線", [
   "demachiyanagi",
   "chayama-kyotogeijutsudaigaku",
 ]);
+iyotetsuData.addLineData("jonan", "城南線", ["dogo-onsen"]);
+kumamotoDentetsuData.addLineData(
+  "kikuchi",
+  ["熊本電鉄菊池線", "菊池線"],
+  [
+    "miyoshi--kumamoto",
+    "kuroishi--kumamoto",
+    "shin-suya",
+    "kitakumamoto",
+    "kamikumamoto",
+  ],
+);
+kumamotoDentetsuData.addLineData(
+  "fujisaki",
+  ["熊本電鉄藤崎線", "藤崎線"],
+  ["kitakumamoto", "fujisakigumae"],
+);
 
 const stationList: { [companyId: string]: CompanyDataSchema } = {};
 
@@ -362,12 +424,16 @@ const addCompanyData = (...companyData: CompanyData[]) => {
 addCompanyData(JRWestData);
 addCompanyData(JRCentralData);
 addCompanyData(JREastData);
+addCompanyData(JRShikokuData);
+addCompanyData(JRKyushuData);
 addCompanyData(ainokazeData);
 addCompanyData(tokitetsuData);
 addCompanyData(kintetsuData);
 addCompanyData(keihanData);
 addCompanyData(ichibataData);
 addCompanyData(eizanData);
+addCompanyData(iyotetsuData);
+addCompanyData(kumamotoDentetsuData);
 
 const downloadedData = getDownloadedStationCollectionsData();
 /** リモートのデータに無いものはdisabledとする */
