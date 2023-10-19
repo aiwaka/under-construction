@@ -128,12 +128,18 @@ const { name, CommentContent, updatedAt, images, firstVisitDate, noDataFlag } =
   entry;
 
 // typeが駅舎のものを探す。無ければのものを使う
-const thumbImage = images.find((img) => img.type.includes("駅舎")) || images[0];
-const thumbnail = await getImage({
-  src: thumbImage.src,
-  height: thumbImage.height,
-  width: thumbImage.width,
-});
+const thumbImage =
+  images.length === 0
+    ? null
+    : images.find((img) => img.type.includes("駅舎")) || images[0];
+const thumbnail =
+  thumbImage === null
+    ? null
+    : await getImage({
+        src: thumbImage.src,
+        height: thumbImage.height,
+        width: thumbImage.width,
+      });
 
 const imageOptions = [
   "駅舎",
@@ -157,7 +163,7 @@ const ogp = {
   siteName: "Under Construction",
   image:
     "https://aiwaka.github.io" +
-    (thumbnail.src ?? "/under-construction/img/blue_2.png"),
+    (thumbnail?.src ?? "/under-construction/img/blue_2.png"),
 };
 ---
 
@@ -181,16 +187,20 @@ const ogp = {
       {dateText(new Date(updatedAt))}更新
     </span>
   </div>
-  <div class="img-container">
-    <img
-      src={thumbnail.src}
-      width={thumbnail.attributes.width}
-      height={thumbnail.attributes.height}
-      alt={thumbnail.attributes.alt}
-      loading="eager"
-      decoding="async"
-    />
-  </div>
+  {
+    thumbnail !== null && (
+      <div class="img-container">
+        <img
+          src={thumbnail.src}
+          width={thumbnail.attributes.width}
+          height={thumbnail.attributes.height}
+          alt={thumbnail.attributes.alt}
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    )
+  }
 
   <div class="comment-container">
     <CommentContent class="comment" />

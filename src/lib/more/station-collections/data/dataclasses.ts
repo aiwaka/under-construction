@@ -18,7 +18,7 @@ export class CompanyData implements CompanyDataSchema {
     companyId: string,
     companyName: string,
     stationDict: StationDict,
-    tag: string[] = [],
+    tag: Iterable<string> = [],
   ) {
     this.companyId = companyId;
     this.companyName = companyName;
