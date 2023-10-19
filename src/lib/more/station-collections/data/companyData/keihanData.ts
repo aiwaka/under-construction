@@ -32,4 +32,15 @@ keihanData.addLineData(
   ["京阪宇治線", "宇治線"],
   ["chushojima", "uji--keihan"],
 );
+keihanData.addLineData(
+  "ishiyama-sakamoto",
+  ["京阪石山坂本線", "石山坂本線"],
+  ["ishiyamadera", "keihan-ishiyama", "biwako-hamaotsu"],
+);
+keihanData.addLineData(
+  "keishin",
+  ["京阪京津線", "京津線"],
+  ["misasagi", "keihan-yamashina", "biwako-hamaotsu"],
+);
+
 export default keihanData;

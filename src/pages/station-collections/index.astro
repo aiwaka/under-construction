@@ -21,11 +21,13 @@ const searchCompaniesByTag = (
   });
 };
 
+/** 一致タグ, 除外タグ, 見出しタイトルの順で文字列を入れる */
 const companyTagSetList: [string[], string[], string][] = [
   [["JR"], [], "JR"],
   [["semi-public"], [], "第三セクター"],
   [["major-private"], [], "大手私鉄"],
   [["private"], ["major-private"], "その他私鉄"],
+  [["municipal"], [], "公営交通"],
 ];
 
 const ogp = {

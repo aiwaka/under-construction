@@ -72,6 +72,7 @@ export async function getStaticPaths() {
       ),
     );
     // 路線ごとに隣の駅を算出する
+    // TODO: すべて同じ企業の駅の場合は正式な路線名を使う
     interface SiblingStationType {
       lineName: string;
       prev?: LineDataSchema["stations"][number];

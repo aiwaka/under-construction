@@ -33,7 +33,7 @@ JRWestData.addLineData("kansai", "関西本線", [
   "kameyama",
   "tsuge",
   "iga-ueno",
-  "kamo",
+  "kamo--kyoto",
   "kizu",
   "nara",
   "oji",
@@ -119,7 +119,9 @@ JRWestData.addLineData("tsuyama", "津山線", ["tsuyama", "kanagawa", "okayama"
 JRWestData.addLineData("tokaido", "東海道本線", [
   "maibara",
   "kusatsu",
+  "ishiyama",
   "otsu",
+  "yamashina",
   "kyoto",
   "kishibe",
   "shin-osaka",
