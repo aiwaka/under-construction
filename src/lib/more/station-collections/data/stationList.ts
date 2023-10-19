@@ -17,6 +17,7 @@ import ichibataData from "./companyData/ichibataData";
 import eizanData from "./companyData/eizanData";
 import iyotetsuData from "./companyData/iyotetsuData";
 import kikudenData from "./companyData/kikudenData";
+import kyotoCityData from "./companyData/kyotoCityData";
 
 const stationList: { [companyId: string]: CompanyDataSchema } = {};
 
@@ -39,6 +40,7 @@ addCompanyData(ichibataData);
 addCompanyData(eizanData);
 addCompanyData(iyotetsuData);
 addCompanyData(kikudenData);
+addCompanyData(kyotoCityData);
 
 const downloadedData = getDownloadedStationCollectionsData();
 /** リモートのデータに無いものはdisabledとする */

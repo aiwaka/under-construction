@@ -6,6 +6,11 @@ const kintetsuData = createCompanyData("kintetsu", "近畿日本鉄道", [
 ]);
 
 kintetsuData.addLineData(
+  "ikoma",
+  ["近鉄生駒線", "生駒線"],
+  ["ikoma", "nabata", "minamiikoma", "higashiyama--nara", "heguri", "oji"],
+);
+kintetsuData.addLineData(
   "osaka",
   ["近鉄大阪線", "大阪線"],
   [
@@ -35,11 +40,17 @@ kintetsuData.addLineData(
   [
     "kyoto",
     "jujo--kintetsu",
+    "takeda",
     "kintetsu-tambabashi",
     "shin-hosono",
     "takanohara",
     "yamato-saidaiji",
   ],
+);
+kintetsuData.addLineData(
+  "keihannna",
+  ["近鉄けいはんな線", "けいはんな線"],
+  ["ikoma", "gakken-kitaikoma", "gakken-naratomigaoka"],
 );
 kintetsuData.addLineData(
   "nagano",
