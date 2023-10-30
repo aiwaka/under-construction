@@ -9,7 +9,7 @@ import type {
 } from "./image";
 import type { CollectionStationSchema } from "./collectionSchema";
 
-import type { StationEntry } from "@lib/more/station-collections";
+import type { StationEntry } from "@lib/other/station-collections";
 import type { ToEntryObject } from "@lib/types";
 import { dateText } from "@lib/utils";
 
