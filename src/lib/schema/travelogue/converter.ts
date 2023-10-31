@@ -8,7 +8,6 @@ import type {
 } from "./collectionSchema";
 
 import type { ToEntryObject } from "@lib/types";
-import { dateText } from "@lib/utils";
 import type { TravelogueEntry } from "@lib/contents/travelogue";
 import { CollectionsBlogPostEntry } from "../blog";
 import type { BlogPostEntry } from "@lib/contents/blog";
@@ -24,8 +23,8 @@ export class CollectionsTravelogueEntry
   public description: string;
   public thumbnail: string;
   public thumbnailFormat: TravelogueThumbFormatEnum | null;
-  public date: Date;
-  public updatedAt: Date;
+  public startDate: Date;
+  public endDate: Date;
   public CommentContent!: AstroComponentFactory;
   public posts: { collection: "blog"; slug: CollectionEntry<"blog">["slug"] }[];
   public routes: {
@@ -43,8 +42,8 @@ export class CollectionsTravelogueEntry
     this.description = data.description;
     this.thumbnail = data.thumbnail;
     this.thumbnailFormat = data.thumbnailFormat;
-    this.date = data.date;
-    this.updatedAt = data.updateDate ?? data.date;
+    this.startDate = data.startDate;
+    this.endDate = data.endDate;
     this.posts = data.posts;
     this.routes = data.routes;
   }
@@ -73,15 +72,17 @@ export class CollectionsTravelogueEntry
   }
 
   toEntryObject() {
-    const { postsObj, routeObj, date, CommentContent, ...rest } = this;
+    const { postsObj, routeObj, CommentContent, ...rest } = this;
 
     return {
       ...rest,
       posts: postsObj,
       routes: routeObj,
-      createdAt: date,
       Content: CommentContent,
       thumbnail: postsObj[0].thumbnail,
+      // * IsEntrySchemaで要求されるこれらの値はここでは無意味なのでダミーにする（設計が悪い）
+      createdAt: this.startDate,
+      updatedAt: this.startDate,
       isEntrySchema: null,
     } satisfies TravelogueEntry;
   }

@@ -13,8 +13,9 @@ export const CollectionTravelogueZodSchema = z
     // TODO: このサムネイル情報は使っていない. ブログのサムネイルから持ってこられると嬉しいのでなんとかする. その後はプロパティを削除する.
     thumbnail: z.string(),
     thumbnailFormat: TravelogueThumbFormatZodSchema.nullable().default(null),
-    date: z.date(),
-    updateDate: z.date().optional(),
+    // TODO: これらはpostsから自動で算出できるのが望ましい. blogのdateの仕様を旅行記に限り変更する.
+    startDate: z.date(),
+    endDate: z.date(),
     posts: reference("blog").array(),
     routes: reference("travelRoute"),
   })

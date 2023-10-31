@@ -13,6 +13,10 @@ export interface TravelogueEntry extends IsEntrySchema {
   title: string;
   /** 説明文 */
   description: string;
+  /** 開始日 */
+  startDate: Date;
+  /** 終了日 */
+  endDate: Date;
   /** コンテンツで, HTML文字列. そのままページに埋め込む. */
   Content: string | AstroComponentFactory;
   /** サムネイル */
