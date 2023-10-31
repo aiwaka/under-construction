@@ -1,9 +1,9 @@
 // import type { AstroComponentFactory } from "astro/runtime/server/index.js";
-import type { CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 import type { CollectionTravelRouteSchema } from "./collectionSchema";
 
-import type { TravelRouteEntry } from "@lib/other/station-collections";
+import { type TravelRouteEntry } from "@lib/other/station-collections";
 import type { ToEntryObject } from "@lib/types";
 
 /** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
@@ -15,7 +15,10 @@ export class CollectionsTravelRouteEntry
   public date: Date;
   public route: {
     name: string;
-    stationId?: string;
+    station?: {
+      collection: "station";
+      slug: CollectionEntry<"station">["slug"];
+    };
     nextTransport?: string;
     arrivalTime: Date;
     departureTime?: Date;
@@ -41,12 +44,18 @@ export class CollectionsTravelRouteEntry
   }
 
   toEntryObject() {
-    const { date: createdAt, ...rest } = this;
+    const { date: createdAt, route: rawRoute, ...rest } = this;
     const updatedAt = createdAt;
+
+    const route = rawRoute.map((item) => {
+      const { station, ...rest } = item;
+      return { stationId: station?.slug, ...rest };
+    });
 
     return {
       createdAt,
       updatedAt,
+      route,
       ...rest,
       isEntrySchema: null,
     } satisfies TravelRouteEntry;

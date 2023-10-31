@@ -1,7 +1,13 @@
 name: 18きっぷ中部地方周遊旅
-date: 2023-08-10
+date: 2023-08-20
 route:
   - name: 大和八木駅
     station: yamato-yagi
-    nextTransport: "特急ひのとり名古屋行き"
-    arrivalTime: 2023-08-10T10:23:00
+    nextTransport: "特急ひのとり 名古屋行き"
+    arrivalTime: 2023-08-20T10:23:00
+  - name: 近鉄名古屋駅
+    arrivalTime: 2023-08-20
+  - name: 名鉄名古屋駅
+    station: meitetsu-nagoya
+    nextTransport: "快速特急 豊橋行き"
+    arrivalTime: 2023-08-20

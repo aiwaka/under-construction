@@ -10,7 +10,10 @@ interface Props {
 const { title, description, href, thumb } = Astro.props;
 ---
 
-<a class="travelogue-card-link" href={`${import.meta.env.BASE_URL}${href}`}>
+<a
+  class="travelogue-card-link"
+  href={`${import.meta.env.BASE_URL}travelogue/${href}`}
+>
   <div class="travelogue-card">
     <div class="img-container">
       <img src={thumb.url} alt={thumb.alt} />

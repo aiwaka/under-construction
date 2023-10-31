@@ -33,7 +33,7 @@ export interface TravelRouteEntry extends IsEntrySchema {
   /** ルート情報 */
   route: {
     name: string;
-    station?: string;
+    stationId?: string;
     nextTransport?: string;
     arrivalTime: Date;
     departureTime?: Date;

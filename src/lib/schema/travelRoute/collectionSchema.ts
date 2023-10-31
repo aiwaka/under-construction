@@ -1,3 +1,4 @@
+import { reference } from "astro:content";
 import { z } from "zod";
 
 /** 旅行ルートコレクションデータのスキーマ */
@@ -7,7 +8,7 @@ export const CollectionTravelRouteZodSchema = z.object({
   route: z
     .object({
       name: z.string(),
-      stationId: z.string().optional(),
+      station: reference("station").optional(),
       nextTransport: z.string().optional(),
       arrivalTime: z.date(),
       departureTime: z.date().optional(),

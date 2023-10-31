@@ -1,0 +1,139 @@
+---
+import type { InferGetStaticPropsType } from "astro";
+import { getImage } from "astro:assets";
+
+import allStationList from "@lib/other/station-collections/data/stationList";
+
+import type {
+  DownloadedStationCollection,
+  StationImageTypeOptions,
+} from "@lib/schema/station";
+import type { LineDataSchema } from "@lib/types";
+import { dateText } from "@lib/utils";
+import {
+  getStationEntries,
+  getDownloadedStationCollectionsData,
+} from "@lib/other/station-collections";
+
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
+import CollectionPictureList from "@components/other/station-collections/CollectionPictureList.astro";
+import StationPageLink from "@components/other/station-collections/StationPageLink.svelte";
+import TravelRouteContainer from "@components/other/travelogue/TravelRouteContainer.svelte";
+import { getTravelogueEntries } from "@lib/contents/travelogue/getEntries";
+
+export async function getStaticPaths() {
+  const travelogueEntries = await getTravelogueEntries();
+
+  return travelogueEntries.map((entry, i, array) => {
+    const next = i === 0 ? null : array.at(i - 1) ?? null;
+    const prev = i === array.length ? null : array.at(i + 1) ?? null;
+    return {
+      params: { slug: entry.id },
+      props: { entry, next, prev },
+    };
+  });
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry, next, prev } = Astro.props;
+const { title, Content, startDate, endDate, thumbnail, posts, routes } = entry;
+
+const PAGE_NAME = `Under Construction | 旅行記` as const;
+
+const ogp = {
+  url: Astro.request.url,
+  type: "blog",
+  title: PAGE_NAME,
+  description: "訪問した鉄道駅をまとめたページです",
+  siteName: "Under Construction",
+  image:
+    "https://aiwaka.github.io" +
+    (thumbnail.url ?? "/under-construction/img/blue_2.png"),
+};
+---
+
+<GeneralPageLayout ogp={ogp} title={PAGE_NAME}>
+  <a href={`${import.meta.env.BASE_URL}travelogue`} class="to-top-anchor"
+    >旅行記トップへ戻る</a
+  >
+  <h1>{title}</h1>
+  <div class="date-block">
+    <span>
+      旅行日：{dateText(startDate)}〜{dateText(endDate)}
+    </span>
+  </div>
+  <div class="img-container">
+    <img
+      src={thumbnail.url}
+      width={thumbnail.width}
+      height={thumbnail.height}
+      alt={thumbnail.alt}
+      loading="eager"
+      decoding="async"
+    />
+  </div>
+
+  <h2>移動ルート</h2>
+  <TravelRouteContainer routeData={routes} />
+
+  <div class="comment-container">
+    <Content class="comment" />
+  </div>
+
+  <a href={`${import.meta.env.BASE_URL}travelogue`} class="to-top-anchor"
+    >旅行記トップへ戻る</a
+  >
+</GeneralPageLayout>
+
+<style>
+  .comment-container {
+    margin: 1.5rem auto;
+  }
+  .comment-container :global(a) {
+    color: darkgoldenrod;
+    &:hover {
+      color: orangered;
+    }
+  }
+  .to-top-anchor {
+    color: var(--main-font-color);
+    text-decoration: underline;
+  }
+  .img-container {
+    border: 4px solid var(--main-font-color);
+    width: 100%;
+    height: 22rem;
+    clip: rect(0, 0, 0, 0);
+    margin: 1rem auto;
+  }
+  .img-container > img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  p.comment {
+    margin: 1.2rem auto;
+    margin-left: 0.4rem;
+  }
+  .siblings-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 25%;
+    margin: 1rem 0;
+
+    @media (max-width: 1024px) {
+      column-gap: 1rem;
+    }
+  }
+  .siblings-link {
+    display: flex;
+  }
+  .prev {
+    grid-column: 1 / 2;
+  }
+  .next {
+    grid-column: -2 / -1;
+    justify-self: flex-end;
+  }
+</style>
