@@ -1,7 +1,6 @@
-import { reference } from "astro:content";
 import { z } from "zod";
 
-/** 鉄道駅コレクションコンテンツのスキーマ */
+/** 旅行ルートコレクションデータのスキーマ */
 export const CollectionTravelRouteZodSchema = z.object({
   name: z.string(),
   date: z.date(),
@@ -12,6 +11,17 @@ export const CollectionTravelRouteZodSchema = z.object({
       nextTransport: z.string().optional(),
       arrivalTime: z.date(),
       departureTime: z.date().optional(),
+      marker: z
+        .object({
+          type: z.union([
+            z.literal("start"),
+            z.literal("relay"),
+            z.literal("end"),
+          ]),
+          label: z.string(),
+        })
+        .array()
+        .optional(),
     })
     .array(),
 });

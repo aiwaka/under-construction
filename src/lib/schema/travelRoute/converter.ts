@@ -19,6 +19,10 @@ export class CollectionsTravelRouteEntry
     nextTransport?: string;
     arrivalTime: Date;
     departureTime?: Date;
+    marker?: {
+      type: "start" | "relay" | "end";
+      label: string;
+    }[];
   }[];
   // public CommentContent!: AstroComponentFactory;
 

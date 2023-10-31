@@ -37,5 +37,10 @@ export interface TravelRouteEntry extends IsEntrySchema {
     nextTransport?: string;
     arrivalTime: Date;
     departureTime?: Date;
+    marker?: {
+      /** relayの場合はstartとendの間にlabelで文字を入れられる */
+      type: "start" | "relay" | "end";
+      label: string;
+    }[];
   }[];
 }
