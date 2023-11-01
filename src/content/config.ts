@@ -3,6 +3,8 @@ import { defineCollection } from "astro:content";
 import {
   CollectionBlogZodSchema,
   CollectionStationZodSchema,
+  CollectionTravelogueZodSchema,
+  CollectionTravelRouteZodSchema,
 } from "@lib/schema";
 
 // ブログコレクション用スキーマ定義
@@ -17,7 +19,21 @@ const stationcCollection = defineCollection({
   schema: CollectionStationZodSchema,
 });
 
+// 旅行記コレクション用データスキーマ
+const travelogueCollection = defineCollection({
+  type: "content",
+  schema: CollectionTravelogueZodSchema,
+});
+
+// 旅行ルートコレクション用データスキーマ
+const travelRouteCollection = defineCollection({
+  type: "data",
+  schema: CollectionTravelRouteZodSchema,
+});
+
 export const collections = {
   blog: blogCollection,
   station: stationcCollection,
+  travelogue: travelogueCollection,
+  travelRoute: travelRouteCollection,
 };

@@ -1,0 +1,72 @@
+---
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
+import TravelogueCard from "../../components/other/travelogue/TravelogueCard.astro";
+import { getTravelogueEntries } from "@lib/contents/travelogue/getEntries";
+
+const allEntries = await getTravelogueEntries();
+
+const ogp = {
+  url: Astro.request.url,
+  type: "website",
+  title: "Under Construction | 旅行記",
+  description: "旅行記事をまとめています",
+  siteName: "Under Construction",
+  image: "https://aiwaka.github.io/under-construction/img/blue_2.png",
+};
+---
+
+<GeneralPageLayout title="旅行記" ogp={ogp}>
+  <h1>旅行記</h1>
+  <p>
+    私が旅行した際の記録をまとめておこうと思います。
+    妙に長い駄文ばかりですがインターネットにあまり載っていないことが書けたら嬉しいと思います。
+  </p>
+
+  <div class="travelogue-card-container">
+    {
+      allEntries.map((entry) => {
+        return (
+          <TravelogueCard
+            title={entry.title}
+            description={entry.description}
+            href={entry.id}
+            thumb={entry.thumbnail}
+          />
+        );
+      })
+    }
+  </div>
+</GeneralPageLayout>
+
+<style>
+  p {
+    margin: 1rem auto;
+  }
+  h2 {
+    margin-left: 0.2rem;
+    margin-bottom: 0.8rem;
+  }
+  .travelogue-card-container {
+    margin: 1.4rem auto;
+    padding-bottom: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 1.4rem;
+    column-gap: 5%;
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  /* details {
+    width: 90%;
+    height: fit-content;
+  }
+  details > summary {
+    list-style: none;
+    padding: 2px 6px;
+    width: 15em;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+  } */
+</style>

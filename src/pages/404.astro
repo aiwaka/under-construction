@@ -1,14 +1,14 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 ---
 
-<BaseLayout title="Under Construction | not found">
-  <div class="header-margin"></div>
+<GeneralPageLayout title="Under Construction | not found">
   <h2>Page Not Found</h2>
-</BaseLayout>
+  <p><a href={import.meta.env.BASE_URL}>Back to TOP</a></p>
+</GeneralPageLayout>
 
 <style>
-  .header-margin {
-    height: 8rem;
+  p {
+    text-decoration: underline;
   }
 </style>
