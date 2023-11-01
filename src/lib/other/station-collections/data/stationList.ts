@@ -1,7 +1,7 @@
 import { CompanyData } from "./dataclasses";
 import { stationDict } from "./utils";
 
-import { getDownloadedStationCollectionsData } from "@lib/more/station-collections";
+import { getDownloadedStationCollectionsData } from "@lib/other/station-collections";
 import type { CompanyDataSchema } from "@lib/types";
 
 import JRWestData from "./companyData/JRWestData";

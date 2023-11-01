@@ -2,7 +2,7 @@
 import type { InferGetStaticPropsType } from "astro";
 import { getImage } from "astro:assets";
 
-import allStationList from "@lib/more/station-collections/data/stationList";
+import allStationList from "@lib/other/station-collections/data/stationList";
 
 import type {
   DownloadedStationCollection,
@@ -13,11 +13,11 @@ import { dateText } from "@lib/utils";
 import {
   getStationEntries,
   getDownloadedStationCollectionsData,
-} from "@lib/more/station-collections";
+} from "@lib/other/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
-import CollectionPictureList from "@components/more/station-collections/CollectionPictureList.astro";
-import StationPageLink from "@components/more/station-collections/StationPageLink.svelte";
+import CollectionPictureList from "@components/other/station-collections/CollectionPictureList.astro";
+import StationPageLink from "@components/other/station-collections/StationPageLink.svelte";
 
 export async function getStaticPaths() {
   /** 何らかの理由で取得に失敗した瞬間`true`になる */
@@ -310,3 +310,4 @@ const ogp = {
     justify-self: flex-end;
   }
 </style>
+ @lib/other/station-collections/data/stationList@lib/other/station-collections
