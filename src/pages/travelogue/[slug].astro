@@ -1,25 +1,12 @@
 ---
 import type { InferGetStaticPropsType } from "astro";
-import { getImage } from "astro:assets";
 
-import allStationList from "@lib/other/station-collections/data/stationList";
-
-import type {
-  DownloadedStationCollection,
-  StationImageTypeOptions,
-} from "@lib/schema/station";
-import type { LineDataSchema } from "@lib/types";
 import { dateText } from "@lib/utils";
-import {
-  getStationEntries,
-  getDownloadedStationCollectionsData,
-} from "@lib/other/station-collections";
+import { getTravelogueEntries } from "@lib/contents/travelogue/getEntries";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
-import CollectionPictureList from "@components/other/station-collections/CollectionPictureList.astro";
-import StationPageLink from "@components/other/station-collections/StationPageLink.svelte";
 import TravelRouteContainer from "@components/other/travelogue/TravelRouteContainer.svelte";
-import { getTravelogueEntries } from "@lib/contents/travelogue/getEntries";
+import BlogPageCardContainer from "@components/blog/BlogPageCardContainer.astro";
 
 export async function getStaticPaths() {
   const travelogueEntries = await getTravelogueEntries();
@@ -73,13 +60,15 @@ const ogp = {
       decoding="async"
     />
   </div>
+  <div class="comment-container">
+    <Content class="comment" />
+  </div>
 
   <h2>移動ルート</h2>
   <TravelRouteContainer routeData={routes} />
 
-  <div class="comment-container">
-    <Content class="comment" />
-  </div>
+  <h2>旅行記一覧</h2>
+  <BlogPageCardContainer cardList={posts} />
 
   <a href={`${import.meta.env.BASE_URL}travelogue`} class="to-top-anchor"
     >旅行記トップへ戻る</a

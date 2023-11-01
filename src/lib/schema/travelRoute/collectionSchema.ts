@@ -15,6 +15,7 @@ export const CollectionTravelRouteZodSchema = z.object({
       marker: z
         .object({
           type: z.union([
+            z.literal("single"),
             z.literal("start"),
             z.literal("relay"),
             z.literal("end"),

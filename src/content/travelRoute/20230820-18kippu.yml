@@ -5,9 +5,165 @@ route:
     station: yamato-yagi
     nextTransport: "特急ひのとり 名古屋行き"
     arrivalTime: 2023-08-20T10:23:00
+    marker:
+      - type: single
+        label: primary
   - name: 近鉄名古屋駅
     arrivalTime: 2023-08-20
   - name: 名鉄名古屋駅
     station: meitetsu-nagoya
     nextTransport: "快速特急 豊橋行き"
     arrivalTime: 2023-08-20
+  - name: 豊橋駅
+    station: toyohashi
+    nextTransport: "岡谷行き"
+    arrivalTime: 2023-08-20
+    marker:
+      - type: single
+        label: primary
+  - name: 本長篠駅
+    station: honnnagashino
+    arrivalTime: 2023-08-20
+  - name: 中部天竜駅
+    station: chubu-tenryu
+    arrivalTime: 2023-08-20
+  - name: 水窪駅
+    station: misakubo
+    nextTransport: "豊橋行き"
+    arrivalTime: 2023-08-20
+  - name: 東栄駅
+    station: touei
+    nextTransport: "天竜峡行き"
+    arrivalTime: 2023-08-20
+  - name: 大嵐駅
+    station: ozore
+    arrivalTime: 2023-08-20
+  - name: 天竜峡駅
+    # station: tenryukyo
+    nextTransport: "岡谷行き"
+    arrivalTime: 2023-08-20
+  - name: 岡谷駅
+    station: okaya
+    nextTransport: "松本行き"
+    arrivalTime: 2023-08-20
+  - name: 松本駅
+    station: matsumoto
+    nextTransport: 南小谷行き
+    arrivalTime: 2023-08-20
+    departureTime: 2023-08-21
+    marker:
+      - type: single
+        label: primary
+  - name: 信濃大町駅
+    station: shinano-omachi
+    arrivalTime: 2023-08-21
+  - name: 南小谷駅
+    station: minamiotari
+    nextTransport: 糸魚川行き
+    arrivalTime: 2023-08-21
+    marker:
+      - type: single
+        label: primary
+  - name: 糸魚川駅
+    station: itoigawa
+    nextTransport: 泊行き
+    arrivalTime: 2023-08-21
+    marker:
+      - type: single
+        label: primary
+  - name: 泊駅
+    station: tomari
+    nextTransport: 富山行き
+    arrivalTime: 2023-08-21
+  - name: 富山駅
+    station: toyama
+    nextTransport: 越中八尾行き
+    arrivalTime: 2023-08-21
+    marker:
+      - type: single
+        label: primary
+  - name: 越中八尾駅
+    station: ecchu-yatsuo
+    nextTransport: 富山行き
+    arrivalTime: 2023-08-21
+  - name: 富山駅
+    station: toyama
+    nextTransport: 金沢行き
+    arrivalTime: 2023-08-21
+    departureTime: 2023-08-22
+    marker:
+      - type: single
+        label: primary
+  - name: 金沢駅
+    station: kanazawa
+    nextTransport: 福井行き
+    arrivalTime: 2023-08-22
+  - name: 福井駅
+    station: fukui
+    nextTransport: 九頭竜湖行き
+    arrivalTime: 2023-08-22
+    marker:
+      - type: single
+        label: primary
+  - name: 九頭竜湖駅
+    station: kuzuryuko
+    arrivalTime: 2023-08-22
+    marker:
+      - type: single
+        label: primary
+  - name: 道の駅九頭竜
+    arrivalTime: 2023-08-22
+  - name: 九頭竜湖駅
+    station: kuzuryuko
+    nextTransport: 福井行き
+    arrivalTime: 2023-08-22
+  - name: 越前大野駅
+    station: echizen-ono
+    arrivalTime: 2023-08-22
+  - name: 福井駅
+    station: fukui
+    nextTransport: 武生行き
+    arrivalTime: 2023-08-22
+  - name: 武生駅
+    station: takefu
+    arrivalTime: 2023-08-22
+    nextTransport: onfoot
+    marker:
+      - type: single
+        label: primary
+  - name: たけふ新駅
+    station: takefu-shin
+    arrivalTime: 2023-08-22
+  - name: 武生駅
+    station: takefu
+    nextTransport: 敦賀行き
+    arrivalTime: 2023-08-22
+  - name: 敦賀駅
+    station: tsuruga
+    nextTransport: 東舞鶴行き
+    arrivalTime: 2023-08-22
+  - name: 東舞鶴駅
+    # station: higashimaizuru
+    nextTransport: 綾部行き
+    arrivalTime: 2023-08-22
+  - name: 綾部駅
+    station: ayabe
+    nextTransport: 福知山行き
+    arrivalTime: 2023-08-22
+  - name: 福知山駅
+    station: fukuchiyama
+    nextTransport: 篠山口行き
+    arrivalTime: 2023-08-22
+    marker:
+      - type: single
+        label: primary
+  - name: 篠山口駅
+    station: sasayamaguchi
+    nextTransport: "区間快速 大阪行き"
+    arrivalTime: 2023-08-22
+  - name: 大阪駅
+    station: osaka
+    arrivalTime: 2023-08-22
+    marker:
+      - type: single
+        label: primary

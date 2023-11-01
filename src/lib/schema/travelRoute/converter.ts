@@ -1,12 +1,11 @@
-// import type { AstroComponentFactory } from "astro/runtime/server/index.js";
-import { getCollection, type CollectionEntry } from "astro:content";
+import { type CollectionEntry } from "astro:content";
 
 import type { CollectionTravelRouteSchema } from "./collectionSchema";
 
 import { type TravelRouteEntry } from "@lib/other/station-collections";
 import type { ToEntryObject } from "@lib/types";
 
-/** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
+/** Collectionsから受け取ったデータを保持し, `TravelRouteEntry`に変換可能なクラス */
 export class CollectionsTravelRouteEntry
   implements ToEntryObject<TravelRouteEntry>, CollectionTravelRouteSchema
 {
@@ -23,11 +22,10 @@ export class CollectionsTravelRouteEntry
     arrivalTime: Date;
     departureTime?: Date;
     marker?: {
-      type: "start" | "relay" | "end";
+      type: "single" | "start" | "relay" | "end";
       label: string;
     }[];
   }[];
-  // public CommentContent!: AstroComponentFactory;
 
   private constructor(rawEntry: CollectionEntry<"travelRoute">) {
     this.id = rawEntry.id;
