@@ -26,3 +26,21 @@ export interface StationEntry extends IsEntrySchema {
   /** 特定の項目が存在しない場合は明示することを可能にする */
   noDataFlag: StationImageTypeOptions[];
 }
+
+export interface TravelRouteEntry extends IsEntrySchema {
+  /** 名前 */
+  name: string;
+  /** ルート情報 */
+  route: {
+    name: string;
+    stationId?: string;
+    nextTransport?: string;
+    arrivalTime: Date;
+    departureTime?: Date;
+    marker?: {
+      /** relayの場合はstartとendの間にlabelで文字を入れられる */
+      type: "single" | "start" | "relay" | "end";
+      label: string;
+    }[];
+  }[];
+}

@@ -1,0 +1,221 @@
+name: 18きっぷ中国地方周遊旅
+date: 2023-03-19
+route:
+  - name: 王寺駅
+    station: oji
+    nextTransport: "大和路快速 天王寺行き"
+    arrivalTime: 2023-03-19
+    departureTime: 2023-03-19
+    marker:
+      - type: single
+        label: primary
+  - name: 大阪駅
+    station: osaka
+    nextTransport: "新快速 播州赤穂行き"
+    arrivalTime: 2023-03-19
+  - name: 相生駅
+    arrivalTime: 2023-03-19
+    nextTransport: "岡山行き"
+  - name: 岡山駅
+    station: okayama
+    nextTransport: "新見行き"
+    arrivalTime: 2023-03-19
+    marker:
+      - type: single
+        label: primary
+  - name: 新見駅
+    station: niimi
+    nextTransport: "備後落合行き"
+    arrivalTime: 2023-03-19
+    marker:
+      - type: single
+        label: primary
+  - name: 備後落合駅
+    station: bingo-ochiai
+    nextTransport: "三次行き"
+    arrivalTime: 2023-03-19
+    marker:
+      - type: single
+        label: primary
+  - name: 三次駅
+    station: miyoshi
+    nextTransport: "みよしライナー 広島行き"
+    arrivalTime: 2023-03-19
+  - name: 広島駅
+    station: hiroshima
+    nextTransport: "糸崎行き"
+    arrivalTime: 2023-03-19
+  - name: 西条駅
+    station: saijo
+    nextTransport: "白市行き"
+    arrivalTime: 2023-03-19
+    marker:
+      - type: single
+        label: primary
+  - name: 白市駅
+    station: shiraichi
+    nextTransport: "糸崎行き"
+    arrivalTime: 2023-03-19
+  - name: 三原駅
+    station: mihara
+    nextTransport: onfoot
+    arrivalTime: 2023-03-19
+    departureTime: 2023-03-20
+    marker:
+      - type: single
+        label: primary
+  - name: 三原城跡
+    nextTransport: onfoot
+    arrivalTime: 2023-03-20
+  - name: 三原駅
+    station: mihara
+    nextTransport: 広島行き
+    arrivalTime: 2023-03-20
+  - name: 広島駅
+    station: hiroshima
+    nextTransport: "下深川行き"
+    arrivalTime: 2023-03-20
+    marker:
+      - type: single
+        label: primary
+  - name: 下深川駅
+    station: shimofukawa
+    nextTransport: "三次行き"
+    arrivalTime: 2023-03-20
+  - name: 三次駅
+    station: miyoshi
+    nextTransport: onfoot
+    arrivalTime: 2023-03-20
+    marker:
+      - type: single
+        label: primary
+  - name: たむ商店
+    nextTransport: onfoot
+    arrivalTime: 2023-03-20
+  - name: 三次駅
+    station: miyoshi
+    nextTransport: 備後落合行き
+    arrivalTime: 2023-03-20
+  - name: 備後落合駅
+    station: bingo-ochiai
+    nextTransport: 宍道行き
+    arrivalTime: 2023-03-20
+  - name: 出雲坂根駅
+    station: izumo-sakane
+    arrivalTime: 2023-03-20
+  - name: 出雲横田駅
+    station: izumo-sakane
+    arrivalTime: 2023-03-20
+  - name: 木次駅
+    station: kisuki
+    arrivalTime: 2023-03-20
+  - name: 宍道駅
+    station: shinji
+    nextTransport: onfoot
+    arrivalTime: 2023-03-20
+    marker:
+      - type: single
+        label: primary
+  - name: 宍道湖畔
+    nextTransport: onfoot
+    arrivalTime: 2023-03-20
+  - name: 宍道駅
+    station: shinji
+    nextTransport: 出雲市行き
+    arrivalTime: 2023-03-20
+  - name: 出雲市駅
+    station: izumoshi
+    nextTransport: onfoot
+    arrivalTime: 2023-03-20
+    departureTime: 2023-03-21
+    marker:
+      - type: single
+        label: primary
+  - name: 電鉄出雲市駅
+    station: dentetsu-izumoshi
+    nextTransport: 松江しんじ湖温泉行き
+    arrivalTime: 2023-03-21
+  - name: 川跡駅
+    station: kawato
+    nextTransport: 出雲大社前行き
+    arrivalTime: 2023-03-21
+  - name: 出雲大社前駅
+    station: izumotaishamae
+    nextTransport: onfoot
+    arrivalTime: 2023-03-21
+  - name: 出雲大社
+    nextTransport: onfoot
+    arrivalTime: 2023-03-21
+    marker:
+      - type: single
+        label: primary
+  - name: 出雲大社前駅
+    station: izumotaishamae
+    nextTransport: 松江しんじ湖温泉行き
+    arrivalTime: 2023-03-21
+    marker:
+      - type: single
+        label: primary
+  - name: 松江しんじ湖温泉駅
+    station: matsue-shinjiko-onsen
+    nextTransport: "一畑バス"
+    arrivalTime: 2023-03-21
+  - name: 松江駅
+    station: matsue
+    nextTransport: "特急スーパーおき 米子行き"
+    arrivalTime: 2023-03-21
+  - name: 米子駅
+    # station: yonago
+    nextTransport: "特急スーパーまつかぜ 鳥取行き"
+    arrivalTime: 2023-03-21
+  - name: 鳥取駅
+    station: tottori
+    arrivalTime: 2023-03-21
+    nextTransport: onfoot
+    marker:
+      - type: single
+        label: primary
+  - name: "すなば珈琲"
+    nextTransport: onfoot
+    arrivalTime: 2023-03-21
+  - name: 鳥取駅
+    station: tottori
+    nextTransport: 浜坂行き
+    arrivalTime: 2023-03-21
+  - name: 浜坂駅
+    station: hamasaka
+    nextTransport: 豊岡行き
+    arrivalTime: 2023-03-21
+  - name: 豊岡駅
+    station: toyooka
+    nextTransport: 福知山行き
+    arrivalTime: 2023-03-21
+    marker:
+      - type: single
+        label: primary
+  - name: 和田山駅
+    station: wadayama
+    nextTransport: 寺前行き
+    arrivalTime: 2023-03-21
+  - name: 寺前駅
+    # station: teramae
+    nextTransport: 姫路行き
+    arrivalTime: 2023-03-21
+  - name: 姫路駅
+    station: sasayamaguchi
+    nextTransport: "新快速 米原行き"
+    arrivalTime: 2023-03-21
+  - name: 大阪駅
+    station: osaka
+    arrivalTime: 2023-03-21
+    nextTransport: "環状線内回り"
+  - name: 新今宮駅
+    # station: shin-imamiya
+    arrivalTime: 2023-03-21
+    nextTransport: 王寺行き
+  - name: 王寺駅
+    station: oji
+    arrivalTime: 2023-03-21
+    marker:
+      - type: single
+        label: primary
