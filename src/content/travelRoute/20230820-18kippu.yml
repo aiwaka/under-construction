@@ -4,7 +4,7 @@ route:
   - name: 大和八木駅
     station: yamato-yagi
     nextTransport: "特急ひのとり 名古屋行き"
-    arrivalTime: 2023-08-20T10:23:00
+    arrivalTime: 2023-08-20T07:23:00
     marker:
       - type: single
         label: primary

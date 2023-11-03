@@ -1,0 +1,274 @@
+name: 紀南地域旅
+date: 2023-08-30
+route:
+  - name: 大和八木駅
+    station: yamato-yagi
+    nextTransport: "八木新宮特急バス"
+    arrivalTime: 2023-08-30T10:00:00
+    marker:
+      - type: single
+        label: primary
+  - name: 五條バスセンター
+    arrivalTime: 2023-08-30
+  - name: 上野地バスセンター
+    arrivalTime: 2023-08-30
+  - name: 十津川バスセンター
+    arrivalTime: 2023-08-30
+  - name: 新宮駅前
+    arrivalTime: 2023-08-30
+    nextTransport: onfoot
+    marker:
+      - type: single
+        label: primary
+  - name: 宿
+    arrivalTime: 2023-08-30
+    departureTime: 2023-08-31
+    nextTransport: 自転車
+  - name: 浮島の森
+    arrivalTime: 2023-08-31T08:51:00
+  - name: 徐福公園
+    arrivalTime: 2023-08-31T09:15:00
+  - name: 宮井戸遺跡
+    arrivalTime: 2023-08-31T09:45:00
+  - name: 新宮駅
+    station: shingu
+    arrivalTime: 2023-08-31T09:56:00
+    departureTime: 2023-08-31T10:20:00
+    nextTransport: 紀伊長島行き（臨時）
+  - name: 熊野市駅
+    station: kumanoshi
+    arrivalTime: 2023-08-31T10:54:00
+    nextTransport: onfoot
+  - name: 駅前特産品館
+    arrivalTime: 2023-08-31T11:03:00
+    nextTransport: onfoot
+  - name: 熊野市駅
+    station: kumanoshi
+    arrivalTime: 2023-08-31T11:10:00
+    departureTime: 2023-08-31T11:14:00
+    nextTransport: "特急南紀 紀伊勝浦行き"
+  - name: 新宮駅
+    station: shingu
+    arrivalTime: 2023-08-31T11:35:00
+    nextTransport: onfoot
+  - name: "レストラン ラハイナ"
+    arrivalTime: 2023-08-31T12:10:00
+    departureTime: 2023-08-31T13:04:00
+    nextTransport: onfoot
+  - name: 新宮駅
+    arrivalTime: 2023-08-31T13:10:00
+    nextTransport: 自転車
+  - name: 神倉神社
+    arrivalTime: 2023-08-31T13:23:00
+    nextTransport: onfoot
+  - name: ゴトビキ岩
+    arrivalTime: 2023-08-31T13:39:00
+    nextTransport: onfoot
+  - name: 神倉神社
+    arrivalTime: 2023-08-31T13:52:00
+    nextTransport: 自転車
+  - name: 熊野速玉大社
+    arrivalTime: 2023-08-31T14:08:00
+    departureTime: 2023-08-31T14:21:00
+  - name: 丹鶴城公園
+    arrivalTime: 2023-08-31T14:40:00
+    departureTime: 2023-08-31T15:01:00
+  - name: 阿須賀神社
+    arrivalTime: 2023-08-31T15:09:00
+    nextTransport: onfoot
+  - name: 歴史民俗資料館
+    arrivalTime: 2023-08-31T15:12:00
+    departureTime: 2023-08-31T15:30:00
+    nextTransport: 自転車
+  - name: 新宮十郎行家屋敷跡
+    arrivalTime: 2023-08-31T15:45:00
+  - name: 浜王子
+    arrivalTime: 2023-08-31T15:52:00
+  - name: 王子ヶ浜
+    arrivalTime: 2023-08-31T15:57:00
+  - name: 新宮駅
+    arrivalTime: 2023-08-31T16:22:00
+  - name: 仲之町商店街
+    arrivalTime: 2023-08-31T16:41:00
+  - name: 熊五郎
+    arrivalTime: 2023-08-31T15:45:00
+  - name: 宿
+    arrivalTime: 2023-08-31
+    departureTime: 2023-09-01
+    nextTransport: onfoot
+  - name: 新宮駅
+    arrivalTime: 2023-09-01T08:18:00
+    departureTime: 2023-09-01T08:27:00
+    nextTransport: "特急くろしお 新大阪行き"
+    marker:
+      - type: single
+        label: primary
+  - name: 紀伊勝浦駅
+    station: kii-katsuura
+    arrivalTime: 2023-09-01T08:49:00
+    nextTransport: onfoot
+  - name: 勝浦港
+    arrivalTime: 2023-09-01T09:19:00
+    nextTransport: onfoot
+  - name: 勝浦漁港にぎわい市場
+    arrivalTime: 2023-09-01T09:32:00
+    nextTransport: onfoot
+  - name: 紀伊勝浦駅
+    station: kii-katsuura
+    arrivalTime: 2023-09-01T09:43:00
+    departureTime: 2023-09-01T10:04:00
+    nextTransport: 紀伊田辺行き
+  - name: 白浜駅
+    station: shirahama
+    nextTransport: "特急くろしお 新宮行き（臨時）"
+    arrivalTime: 2023-09-01T11:52:00
+    departureTime: 2023-09-01T12:01:00
+  - name: 串本駅
+    station: kushimoto
+    nextTransport: onfoot
+    arrivalTime: 2023-09-01T12:56:00
+    marker:
+      - type: single
+        label: primary
+  - name: 南紀串本観光協会
+    nextTransport: レンタルサイクル
+    arrivalTime: 2023-09-01T13:05:00
+  - name: 潮岬観光タワー
+    arrivalTime: 2023-09-01T13:50:00
+    nextTransport: onfoot
+  - name: 本州最南端の碑
+    arrivalTime: 2023-09-01T14:01:00
+    nextTransport: onfoot
+    marker:
+      - type: single
+        label: primary
+  - name: 南紀熊野ジオパークセンター
+    arrivalTime: 2023-09-01T14:15:00
+    nextTransport: レンタルサイクル
+  - name: 潮岬灯台
+    arrivalTime: 2023-09-01T14:50:00
+    nextTransport: onfoot
+  - name: 潮御崎神社
+    arrivalTime: 2023-09-01T14:59:00
+    nextTransport: レンタルサイクル
+  - name: 橋杭岩
+    arrivalTime: 2023-09-01T15:46:00
+    marker:
+      - type: single
+        label: primary
+  - name: 南紀串本観光協会
+    nextTransport: onfoot
+    arrivalTime: 2023-09-01T16:05:00
+  - name: 串本駅
+    station: kushimoto
+    nextTransport: 新宮行き
+    arrivalTime: 2023-09-01T16:10:00
+    departureTime: 2023-09-01T16:24:00
+  - name: 新宮駅
+    station: shingu
+    nextTransport: onfoot
+    arrivalTime: 2023-09-01T17:40:00
+  - name: オークワ新宮店
+    nextTransport: onfoot
+    arrivalTime: 2023-09-01T18:05:00
+  - name: 熊五郎
+    arrivalTime: 2023-09-01T18:30:00
+    departureTime: 2023-09-01T19:45:00
+  - name: 宿
+    arrivalTime: 2023-09-01
+    departureTime: 2023-09-02
+    nextTransport: レンタルサイクル
+  - name: 熊野速玉大社
+    arrivalTime: 2023-09-02T08:29:00
+  - name: 松葉屋
+    arrivalTime: 2023-09-02T08:35:00
+  - name: 香梅堂
+    arrivalTime: 2023-09-02T08:59:00
+  - name: 宿
+    arrivalTime: 2023-09-02T09:27:00
+    nextTransport: onfoot
+  - name: 新宮駅
+    station: shingu
+    arrivalTime: 2023-09-02T09:37:00
+    departureTime: 2023-09-02T10:52:00
+    nextTransport: 多気行き
+    marker:
+      - type: single
+        label: primary
+  - name: 熊野市駅
+    station: kumanoshi
+    arrivalTime: 2023-09-02T11:31:00
+    departureTime: 2023-09-02T11:34:00
+  - name: 紀伊長島駅
+    station: kii-nagashima
+    arrivalTime: 2023-09-02T12:57:00
+    departureTime: 2023-09-02T13:01:00
+  - name: 多気駅
+    station: taki
+    arrivalTime: 2023-09-02T14:09:00
+    departureTime: 2023-09-02T14:23:00
+    nextTransport: 亀山行き
+  - name: 松阪駅
+    station: matsusaka
+    arrivalTime: 2023-09-02T14:33:00
+    departureTime: 2023-09-02T15:11:00
+    nextTransport: 伊勢奥津行き
+    marker:
+      - type: single
+        label: primary
+  - name: 家城駅
+    station: ieki
+    arrivalTime: 2023-09-02T15:48:00
+    departureTime: 2023-09-02T16:01:00
+  - name: 伊勢奥津駅
+    station: ise-okitsu
+    arrivalTime: 2023-09-02T16:35:00
+    departureTime: 2023-09-02T17:05:00
+    nextTransport: 松阪行き
+  - name: 家城駅
+    station: ieki
+    arrivalTime: 2023-09-02T17:49:00
+    departureTime: 2023-09-02T18:02:00
+  - name: 松阪駅
+    station: matsusaka
+    arrivalTime: 2023-09-02T18:41:00
+    departureTime: 2023-09-02T18:56:00
+    nextTransport: 亀山行き
+    marker:
+      - type: single
+        label: primary
+  - name: 亀山駅
+    station: kameyama
+    arrivalTime: 2023-09-02T19:42:00
+    nextTransport: onfoot
+    marker:
+      - type: single
+        label: primary
+  - name: "セブン-イレブン 亀山東御幸町店"
+    arrivalTime: 2023-09-02T19:50:00
+    nextTransport: onfoot
+  - name: 亀山駅
+    station: kameyama
+    arrivalTime: 2023-09-02T20:00:00
+    departureTime: 2023-09-02T20:16:00
+    nextTransport: 加茂行き
+  - name: 伊賀上野駅
+    # station: iga-ueno
+    arrivalTime: 2023-09-02T21:02:00
+    departureTime: 2023-09-02T21:05:00
+  - name: 加茂駅
+    station: kamo--kyoto
+    arrivalTime: 2023-09-02T21:39:00
+    departureTime: 2023-09-02T21:50:00
+    nextTransport: 奈良行き
+  - name: 奈良駅
+    station: nara
+    arrivalTime: 2023-09-02T22:06:00
+    departureTime: 2023-09-02T22:10:00
+    nextTransport: JR難波行き
+  - name: 王寺
+    station: oji
+    arrivalTime: 2023-09-02T22:25:00
+    marker:
+      - type: single
+        label: primary
