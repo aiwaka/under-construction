@@ -6,41 +6,31 @@ import type { BlogPostEntry } from "@lib/contents/blog";
 
 interface Props {
   entry: BlogPostEntry;
+  hideTags: boolean;
 }
 
-const { entry } = Astro.props;
-const {
-  title,
-  thumbnail,
-  createdAt,
-  updatedAt,
-  tags,
-  description,
-  wordCount,
-} = entry;
+const { entry, hideTags } = Astro.props;
+const { title, thumbnail, createdAt, updatedAt, tags, description, wordCount } =
+  entry;
 ---
 
 <div class="img-container">
-  <img
-    src={thumbnail.url}
-    alt="thumbnail"
-    width={thumbnail.width}
-  />
+  <img src={thumbnail.url} alt="thumbnail" width={thumbnail.width} />
 </div>
 <div class="card-contents">
   <h2>{title}</h2>
   <span>{dateText(createdAt)}</span>
-  {dateText(createdAt) !== dateText(updatedAt) &&
-    <span>（{`${dateText(updatedAt)} 追記`}）</span>
+  {
+    dateText(createdAt) !== dateText(updatedAt) && (
+      <span>（{`${dateText(updatedAt)} 追記`}）</span>
+    )
   }
   <div class="word-count">
     <span>文字数：{wordCount}</span>
   </div>
   <div class="overview">{description}</div>
-  <TagContainer tagList={tags} />
+  {!hideTags && <TagContainer tagList={tags} />}
 </div>
-
-
 
 <style>
   .img-container {

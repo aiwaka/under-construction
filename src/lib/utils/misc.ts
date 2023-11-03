@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import { DateTime, Zone } from "luxon";
 
 export const getFilenameFromPath = (path: string): string | null => {
   const matched = path.match(".+/(.+?).[a-z]+([?#;].*)?$");
@@ -6,10 +6,17 @@ export const getFilenameFromPath = (path: string): string | null => {
 };
 
 /**
- * 日付をこのサイトで用いる書式に変換する. Dateは標準時で解釈された前提とする
+ * 日付をこのサイトで用いる書式に変換する. Dateはデフォルトで標準時として解釈されるが`zone`で修正できる.
+ * Zod経由でパースしたDateオブジェクトは指定した時刻をUTCで表しており,
+ * microCMSは指定した日本時刻に対応するUTCの文字列を返す（9時間巻き戻っている）ため,
+ * 前者ではUTC, 後者ではAsia/Tokyoを指定するとよい.
+ * @param zone タイムゾーン指定. デフォルトは`"UTC"`. 日本時刻にする場合は`"Asia/Tokyo"`を指定する.
  */
-export const dateText = (date: Date): string => {
-  const luxonDate = DateTime.fromJSDate(date, { zone: "Asia/Tokyo" });
+export const dateText = (
+  date: Date,
+  zone: string | Zone | undefined = "UTC",
+): string => {
+  const luxonDate = DateTime.fromJSDate(date, { zone });
   return luxonDate.toFormat("yyyy-L-d");
 };
 

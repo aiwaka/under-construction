@@ -64,7 +64,9 @@ export class CollectionsStationEntry
       ...rest
     } = this;
     const images = microCMSImages.map((img, i) => {
-      const photoDateText = img.date ? dateText(new Date(img.date)) : "不明";
+      const photoDateText = img.date
+        ? dateText(new Date(img.date), "Asia/Tokyo")
+        : "不明";
       return {
         src: img.image.url,
         width: img.image.width,
@@ -79,12 +81,8 @@ export class CollectionsStationEntry
     });
     return {
       lineIds: lines,
-      createdAt: DateTime.fromISO(createdAt, {
-        zone: "Asia/Tokyo",
-      }).toJSDate(),
-      updatedAt: DateTime.fromISO(updatedAt, {
-        zone: "Asia/Tokyo",
-      }).toJSDate(),
+      createdAt: new Date(createdAt),
+      updatedAt: new Date(updatedAt),
       images,
       ...rest,
       isEntrySchema: null,
