@@ -71,7 +71,6 @@ export class CollectionsTravelogueEntry
     ).toEntryObject();
 
     // リモートの画像を取得する
-    // TODO: assertを用いるなどの処理はblog/converter.tsにも反映する.
     const getThumbImageFromRemote = async () => {
       // 以下entry.thumbnailはリモートであるとして扱える.
       assert(entry.thumbnail.type === "remote");
@@ -86,24 +85,19 @@ export class CollectionsTravelogueEntry
         resolvedDataPath,
         "[travelogue/converter.ts]",
       );
-      // if (!fs.existsSync(resolvedDataPath)) {
-      //   const errorMessage =
-      //     "[blog/converter.ts]: Images data does not exist. Check the path settings output to the console." +
-      //     `\n\`import.meta.url\` : ${import.meta.url}` +
-      //     `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
-      //   throw Error(errorMessage);
-      // }
-      // const allImagesData: ImagesStorageSchema = JSON.parse(
-      //   fs.readFileSync(resolvedDataPath, "utf8"),
-      // );
 
       const imagesData = allImagesData[entry.thumbnail.id];
       if (imagesData === undefined) {
         throw Error(
-          `[blog/converter.ts]: The specified id \`${entry.id}\` cannot be found.`,
+          `[blog/converter.ts]: The specified id \`${entry.thumbnail.id}\` cannot be found.`,
         );
       }
-      const image = imagesData.thumbnail;
+      const image = imagesData.images[entry.thumbnail.name];
+      if (image === undefined) {
+        throw Error(
+          `[blog/converter.ts]: The specified name \`${entry.thumbnail.name}\` of the post id \`${entry.id}\` cannot be found.`,
+        );
+      }
       const specifiedWidth = Math.min(
         Math.round(image.width),
         entry.THUMB_WIDTH,
@@ -144,7 +138,15 @@ export class CollectionsTravelogueEntry
       if (entry.postsObj.length === 0) {
         throw Error("既存のブログ記事がないためサムネイルを指定できません。");
       }
-      return entry.postsObj[0].thumbnail;
+      // ? findのコールバックで直接entry.thumbnail.idを指定すると型アサーションが効いていない
+      const targetId = entry.thumbnail.id;
+      const thumb = entry.postsObj.find((obj) => {
+        return obj.id === targetId;
+      })?.thumbnail;
+      if (thumb === undefined) {
+        throw Error("サムネイルを利用する指定されたidの記事がありません。");
+      }
+      return thumb;
     };
     const createThumbData = async () => {
       if (entry.thumbnail.type === "fromPost") {

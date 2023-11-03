@@ -25,14 +25,7 @@ const ogp = {
   <div class="travelogue-card-container">
     {
       allEntries.map((entry) => {
-        return (
-          <TravelogueCard
-            title={entry.title}
-            description={entry.description}
-            href={entry.id}
-            thumb={entry.thumbnail}
-          />
-        );
+        return <TravelogueCard entry={entry} />;
       })
     }
   </div>

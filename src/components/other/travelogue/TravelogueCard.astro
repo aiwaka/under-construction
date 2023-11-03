@@ -1,23 +1,22 @@
 ---
-import type { ContentsImage } from "@lib/types";
+import type { TravelogueEntry } from "@lib/contents/travelogue";
 interface Props {
-  title: string;
-  description: string;
-  href: string;
-  thumb: ContentsImage;
+  entry: TravelogueEntry;
 }
 
-const { title, description, href, thumb } = Astro.props;
+const { entry } = Astro.props;
+const { title, description, id, thumbnail } = entry;
 ---
 
 <a
   class="travelogue-card-link"
-  href={`${import.meta.env.BASE_URL}travelogue/${href}`}
+  href={`${import.meta.env.BASE_URL}travelogue/${id}`}
 >
   <div class="travelogue-card">
     <div class="img-container">
-      <img src={thumb.url} alt={thumb.alt} />
+      <img src={thumbnail.url} alt={thumbnail.alt} />
     </div>
+    <div class="date">{}</div>
     <div class="card-contents">
       <h3>{title}</h3>
 
