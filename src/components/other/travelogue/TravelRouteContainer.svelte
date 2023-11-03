@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { TravelRouteEntry } from "@lib/other/station-collections";
-  import { dateText } from "@lib/utils";
 
   export let routeData: TravelRouteEntry;
 
@@ -8,9 +7,14 @@
 
   /** 宿泊地かどうか判定. 出発と到着の日付が違っていれば宿泊地とする */
   const isStayNode = (route: RouteSchema) => {
+    if (route.departureTime === undefined) return false;
+    const arr = route.arrivalTime;
+    const dep = route.departureTime;
+    // yamlからのDateはTZ情報無しなのでUTC付きメソッドで取得しなければ勝手に+9時間されてずれる.
     return (
-      route.departureTime !== undefined &&
-      dateText(route.departureTime) !== dateText(route.arrivalTime)
+      arr.getUTCFullYear() !== dep.getUTCFullYear() ||
+      arr.getUTCMonth() !== dep.getUTCMonth() ||
+      arr.getUTCDate() !== dep.getUTCDate()
     );
   };
   const nextIsOnFoot = (route: RouteSchema) => {

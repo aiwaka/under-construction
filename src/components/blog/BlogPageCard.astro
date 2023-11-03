@@ -8,9 +8,10 @@ interface Props {
   entry: BlogPostEntry;
   /** サムネイルなどを省略した小さい形式にするかどうか */
   mini?: boolean;
+  hideTags: boolean;
 }
 
-const { entry, mini } = Astro.props;
+const { entry, mini, hideTags } = Astro.props;
 const draft = entry.draft;
 ---
 
@@ -18,7 +19,7 @@ const draft = entry.draft;
   <div class="article-card" class:list={{ draft }}>
     {
       !mini ? (
-        <BlogPageCardLargeContents entry={entry} />
+        <BlogPageCardLargeContents entry={entry} hideTags={hideTags} />
       ) : (
         <BlogPageCardSmallContents entry={entry} />
       )

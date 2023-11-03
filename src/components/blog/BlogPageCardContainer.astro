@@ -4,14 +4,15 @@ import type { BlogPostEntry } from "@lib/contents/blog";
 
 interface Props {
   cardList: BlogPostEntry[];
+  hideTags?: boolean;
 }
-const { cardList } = Astro.props;
+const { cardList, hideTags = false } = Astro.props;
 ---
 
 <div class="contents-card-container">
   {
     cardList.map((entry) => {
-      return <BlogPageCard entry={entry} />;
+      return <BlogPageCard entry={entry} hideTags={hideTags} />;
     })
   }
 </div>

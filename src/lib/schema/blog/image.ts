@@ -1,3 +1,5 @@
+import fs from "node:fs";
+
 import { z } from "zod";
 import { MicroCMSImageSchema } from "../image";
 
@@ -25,3 +27,21 @@ export interface ImagesStorageSchema {
     };
   };
 }
+
+export const getAllImagesData = (
+  resolvedDataPath: URL,
+  callerName?: string,
+) => {
+  if (!fs.existsSync(resolvedDataPath)) {
+    const errorMessage =
+      (callerName && `[${callerName}]:`) +
+      "Images data does not exist. Check the path settings output to the console." +
+      `\n\`import.meta.url\` : ${import.meta.url}` +
+      `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
+    throw Error(errorMessage);
+  }
+  const allImagesData: ImagesStorageSchema = JSON.parse(
+    fs.readFileSync(resolvedDataPath, "utf8"),
+  );
+  return allImagesData;
+};
