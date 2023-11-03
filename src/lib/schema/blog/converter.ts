@@ -1,17 +1,15 @@
-import fs from "node:fs";
+import assert from "node:assert/strict";
+
 import type { GetImageResult, ImageMetadata, MarkdownHeading } from "astro";
 import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 import { getImage } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
-import type {
-  BlogThumbFormatEnum,
-  CollectionBlogSchema,
-} from "./collectionSchema";
+import type { BlogThumbSchema, CollectionBlogSchema } from "./collectionSchema";
 
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
-import type { ImagesStorageSchema } from "./image";
+import { getAllImagesData } from "./image";
 
 /** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
 export class CollectionsBlogPostEntry
@@ -21,8 +19,7 @@ export class CollectionsBlogPostEntry
   public title: string;
   public description: string;
   public Content!: AstroComponentFactory;
-  public thumbnail: string;
-  public thumbnailFormat: BlogThumbFormatEnum | null;
+  public thumbnail: BlogThumbSchema;
   public date: Date;
   public updateDate: Date | undefined;
   public tags: string[];
@@ -41,7 +38,6 @@ export class CollectionsBlogPostEntry
     this.title = data.title;
     this.description = data.description;
     this.thumbnail = data.thumbnail;
-    this.thumbnailFormat = data.thumbnailFormat;
     this.date = data.date;
     this.updateDate = data.updateDate;
     this.tags = [...data.tags];
@@ -59,13 +55,9 @@ export class CollectionsBlogPostEntry
     // parseとstringifyで完全に復元できるためこれでよい.
     entry.headings = JSON.parse(JSON.stringify(headings));
 
-    if (entry.thumbnail !== "remote" && entry.thumbnailFormat === null) {
-      throw Error(
-        "サムネイルに関するバリデーションが不正です。`thumbnail`が`remote`であるか、そうでないなら`thumbnailFormat`が指定されている必要があります。",
-      );
-    }
     // リモートの画像を取得する処理
     const getThumbImageFromRemote = async () => {
+      assert(entry.thumbnail.type === "remote");
       // ビルド時のバンドルされるファイルのURLがどうなるかはあまりわかっていないのでうまくいくようにしている.
       // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
       const dataDir = import.meta.env.DEV
@@ -73,15 +65,9 @@ export class CollectionsBlogPostEntry
         : "../../../dist/generated/images-data.json";
       // TODO: new URLではなくpathToFileURLを使う
       const resolvedDataPath = new URL(dataDir, import.meta.url);
-      if (!fs.existsSync(resolvedDataPath)) {
-        const errorMessage =
-          "[blog/converter.ts]: Images data does not exist. Check the path settings output to the console." +
-          `\n\`import.meta.url\` : ${import.meta.url}` +
-          `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
-        throw Error(errorMessage);
-      }
-      const allImagesData: ImagesStorageSchema = JSON.parse(
-        fs.readFileSync(resolvedDataPath, "utf8"),
+      const allImagesData = getAllImagesData(
+        resolvedDataPath,
+        "[blog/converter.ts]",
       );
 
       const imagesData = allImagesData[entry.id];
@@ -126,7 +112,9 @@ export class CollectionsBlogPostEntry
       });
     };
     const getThumbImageFromLocal = async () => {
-      const filename = `${entry.thumbnail}.${entry.thumbnailFormat}`;
+      assert(entry.thumbnail.type === "local");
+
+      const filename = `${entry.thumbnail.filename}.${entry.thumbnail.format}`;
       const localImagePath = `../../../blog-images/thumbnails/${filename}`;
 
       // NOTE: ここの処理は"@components/blog/BlogImagesLocal.astro"を参照.
@@ -145,7 +133,7 @@ export class CollectionsBlogPostEntry
     };
     const getThumbImage = async () => {
       try {
-        return entry.thumbnail === "remote"
+        return entry.thumbnail.type === "remote"
           ? await getThumbImageFromRemote()
           : await getThumbImageFromLocal();
       } catch (e) {
@@ -158,18 +146,9 @@ export class CollectionsBlogPostEntry
   }
 
   toEntryObject() {
-    const {
-      date,
-      updateDate,
-      id,
-      Content,
-      thumbnail,
-      thumbnailFormat,
-      ...rest
-    } = this;
+    const { date, updateDate, id, Content, thumbnail, ...rest } = this;
     const createThumbData = () => {
       if (!this.thumbnailImage?.src) {
-        // throw Error(`Failed to load thumbnail in \`${this.title}\``);
         console.error(`Failed to load thumbnail in \'${this.title}\'`);
         return {
           url: "no-image", // このURLはダミーで必ず404が出る.

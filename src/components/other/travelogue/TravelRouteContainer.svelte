@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { TravelRouteEntry } from "@lib/other/station-collections";
-  import { dateText } from "@lib/utils";
 
   export let routeData: TravelRouteEntry;
 
