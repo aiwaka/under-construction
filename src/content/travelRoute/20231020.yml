@@ -1,0 +1,309 @@
+name: 飛騨・北陸旅行
+date: 2023-10-20
+route:
+  - name: 大阪駅
+    station: osaka
+    nextTransport: "特急ひだ25号 高山行き"
+    arrivalTime: 2023-10-20T07:38:00
+    departureTime: 2023-10-20T07:58:00
+    marker:
+      - type: single
+        label: primary
+  - name: 岐阜駅
+    station: gifu
+    arrivalTime: 2023-10-20T10:08:00
+    departureTime: 2023-10-20T10:15:00
+  - name: 高山駅
+    station: takayama
+    nextTransport: "特急ひだ5号 飛騨古川行き"
+    arrivalTime: 2023-10-20T12:16:00
+    departureTime: 2023-10-20T12:19:00
+  - name: 飛騨古川駅
+    station: hida-furukawa
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T12:35:00
+    marker:
+      - type: single
+        label: primary
+  - name: "レストラン シャングリ・ラ"
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T12:51:00
+  - name: 飛騨古川まつり会館
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T13:19:00
+  - name: 飛騨の匠文化館
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T13:51:00
+  - name: 今宮橋
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T14:44:00
+  - name: 大横丁公園
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T14:48:00
+  - name: 円光寺
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T14:57:00
+  - name: 飛騨古川駅
+    station: hida-furukawa
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T15:00:00
+  - name: 気多若宮神社
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T15:15:00
+    marker:
+      - type: single
+        label: primary
+  - name: 飛騨古川駅
+    station: hida-furukawa
+    nextTransport: 猪谷行き
+    arrivalTime: 2023-10-20T15:32:00
+    departureTime: 2023-10-20T16:18:00
+  - name: 猪谷駅
+    station: inotani
+    nextTransport: 富山行き
+    arrivalTime: 2023-10-20T17:04:00
+    departureTime: 2023-10-20T17:18:00
+  - name: 富山駅
+    station: toyama
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T18:24:00
+    marker:
+      - type: single
+        label: primary
+  - name: "魚 どん亭"
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T19:35:00
+  - name: 電鉄富山・エスタ前停留場
+    nextTransport: 南富山駅前行き
+    arrivalTime: 2023-10-20T20:40:00
+  - name: 南富山駅前停留場
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T21:00:00
+  - name: マイプラザ
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T21:09:00
+    departureTime: 2023-10-20T21:53:00
+  - name: 南富山駅
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T21:59:00
+  - name: 南富山駅前停留場
+    nextTransport: 大学前行き
+    arrivalTime: 2023-10-20T22:02:00
+    departureTime: 2023-10-20T22:08:00
+  - name: 電鉄富山・エスタ前停留場
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T22:27:00
+  - name: 富山駅周辺
+    nextTransport: onfoot
+    arrivalTime: 2023-10-20T22:28:00
+    departureTime: 2023-10-21T07:45:00
+  - name: 富山駅停留場
+    nextTransport: 南富山駅前行き
+    arrivalTime: 2023-10-21T08:56:00
+  - name: 西町停留場
+    nextTransport: onfoot
+    arrivalTime: 2023-10-21T09:06:00
+  - name: 富山ガラス美術館
+    nextTransport: onfoot
+    arrivalTime: 2023-10-21T09:09:00
+  - name: 西町停留場
+    nextTransport: 岩瀬浜行き
+    arrivalTime: 2023-10-21T10:02:00
+  - name: 富山駅停留場
+    nextTransport: onfoot
+    arrivalTime: 2023-10-21T10:15:00
+  - name: 富山駅
+    station: toyama
+    nextTransport: "はくたか553号 金沢行き"
+    arrivalTime: 2023-10-21T10:16:00
+    departureTime: 2023-10-21T10:38:00
+  - name: 新高岡駅
+    nextTransport: 城端行き
+    arrivalTime: 2023-10-21T10:47:00
+    departureTime: 2023-10-21T11:03:00
+  - name: 城端駅
+    station: johana
+    nextTransport: onfoot
+    arrivalTime: 2023-10-21T12:04:00
+  - name: 西新田稲荷社
+    nextTransport: onfoot
+    arrivalTime: 2023-10-21T12:15:00
+  - name: 城端駅観光案内所
+    nextTransport: onfoot
+    arrivalTime: 2023-10-21T12:23:00
+  - name: 城端駅
+    station: johana
+    nextTransport: 高岡行き
+    arrivalTime: 2023-10-21T12:30:00
+    departureTime: 2023-10-21T12:45:00
+  - name: 高岡駅
+    station: takaoka
+    nextTransport: 氷見行き
+    arrivalTime: 2023-10-21T13:32:00
+    departureTime: 2023-10-21T13:47:00
+  - name: 氷見駅
+    station: himi
+    nextTransport: 高岡行き
+    arrivalTime: 2023-10-21T14:16:00
+    departureTime: 2023-10-21T14:24:00
+  - name: 島尾駅
+    station: shimao
+    nextTransport: onfoot
+    arrivalTime: 2023-10-21T14:28:00
+  - name: 雨晴駅
+    station: amaharashi
+    nextTransport: 高岡行き
+    arrivalTime: 2023-10-21T15:26:00
+    departureTime: 2023-10-21T16:16:00
+    marker:
+      - type: single
+        label: primary
+  - name: 高岡駅
+    station: takaoka
+    nextTransport: 金沢行き
+    arrivalTime: 2023-10-21T16:40:00
+    departureTime: 2023-10-21T17:04:00
+  - name: 金沢駅
+    station: kanazawa
+    nextTransport: 北鉄バス
+    arrivalTime: 2023-10-21T17:44:00
+    marker:
+      - type: single
+        label: primary
+  - name: 金沢駅周辺
+    nextTransport: 北鉄バス
+    arrivalTime: 2023-10-21T17:50:00
+  - name: オリエンタルブルーイング金沢駅
+    nextTransport: onfoot
+    arrivalTime: 2023-10-21T19:30:00
+  - name: ゲーム・パラダイス
+    nextTransport: 北鉄バス
+    arrivalTime: 2023-10-21T20:29:00
+  - name: 金沢駅周辺
+    nextTransport: 北鉄バス
+    arrivalTime: 2023-10-21T21:00:00
+    departureTime: 2023-10-22T06:30:00
+  - name: 金沢駅
+    station: kanazawa
+    nextTransport: 福井行き
+    arrivalTime: 2023-10-22T07:08:00
+    departureTime: 2023-10-22T07:54:00
+  - name: 松任駅
+    station: matto
+    nextTransport: 小松行き
+    arrivalTime: 2023-10-22T08:04:00
+    departureTime: 2023-10-22T08:29:00
+  - name: 小松駅
+    station: komatsu
+    nextTransport: "特急しらさぎ56号 米原行き"
+    arrivalTime: 2023-10-22T08:49:00
+    departureTime: 2023-10-22T09:05:00
+  - name: 加賀温泉駅
+    station: kaga-onsen
+    nextTransport: 福井行き
+    arrivalTime: 2023-10-22T09:14:00
+    departureTime: 2023-10-22T09:28:00
+  - name: 芦原温泉駅
+    station: awara-onsen
+    nextTransport: onfoot
+    arrivalTime: 2023-10-22T09:45:00
+    departureTime: 2023-10-22T10:44:00
+    marker:
+      - type: single
+        label: primary
+  - name: "a-cube Cafe"
+    nextTransport: onfoot
+    arrivalTime: 2023-10-22T10:08:00
+  - name: 芦原温泉駅
+    station: awara-onsen
+    nextTransport: 福井行き
+    arrivalTime: 2023-10-22T10:38:00
+    departureTime: 2023-10-22T10:44:00
+  - name: 福井駅
+    station: fukui
+    nextTransport: "特急サンダーバード20号 大阪行き"
+    arrivalTime: 2023-10-22T11:02:00
+    departureTime: 2023-10-22T12:08:00
+  - name: 鯖江駅
+    station: sabae
+    nextTransport: onfoot
+    arrivalTime: 2023-10-22T12:16:00
+    marker:
+      - type: single
+        label: primary
+  - name: めがねミュージアム
+    nextTransport: onfoot
+    arrivalTime: 2023-10-22T12:46:00
+  - name: 鯖江駅
+    nextTransport: onfoot
+    arrivalTime: 2023-10-22T13:28:00
+  - name: 松阜神社
+    nextTransport: 鯖江市コミュニティバス
+    arrivalTime: 2023-10-22T13:36:00
+  - name: アル・プラザボウル
+    nextTransport: 鯖江市コミュニティバス
+    arrivalTime: 2023-10-22T14:12:00
+  - name: 鯖江駅
+    station: sabae
+    nextTransport: 武生行き
+    arrivalTime: 2023-10-22T14:54:00
+    departureTime: 2023-10-22T15:07:00
+  - name: 武生駅
+    station: takefu
+    nextTransport: 敦賀行き
+    arrivalTime: 2023-10-22T15:12:00
+    departureTime: 2023-10-22T15:31:00
+  - name: 敦賀駅
+    station: tsuruga
+    nextTransport: "新快速 網干行き（湖西線経由）"
+    arrivalTime: 2023-10-22T16:02:00
+    departureTime: 2023-10-22T16:23:00
+  - name: マキノ駅
+    station: makino--shiga
+    nextTransport: onfoot
+    arrivalTime: 2023-10-22T16:50:00
+    marker:
+      - type: single
+        label: primary
+  - name: 高木浜
+    nextTransport: onfoot
+    arrivalTime: 2023-10-22T17:10:00
+  - name: マキノ駅
+    station: makino--shiga
+    nextTransport: 近江今津行き
+    arrivalTime: 2023-10-22T17:20:00
+    departureTime: 2023-10-22T17:27:00
+  - name: 近江今津駅
+    # station: omi-imazu
+    nextTransport: 京都行き
+    arrivalTime: 2023-10-22T17:35:00
+    departureTime: 2023-10-22T17:42:00
+  - name: 京都駅
+    station: kyoto
+    nextTransport: 奈良行き
+    arrivalTime: 2023-10-22T18:47:00
+    departureTime: 2023-10-22T18:56:00
+    marker:
+      - type: single
+        label: primary
+  - name: 東福寺駅
+    # station: tofukuji
+    nextTransport: "出町柳行き"
+    arrivalTime: 2023-10-22T18:58:00
+    departureTime: 2023-10-22T19:10:00
+  - name: 祇園四条駅
+    # station: gion-sijo
+    nextTransport: "特急 淀屋橋行き"
+    arrivalTime: 2023-10-22T19:16:00
+    departureTime: 2023-10-22T19:19:00
+  - name: 京橋駅
+    station: kyobashi
+    nextTransport: "大和路快速 加茂行き"
+    arrivalTime: 2023-10-22T20:00:00
+    departureTime: 2023-10-22T20:18:00
+  - name: 王寺駅
+    station: oji
+    arrivalTime: 2023-10-22T21:05:00
+    marker:
+      - type: single
+        label: primary
