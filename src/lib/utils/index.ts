@@ -3,6 +3,11 @@
  */
 export const POST_PER_PAGE = 9 as const satisfies number;
 
-export { getFilenameFromPath, dateText, sortArrayByDate } from "./misc";
+export {
+  getFilenameFromPath,
+  dateText,
+  timeText,
+  sortArrayByDate,
+} from "./misc";
 // export { downloadImage } from "./downloadImage";
 // export { convertImage } from "./convertImage";
