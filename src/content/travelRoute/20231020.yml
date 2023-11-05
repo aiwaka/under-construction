@@ -207,7 +207,6 @@ route:
     station: awara-onsen
     nextTransport: onfoot
     arrivalTime: 2023-10-22T09:45:00
-    departureTime: 2023-10-22T10:44:00
     marker:
       - type: single
         label: primary
