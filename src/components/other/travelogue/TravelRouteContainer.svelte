@@ -67,13 +67,58 @@
 
 <div class="legend">
   <div class="legend-label">凡例</div>
-  <div class="legend-item primary-node route-node">
-    <span>主要な訪問地</span>
-  </div>
-  <div class="legend-item stay-node route-node">
-    <span>宿泊地</span>
+  <div class="travel-route-container">
+    <div class="route-item">
+      <div class="legend-item route-node">
+        <div class="name-block">
+          <span>訪問地</span>
+        </div>
+      </div>
+
+      <div class="edge latter"></div>
+      <div class="edge short"></div>
+      <div class="transportation-label">移動手段</div>
+      <div class="edge short"></div>
+    </div>
+
+    <div class="route-item">
+      <div class="edge former"></div>
+      <div class="legend-item primary-node route-node">
+        <div class="name-block">
+          <span>主要な訪問地</span>
+        </div>
+        <div class="datetime-block">
+          <div class="time-block">
+            <div class="arrival-time">到着時刻</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="edge latter dashed"></div>
+      <span>(徒歩移動)</span>
+    </div>
+
+    <div class="route-item">
+      <div class="edge former dashed"></div>
+      <div class="legend-item stay-node route-node">
+        <div class="name-block">
+          <span>宿泊地</span>
+        </div>
+        <div class="datetime-block">
+          <div class="next-date">
+            <span>次の日付</span>
+          </div>
+          <div class="time-block">
+            <div class="arrival-time">到着時刻</div>
+            <span class="time-spacer">|</span>
+            <div class="departure-time">出発時刻</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
 <div class="travel-route-container">
   {#each routeData.route as route, i}
     <div class="route-item">
@@ -133,7 +178,7 @@
       {#if i !== routeData.route.length - 1}
         <div class="edge latter" class:dashed={nextIsOnFoot(route)}></div>
       {/if}
-      {#if route.nextTransport && route.nextTransport !== "onfoot"}
+      {#if route.nextTransport && !nextIsOnFoot(route)}
         <div class="edge short"></div>
         <div class="transportation-label">{route.nextTransport}</div>
         <div class="edge short"></div>
@@ -184,6 +229,7 @@
   }
   .primary-node {
     padding: 0.8rem 1rem;
+    border: double 5px #777;
     @media (max-width: 1024px) {
       padding: 0.5rem 0.7rem;
       font-size: inherit;
