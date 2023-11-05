@@ -21,6 +21,24 @@ export const dateText = (
 };
 
 /**
+ * 時刻をこのサイトで用いる書式に変換する. Dateはデフォルトで標準時として解釈されるが`zone`で修正できる.
+ * Zod経由でパースしたDateオブジェクトは指定した時刻をUTCで表しており,
+ * microCMSは指定した日本時刻に対応するUTCの文字列を返す（9時間巻き戻っている）ため,
+ * 前者ではUTC, 後者ではAsia/Tokyoを指定するとよい.
+ * @param useSec 秒もテキストに含めるかどうか. デフォルトは`false`.
+ * @param zone タイムゾーン指定. デフォルトは`"UTC"`. 日本時刻にする場合は`"Asia/Tokyo"`を指定する.
+ */
+export const timeText = (
+  date: Date,
+  useSec: boolean = false,
+  zone: string | Zone | undefined = "UTC",
+) => {
+  const luxonDate = DateTime.fromJSDate(date, { zone });
+  const formatStr = "HH:mm" + (useSec ? ":ss" : "");
+  return luxonDate.toFormat(formatStr);
+};
+
+/**
  * このメソッドは引数で渡した配列自体を操作し変更することに注意.
  * Date型の`updatedAt`フィールドを持つオブジェクトの列をこれにより降順に並び替える.
  * @param arr
