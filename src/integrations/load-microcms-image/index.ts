@@ -1,7 +1,6 @@
 import fs from "fs";
 import type { AstroIntegration } from "astro";
 import { z } from "astro/zod";
-import type { MicroCMSListResponse } from "microcms-js-sdk";
 import { createClient } from "microcms-js-sdk";
 import {
   MicroCMSBlogImagesDataZod,
@@ -71,26 +70,35 @@ export default function loadMicroCMSImageData(
             });
             try {
               // コンテンツが増えると一度で取得しきれないため, 逐次取得する.
-              const dataFromMicroCMS: MicroCMSBlogImagesDataSchema[] = [];
-              const NUMBER_LIMIT = 10 as const satisfies number;
-              // totalCountは最初大きい数字としておき, レスポンスから得られる総数で更新する。
-              let offset = 0;
-              let totalCount = 10000000;
-              while (offset < totalCount) {
-                const partialResponse = await microCMSClient.get<
-                  MicroCMSListResponse<MicroCMSBlogImagesDataSchema>
-                >({
-                  endpoint: "images-in-articles",
-                  queries: {
-                    fields: "id,thumbnail,images",
-                    limit: NUMBER_LIMIT,
-                    offset,
+              // const dataFromMicroCMS: MicroCMSBlogImagesDataSchema[] = [];
+              // const NUMBER_LIMIT = 10 as const satisfies number;
+              // // totalCountは最初大きい数字としておき, レスポンスから得られる総数で更新する。
+              // let offset = 0;
+              // let totalCount = 10000000;
+              // while (offset < totalCount) {
+              //   const partialResponse = await microCMSClient.get<
+              //     MicroCMSListResponse<MicroCMSBlogImagesDataSchema>
+              //   >({
+              //     endpoint: "images-in-articles",
+              //     queries: {
+              //       fields: "id,thumbnail,images",
+              //       limit: NUMBER_LIMIT,
+              //       offset,
+              //     },
+              //   });
+              //   dataFromMicroCMS.push(...partialResponse.contents);
+              //   totalCount = partialResponse.totalCount;
+              //   offset += NUMBER_LIMIT;
+              // }
+              const dataFromMicroCMS =
+                await microCMSClient.getAllContents<MicroCMSBlogImagesDataSchema>(
+                  {
+                    endpoint: "images-in-articles",
+                    queries: {
+                      fields: "id,thumbnail,images",
+                    },
                   },
-                });
-                dataFromMicroCMS.push(...partialResponse.contents);
-                totalCount = partialResponse.totalCount;
-                offset += NUMBER_LIMIT;
-              }
+                );
               return dataFromMicroCMS;
             } catch (e) {
               logger.error("data fetch failed...");

@@ -10,6 +10,5 @@
       "@lib/*": ["src/lib/*"],
       "@blog-images/*": ["src/blog-images/*"]
     },
-    "types": ["@astrojs/image/client"]
   }
 }

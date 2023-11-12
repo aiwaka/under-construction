@@ -16,7 +16,7 @@ const available = (slugList as string[]).includes(slug);
 
 {
   available ? (
-    <a href={`${import.meta.env.BASE_URL}blog/${slug}`}>
+    <a href={`${import.meta.env.BASE_URL}blog/${slug}`} data-astro-prefetch>
       <slot />
     </a>
   ) : (
