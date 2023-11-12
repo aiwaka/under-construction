@@ -71,6 +71,7 @@ export default defineConfig({
     partytown(),
     sitemap(),
   ],
+  prefetch: true,
   site: "https://aiwaka.github.io",
   base: "/under-construction/",
   build: {

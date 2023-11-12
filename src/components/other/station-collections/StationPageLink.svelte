@@ -8,7 +8,10 @@
 {#if disabled}
   <span class="disabled">{name}</span>
 {:else}
-  <a href={`${import.meta.env.BASE_URL}station-collections/${slug}`}>
+  <a
+    href={`${import.meta.env.BASE_URL}station-collections/${slug}`}
+    data-astro-prefetch
+  >
     <span>{name}</span>
   </a>
 {/if}
