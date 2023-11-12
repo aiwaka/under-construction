@@ -2,7 +2,6 @@ import fs from "fs";
 
 import type { AstroIntegration } from "astro";
 import { z } from "astro/zod";
-import type { MicroCMSListResponse } from "microcms-js-sdk";
 import { createClient } from "microcms-js-sdk";
 
 import {
@@ -71,28 +70,15 @@ export default function loadMicroCMSImageData(
               apiKey: MICROCMS_API_KEY,
             });
             try {
-              // コンテンツが増えると一度で取得しきれないため, 逐次取得する.
-              const dataFromMicroCMS: MicroCMSStationCollectionsSchema[] = [];
-              const NUMBER_LIMIT = 10 as const satisfies number;
-              // totalCountは最初大きい数字としておき, レスポンスから得られる総数で更新する。
-              let offset = 0;
-              let totalCount = 10000000;
-              while (offset < totalCount) {
-                const partialResponse = await microCMSClient.get<
-                  MicroCMSListResponse<MicroCMSStationCollectionsSchema>
-                >({
-                  endpoint: "station-collections",
-                  queries: {
-                    fields: "id,images,createdAt,updatedAt",
-                    limit: NUMBER_LIMIT,
-                    offset,
+              const dataFromMicroCMS =
+                await microCMSClient.getAllContents<MicroCMSStationCollectionsSchema>(
+                  {
+                    endpoint: "station-collections",
+                    queries: {
+                      fields: "id,images,createdAt,updatedAt",
+                    },
                   },
-                });
-                dataFromMicroCMS.push(...partialResponse.contents);
-                totalCount = partialResponse.totalCount;
-                offset += NUMBER_LIMIT;
-              }
-
+                );
               return dataFromMicroCMS;
             } catch (e) {
               logger.error("data fetch failed...");
