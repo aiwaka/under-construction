@@ -29,7 +29,8 @@ questions:
 ---
 title: {{ inputs.title }}
 description: {{ inputs.description }}
-thumbnail: remote
+thumbnail:
+  type: remote
 date: {{ today() }}
 tags:
   {{ for tag in split(inputs.tags, ",") }}- {{ tag }}
