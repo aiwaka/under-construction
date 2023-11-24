@@ -8,27 +8,30 @@ interface Props extends Required<BlogImageProps> {}
 const { src, width, height, alt, caption, ...attrs } = Astro.props;
 ---
 
-<figure>
-  <Image
-    src={src}
-    width={width}
-    height={height}
-    format="webp"
-    alt={alt}
-    {...attrs}
-  />
-  {
-    caption ? (
-      <figcaption style={`max-width: ${width}px`}>{caption}</figcaption>
-    ) : null
-  }
-</figure>
+<div class="figure-container">
+  <figure>
+    <Image
+      src={src}
+      width={width}
+      height={height}
+      format="webp"
+      alt={alt}
+      {...attrs}
+    />
+    {
+      caption ? (
+        <figcaption style={`max-width: ${width}px`}>{caption}</figcaption>
+      ) : null
+    }
+  </figure>
+</div>
 
 <style>
-  figure {
+  .figure-container {
     border: 3px double var(--main-font-color);
-    border-bottom: 0;
     margin: 1.7rem 1rem;
+  }
+  figure {
     display: table;
     max-width: 100%;
   }
@@ -46,8 +49,6 @@ const { src, width, height, alt, caption, ...attrs } = Astro.props;
     caption-side: bottom;
     display: table-caption;
     background-clip: padding-box;
-    border: 3px double var(--main-font-color);
-    border-top: 0;
     background-color: rgba(var(--main-font-color-params), 0.8);
     color: var(--main-bg-color);
     padding: 3px;

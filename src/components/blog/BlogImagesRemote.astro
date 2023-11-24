@@ -3,7 +3,7 @@ import fs from "fs";
 
 import BlogImageList from "@components/blog/BlogImageList.astro";
 import type { BlogImageProps } from "@lib/contents/blog";
-import type { ImagesStorageSchema } from "../../integrations/astro-load-microcms-image";
+import type { ImagesStorageSchema } from "@lib/schema/blog";
 
 type NamedRemoteImageType = Omit<BlogImageProps, "src"> & {
   name: string;
