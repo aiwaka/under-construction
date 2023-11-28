@@ -79,6 +79,7 @@ JRWestData.addLineData("kosei", "湖西線", [
   "yamashina",
   "omi-maiko",
   "omi-imazu",
+  "makino--shiga",
   "omi-shiotsu",
   "tsuruga",
 ]);
@@ -114,7 +115,19 @@ JRWestData.addLineData("sanyo", "山陽本線", [
   "hatabu",
   "shimonoseki",
 ]);
-JRWestData.addLineData("takayama", "高山本線", ["toyama", "ecchu-yatsuo"]);
+JRWestData.addLineData("johana", "城端線", [
+  "takaoka",
+  "shin-takaoka",
+  "toide",
+  "tonami",
+  "fukumitsu",
+  "johana",
+]);
+JRWestData.addLineData("takayama", "高山本線", [
+  "inotani",
+  "ecchu-yatsuo",
+  "toyama",
+]);
 JRWestData.addLineData("tsuyama", "津山線", ["tsuyama", "kanagawa", "okayama"]);
 JRWestData.addLineData("tokaido", "東海道本線", [
   "maibara",
@@ -146,10 +159,20 @@ JRWestData.addLineData("bantan", "播但線", [
   "takeda--jrw",
   "wadayama",
 ]);
+JRWestData.addLineData("himi", "氷見線", [
+  "takaoka",
+  "amaharashi",
+  "shimao",
+  "himi",
+]);
 JRWestData.addLineData("fukuchiyama", "福知山線", [
   "osaka",
   "sasayamaguchi",
   "fukuchiyama",
+]);
+JRWestData.addLineData("hokuriku-shinkansen", "北陸新幹線", [
+  "toyama",
+  "shin-takaoka",
 ]);
 JRWestData.addLineData("hokuriku", "北陸本線", [
   "maibara",
@@ -157,9 +180,13 @@ JRWestData.addLineData("hokuriku", "北陸本線", [
   "omi-shiotsu",
   "tsuruga",
   "takefu",
+  "sabae",
   "fukui",
+  "awara-onsen",
+  "kaga-onsen",
   "awazu",
   "komatsu",
+  "matto",
   "kanazawa",
 ]);
 JRWestData.addLineData("wakayama", "和歌山線", [

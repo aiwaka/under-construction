@@ -292,4 +292,10 @@
   .dashed {
     border-style: dashed;
   }
+  .daytime {
+    border-color: orange;
+  }
+  .night {
+    border-color: darkslateblue;
+  }
 </style>

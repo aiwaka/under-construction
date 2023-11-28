@@ -5,6 +5,7 @@ const ainokazeData = createCompanyData("ainokaze", "あいの風とやま鉄道"
 ]);
 
 ainokazeData.addLineData("ainokaze", "あいの風とやま鉄道線", [
+  "takaoka",
   "toyama",
   "tomari",
 ]);

@@ -25,6 +25,14 @@ JRCentralData.addLineData("kisei", "紀勢本線", [
   "matsusaka",
   "kameyama",
 ]);
+JRCentralData.addLineData("takayama", "高山本線", [
+  "gifu",
+  "mino-ota",
+  "gero",
+  "takayama",
+  "hida-furukawa",
+  "inotani",
+]);
 JRCentralData.addLineData("tokaido", "東海道本線", [
   "toyohashi",
   "nagoya",
