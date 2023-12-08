@@ -15,6 +15,7 @@ import {
   getDownloadedStationCollectionsData,
 } from "@lib/other/station-collections";
 import { createLineSlug } from "@lib/other/station-collections";
+import { createHrefToLineSlug } from "@lib/other/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 import CollectionPictureList from "@components/other/station-collections/CollectionPictureList.astro";
@@ -74,7 +75,7 @@ export async function getStaticPaths() {
         ? lineData.line.lineName
         : `(${lineData.line.lineName})`;
       return {
-        slug: createLineSlug(lineData.companyId, lineData.line.lineId),
+        slug: createHrefToLineSlug(lineData.companyId, lineData.line.lineId),
         lineName,
       };
     });
@@ -182,12 +183,13 @@ const ogp = {
   {/* TODO: 駅名標っぽくしたい */}
   <h1>{name}</h1>
   <div class="station-lines-block">
+    {/* TODO: 南小谷とかがやばいのでなんとかする */}
     <p>
       所属路線：{
         jaLineNames.map((line, i) => {
           return (
             <>
-              <a href={`./#${line.slug}`}>{line.lineName}</a>
+              <a href={line.slug}>{line.lineName}</a>
               {i !== jaLineNames.length - 1 && <span>・</span>}
             </>
           );
