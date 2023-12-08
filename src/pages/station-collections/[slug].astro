@@ -14,6 +14,7 @@ import {
   getStationEntries,
   getDownloadedStationCollectionsData,
 } from "@lib/other/station-collections";
+import { createLineSlug } from "@lib/other/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 import CollectionPictureList from "@components/other/station-collections/CollectionPictureList.astro";
@@ -60,24 +61,20 @@ export async function getStaticPaths() {
     // この駅の全路線データ（JRの重複込み）
     const flattenLineData = Object.values(linesAboutCompany).flatMap(
       (companyData) => {
-        return Object.values(companyData.lines);
+        return Object.values(companyData.lines).map((lineData) => ({
+          line: lineData,
+          companyId: companyData.companyId,
+        }));
       },
     );
-    // IDについて一意にしたもの
-    const uniqueLines = flattenLineData.reduce((prev, lineData) => {
-      const prevIds = prev.map((line) => line.lineId);
-      if (!prevIds.includes(lineData.lineId)) prev.push(lineData);
-      return prev;
-    }, [] as LineDataSchema[]);
-    // 日本語の路線名リストを作る. 路線ごとに名前を取得し, ユニークにする.
+    // 日本語の路線名リストを作る.
     // 厳密にその駅を含まない路線はカッコで囲む.
-    // TODO: このやり方だとJRの重複でうまくリンクが作れない. 見出し部分から改善が必要
-    const jaLineNames = uniqueLines.map((line) => {
-      const lineName = entry.lineIds.includes(line.lineId)
-        ? line.lineName
-        : `(${line.lineName})`;
+    const jaLineNames = flattenLineData.map((lineData) => {
+      const lineName = entry.lineIds.includes(lineData.line.lineId)
+        ? lineData.line.lineName
+        : `(${lineData.line.lineName})`;
       return {
-        slug: line.formalLineName,
+        slug: createLineSlug(lineData.companyId, lineData.line.lineId),
         lineName,
       };
     });
@@ -119,7 +116,7 @@ export async function getStaticPaths() {
           }
         } else {
           treatedLineNames.push(lineName);
-          siblingsStations.push({ lineData, prev, next });
+          siblingsStations.push({ companyData, lineData, prev, next });
         }
       });
     });
@@ -138,7 +135,7 @@ const { name, CommentContent, updatedAt, images, firstVisitDate, noDataFlag } =
   entry;
 
 // typeが駅舎のものを探す。無ければのものを使う
-const thumbImage =
+const thumbImage: (typeof images)[number] | null =
   images.length === 0
     ? null
     : images.find((img) => img.type.includes("駅舎")) || images[0];

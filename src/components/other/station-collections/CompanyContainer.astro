@@ -13,7 +13,7 @@ const { company } = Astro.props;
 <h3 id={company.companyId}>{company.companyName}</h3>
 {
   Object.values(company.lines).map((dat) => {
-    return <LineContainer lineData={dat} />;
+    return <LineContainer companyData={company} lineData={dat} />;
   })
 }
 

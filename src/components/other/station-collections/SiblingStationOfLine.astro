@@ -1,16 +1,21 @@
 ---
 import type { SiblingStationType } from "@lib/types";
 import StationPageLink from "./StationPageLink.svelte";
+import { createLineSlug } from "@lib/other/station-collections";
 
 interface Props {
   siblings: SiblingStationType;
 }
 
 const { siblings } = Astro.props;
+
+const slug = createLineSlug(
+  siblings.companyData.companyId,
+  siblings.lineData.lineId,
+);
 ---
 
-<a
-  href=`${import.meta.env.BASE_URL}station-collections/#${siblings.lineData.formalLineName}`
+<a href=`${import.meta.env.BASE_URL}station-collections/#${slug}`
   ><h3>{siblings.lineData.lineName}</h3></a
 >
 <div class="siblings-container">

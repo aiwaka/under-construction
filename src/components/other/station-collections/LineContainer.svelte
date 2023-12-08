@@ -1,13 +1,17 @@
 <script lang="ts">
-  import type { LineDataSchema } from "@lib/types";
+  import type { CompanyDataSchema, LineDataSchema } from "@lib/types";
 
   import StationPageLink from "./StationPageLink.svelte";
+  import { createLineSlug } from "@lib/other/station-collections";
 
+  export let companyData: CompanyDataSchema;
   export let lineData: LineDataSchema;
+
+  const lineSlug = createLineSlug(companyData.companyId, lineData.lineId);
 </script>
 
 <div class="line-container">
-  <h4 id={lineData.formalLineName}>{lineData.formalLineName}</h4>
+  <h4 id={lineSlug}>{lineData.formalLineName}</h4>
   {#each lineData.stations as sta, i}
     {#if sta.notBelongsToLine}({/if}<StationPageLink
       data={sta}
