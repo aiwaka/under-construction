@@ -1,0 +1,63 @@
+---
+import type { SiblingStationType } from "@lib/types";
+import StationPageLink from "./StationPageLink.svelte";
+import { createLineSlug } from "@lib/other/station-collections";
+
+interface Props {
+  siblings: SiblingStationType;
+}
+
+const { siblings } = Astro.props;
+
+const slug = createLineSlug(
+  siblings.companyData.companyId,
+  siblings.lineData.lineId,
+);
+---
+
+<a href=`${import.meta.env.BASE_URL}station-collections/#${slug}`
+  ><h3>{siblings.lineData.lineName}</h3></a
+>
+<div class="siblings-container">
+  {
+    siblings.prev && (
+      <div class="sibling-link prev">
+        <div class="link-text">
+          &larr; <StationPageLink data={siblings.prev} />
+        </div>
+      </div>
+    )
+  }
+  {
+    siblings.next && (
+      <div class="siblings-link next">
+        <div class="link-text">
+          <StationPageLink data={siblings.next} /> &rarr;
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .siblings-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 25%;
+    margin: 1rem 0;
+
+    @media (max-width: 1024px) {
+      column-gap: 1rem;
+    }
+  }
+  .siblings-link {
+    display: flex;
+  }
+  .prev {
+    grid-column: 1 / 2;
+  }
+  .next {
+    grid-column: -2 / -1;
+    justify-self: flex-end;
+  }
+</style>
