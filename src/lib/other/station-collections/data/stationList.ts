@@ -51,7 +51,7 @@ Object.values(stationList).forEach((company) => {
         !Object.keys(downloadedData).includes(sta.slug) ||
         !(sta.slug in stationDict)
       ) {
-        sta["disabled"] = true;
+        sta.disabled = true;
       }
     });
   });

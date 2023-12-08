@@ -43,14 +43,20 @@ export class CompanyData implements CompanyDataSchema {
     const formalLineName =
       typeof lineName === "object" ? lineName[1] : lineName;
     const lineObj = {
+      lineId,
       lineName: displayLineName,
       stations: stationIDs.flatMap((id) => {
         if (id in this.stationDict) {
           // 各エントリーの所属路線に含まれていないが路線の駅一覧には含まれていない場合がある.
           // この場合は所属ではないが系統などに含まれるとみなしてそのフラグを立てる.
           const linesByStationData = this.stationDict[id].lines;
-          const notBelongs = !linesByStationData.includes(lineId);
-          return { name: this.stationDict[id].name, slug: id, notBelongs };
+          const notBelongsToLine = !linesByStationData.includes(lineId);
+          return {
+            name: this.stationDict[id].name,
+            slug: id,
+            disabled: false,
+            notBelongsToLine,
+          };
         } else {
           // console.warn(
           //   `[station/index.astro]: slug id '${id}' undefined.`,

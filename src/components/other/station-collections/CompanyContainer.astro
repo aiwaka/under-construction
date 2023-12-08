@@ -10,7 +10,7 @@ interface Props {
 const { company } = Astro.props;
 ---
 
-<h3>{company.companyName}</h3>
+<h3 id={company.companyId}>{company.companyName}</h3>
 {
   Object.values(company.lines).map((dat) => {
     return <LineContainer lineData={dat} />;

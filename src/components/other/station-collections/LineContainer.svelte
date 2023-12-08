@@ -7,11 +7,11 @@
 </script>
 
 <div class="line-container">
-  <h4>{lineData.formalLineName}</h4>
+  <h4 id={lineData.formalLineName}>{lineData.formalLineName}</h4>
   {#each lineData.stations as sta, i}
-    {#if sta.notBelongs}({/if}<StationPageLink
+    {#if sta.notBelongsToLine}({/if}<StationPageLink
       data={sta}
-    />{#if sta.notBelongs}){/if}{#if i !== lineData.stations.length - 1}<span
+    />{#if sta.notBelongsToLine}){/if}{#if i !== lineData.stations.length - 1}<span
         >&mdash;</span
       >{/if}
   {/each}

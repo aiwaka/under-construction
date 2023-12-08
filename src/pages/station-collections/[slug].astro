@@ -8,7 +8,7 @@ import type {
   DownloadedStationCollection,
   StationImageTypeOptions,
 } from "@lib/schema/station";
-import type { LineDataSchema } from "@lib/types";
+import type { LineDataSchema, SiblingStationType } from "@lib/types";
 import { dateText } from "@lib/utils";
 import {
   getStationEntries,
@@ -17,7 +17,7 @@ import {
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 import CollectionPictureList from "@components/other/station-collections/CollectionPictureList.astro";
-import StationPageLink from "@components/other/station-collections/StationPageLink.svelte";
+import SiblingStationOfLine from "@components/other/station-collections/SiblingStationOfLine.astro";
 
 export async function getStaticPaths() {
   /** 何らかの理由で取得に失敗した瞬間`true`になる */
@@ -37,6 +37,7 @@ export async function getStaticPaths() {
   return stationEntries.map((entry) => {
     const entryStaId = entry.id;
     // 企業ごとにこの駅の路線IDを持つ路線をリストアップする（全データの部分集合を作る）
+    // 路線系統として含む場合もキャッチするため。
     const linesAboutCompany: typeof allStationList = {};
     Object.keys(allStationList).forEach((companyId) => {
       Object.keys(allStationList[companyId].lines).forEach((lineId) => {
@@ -56,61 +57,69 @@ export async function getStaticPaths() {
         }
       });
     });
+    // この駅の全路線データ（JRの重複込み）
+    const flattenLineData = Object.values(linesAboutCompany).flatMap(
+      (companyData) => {
+        return Object.values(companyData.lines);
+      },
+    );
+    // IDについて一意にしたもの
+    const uniqueLines = flattenLineData.reduce((prev, lineData) => {
+      const prevIds = prev.map((line) => line.lineId);
+      if (!prevIds.includes(lineData.lineId)) prev.push(lineData);
+      return prev;
+    }, [] as LineDataSchema[]);
     // 日本語の路線名リストを作る. 路線ごとに名前を取得し, ユニークにする.
     // 厳密にその駅を含まない路線はカッコで囲む.
-    const jaLineNames = Array.from(
-      new Set(
-        Object.values(linesAboutCompany).flatMap((companyData) => {
-          return Object.keys(companyData.lines).flatMap((lineId) => {
-            let resultStr = "";
-            resultStr += entry.lineIds.includes(lineId) ? "" : "(";
-            resultStr += companyData.lines[lineId].lineName;
-            resultStr += entry.lineIds.includes(lineId) ? "" : ")";
-            return resultStr;
-          });
-        }),
-      ),
-    );
+    // TODO: このやり方だとJRの重複でうまくリンクが作れない. 見出し部分から改善が必要
+    const jaLineNames = uniqueLines.map((line) => {
+      const lineName = entry.lineIds.includes(line.lineId)
+        ? line.lineName
+        : `(${line.lineName})`;
+      return {
+        slug: line.formalLineName,
+        lineName,
+      };
+    });
+
     // 路線ごとに隣の駅を算出する
-    // TODO: すべて同じ企業の駅の場合は正式な路線名を使う
-    interface SiblingStationType {
-      lineName: string;
-      prev?: LineDataSchema["stations"][number];
-      next?: LineDataSchema["stations"][number];
-    }
+    const allLinesSameCompany = Object.keys(linesAboutCompany).length === 1;
     const siblingsStations: SiblingStationType[] = [];
     // すでに処理した路線名リスト. 重複検知に使う.
     const treatedLineNames: string[] = [];
     Object.values(linesAboutCompany).forEach((companyData) => {
       Object.values(companyData.lines).forEach((lineData) => {
-        const lineName = lineData.lineName;
+        // すべて同じ企業の駅の場合は正式な路線名を使う
+        const lineName = allLinesSameCompany
+          ? lineData.formalLineName
+          : lineData.lineName;
         // インデックスベースで隣接駅を取得する.
         const index = lineData.stations.findIndex(
           (sta) => sta.slug === entry.id,
         );
         if (index === -1) throw Error("路線の検出に誤りがあります。");
-        const prev = index === 0 ? undefined : lineData.stations[index - 1];
+        const prev = index === 0 ? null : lineData.stations[index - 1];
         const next =
           index === lineData.stations.length - 1
-            ? undefined
+            ? null
             : lineData.stations[index + 1];
         if (treatedLineNames.includes(lineName)) {
           // 処理済みとされている場合はJRの重複であるため特殊処理.
           const existing = siblingsStations.find(
-            (sta) => sta.lineName === lineName,
+            (line) => line.lineData.lineName === lineName,
           );
           if (existing === undefined)
             throw Error("隣接駅の登録に誤りがあります。");
-          // prevかnextのいずれかがundefinedのはずである（亀山とかは考えずデータ側で除外）.
-          const prevIsUndef = existing.prev === undefined;
-          if (prevIsUndef && prev !== undefined) {
+          // prevかnextのいずれかがnullのはずである（亀山とかは考えずデータ側で除外）.
+          const prevIsNull = existing.prev === null;
+          if (prevIsNull && prev !== null) {
             existing.prev = prev;
-          } else if (!prevIsUndef && next !== undefined) {
+          } else if (!prevIsNull && next !== null) {
             existing.next = next;
           }
         } else {
           treatedLineNames.push(lineName);
-          siblingsStations.push({ lineName, prev, next });
+          siblingsStations.push({ lineData, prev, next });
         }
       });
     });
@@ -176,7 +185,18 @@ const ogp = {
   {/* TODO: 駅名標っぽくしたい */}
   <h1>{name}</h1>
   <div class="station-lines-block">
-    <span>所属路線：{jaLineNames.join("・")}</span>
+    <p>
+      所属路線：{
+        jaLineNames.map((line, i) => {
+          return (
+            <>
+              <a href={`./#${line.slug}`}>{line.lineName}</a>
+              {i !== jaLineNames.length - 1 && <span>・</span>}
+            </>
+          );
+        })
+      }
+    </p>
   </div>
   <div class="date-block">
     <span>
@@ -228,28 +248,8 @@ const ogp = {
 
   <h2>隣の訪れた駅</h2>
   {
-    siblingsStations.map((line) => {
-      return (
-        <>
-          <h3>{line.lineName}</h3>
-          <div class="siblings-container">
-            {line.prev && (
-              <div class="sibling-link prev">
-                <div class="link-text">
-                  &larr; <StationPageLink data={line.prev} />
-                </div>
-              </div>
-            )}
-            {line.next && (
-              <div class="siblings-link next">
-                <div class="link-text">
-                  <StationPageLink data={line.next} /> &rarr;
-                </div>
-              </div>
-            )}
-          </div>
-        </>
-      );
+    siblingsStations.map((siblings) => {
+      return <SiblingStationOfLine siblings={siblings} />;
     })
   }
 
@@ -289,25 +289,4 @@ const ogp = {
     margin: 1.2rem auto;
     margin-left: 0.4rem;
   }
-  .siblings-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 25%;
-    margin: 1rem 0;
-
-    @media (max-width: 1024px) {
-      column-gap: 1rem;
-    }
-  }
-  .siblings-link {
-    display: flex;
-  }
-  .prev {
-    grid-column: 1 / 2;
-  }
-  .next {
-    grid-column: -2 / -1;
-    justify-self: flex-end;
-  }
 </style>
- @lib/other/station-collections/data/stationList@lib/other/station-collections
