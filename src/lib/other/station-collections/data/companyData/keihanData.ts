@@ -5,7 +5,7 @@ const keihanData = createCompanyData("keihan", "京阪電気鉄道", [
   "private",
 ]);
 
-keihanData.addLineData("keihan", "京阪本線", [
+keihanData.addLineData("keihan-main", "京阪本線", [
   "yodoyabashi",
   "kitahama",
   "temmabashi",

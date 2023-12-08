@@ -1,6 +1,5 @@
 import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 import type { CollectionEntry } from "astro:content";
-import { DateTime } from "luxon";
 
 import type {
   DownloadedStationCollection,
