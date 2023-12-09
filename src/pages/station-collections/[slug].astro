@@ -8,13 +8,18 @@ import type {
   DownloadedStationCollection,
   StationImageTypeOptions,
 } from "@lib/schema/station";
-import type { LineDataSchema, SiblingStationType } from "@lib/types";
+import type {
+  CompanyDataSchema,
+  LineDataSchema,
+  SiblingStationType,
+} from "@lib/types";
 import { dateText } from "@lib/utils";
 import {
   getStationEntries,
   getDownloadedStationCollectionsData,
 } from "@lib/other/station-collections";
 import { createLineSlug } from "@lib/other/station-collections";
+import { createHrefToLineSlug } from "@lib/other/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 import CollectionPictureList from "@components/other/station-collections/CollectionPictureList.astro";
@@ -58,26 +63,34 @@ export async function getStaticPaths() {
         }
       });
     });
-    // この駅の全路線データ（JRの重複込み）
+    interface LineAndCompany {
+      line: LineDataSchema;
+      company: CompanyDataSchema;
+    }
+    // この駅の全路線データ（JRの重複も込みで並ぶ）
     const flattenLineData = Object.values(linesAboutCompany).flatMap(
       (companyData) => {
-        return Object.values(companyData.lines).map((lineData) => ({
-          line: lineData,
-          companyId: companyData.companyId,
-        }));
+        return Object.values(companyData.lines).map(
+          (lineData) =>
+            ({
+              line: lineData,
+              company: companyData,
+            }) satisfies LineAndCompany,
+        );
       },
     );
-    // 日本語の路線名リストを作る.
-    // 厳密にその駅を含まない路線はカッコで囲む.
-    const jaLineNames = flattenLineData.map((lineData) => {
-      const lineName = entry.lineIds.includes(lineData.line.lineId)
-        ? lineData.line.lineName
-        : `(${lineData.line.lineName})`;
-      return {
-        slug: createLineSlug(lineData.companyId, lineData.line.lineId),
-        lineName,
-      };
-    });
+    // 路線IDごとに分けたデータ（JRの重複は配列に複数要素があることで表現）。
+    const lineDataByLineId = [] as LineAndCompany[][];
+    flattenLineData.forEach((data) => {
+      const existingLine = lineDataByLineId.find(
+        (line) => data.line.lineId === line[0].line.lineId,
+      );
+      if (existingLine !== undefined) {
+        existingLine.push(data);
+      } else {
+        lineDataByLineId.push([data]);
+      }
+    }, [] as LineAndCompany[][]);
 
     // 路線ごとに隣の駅を算出する
     const allLinesSameCompany = Object.keys(linesAboutCompany).length === 1;
@@ -123,14 +136,14 @@ export async function getStaticPaths() {
 
     return {
       params: { slug: entryStaId },
-      props: { entry: entry, jaLineNames, siblingsStations },
+      props: { entry, lineDataByLineId, siblingsStations },
     };
   });
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { entry, jaLineNames, siblingsStations } = Astro.props as Props;
+const { entry, lineDataByLineId, siblingsStations } = Astro.props as Props;
 const { name, CommentContent, updatedAt, images, firstVisitDate, noDataFlag } =
   entry;
 
@@ -184,14 +197,43 @@ const ogp = {
   <div class="station-lines-block">
     <p>
       所属路線：{
-        jaLineNames.map((line, i) => {
-          return (
-            <>
-              <a href={`./#${line.slug}`}>{line.lineName}</a>
-              {i !== jaLineNames.length - 1 && <span>・</span>}
-            </>
-          );
-        })
+        lineDataByLineId
+          .flatMap((data) => {
+            let resNode: any = null;
+            if (data.length === 1) {
+              const lineData = data[0];
+              const slug = createHrefToLineSlug(
+                lineData.company.companyId,
+                lineData.line.lineId,
+              );
+              const lineName = lineData.line.lineName;
+              resNode = entry.lineIds.includes(lineData.line.lineId) ? (
+                <a href={slug}>{lineName}</a>
+              ) : (
+                <>
+                  (<a href={slug}>{lineName}</a>)
+                </>
+              );
+            } else {
+              const linkNodes = data.flatMap((lineData) => {
+                const slug = createHrefToLineSlug(
+                  lineData.company.companyId,
+                  lineData.line.lineId,
+                );
+                return [
+                  <a href={slug}>{lineData.company.companyName}</a>,
+                  <>、</>,
+                ];
+              });
+              resNode = (
+                <>
+                  {data[0].line.lineName}（{linkNodes.slice(0, -1)}）
+                </>
+              );
+            }
+            return [resNode, <>・</>];
+          })
+          .slice(0, -1)
       }
     </p>
   </div>
@@ -265,6 +307,9 @@ const ogp = {
     &:hover {
       color: orangered;
     }
+  }
+  a {
+    text-decoration: underline;
   }
   .to-top-anchor {
     color: var(--main-font-color);
