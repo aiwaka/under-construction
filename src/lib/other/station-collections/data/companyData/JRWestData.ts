@@ -2,7 +2,13 @@ import { createCompanyData } from "../utils";
 
 const JRWestData = createCompanyData("JRWest", "JR西日本", ["JR"]);
 
-JRWestData.addLineData("ako", "赤穂線", ["aioi", "banshu-ako", "saidaiji"]);
+JRWestData.addLineData("ako", "赤穂線", [
+  "aioi",
+  "banshu-ako",
+  "saidaiji",
+  "okayama",
+]);
+JRWestData.addLineData("imbi", "因美線", ["tottori", "tsuyama"]);
 JRWestData.addLineData("etsumi-north", "越美北線", [
   "fukui",
   "echizen-ono",
@@ -11,8 +17,19 @@ JRWestData.addLineData("etsumi-north", "越美北線", [
 JRWestData.addLineData("oito", "大糸線", ["minamiotari", "itoigawa"]);
 JRWestData.addLineData("osaka-loop", "大阪環状線", [
   "tennnoji",
+  "teradacho",
+  "tsuruhashi",
+  "morinomiya",
   "kyobashi",
+  "temma",
   "osaka",
+  "fukushima",
+  "nishikujo",
+  "bentencho",
+  "taisho",
+  "imamiya",
+  "shin-imamiya",
+  "tennnoji",
 ]);
 JRWestData.addLineData("osaka-east", "おおさか東線", [
   "osaka",
@@ -40,6 +57,7 @@ JRWestData.addLineData("kansai", "関西本線", [
   "kawachi-katakami",
   "kashiwara",
   "tennnoji",
+  "shin-imamiya",
   "jr-namba",
 ]);
 JRWestData.addLineData("kishin", "姫新線", [
@@ -102,6 +120,18 @@ JRWestData.addLineData("sannin", "山陰本線", [
   "yunotsu",
   "hatabu",
 ]);
+JRWestData.addLineData("sanyo-shinkansen", "山陽新幹線", [
+  "shin-osaka",
+  "shin-kobe",
+  "himeji",
+  "aioi",
+  "okayama",
+  "mihara",
+  "hiroshima",
+  "shin-yamaguchi",
+  "kokura",
+  "hakata",
+]);
 JRWestData.addLineData("sanyo", "山陽本線", [
   "himeji",
   "aioi",
@@ -128,7 +158,11 @@ JRWestData.addLineData("takayama", "高山本線", [
   "ecchu-yatsuo",
   "toyama",
 ]);
-JRWestData.addLineData("tsuyama", "津山線", ["tsuyama", "kanagawa", "okayama"]);
+JRWestData.addLineData("tsuyama", "津山線", [
+  "tsuyama",
+  "kanagawa--okayama",
+  "okayama",
+]);
 JRWestData.addLineData("tokaido", "東海道本線", [
   "maibara",
   "kusatsu",

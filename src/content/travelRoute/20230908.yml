@@ -1,0 +1,129 @@
+name: 18きっぷ関西周遊日帰り旅行
+date: 2023-09-08
+route:
+  - name: 王寺駅
+    station: oji
+    nextTransport: "快速 JR難波行き"
+    arrivalTime: 2023-09-08T06:00:00
+    departureTime: 2023-09-08T06:14:00
+    marker:
+      - type: single
+        label: primary
+  - name: 新今宮駅
+    station: shin-imamiya
+    arrivalTime: 2023-09-08
+    nextTransport: 大阪環状線外回り
+  - name: 大阪駅
+    station: osaka
+    nextTransport: "新快速 姫路行き"
+    arrivalTime: 2023-09-08T06:53:00
+    departureTime: 2023-09-08T07:05:00
+  - name: 姫路駅
+    station: himeji
+    arrivalTime: 2023-09-08T08:12:00
+    departureTime: 2023-09-08T08:13:00
+    nextTransport: "播州赤穂行き"
+  - name: 播州赤穂駅
+    station: banshu-ako
+    arrivalTime: 2023-09-08T08:45:00
+    departureTime: 2023-09-08T09:14:00
+    nextTransport: 姫路行き
+  - name: 姫路駅
+    station: himeji
+    nextTransport: 播磨新宮行き
+    arrivalTime: 2023-09-08T09:46:00
+    departureTime: 2023-09-08T09:48:00
+  - name: 播磨新宮駅
+    station: harima-shingu
+    nextTransport: 佐用行き
+    arrivalTime: 2023-09-08T10:23:00
+    departureTime: 2023-09-08T10:27:00
+  - name: 佐用駅
+    station: sayo
+    nextTransport: 津山行き
+    arrivalTime: 2023-09-08T10:57:00
+    departureTime: 2023-09-08T11:04:00
+  - name: 津山駅
+    station: tsuyama
+    nextTransport: 岡山行き
+    arrivalTime: 2023-09-08T12:02:00
+    departureTime: 2023-09-08T12:29:00
+    marker:
+      - type: single
+        label: primary
+  - name: 金川駅
+    station: kanagawa--okayama
+    arrivalTime: 2023-09-08T13:23:00
+    departureTime: 2023-09-08T13:27:00
+  - name: 岡山駅
+    station: okayama
+    arrivalTime: 2023-09-08T13:56:00
+    departureTime: 2023-09-08T14:41:00
+    nextTransport: 西大寺行き
+    marker:
+      - type: single
+        label: primary
+  - name: 西大寺駅
+    station: saidaiji
+    nextTransport: 播州赤穂行き
+    arrivalTime: 2023-09-08T14:58:00
+    departureTime: 2023-09-08T15:14:00
+  - name: 播州赤穂駅
+    station: banshu-ako
+    nextTransport: "新快速 草津行き"
+    arrivalTime: 2023-09-08T16:05:00
+    departureTime: 2023-09-08T16:06:00
+  - name: 姫路駅
+    station: himeji
+    nextTransport: 寺前行き
+    arrivalTime: 2023-09-08T16:39:00
+    departureTime: 2023-09-08T16:51:00
+  - name: 寺前駅
+    station: teramae
+    arrivalTime: 2023-09-08T17:34:00
+    departureTime: 2023-09-08T17:39:00
+    nextTransport: onfoot
+  - name: 寺前楽座まちの灯り
+    arrivalTime: 2023-09-08T17:43:00
+    departureTime: 2023-09-08T17:49:00
+    nextTransport: onfoot
+  - name: 寺前駅
+    station: teramae
+    arrivalTime: 2023-09-08T17:53:00
+    departureTime: 2023-09-08T18:13:00
+    nextTransport: 和田山行き
+  - name: 和田山駅
+    station: wadayama
+    nextTransport: 福知山行き
+    arrivalTime: 2023-09-08T19:03:00
+    departureTime: 2023-09-08T19:05:00
+  - name: 上川口駅
+    station: kamikawaguchi
+    arrivalTime: 2023-09-08T19:39:00
+    departureTime: 2023-09-08T19:45:00
+  - name: 福知山駅
+    station: fukuchiyama
+    arrivalTime: 2023-09-08T19:52:00
+    departureTime: 2023-09-08T20:31:00
+    nextTransport: 篠山口行き
+  - name: 篠山口駅
+    station: sasayamaguchi
+    arrivalTime: 2023-09-08T21:34:00
+    departureTime: 2023-09-08T21:45:00
+    nextTransport: "快速 大阪行き"
+  - name: 大阪駅
+    station: osaka
+    arrivalTime: 2023-09-08T22:52:00
+    departureTime: 2023-09-08T23:03:00
+    nextTransport: "快速 日根野行き"
+  - name: 新今宮駅
+    station: shin-imamiya
+    arrivalTime: 2023-09-08T23:17:00
+    departureTime: 2023-09-08T23:23:00
+    nextTransport: "快速 加茂行き"
+  - name: 王寺駅
+    station: oji
+    arrivalTime: 2023-09-08T23:45:00
+    marker:
+      - type: single
+        label: primary
