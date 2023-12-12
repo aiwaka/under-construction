@@ -1,0 +1,135 @@
+---
+title: コンテンツ生成にScaffdogを導入
+description: テンプレートを活用するようになりました
+thumbnail:
+  type: local
+  filename: blue_square
+  format: png
+date: 2023-12-12
+tags:
+  - ブログ
+  - 雑記
+  - Node
+---
+
+export const ARTICLE_ID = "20231212-scaffdog";
+
+## 背景と概要
+
+このウェブサイトではいくつかのコンテンツ管理を必要とします。
+ブログ記事や、駅ごとの情報などがそれです。
+AstroのMDX連携によるコンテンツ管理は非常に優秀で、Frontmatterによる情報の埋め込み等が柔軟にできるのでありがたくつかっているのですが、そのFrontmatterですら書きたくないという怠惰な要求があります。
+コピペすると変更漏れが非常に起きやすいし、毎回書くにはちょっと量が多いのです。
+
+どうにかならないかと思っていたのですが、先日<a href="https://scaff.dog/" target="_blank" noreferrer noopener>Scaffdog</a>というツールを見つけました。
+Node上で動作し、対話的にコマンドラインでテンプレートに従ったファイルを生成できるというものです。
+Reactのコンポーネントファイルなどの雛形を作るために作られたようですが、まさに欲しているものでした。
+というわけで導入してみたところ、思っていたより使い勝手がよく、毎回使うようになりました。
+作者は日本人のようですがドキュメントはすべて英語で、あまりネット上に情報がないため、使っている様子などを書いてみようと思います。
+
+## インストール
+
+ごく簡単で、
+
+```shell
+npm i -D scaffdog
+```
+
+でプロジェクトに入れることができます。
+後述しますが設定ファイルをプロジェクトルートから参照するためグローバルに入れるのではなくプロジェクト毎に入れたほうが良さそうな感じです。
+ランタイムには一切関係がないので開発時の依存関係として`-D`付きでインストールしています。
+（本題から外れますが、`npm`の`-d`と`-D`の意味が全く異なるのは本当に良くないと毎回思います。）
+
+## 設定
+
+プロジェクトのルート（特に設定しなければ`package.json`があるディレクトリ）に`.scaffdog`ディレクトリを作り、その中に`config.js`を作るとこれが設定ファイルになります。
+直接ファイルを作らずディレクトリを挟むあたりとかすごく設計の思想が好きです。
+ひとまず
+
+```js:.scaffdog/config.js
+export default {
+  files: ["*"],
+}
+```
+
+を書き、`.scaffdog`以下にマークダウンファイル形式のテンプレート定義ファイルを置くと、それを使ってファイル生成ができるようになります。
+
+私が使っているブログ用のテンプレート定義を置いておきます。
+
+````md:.scaffdog/BlogArticle.md
+---
+name: BlogArticle
+root: 'src/content/blog'
+output: "**/*"
+ignore: []
+questions:
+  slug: 'Enter filename (exclude extension).'
+  title: "Enter title."
+  # date: "Enter date text (yyyy-mm-dd)."
+  tags: "Enter tags (separate by ',')."
+  description: "Enter description text."
+  useAutoPostLink:
+    confirm: "Use AutoPostLink component?"
+    initial: false
+  createAutoLink:
+    if: inputs.useAutoPostLink
+    confirm: "Create AutoPostLink tag?"
+  autoLinkSlug:
+    if: inputs.createAutoLink
+    message: "Input the slug of `AutoPostLink`."
+  useEmbedYoutube:
+    confirm: "Use EmbedYoutube component?"
+    initial: false
+---
+
+# `{{ inputs.slug }}.mdx`
+
+```mdx
+---
+title: {{ inputs.title }}
+description: {{ inputs.description }}
+thumbnail:
+  type: remote
+date: {{ today() }}
+tags:
+  {{ for tag in split(inputs.tags, ",") }}- {{ tag }}
+  {{ end }}
+draft: true
+---
+
+export const ARTICLE_ID = "{{ inputs.slug }}";
+import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+{{ if inputs.useAutoPostLink }}import AutoPostLink from "@components/blog/AutoPostLink.astro";{{ end }}
+{{ if inputs.useEmbedYoutube }}import EmbedYoutube from "@components/works/EmbedYoutube.astro";{{ end }}
+
+{{ if inputs.createAutoLink }}<AutoPostLink slug="{{ inputs.autoLinkSlug }}">リンク</AutoPostLink>。{{ end }}
+
+```
+
+````
+
+詳しくはドキュメントを参照していただきますが、Frontmatter部で質問を定義し、それへの入力を使ってファイル内容を生成します。
+`route`プロパティに出力先を指定します。
+値の埋め込みには`{{}}`を使うという直感的なもので、`if`や`for`も使えて高機能です。
+質問の答えは`inputs`というオブジェクトに保存されているため、これにアクセスすることで質問の条件分岐などが可能です。
+
+先程の例に登場する`today()`というのはヘルパー関数で、自分で定義できます（`split`など、いくつかの簡単で重要なものは最初から定義されています）。
+`config.js`で`default export`するオブジェクトに`helper`というプロパティを定義でき、様々な関数に名前をつけてテンプレート中で使えます。
+コンテキストを受け取るなどの高度な使い方もあるようです。
+自分は実行時の日本時間の日付を取得するために簡単な関数を書いて使っています。
+
+実行は`npx scaffdog generate`です。
+私はなんとなく`npm`のスクリプトに`"newpost": "scaffdog generate"`を定義して`npm run newpost`の形で実行しています。
+これの他に`StationCollection.md`など別のテンプレートも用意していますが、テンプレートが複数定義されている場合も対話的にどれを使うかターミナル上で選択できます。
+あとは定義した質問に答えていくだけです。
+VSCodeのターミナルで実行した場合、生成後に出力先のパスをターミナルに表示してくれるため、Commandを押しつつクリックでファイルを開けます。
+この一工夫が素晴らしく、コンテンツを書くときの体験を非常に良いものにしてくれます。
+
+
+## 最後に
+
+今回はブログを書く補助ツールを紹介させていただきました。
+私と制作者の考え方が合致している感じがして非常に使いやすいです。
+このScaffdogの作者は構文解析などを勉強したくてその部分も自分で作ったと仰っており、尊敬の念を抱きます。
+こういうものを作れたらいいなあと思いつつ、今はこちゃこちゃと修論をやっています。
+そのうち私が作ったものも詳細に紹介できたらいいなと思います。
