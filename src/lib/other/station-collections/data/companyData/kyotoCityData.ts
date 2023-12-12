@@ -29,7 +29,7 @@ kyotoCityData.addLineData(
     "karasuma-oike",
     "shijo",
     "kyoto",
-    "kujo--karasuma",
+    "kujo--kyoto",
     "jujo--karasuma",
     "takeda",
   ],

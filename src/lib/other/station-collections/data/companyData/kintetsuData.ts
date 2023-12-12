@@ -42,9 +42,11 @@ kintetsuData.addLineData(
   ["近鉄京都線", "京都線"],
   [
     "kyoto",
+    "toji",
     "jujo--kintetsu",
     "takeda",
     "kintetsu-tambabashi",
+    "momoyamagoryomae",
     "shin-hosono",
     "takanohara",
     "yamato-saidaiji",

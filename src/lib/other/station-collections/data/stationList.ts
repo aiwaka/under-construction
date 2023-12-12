@@ -19,6 +19,8 @@ import iyotetsuData from "./companyData/iyotetsuData";
 import kikudenData from "./companyData/kikudenData";
 import kyotoCityData from "./companyData/kyotoCityData";
 import osakaMetroData from "./companyData/osakaMetroData";
+import osakaMonorailData from "./companyData/osakaMonorailData";
+import kitaosakaExpressData from "./companyData/kitaosakaExpressData";
 
 const stationList: { [companyId: string]: CompanyDataSchema } = {};
 
@@ -43,6 +45,8 @@ addCompanyData(iyotetsuData);
 addCompanyData(kikudenData);
 addCompanyData(kyotoCityData);
 addCompanyData(osakaMetroData);
+addCompanyData(osakaMonorailData);
+addCompanyData(kitaosakaExpressData);
 
 const downloadedData = getDownloadedStationCollectionsData();
 /** リモートのデータに無いものはdisabledとする */
