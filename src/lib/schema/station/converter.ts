@@ -72,7 +72,8 @@ export class CollectionsStationEntry
         height: img.image.height,
         alt: `${img.type.join("・")}の画像`,
         caption:
-          `${photoDateText}撮影` + (img.comment ? "：" + img.comment : ""),
+          `${photoDateText}${img.type.includes("スタンプ") ? "押印" : "撮影"}` +
+          (img.comment ? "：" + img.comment : ""),
         type: img.type,
         comment: img.comment,
         date: img.date,

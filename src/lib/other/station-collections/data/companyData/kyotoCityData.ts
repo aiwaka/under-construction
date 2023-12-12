@@ -2,6 +2,7 @@ import { createCompanyData } from "../utils";
 
 const kyotoCityData = createCompanyData("kyoto-city", "京都市交通局", [
   "municipal",
+  "subway",
 ]);
 
 kyotoCityData.addLineData(

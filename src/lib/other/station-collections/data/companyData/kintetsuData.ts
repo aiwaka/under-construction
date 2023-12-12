@@ -19,6 +19,9 @@ kintetsuData.addLineData(
     "fuse",
     "yamato-takada",
     "yamato-yagi",
+    "sakurai--nara",
+    "haibara",
+    "muroguchi-ono",
     "ise-nakagawa",
   ],
 );
@@ -50,7 +53,7 @@ kintetsuData.addLineData(
 kintetsuData.addLineData(
   "keihannna",
   ["近鉄けいはんな線", "けいはんな線"],
-  ["ikoma", "gakken-kitaikoma", "gakken-naratomigaoka"],
+  ["takaida", "ikoma", "gakken-kitaikoma", "gakken-naratomigaoka"],
 );
 kintetsuData.addLineData(
   "nagano",

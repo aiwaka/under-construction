@@ -33,6 +33,7 @@ JRWestData.addLineData("osaka-loop", "大阪環状線", [
 ]);
 JRWestData.addLineData("osaka-east", "おおさか東線", [
   "osaka",
+  "shin-osaka",
   "jr-awaji",
   "hanaten",
   "takaida-chuo",
@@ -102,7 +103,12 @@ JRWestData.addLineData("kosei", "湖西線", [
   "tsuruga",
 ]);
 JRWestData.addLineData("sakai", "境線", ["yonago", "sakaiminato"]);
-JRWestData.addLineData("sakurai", "桜井線", ["takada", "kanahashi", "nara"]);
+JRWestData.addLineData("sakurai", "桜井線", [
+  "takada",
+  "kanahashi",
+  "sakurai--nara",
+  "nara",
+]);
 JRWestData.addLineData("sannin", "山陰本線", [
   "kyoto",
   "umekoji-kyotonishi",
