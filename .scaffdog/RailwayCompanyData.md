@@ -1,6 +1,6 @@
 ---
 name: RailwayCompanyData
-root: 'src/lib/more/station-collections/data/companyData'
+root: 'src/lib/other/station-collections/data/companyData'
 output: "**/*"
 ignore: []
 questions:
@@ -9,15 +9,15 @@ questions:
   tags: "Enter tags (separate by ',')."
 ---
 
-# `{{ inputs.id }}Data.ts`
+# `{{ camel(inputs.id) }}Data.ts`
 
 ```mdx
 import { createCompanyData } from "../utils";
 
-const {{ inputs.id }}Data = createCompanyData("{{ inputs.id }}", "{{ inputs.name }}", [{{ for tag in split(inputs.tags, ",") }}"{{ tag }}", {{ end }}]);
+const {{ camel(inputs.id) }}Data = createCompanyData("{{ inputs.id }}", "{{ inputs.name }}", [{{ for tag in split(inputs.tags, ",") }}"{{ tag }}", {{ end }}]);
 
-// {{ inputs.id }}Data.addLineData();
+// {{ camel(inputs.id) }}Data.addLineData();
 
-export default {{ inputs.id }}Data;
+export default {{ camel(inputs.id) }}Data;
 
 ```
