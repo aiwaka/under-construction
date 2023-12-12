@@ -5,17 +5,21 @@ import { createHrefToLineSlug } from "@lib/other/station-collections";
 
 interface Props {
   siblings: SiblingStationType;
+  useFormalName: boolean;
 }
 
-const { siblings } = Astro.props;
+const { siblings, useFormalName } = Astro.props;
 
 const lineHref = createHrefToLineSlug(
   siblings.companyData.companyId,
   siblings.lineData.lineId,
 );
+const lineName = useFormalName
+  ? siblings.lineData.formalLineName
+  : siblings.lineData.lineName;
 ---
 
-<a href={lineHref}><h3>{siblings.lineData.lineName}</h3></a>
+<a href={lineHref}><h3>{lineName}</h3></a>
 <div class="siblings-container">
   {
     siblings.prev && (
