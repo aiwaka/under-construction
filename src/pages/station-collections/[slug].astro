@@ -18,7 +18,6 @@ import {
   getStationEntries,
   getDownloadedStationCollectionsData,
 } from "@lib/other/station-collections";
-import { createLineSlug } from "@lib/other/station-collections";
 import { createHrefToLineSlug } from "@lib/other/station-collections";
 
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
@@ -93,16 +92,12 @@ export async function getStaticPaths() {
     }, [] as LineAndCompany[][]);
 
     // 路線ごとに隣の駅を算出する
-    const allLinesSameCompany = Object.keys(linesAboutCompany).length === 1;
     const siblingsStations: SiblingStationType[] = [];
     // すでに処理した路線名リスト. 重複検知に使う.
     const treatedLineNames: string[] = [];
     Object.values(linesAboutCompany).forEach((companyData) => {
       Object.values(companyData.lines).forEach((lineData) => {
-        // すべて同じ企業の駅の場合は正式な路線名を使う
-        const lineName = allLinesSameCompany
-          ? lineData.formalLineName
-          : lineData.lineName;
+        const lineName = lineData.lineName;
         // インデックスベースで隣接駅を取得する.
         const index = lineData.stations.findIndex(
           (sta) => sta.slug === entry.id,
@@ -146,6 +141,12 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 const { entry, lineDataByLineId, siblingsStations } = Astro.props as Props;
 const { name, CommentContent, updatedAt, images, firstVisitDate, noDataFlag } =
   entry;
+
+// すべて同じ企業の駅の場合は路線名に正式なものを使う
+const allLinesBelongToSameCompany =
+  new Set(
+    lineDataByLineId.flatMap((line) => line.map((l) => l.company.companyId)),
+  ).size === 1;
 
 // typeが駅舎のものを探す。無ければのものを使う
 const thumbImage: (typeof images)[number] | null =
@@ -206,7 +207,9 @@ const ogp = {
                 lineData.company.companyId,
                 lineData.line.lineId,
               );
-              const lineName = lineData.line.lineName;
+              const lineName = allLinesBelongToSameCompany
+                ? lineData.line.formalLineName
+                : lineData.line.lineName;
               resNode = entry.lineIds.includes(lineData.line.lineId) ? (
                 <a href={slug}>{lineName}</a>
               ) : (
@@ -288,7 +291,12 @@ const ogp = {
   <h2>隣の訪れた駅</h2>
   {
     siblingsStations.map((siblings) => {
-      return <SiblingStationOfLine siblings={siblings} />;
+      return (
+        <SiblingStationOfLine
+          siblings={siblings}
+          useFormalName={allLinesBelongToSameCompany}
+        />
+      );
     })
   }
 
