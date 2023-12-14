@@ -17,7 +17,7 @@ osakaMetroData.addLineData(
     "yodoyabashi",
     "hommachi",
     "shinsaibashi",
-    "namba",
+    "namba--metro",
     "daikokucho",
     "dobutsuen-mae",
     "tennnoji",
@@ -40,7 +40,7 @@ osakaMetroData.addLineData(
 osakaMetroData.addLineData(
   "yotsubashi",
   ["大阪メトロ四つ橋線", "四つ橋線"],
-  ["nishiumeda", "higobashi", "hommachi", "namba", "daikokucho"],
+  ["nishiumeda", "higobashi", "hommachi", "namba--metro", "daikokucho"],
 );
 osakaMetroData.addLineData(
   "osaka-metro-chuo",
@@ -50,7 +50,7 @@ osakaMetroData.addLineData(
 osakaMetroData.addLineData(
   "sennnichimae",
   ["大阪メトロ千日前線", "千日前線"],
-  ["namba", "tanimachi-kyuchome", "tsuruhashi"],
+  ["namba--metro", "tanimachi-kyuchome", "tsuruhashi"],
 );
 osakaMetroData.addLineData(
   "sakaisuji",

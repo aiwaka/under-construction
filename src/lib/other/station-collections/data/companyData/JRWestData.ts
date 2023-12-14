@@ -57,6 +57,7 @@ JRWestData.addLineData("kansai", "関西本線", [
   "oji",
   "kawachi-katakami",
   "kashiwara",
+  "kyuhoji",
   "tennnoji",
   "shin-imamiya",
   "jr-namba",
