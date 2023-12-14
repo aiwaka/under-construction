@@ -5,11 +5,11 @@ const nankaiData = createCompanyData("nankai", "南海電気鉄道", [
   "private",
 ]);
 
-nankaiData.addLineData("nankai", "南海本線", [
+nankaiData.addLineData("nankai-main", "南海本線", [
   "namba",
-  "imamiya-ebisu",
   "shin-imamiya",
   "tengachaya",
+  "kishinosato-tamade",
   "hagurazaki",
   "wakayamashi",
   "wakayamako",
@@ -18,7 +18,10 @@ nankaiData.addLineData(
   "koya",
   ["南海高野線", "高野線"],
   [
-    "shiomibashi",
+    "namba",
+    "imamiya-ebisu",
+    "shin-imamiya",
+    "tengachaya",
     "kishinosato-tamade",
     "nakamozu",
     "kawachi-nagano",
@@ -26,6 +29,11 @@ nankaiData.addLineData(
     "kii-kamiya",
     "gokurakubashi",
   ],
+);
+nankaiData.addLineData(
+  "shiomibashi",
+  ["南海高野線（汐見橋線）", "高野線"],
+  ["shiomibashi", "kishinosato-tamade"],
 );
 
 export default nankaiData;

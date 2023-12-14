@@ -42,9 +42,11 @@ kintetsuData.addLineData(
   ["近鉄京都線", "京都線"],
   [
     "kyoto",
+    "toji",
     "jujo--kintetsu",
     "takeda",
     "kintetsu-tambabashi",
+    "momoyamagoryomae",
     "shin-hosono",
     "takanohara",
     "yamato-saidaiji",
@@ -54,6 +56,16 @@ kintetsuData.addLineData(
   "keihannna",
   ["近鉄けいはんな線", "けいはんな線"],
   ["takaida", "ikoma", "gakken-kitaikoma", "gakken-naratomigaoka"],
+);
+kintetsuData.addLineData(
+  "tawaramoto",
+  ["近鉄田原本線", "田原本線"],
+  ["shin-oji", "nishitawaramoto"],
+);
+kintetsuData.addLineData(
+  "domyoji",
+  ["近鉄道明寺線", "道明寺線"],
+  ["domyoji", "kashiwara"],
 );
 kintetsuData.addLineData(
   "nagano",
@@ -74,6 +86,11 @@ kintetsuData.addLineData(
     "yamato-saidaiji",
     "kintetsu-nara",
   ],
+);
+kintetsuData.addLineData(
+  "minamiosaka",
+  ["近鉄南大阪線", "南大阪線"],
+  ["osaka-abenobashi", "domyoji", "furuichi", "takadashi", "kashiharajingumae"],
 );
 kintetsuData.addLineData(
   "yoshino",

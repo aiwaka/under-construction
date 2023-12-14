@@ -5,6 +5,7 @@ const eizanData = createCompanyData("eizan", "叡山電鉄", ["private"]);
 eizanData.addLineData("eizan", "叡山本線", [
   "demachiyanagi",
   "chayama-kyotogeijutsudaigaku",
+  "kurama",
 ]);
 
 export default eizanData;
