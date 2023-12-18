@@ -47,6 +47,10 @@ JRWestData.addLineData("katamachi", "片町線", [
   "hanaten",
   "kyobashi",
 ]);
+JRWestData.addLineData("kansai-airport", "関西空港線", [
+  "hineno",
+  "kansai-airport",
+]);
 JRWestData.addLineData("kansai", "関西本線", [
   "kameyama",
   "tsuge",
@@ -109,6 +113,11 @@ JRWestData.addLineData("sakurai", "桜井線", [
   "kanahashi",
   "sakurai--nara",
   "nara",
+]);
+JRWestData.addLineData("sakurajima", "桜島線", [
+  "nishikujo",
+  "universal-city",
+  "sakurajima",
 ]);
 JRWestData.addLineData("sannin", "山陰本線", [
   "kyoto",
@@ -181,7 +190,7 @@ JRWestData.addLineData("tokaido", "東海道本線", [
   "shin-osaka",
   "osaka",
   "nishinomiya",
-  "sannnomiya",
+  "sannnomiya--jr",
 ]);
 JRWestData.addLineData("nanao", "七尾線", ["kanazawa", "wakura-onsen"]);
 JRWestData.addLineData("nara", "奈良線", [
@@ -193,7 +202,12 @@ JRWestData.addLineData("nara", "奈良線", [
   "kyoto",
 ]);
 JRWestData.addLineData("hakubi", "伯備線", ["okayama", "soja", "niimi"]);
-JRWestData.addLineData("hanwa", "阪和線", ["tennnoji", "nagai", "wakayama"]);
+JRWestData.addLineData("hanwa", "阪和線", [
+  "tennnoji",
+  "nagai",
+  "hineno",
+  "wakayama",
+]);
 JRWestData.addLineData("bantan", "播但線", [
   "himeji",
   "teramae",
