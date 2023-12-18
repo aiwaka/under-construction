@@ -1,0 +1,37 @@
+---
+// 引数の駅IDが存在すればリンクとし、存在しなければ無効であることを示す。
+import { getCollection } from "astro:content";
+
+// TODO: 除外ルールを設ける
+const allPosts = await getCollection("station");
+const slugList = allPosts.map((post) => post.slug);
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+
+const available = (slugList as string[]).includes(slug);
+---
+
+{
+  available ? (
+    <a
+      href={`${import.meta.env.BASE_URL}station-collections/${slug}`}
+      data-astro-prefetch
+    >
+      <slot />
+    </a>
+  ) : (
+    <span class="disabled-link">
+      <slot />
+    </span>
+  )
+}
+
+<style>
+  .disabled-link {
+    color: rgba(var(--main-font-color-params), 0.3);
+  }
+</style>

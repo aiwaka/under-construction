@@ -15,9 +15,11 @@ questions:
 ```mdx
 ---
 name: {{ inputs.name }}
-lines: [{{ inputs.lines }}]
-{{ if inputs.date != "none" }}firstVisitDate: {{ inputs.date }}{{ end }}
+lines: [{{ inputs.lines }}]{{ if inputs.date != "none" }}
+firstVisitDate: {{ inputs.date }}{{ end }}
 ---
+
+import AutoStationLink from "@components/utils/AutoStationLink.astro"
 
 
 ```
