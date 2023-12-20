@@ -5,21 +5,42 @@ import { createHrefToLineSlug } from "@lib/other/station-collections";
 
 interface Props {
   siblings: SiblingStationType;
-  useFormalName: boolean;
 }
 
-const { siblings, useFormalName } = Astro.props;
+const { siblings } = Astro.props;
 
 const lineHref = createHrefToLineSlug(
-  siblings.companyData.companyId,
-  siblings.lineData.lineId,
+  siblings.companies[0].companyId,
+  siblings.lineId,
 );
-const lineName = useFormalName
-  ? siblings.lineData.formalLineName
-  : siblings.lineData.lineName;
 ---
 
-<a href={lineHref}><h3>{lineName}</h3></a>
+<>
+  {
+    siblings.companies.length === 1 ? (
+      <a href={lineHref}>
+        <h3>{siblings.lineName}</h3>
+      </a>
+    ) : (
+      <>
+        <h3>
+          {siblings.lineName}（
+          {siblings.companies
+            .flatMap((company) => {
+              const slug = createHrefToLineSlug(
+                company.companyId,
+                siblings.lineId,
+              );
+              return [<a href={slug}>{company.companyName}</a>, <>、</>];
+            })
+            .slice(0, -1)}
+          ）
+        </h3>
+      </>
+    )
+  }
+</>
+
 <div class="siblings-container">
   {
     siblings.prev && (
