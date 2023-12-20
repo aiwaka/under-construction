@@ -21,7 +21,6 @@ export class CollectionsStationEntry
   /** 路線ID文字列の列 */
   public lines: string[];
   public firstVisitDate?: Date;
-  public noDataFlag: StationImageTypeOptions[];
   /** UTC文字列で保持 */
   public createdAt!: string;
   public updatedAt!: string;
@@ -34,7 +33,6 @@ export class CollectionsStationEntry
     this.name = data.name;
     this.lines = data.lines;
     this.firstVisitDate = data.firstVisitDate;
-    this.noDataFlag = data.noDataFlag;
   }
 
   public static async create(
@@ -63,17 +61,16 @@ export class CollectionsStationEntry
       ...rest
     } = this;
     const images = microCMSImages.map((img, i) => {
+      const photoTypeText = img.type.includes("スタンプ") ? "押印" : "撮影";
       const photoDateText = img.date
-        ? dateText(new Date(img.date), "Asia/Tokyo")
-        : "不明";
+        ? dateText(new Date(img.date), "Asia/Tokyo") + photoTypeText
+        : `${photoTypeText}日不明`;
       return {
         src: img.image.url,
         width: img.image.width,
         height: img.image.height,
         alt: `${img.type.join("・")}の画像`,
-        caption:
-          `${photoDateText}${img.type.includes("スタンプ") ? "押印" : "撮影"}` +
-          (img.comment ? "：" + img.comment : ""),
+        caption: `${photoDateText}` + (img.comment ? "：" + img.comment : ""),
         type: img.type,
         comment: img.comment,
         date: img.date,
