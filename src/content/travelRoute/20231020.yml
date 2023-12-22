@@ -210,9 +210,16 @@ route:
     marker:
       - type: single
         label: primary
-  - name: "a-cube Cafe"
+  - name: "a-cube Café"
     nextTransport: onfoot
     arrivalTime: 2023-10-22T10:08:00
+    departureTime: 2023-10-22T10:33:00
+    marker:
+      - type: single
+        label: anchor
+        contents:
+          url: blog/20231020-hokuriku-3-1
+          id: 北陸本線加賀温泉--芦原温泉--福井
   - name: 芦原温泉駅
     station: awara-onsen
     nextTransport: 福井行き
