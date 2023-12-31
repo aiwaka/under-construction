@@ -2,6 +2,8 @@
   import type { TravelRouteEntry } from "@lib/other/station-collections";
   import { dateText, timeText } from "@lib/utils";
 
+  import MarkerIcon from "@components/other/travelogue/MarkerIcon.svelte";
+
   export let routeData: TravelRouteEntry;
 
   type RouteSchema = (typeof routeData.route)[number];
@@ -29,10 +31,16 @@
     return route.nextTransport === "onfoot";
   };
   const isPrimaryNode = (route: RouteSchema) => {
-    return route.marker?.find(
-      (marker) => marker.type === "single" && marker.label === "primary",
-    );
+    return route.marker?.find((m) => m.label === "primary");
   };
+  const getAnchorContents = (route: RouteSchema) => {
+    return route.marker?.find((m) => m.label === "anchor")?.contents;
+  };
+  // routeData.route.forEach((route) => {
+  //   if (route.marker && route.marker.find((m) => m.label === "anchor")) {
+  //     console.log(route.marker);
+  //   }
+  // });
 
   // 時刻の整合性をチェック（巻き戻っていた場合警告）
   /** 日付が変わるノードのインデックスを記憶する */
@@ -121,6 +129,7 @@
 
 <div class="travel-route-container">
   {#each routeData.route as route, i}
+    {@const anchorContents = getAnchorContents(route)}
     <div class="route-item">
       {#if i !== 0}
         {@const prevIsOnFoot = nextIsOnFoot(routeData.route[i - 1])}
@@ -145,6 +154,18 @@
             </a>
           {:else}
             <span>{route.name}</span>
+          {/if}
+          {#if anchorContents}
+            {@const anchorId = anchorContents.id}
+            <div class="external-anchor">
+              <a
+                href={`${import.meta.env.BASE_URL}${anchorContents.url}${
+                  anchorId !== "" ? "#" + anchorId : ""
+                }`}
+              >
+                <MarkerIcon />
+              </a>
+            </div>
           {/if}
         </div>
         {#if dateChangeNodeIndexList.includes(i) || getTimeText(route.arrivalTime).length}
@@ -238,6 +259,11 @@
   .name-block {
     display: flex;
     justify-content: center;
+  }
+  .external-anchor {
+    position: absolute;
+    top: -1.2rem;
+    right: -0.1rem;
   }
   .datetime-block {
     display: flex;
