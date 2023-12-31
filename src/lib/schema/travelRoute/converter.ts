@@ -21,10 +21,7 @@ export class CollectionsTravelRouteEntry
     nextTransport?: string;
     arrivalTime: Date;
     departureTime?: Date;
-    marker?: {
-      type: "single" | "start" | "relay" | "end";
-      label: string;
-    }[];
+    marker?: CollectionTravelRouteSchema["route"][number]["marker"];
   }[];
 
   private constructor(rawEntry: CollectionEntry<"travelRoute">) {
