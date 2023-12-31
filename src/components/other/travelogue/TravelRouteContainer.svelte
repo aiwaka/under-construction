@@ -160,7 +160,7 @@
             <div class="external-anchor">
               <a
                 href={`${import.meta.env.BASE_URL}${anchorContents.url}${
-                  anchorId !== "" && "#" + anchorId
+                  anchorId !== "" ? "#" + anchorId : ""
                 }`}
               >
                 <MarkerIcon />

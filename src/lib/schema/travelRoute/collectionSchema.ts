@@ -24,7 +24,7 @@ export const CollectionTravelRouteZodSchema = z.object({
               // ページのURL（`/under-construction/`より下）を指定
               url: z.string(),
               // 空白文字以外の場合, ページにはそのidを持つ要素が埋め込まれている必要がある.
-              id: z.string(),
+              id: z.string().default(""),
             }),
           }),
         ])
