@@ -12,16 +12,22 @@ export const CollectionTravelRouteZodSchema = z.object({
       nextTransport: z.string().optional(),
       arrivalTime: z.date(),
       departureTime: z.date().optional(),
+      // NOTE: 以前あった`type`フィールドは不要（`label`で判別することになるので）
       marker: z
-        .object({
-          type: z.union([
-            z.literal("single"),
-            z.literal("start"),
-            z.literal("relay"),
-            z.literal("end"),
-          ]),
-          label: z.string(),
-        })
+        .union([
+          z.object({
+            label: z.literal("primary"),
+          }),
+          z.object({
+            label: z.literal("anchor"),
+            contents: z.object({
+              // ページのURL（`/under-construction/`より下）を指定
+              url: z.string(),
+              // 空白文字以外の場合, ページにはそのidを持つ要素が埋め込まれている必要がある.
+              id: z.string().default(""),
+            }),
+          }),
+        ])
         .array()
         .optional(),
     })

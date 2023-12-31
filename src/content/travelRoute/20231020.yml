@@ -31,6 +31,11 @@ route:
   - name: 飛騨古川まつり会館
     nextTransport: onfoot
     arrivalTime: 2023-10-20T13:19:00
+    marker:
+      - label: anchor
+        contents:
+          url: blog/20231020-hokuriku-1-2
+          id: matsuri-kaikan
   - name: 飛騨の匠文化館
     nextTransport: onfoot
     arrivalTime: 2023-10-20T13:51:00
@@ -58,6 +63,11 @@ route:
     nextTransport: 猪谷行き
     arrivalTime: 2023-10-20T15:32:00
     departureTime: 2023-10-20T16:18:00
+    marker:
+      - label: anchor
+        contents:
+          url: blog/20231020-hokuriku-1-2
+          id: 高山本線飛騨古川--猪谷--富山
   - name: 猪谷駅
     station: inotani
     nextTransport: 富山行き
@@ -106,6 +116,11 @@ route:
   - name: 富山ガラス美術館
     nextTransport: onfoot
     arrivalTime: 2023-10-21T09:09:00
+    marker:
+      - label: anchor
+        contents:
+          url: blog/20231020-hokuriku-2-1
+          id: glass-museum
   - name: 西町停留場
     nextTransport: 岩瀬浜行き
     arrivalTime: 2023-10-21T10:02:00
@@ -125,6 +140,11 @@ route:
     station: johana
     nextTransport: onfoot
     arrivalTime: 2023-10-21T12:04:00
+    marker:
+      - label: anchor
+        contents:
+          url: blog/20231020-hokuriku-2-1
+          id: 城端線城端--高岡
   - name: 西新田稲荷社
     nextTransport: onfoot
     arrivalTime: 2023-10-21T12:15:00
@@ -210,9 +230,16 @@ route:
     marker:
       - type: single
         label: primary
-  - name: "a-cube Cafe"
+  - name: "a-cube Café"
     nextTransport: onfoot
     arrivalTime: 2023-10-22T10:08:00
+    departureTime: 2023-10-22T10:33:00
+    marker:
+      - type: single
+        label: anchor
+        contents:
+          url: blog/20231020-hokuriku-3-1
+          id: 北陸本線加賀温泉--芦原温泉--福井
   - name: 芦原温泉駅
     station: awara-onsen
     nextTransport: 福井行き
