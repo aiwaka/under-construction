@@ -273,7 +273,7 @@ route:
     arrivalTime: 2023-10-22T17:20:00
     departureTime: 2023-10-22T17:27:00
   - name: 近江今津駅
-    # station: omi-imazu
+    station: omi-imazu
     nextTransport: 京都行き
     arrivalTime: 2023-10-22T17:35:00
     departureTime: 2023-10-22T17:42:00
