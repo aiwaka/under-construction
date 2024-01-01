@@ -10,6 +10,7 @@ import type { BlogThumbSchema, CollectionBlogSchema } from "./collectionSchema";
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { ToEntryObject } from "@lib/types";
 import { getAllImagesData } from "./image";
+import { DateTime } from "luxon";
 
 /** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
 export class CollectionsBlogPostEntry
@@ -169,8 +170,8 @@ export class CollectionsBlogPostEntry
     return {
       thumbnail: createThumbData(),
       id,
-      createdAt: new Date(date),
-      updatedAt: new Date(updateDate ?? date),
+      createdAt: DateTime.fromJSDate(date, { zone: "UTC" }),
+      updatedAt: DateTime.fromJSDate(updateDate ?? date, { zone: "UTC" }),
       isEntrySchema: null,
       Content,
       ...rest,

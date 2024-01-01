@@ -1,3 +1,5 @@
+import type { DateTime } from "luxon";
+
 /**
  * エントリーのスキーマであることを示すインターフェイス.
  * isEntrySchemaはダミーフィールドだが、他の型との互換性を無くすために必要とする.
@@ -6,9 +8,9 @@ export interface IsEntrySchema {
   /** 一意なid文字列. URLの末端に使う. */
   id: string;
   /** 記事作成時刻 */
-  createdAt: Date;
+  createdAt: DateTime;
   /** 記事更新時刻 */
-  updatedAt: Date;
+  updatedAt: DateTime;
   /** ダミー */
   isEntrySchema: null;
 }

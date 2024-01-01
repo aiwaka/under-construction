@@ -1,6 +1,7 @@
 import type { IsEntrySchema, ContentsImage } from "@lib/types";
 import type { MarkdownHeading } from "astro";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
+import type { DateTime } from "luxon";
 
 /**
  * ブログ記事のオブジェクト
@@ -30,7 +31,7 @@ export interface BlogPostEntry extends IsEntrySchema {
 export interface RelatedBlogPost {
   id: string;
   title: string;
-  date: Date;
+  date: DateTime;
   /** 関連するに至った理由となるタグ文字列, または指定されていることを示す */
   factor: string[] | "specified";
 }

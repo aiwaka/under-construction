@@ -7,6 +7,7 @@ import type {
 import type { IsEntrySchema } from "@lib/types";
 import type { MicroCMSImageComplete } from "@lib/contents/types";
 import type { BlogImageProps } from "@lib/contents/blog";
+import type { CollectionTravelRouteSchema } from "@lib/schema/travelRoute";
 
 export interface StationImage {
   type: StationImageTypeOptionsType[];
@@ -38,10 +39,6 @@ export interface TravelRouteEntry extends IsEntrySchema {
     nextTransport?: string;
     arrivalTime: Date;
     departureTime?: Date;
-    marker?: {
-      /** relayの場合はstartとendの間にlabelで文字を入れられる */
-      type: "single" | "start" | "relay" | "end";
-      label: string;
-    }[];
+    marker?: CollectionTravelRouteSchema["route"][number]["marker"];
   }[];
 }

@@ -1,10 +1,10 @@
 import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 import type { CollectionEntry } from "astro:content";
+import { DateTime } from "luxon";
 
 import type {
   DownloadedStationCollection,
   DownloadedStationImage,
-  StationImageTypeOptions,
 } from "./image";
 import type { CollectionStationSchema } from "./collectionSchema";
 
@@ -22,10 +22,12 @@ export class CollectionsStationEntry
   public lines: string[];
   public firstVisitDate?: Date;
   /** UTC文字列で保持 */
-  public createdAt!: string;
-  public updatedAt!: string;
+  public createdAt!: DateTime;
+  public updatedAt!: DateTime;
   public images!: DownloadedStationImage[];
   public CommentContent!: AstroComponentFactory;
+
+  public localUpdatedAt?: Date;
 
   private constructor(rawEntry: CollectionEntry<"station">) {
     this.id = rawEntry.slug;
@@ -33,6 +35,7 @@ export class CollectionsStationEntry
     this.name = data.name;
     this.lines = data.lines;
     this.firstVisitDate = data.firstVisitDate;
+    this.localUpdatedAt = data.localUpdatedAt;
   }
 
   public static async create(
@@ -41,12 +44,36 @@ export class CollectionsStationEntry
   ) {
     const entry = new CollectionsStationEntry(rawEntry);
     const rendered = await rawEntry.render();
-    const { Content, headings, remarkPluginFrontmatter } = rendered;
+    // const { Content, headings, remarkPluginFrontmatter } = rendered;
+    const { Content } = rendered;
     entry.CommentContent = Content;
 
     const remoteData = remoteDataSet[entry.id];
-    entry.createdAt = remoteData.createdAt;
-    entry.updatedAt = remoteData.updatedAt;
+    entry.createdAt = DateTime.fromISO(remoteData.createdAt, {
+      zone: "Asia/Tokyo",
+    });
+    // リモートの更新日時と手動で設定した更新日時を比較して新しい方を採用する
+    const remoteUpdatedAt = remoteData.updatedAt;
+    // リモートの時刻は日本時間のUTC表現なのでzone指定で補正
+    const luxonRemoteUpdatedAt = DateTime.fromJSDate(
+      new Date(remoteUpdatedAt),
+      { zone: "Asia/Tokyo" },
+    );
+    const updatedAt =
+      entry.localUpdatedAt === undefined
+        ? luxonRemoteUpdatedAt
+        : (() => {
+            // ローカルのfrontmatterでの日付指定はUTCとして解釈する
+            const luxonLocalUpdatedAt = DateTime.fromJSDate(
+              entry.localUpdatedAt,
+              { zone: "UTC" },
+            );
+            return luxonRemoteUpdatedAt < luxonLocalUpdatedAt
+              ? luxonLocalUpdatedAt
+              : luxonRemoteUpdatedAt;
+          })();
+
+    entry.updatedAt = updatedAt;
     entry.images = remoteData.images;
 
     return entry;
@@ -60,7 +87,7 @@ export class CollectionsStationEntry
       images: microCMSImages,
       ...rest
     } = this;
-    const images = microCMSImages.map((img, i) => {
+    const images = microCMSImages.map((img) => {
       const photoTypeText = img.type.includes("スタンプ") ? "押印" : "撮影";
       const photoDateText = img.date
         ? dateText(new Date(img.date), "Asia/Tokyo") + photoTypeText
@@ -78,8 +105,8 @@ export class CollectionsStationEntry
     });
     return {
       lineIds: lines,
-      createdAt: new Date(createdAt),
-      updatedAt: new Date(updatedAt),
+      createdAt,
+      updatedAt,
       images,
       ...rest,
       isEntrySchema: null,
