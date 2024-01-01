@@ -2,13 +2,13 @@
 // 引数の駅IDが存在すればリンクとし、存在しなければ無効であることを示す。
 import { getCollection } from "astro:content";
 
-// TODO: 除外ルールを設ける
-const allPosts = await getCollection("station");
-const slugList = allPosts.map((post) => post.slug);
-
 interface Props {
   slug: string;
 }
+
+// TODO: 除外ルールを設ける
+const allPosts = await getCollection("station");
+const slugList = allPosts.map((post) => post.slug);
 
 const { slug } = Astro.props;
 

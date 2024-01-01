@@ -95,7 +95,7 @@ function insertTitleToLabel(texts, labels) {
 
 /**
  * remark-gfmの脚注機能で生成された脚注のテキストに対応するラベルのtitle属性を作成する.
- * @param {Options} [opts]
+ * @param {Object} [opts]
  * @return {Transformer}
  */
 export function insertTitlePlugin(opts) {

@@ -17,4 +17,4 @@ export interface FrameworkData extends Omit<SkillData, "icon"> {
 }
 export interface DbData extends SkillData {}
 export interface ToolsData extends SkillData {}
-export { AllowedName };
+export type { AllowedName };
