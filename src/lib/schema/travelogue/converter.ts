@@ -15,6 +15,7 @@ import type { ContentsImage, ToEntryObject } from "@lib/types";
 import type { TravelogueEntry } from "@lib/contents/travelogue";
 import type { BlogPostEntry } from "@lib/contents/blog";
 import type { TravelRouteEntry } from "@lib/other/station-collections";
+import { DateTime } from "luxon";
 
 /** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
 export class CollectionsTravelogueEntry
@@ -119,7 +120,7 @@ export class CollectionsTravelogueEntry
       const filename = `${entry.thumbnail.filename}.${entry.thumbnail.format}`;
       const localImagePath = `../../../blog-images/thumbnails/${filename}`;
 
-      // NOTE: ここの処理は"@components/blog/BlogImagesLocal.astro"を参照.
+      // NOTE: ここの処理は"@components/blog/BlogImageLocal.astro"を参照.
       const globImages = import.meta.glob<ImageMetadata>(
         "../../../blog-images/**/*",
         { import: "default" },
@@ -182,8 +183,8 @@ export class CollectionsTravelogueEntry
       Content: CommentContent,
       thumbnail: this.thumbnailImage,
       // * IsEntrySchemaで要求されるこれらの値はここでは無意味なのでダミーにする（設計が悪い）
-      createdAt: this.startDate,
-      updatedAt: this.startDate,
+      createdAt: DateTime.fromJSDate(this.startDate, { zone: "UTC" }),
+      updatedAt: DateTime.fromJSDate(this.startDate, { zone: "UTC" }),
       isEntrySchema: null,
     } satisfies TravelogueEntry;
   }

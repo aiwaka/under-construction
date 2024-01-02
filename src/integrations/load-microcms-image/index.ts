@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "node:fs";
 import type { AstroIntegration } from "astro";
 import { z } from "astro/zod";
 import { createClient } from "microcms-js-sdk";

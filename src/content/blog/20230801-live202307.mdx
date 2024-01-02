@@ -8,7 +8,7 @@ tags:
   - 音楽
 ---
 
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 import EmbedYoutube from "@components/works/EmbedYoutube.astro";
 
 export const ARTICLE_ID = "20230801-live202307";
@@ -68,7 +68,7 @@ MCは去年とは打って変わってまともに喋れたと思います（去
 レコードを持ってくる人が居たりと流石ハイレベルな部活です。
 YMOが流れたときはフロアが完全にその空気でした。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "sky", width: 1300, caption: "後日のタテカンと空" },

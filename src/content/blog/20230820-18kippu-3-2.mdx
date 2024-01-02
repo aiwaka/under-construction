@@ -12,7 +12,7 @@ tags:
 ---
 
 export const ARTICLE_ID = "20230820-18kippu-3-2";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 import AutoPostLink from "@components/blog/AutoPostLink.astro";
 
 ## 概要
@@ -51,14 +51,14 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 降りた途端にW7系が描かれた横断幕が見えた他、駅舎に面したホームには越前の刃物を使ったオブジェが置かれている。
 信濃大町でもこのような展示があったが、遠方から来た私のような者の興味も惹くし、地元への愛着も湧くのではないかと思う。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "exhibition-1", width: 1500, caption: "ホーム上の展示" },
     { name: "exhibition-2", width: 1500, caption: "寄って撮影" },
   ]}
 />
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[{ name: "takefu-front", width: 1500, caption: "武生駅の駅前" }]}
 />
@@ -79,7 +79,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 田原町行きの列車が待機しているのが見えたが、他にすることもないので退散した。
 券売機には大きな蜘蛛が...使われていないのだろうか。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[{ name: "takefu-shin", width: 1500, caption: "たけふ新駅" }]}
 />
@@ -98,7 +98,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 肉声放送のアクセントも、昔の鉄道という感じでも現在の淡々とした感じでもない、非常に独特なものであった。
 そう思っているところでしらさぎが停車し、サンダーバードが通り過ぎていった。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     {
@@ -133,7 +133,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 迷った挙げ句私は1番線に向かった。
 小浜線125系電車が出発を待っているところであった。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "for-higashimaizuru", width: 1500, caption: "125系東舞鶴行き" },
@@ -176,7 +176,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 おそらく駅スタンプの存在を知らなかったのであろう。
 それはそれで面白いため喜んで押させてもらった。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "around-higashimihama", width: 900, caption: "東美浜駅周辺の車窓" },
@@ -275,7 +275,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 
 [^kaibara]: 柏原（かいばら、兵庫県）、柏原（かしわら、大阪府）、柏原（かしわばら、滋賀県）である。すべて近畿圏なのも面白い。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "sasayamaguchi", width: 1500, caption: "篠山口の券売機スペース" },
@@ -307,7 +307,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 改札を出たのは23時50分。
 大都市近郊区間なので18きっぷの効力は終電までだが、一応今日のうちに旅を終えることができた。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "pichon", width: 800, caption: "紅に染まったぴちょんくん" },
@@ -339,7 +339,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 金沢では銘菓くるみを購入した。
 南小谷で買ったガチャのアクリルスタンドもかわいらしいので机においている。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "tsukisekai", width: 1500, caption: "富山のお土産月世界" },
@@ -356,7 +356,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 最後に恒例のスタンプを並べて旅行記を終わることにする。
 ありがとうございました。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "stamps", width: 2700, caption: "この旅行で取得したスタンプたち" },

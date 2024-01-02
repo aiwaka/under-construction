@@ -8,8 +8,10 @@ import type { CollectionEntry } from "astro:content";
 import type { BlogThumbSchema, CollectionBlogSchema } from "./collectionSchema";
 
 import type { BlogPostEntry } from "@lib/contents/blog";
+import type { TOCHeadingTagDepths } from "@lib/schema/blog/collectionSchema";
 import type { ToEntryObject } from "@lib/types";
 import { getAllImagesData } from "./image";
+import { DateTime } from "luxon";
 
 /** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
 export class CollectionsBlogPostEntry
@@ -27,6 +29,7 @@ export class CollectionsBlogPostEntry
   public headings!: MarkdownHeading[];
   public wordCount!: number;
   public latex: boolean;
+  public tocTarget: TOCHeadingTagDepths[];
   public draft: boolean;
 
   private thumbnailImage!: GetImageResult | null;
@@ -44,6 +47,7 @@ export class CollectionsBlogPostEntry
     this.related = [...data.related];
     this.latex = data.latex;
     this.draft = data.draft;
+    this.tocTarget = data.tocTarget;
   }
 
   public static async create(rawEntry: CollectionEntry<"blog">) {
@@ -117,7 +121,7 @@ export class CollectionsBlogPostEntry
       const filename = `${entry.thumbnail.filename}.${entry.thumbnail.format}`;
       const localImagePath = `../../../blog-images/thumbnails/${filename}`;
 
-      // NOTE: ここの処理は"@components/blog/BlogImagesLocal.astro"を参照.
+      // NOTE: ここの処理は"@components/blog/BlogImageLocal.astro"を参照.
       const globImages = import.meta.glob<ImageMetadata>(
         "../../../blog-images/**/*",
         { import: "default" },
@@ -169,8 +173,8 @@ export class CollectionsBlogPostEntry
     return {
       thumbnail: createThumbData(),
       id,
-      createdAt: new Date(date),
-      updatedAt: new Date(updateDate ?? date),
+      createdAt: DateTime.fromJSDate(date, { zone: "UTC" }),
+      updatedAt: DateTime.fromJSDate(updateDate ?? date, { zone: "UTC" }),
       isEntrySchema: null,
       Content,
       ...rest,

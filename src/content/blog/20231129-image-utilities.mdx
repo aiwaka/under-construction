@@ -4,6 +4,7 @@ description: 意外と苦労した
 thumbnail:
   type: remote
 date: 2023-11-29T16:00:00
+updateDate: 2023-12-18
 tags:
   - Rust
   - プログラミング
@@ -11,7 +12,7 @@ tags:
 ---
 
 export const ARTICLE_ID = "20231129-image-utilities";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 
 ## 概要
 
@@ -33,8 +34,13 @@ HEIC形式含む画像を処理できます。
 前の記事でも紹介したKuwaharaフィルタがかなりマイナーで、しかし実装も簡単なのでこれを最優先に作りました。
 というかこれを使うというモチベーションがなければRustで実装などしていません（ガウスぼかしはGIMPにもあるので）。
 うまくかかるように作れて満足です。
+（20231218追記）
+と思っていたら、GIMPにも油彩画風フィルタという名前でほぼ同様のものが実装されていました。
+こちらはHEIC形式を書き出せたりするのでコマンドラインソフトは完全にお役御免です。
+残念...
+（20231218追記ここまで）
 
-<BlogImagesRemote
+<BlogImagesList
 baseName={ARTICLE_ID}
 images={[
 { name: "original", width: 1200, caption: "処理前" },

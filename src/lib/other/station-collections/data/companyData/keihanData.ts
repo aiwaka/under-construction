@@ -16,6 +16,7 @@ keihanData.addLineData("keihan-main", "京阪本線", [
   "tambabashi",
   "fushimiinari",
   "tobakaido",
+  "tofukuji",
   "shichijo",
   "gion-shijo",
   "sanjo",

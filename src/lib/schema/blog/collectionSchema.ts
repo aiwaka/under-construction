@@ -19,6 +19,16 @@ const BlogThumbZodSchema = z.union([
 
 export type BlogThumbSchema = z.infer<typeof BlogThumbZodSchema>;
 
+// ルートの深さを1とするため、h1を目次に入れるのは禁止する.
+const TOCHeadingTagDepthsZodSchema = z.union([
+  z.literal(2),
+  z.literal(3),
+  z.literal(4),
+  z.literal(5),
+  z.literal(6),
+]);
+export type TOCHeadingTagDepths = z.infer<typeof TOCHeadingTagDepthsZodSchema>;
+
 export const CollectionBlogZodSchema = z.object({
   title: z.string(),
   description: z.string(),
@@ -33,6 +43,7 @@ export const CollectionBlogZodSchema = z.object({
     .refine((arg) => arg.length <= 5)
     .default([]),
   latex: z.boolean().default(false),
+  tocTarget: TOCHeadingTagDepthsZodSchema.array().default([2, 3]),
   draft: z.boolean().default(false),
 });
 

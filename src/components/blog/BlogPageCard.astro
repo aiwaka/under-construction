@@ -1,5 +1,6 @@
 ---
 import type { BlogPostEntry } from "@lib/contents/blog";
+// TODO: polymorphicを活用
 
 import BlogPageCardLargeContents from "./BlogPageCardLargeContents.astro";
 import BlogPageCardSmallContents from "./BlogPageCardSmallContents.astro";
@@ -22,10 +23,10 @@ const draft = entry.draft;
 >
   <div class="article-card" class:list={{ draft }}>
     {
-      !mini ? (
-        <BlogPageCardLargeContents entry={entry} hideTags={hideTags} />
-      ) : (
+      mini ? (
         <BlogPageCardSmallContents entry={entry} />
+      ) : (
+        <BlogPageCardLargeContents entry={entry} hideTags={hideTags} />
       )
     }
   </div>

@@ -8,12 +8,7 @@ import type {
   DownloadedStationCollection,
   StationImageTypeOptions,
 } from "@lib/schema/station";
-import type {
-  CompanyDataSchema,
-  LineDataSchema,
-  SiblingStationType,
-  StationDataSchema,
-} from "@lib/types";
+import type { SiblingStationType } from "@lib/types";
 import { dateText } from "@lib/utils";
 import {
   getStationEntries,
@@ -52,7 +47,6 @@ export const getStaticPaths = async () => {
     const siblingsData: SiblingStationType[] = [];
     Object.entries(subsetStationList).forEach(([companyId, companyData]) => {
       Object.entries(companyData.lines).forEach(([lineId, lineData]) => {
-        // const lineName = lineData.lineName;
         // インデックスベースで隣接駅を取得する. すでに部分集合であるため必ず見つかるはず.
         const stations = lineData.stations;
         stations.forEach((sta, idx) => {
@@ -204,7 +198,7 @@ const ogp = {
   </div>
   <div class="update-date-block">
     <span>
-      {dateText(new Date(updatedAt), "Asia/Tokyo")}更新
+      {dateText(updatedAt)}更新
     </span>
   </div>
   {
@@ -271,6 +265,7 @@ const ogp = {
     margin: 1.5rem auto;
   }
   .comment-container :global(a) {
+    word-break: break-all;
     color: darkgoldenrod;
     &:hover {
       color: orangered;

@@ -8,6 +8,8 @@ import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 import TravelRouteContainer from "@components/other/travelogue/TravelRouteContainer.svelte";
 import BlogPageCardContainer from "@components/blog/BlogPageCardContainer.astro";
 
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
 export async function getStaticPaths() {
   const travelogueEntries = await getTravelogueEntries();
 
@@ -21,9 +23,7 @@ export async function getStaticPaths() {
   });
 }
 
-type Props = InferGetStaticPropsType<typeof getStaticPaths>;
-
-const { entry, next, prev } = Astro.props;
+const { entry } = Astro.props;
 const { title, Content, startDate, endDate, thumbnail, posts, routes } = entry;
 
 const PAGE_NAME = `Under Construction | 旅行記` as const;
@@ -85,6 +85,7 @@ const travelDateText =
     margin: 1.5rem auto;
   }
   .comment-container :global(a) {
+    word-break: break-all;
     color: darkgoldenrod;
     &:hover {
       color: orangered;

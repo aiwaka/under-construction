@@ -22,6 +22,9 @@ import osakaMetroData from "./companyData/osakaMetroData";
 import osakaMonorailData from "./companyData/osakaMonorailData";
 import kitaosakaExpressData from "./companyData/kitaosakaExpressData";
 import nankaiData from "./companyData/nankaiData";
+import hanshinData from "./companyData/hanshinData";
+import hankyuData from "./companyData/hankyuData";
+import toyamaChitetsuData from "./companyData/toyamaChitetsuData";
 
 const stationList: { [companyId: string]: CompanyDataSchema } = {};
 
@@ -38,11 +41,14 @@ addCompanyData(JRShikokuData);
 addCompanyData(JRKyushuData);
 addCompanyData(ainokazeData);
 addCompanyData(tokitetsuData);
+addCompanyData(hankyuData);
 addCompanyData(kintetsuData);
 addCompanyData(keihanData);
 addCompanyData(nankaiData);
+addCompanyData(hanshinData);
 addCompanyData(ichibataData);
 addCompanyData(eizanData);
+addCompanyData(toyamaChitetsuData);
 addCompanyData(iyotetsuData);
 addCompanyData(kikudenData);
 addCompanyData(kyotoCityData);

@@ -4,6 +4,7 @@ import type { CollectionTravelRouteSchema } from "./collectionSchema";
 
 import { type TravelRouteEntry } from "@lib/other/station-collections";
 import type { ToEntryObject } from "@lib/types";
+import { DateTime } from "luxon";
 
 /** Collectionsから受け取ったデータを保持し, `TravelRouteEntry`に変換可能なクラス */
 export class CollectionsTravelRouteEntry
@@ -39,8 +40,7 @@ export class CollectionsTravelRouteEntry
   }
 
   toEntryObject() {
-    const { date: createdAt, route: rawRoute, ...rest } = this;
-    const updatedAt = createdAt;
+    const { date, route: rawRoute, ...rest } = this;
 
     const route = rawRoute.map((item) => {
       const { station, ...rest } = item;
@@ -48,8 +48,8 @@ export class CollectionsTravelRouteEntry
     });
 
     return {
-      createdAt,
-      updatedAt,
+      createdAt: DateTime.fromJSDate(date, { zone: "UTC" }),
+      updatedAt: DateTime.fromJSDate(date, { zone: "UTC" }),
       route,
       ...rest,
       isEntrySchema: null,

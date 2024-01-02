@@ -18,7 +18,7 @@ const { next, prev } = Astro.props;
             <p>Next &larr;</p>
           </a>
         </div>
-        <BlogPageCard entry={next} mini={true} />
+        <BlogPageCard entry={next} mini={true} hideTags={true} />
       </div>
     )
   }
@@ -30,7 +30,7 @@ const { next, prev } = Astro.props;
             <p>&rarr; Prev</p>
           </a>
         </div>
-        <BlogPageCard entry={prev} mini={true} />
+        <BlogPageCard entry={prev} mini={true} hideTags={true} />
       </div>
     )
   }

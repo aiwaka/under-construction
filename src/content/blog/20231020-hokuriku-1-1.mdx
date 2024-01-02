@@ -11,7 +11,7 @@ tags:
 ---
 
 export const ARTICLE_ID = "20231020-hokuriku-1-1";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 import AutoPostLink from "@components/blog/AutoPostLink.astro";
 
 ## 概要
@@ -54,7 +54,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 JR西日本も少しは見習ってほしいものである。
 くろしおを始めとする最後尾座席のみコンセントありという特急サービスを履き違えた仕様は未だに納得していない。
 
-<BlogImagesRemote
+<BlogImagesList
 baseName={ARTICLE_ID}
 images={[
   { name: "hida-5", width: 2000, caption: "HC85系 特急ひだ5号" },
@@ -113,7 +113,11 @@ images={[
 まず岐阜に到着すると多くの人が降りた。
 降ろし終わるとすぐに扉を閉め、こちらがスイッチバックして後退し始めた。
 そのまま信号機を過ぎたので、閉塞を開けるための動きであろうか。
-車庫に入れると放送していたが岐阜の近くに車庫など無いし、何を言っているのかと思ったがわかりやすさ優先のようである。
+これまでと別の線に入っているように見える。
+車庫に入れると放送していたが岐阜の近くに車庫など無いし、何を言っているのかと思った~~がわかりやすさ優先のようである~~。
+（20231229追記）
+引上げ線のことを車庫と言っているらしい。岐阜駅には誘導信号機が無いため、一旦閉塞を開けたあとで入換信号を確認した操車係の指示の下で連結を行うようだ（<a href="https://trafficnews.jp/post/124820/3" target="_blank" rel="noopener noreferrer">参考</a>）。
+（20231229追記終わり）
 前方の様子は伺えないが、待っていると再び前方に進み、さらに待つと停車時の特有の振動があったのち、扉が開いた。
 やはり後退している間に名古屋側から入線した列車に繋ぐ形をとったようである。
 この時点で10分弱経過し、発車まで残り3分ほどだったがホームに降りてみると、前方に6両も追加されて10両となっていた。
@@ -163,7 +167,7 @@ images={[
 縦に割れている岩が切り立った崖を作っており、川の浸食により形成されたのが見て取れる。
 特急南風の車窓を思い出した。
 
-<BlogImagesRemote
+<BlogImagesList
 baseName={ARTICLE_ID}
 images={[
 { name: "canyon", width: 1500, caption: "飛騨川の渓谷" },
