@@ -5,26 +5,20 @@
  * それらのコンポーネントでは画像を取得・最適化する処理を行い、同一のコンポーネントに情報を渡して描画する。
  */
 
-import type { BlogImageProps } from "@lib/contents/blog";
+import BlogImageRemote, {
+  type NamedRemoteImageType,
+} from "./BlogImageRemote.astro";
+import BlogImageLocal, {
+  type LocalBlogImageType,
+} from "./BlogImageLocal.astro";
 
-import BlogImageRemote from "./BlogImageRemote.astro";
-import BlogImageLocal from "./BlogImageLocal.astro";
-
-// TODO: コンポーネント名変更（その後コミットをもとに戻し変更を圧縮する）
-// TODO: 以下の型はBlogImageRemoteなどのコンポーネントで定義し、エクスポートされたものを使うよう変更する
-// TODO: スニペットとscaffdogを修正
 // station collectionsでも同様の画像コンポーネントを使うよう修正
-type BlogImagePropsOmitSrc = Omit<BlogImageProps, "src">;
-type AllowedImageExtension = "jpg" | "jpeg" | "png";
-type LocalImageType = BlogImagePropsOmitSrc & {
-  src: `${string}.${AllowedImageExtension}`;
-};
-type NamedRemoteImageType = BlogImagePropsOmitSrc & {
-  /** リモートコンテンツID指定の上書きをする */
-  baseName?: string;
-  name: string;
-};
-type BlogImage = LocalImageType | NamedRemoteImageType;
+type BlogImage =
+  | LocalBlogImageType
+  | (NamedRemoteImageType & {
+      /** リモートコンテンツID指定の上書きをする */
+      baseName?: string;
+    });
 
 interface Props {
   baseName?: string;
@@ -44,7 +38,7 @@ const isRemoteImage = (img: BlogImage): img is NamedRemoteImageType => {
   {
     list.map((img) => {
       if (isRemoteImage(img)) {
-        if (defaultBaseName === undefined) {
+        if (defaultBaseName === undefined && img.baseName === undefined) {
           if (import.meta.env.DEV) {
             return (
               <div>
@@ -57,35 +51,17 @@ const isRemoteImage = (img: BlogImage): img is NamedRemoteImageType => {
             );
           }
         } else {
-          const { baseName, name, width, height, alt, caption } = img;
+          const { baseName, ...rest } = img;
           return (
             <BlogImageRemote
-              baseName={baseName ?? defaultBaseName}
-              image={{
-                name,
-                width,
-                height,
-                alt,
-                caption,
-              }}
+              baseName={img.baseName ?? defaultBaseName!}
+              image={rest}
               {...globalAttrs}
             />
           );
         }
       } else {
-        const { src, width, height, alt, caption, ...attrs } = img;
-        return (
-          <BlogImageLocal
-            image={{
-              src,
-              width,
-              height,
-              alt,
-              caption,
-            }}
-            {...globalAttrs}
-          />
-        );
+        return <BlogImageLocal image={img} {...globalAttrs} />;
       }
     })
   }

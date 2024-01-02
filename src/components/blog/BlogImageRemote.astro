@@ -7,13 +7,17 @@ import type { ImagesStorageSchema } from "@lib/schema/blog";
 import { getImage } from "astro:assets";
 import type { GetImageResult } from "astro";
 
-type NamedRemoteImageType = Omit<BlogImageProps, "src"> & {
+export interface NamedRemoteImageType {
   name: string;
-};
-export type Props = {
+  width: number;
+  height?: number;
+  alt?: string;
+  caption?: string;
+}
+interface Props {
   baseName: string;
   image: NamedRemoteImageType;
-};
+}
 const { baseName, image: namedImage } = Astro.props;
 
 /** 何らかの理由で取得に失敗したときに`true`になる */

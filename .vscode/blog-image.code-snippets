@@ -3,7 +3,7 @@
 		"scope": "mdx",
 		"prefix": "remImagelist",
 		"body": [
-			"<BlogImagesRemote",
+			"<BlogImagesList",
 				"baseName={ARTICLE_ID}",
 				"images={[",
 					"{ name: \"$1\", width: ${2:1500}, caption: \"$3\" },",
@@ -17,7 +17,7 @@
 		"scope": "mdx",
 		"prefix": "locImagelist",
 		"body": [
-			"<BlogImagesLocal",
+			"<BlogImagesList",
 			"  images={[",
 			"    {",
 			"      src: \"$1\",",
