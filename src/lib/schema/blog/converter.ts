@@ -8,6 +8,7 @@ import type { CollectionEntry } from "astro:content";
 import type { BlogThumbSchema, CollectionBlogSchema } from "./collectionSchema";
 
 import type { BlogPostEntry } from "@lib/contents/blog";
+import type { TOCHeadingTagDepths } from "@lib/schema/blog/collectionSchema";
 import type { ToEntryObject } from "@lib/types";
 import { getAllImagesData } from "./image";
 import { DateTime } from "luxon";
@@ -28,6 +29,7 @@ export class CollectionsBlogPostEntry
   public headings!: MarkdownHeading[];
   public wordCount!: number;
   public latex: boolean;
+  public tocTarget: TOCHeadingTagDepths[];
   public draft: boolean;
 
   private thumbnailImage!: GetImageResult | null;
@@ -45,6 +47,7 @@ export class CollectionsBlogPostEntry
     this.related = [...data.related];
     this.latex = data.latex;
     this.draft = data.draft;
+    this.tocTarget = data.tocTarget;
   }
 
   public static async create(rawEntry: CollectionEntry<"blog">) {

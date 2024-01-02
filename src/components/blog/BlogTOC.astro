@@ -1,14 +1,20 @@
 ---
-import { createTOCElement } from "@lib/contents/blog";
 import type { MarkdownHeading } from "astro";
+
+import { createTOCElement } from "@lib/contents/blog";
+import type { TOCHeadingTagDepths } from "@lib/schema/blog/collectionSchema";
 
 interface Props {
   headings: MarkdownHeading[];
+  target: TOCHeadingTagDepths[];
 }
 
-const { headings } = Astro.props;
+const { headings, target } = Astro.props;
 
-const rawTOCHtml = createTOCElement(headings, { target: [2, 3] });
+const rawTOCHtml = createTOCElement(headings, { target });
+const existTargetLevel = headings.some((head) =>
+  target.includes(head.depth as TOCHeadingTagDepths),
+);
 ---
 
-{headings.length > 0 && <div class="toc-container" set:html={rawTOCHtml} />}
+{existTargetLevel && <div class="toc-container" set:html={rawTOCHtml} />}

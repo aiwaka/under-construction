@@ -37,6 +37,7 @@ const {
   latex,
   wordCount,
   headings,
+  tocTarget,
   draft: isDraft,
 } = entry;
 
@@ -90,7 +91,7 @@ const ogp = {
     />
   </div>
   <div class="blog-article-content-container">
-    <BlogTOC headings={headings} />
+    <BlogTOC headings={headings} target={tocTarget} />
     {typeof Content === "string" ? <div set:html={Content} /> : <Content />}
   </div>
   <SiblingsLinkContainer next={next} prev={prev} />
