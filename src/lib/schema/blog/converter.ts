@@ -118,7 +118,7 @@ export class CollectionsBlogPostEntry
       const filename = `${entry.thumbnail.filename}.${entry.thumbnail.format}`;
       const localImagePath = `../../../blog-images/thumbnails/${filename}`;
 
-      // NOTE: ここの処理は"@components/blog/BlogImagesLocal.astro"を参照.
+      // NOTE: ここの処理は"@components/blog/BlogImageLocal.astro"を参照.
       const globImages = import.meta.glob<ImageMetadata>(
         "../../../blog-images/**/*",
         { import: "default" },

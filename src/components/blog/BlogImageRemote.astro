@@ -1,25 +1,22 @@
 ---
-import fs from "fs";
+import fs from "node:fs";
 
-import BlogImageList from "@components/blog/BlogImageList.astro";
+import ImageComponent from "@components/utils/ImageComponent.astro";
 import type { BlogImageProps } from "@lib/contents/blog";
 import type { ImagesStorageSchema } from "@lib/schema/blog";
+import { getImage } from "astro:assets";
+import type { GetImageResult } from "astro";
 
 type NamedRemoteImageType = Omit<BlogImageProps, "src"> & {
   name: string;
 };
 export type Props = {
   baseName: string;
-  images: NamedRemoteImageType | NamedRemoteImageType[];
+  image: NamedRemoteImageType;
 };
-const { baseName, images: namedRemoteImagesProp } = Astro.props;
+const { baseName, image: namedImage } = Astro.props;
 
-// 配列にする
-const namedRemoteImages = Array.isArray(namedRemoteImagesProp)
-  ? namedRemoteImagesProp
-  : [namedRemoteImagesProp];
-
-/** 何らかの理由で取得に失敗した瞬間`true`になる */
+/** 何らかの理由で取得に失敗したときに`true`になる */
 let imagesDataFetchFailed = false;
 
 // NOTE: `import.meta.url`はこのコンポーネントの完全パスを返す. そこから`dist/...`までたどり着けるようにする.
@@ -44,57 +41,49 @@ if (!imagesDataFetchFailed) {
   ) as ImagesStorageSchema;
 }
 
+const {
+  name,
+  width: specifiedWidth,
+  height: specifiedHeight,
+  ...rest
+} = namedImage;
 const imagesData = allImagesData?.[baseName];
-if (allImagesData && imagesData === undefined) {
+const image = imagesData?.images[namedImage.name];
+let imageResult: GetImageResult | null = null;
+if (imagesData === undefined) {
   const errorMessage = `The specified basename \`${baseName}\` cannot be found.`;
   console.error(errorMessage);
   imagesDataFetchFailed = true;
-}
-const notFoundImageList: string[] = [];
-// 取得できない画像は除外してリストを整形する.
-const resolvedRemoteImages = namedRemoteImages.flatMap((data) => {
-  const {
-    name,
-    width: specifiedWidth,
-    height: specifiedHeight,
-    ...rest
-  } = data;
-  const image = imagesData?.images[name];
-  if (!image) {
-    notFoundImageList.push(name);
-    // []を返せばflatMapによりmapの結果から除外できる
-    return [];
-  }
+} else if (image === undefined) {
+  const errorMessage = `The specified name \`${namedImage.name}\` cannot be found.`;
+  console.error(errorMessage);
+  imagesDataFetchFailed = true;
+} else {
   // widthはクエリで指定する（基本元の画像より小さめのサイズを指定するはずなので）.
   const queriedUrl = `${image.url}?w=${specifiedWidth}&fm=webp`;
   // 高さは指定されていればそれを使い, そうでなければ画像の大きさから計算する（整数にする）.
   const resultHeight = Math.round(
     specifiedHeight ?? (specifiedWidth * image.height) / image.width,
   );
-  return {
+  imageResult = await getImage({
     src: queriedUrl,
     width: specifiedWidth,
     height: resultHeight,
-    name,
     ...rest,
-  } satisfies BlogImageProps & { name: string };
-});
-
-const images = resolvedRemoteImages;
-
-if (notFoundImageList.length > 0) {
-  console.warn(
-    `[BlogImagesRemote.astro] in ${baseName}, following named images were not found.`,
-  );
-  notFoundImageList.map((image) => {
-    console.log(image);
   });
 }
 ---
 
 {
-  imagesDataFetchFailed && (
+  imagesDataFetchFailed || imageResult === null ? (
     <div style="color: red; border: 1px solid red;">Images Not Found</div>
+  ) : (
+    <ImageComponent
+      src={imageResult.src}
+      width={imageResult.options.width}
+      height={imageResult.options.height}
+      alt={imageResult.rawOptions.alt}
+      caption={imageResult.rawOptions.caption}
+    />
   )
 }
-<BlogImageList images={images} />

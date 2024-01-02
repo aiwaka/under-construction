@@ -14,7 +14,7 @@ related:
 ---
 
 import AutoPostLink from "@components/blog/AutoPostLink.astro";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 import EmbedYoutube from "@components/works/EmbedYoutube.astro";
 export const ARTICLE_ID = "20230820-18kippu-1-3";
 
@@ -41,14 +41,14 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 駐輪場の隣には水辺の小径の表記とともに降りられる階段があり、歩行者はこちらを使うことで市街地へ早くたどり着けるようだが、正直なところ普段使いしたい代物ではない。
 炎天下で駅前に50分滞在するのも馬鹿らしいので、これを降りてみることにした。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "misakubo-1", width: 1200, caption: "構内から見た駅舎" },
     { name: "misakubo-2", width: 1200, caption: "駅舎外観" },
   ]}
 />
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "misakubo-4", width: 1200, caption: "駅前から見た水窪の街" },
@@ -65,7 +65,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 一先ず橋は置いておいて先へ進むと、鯉が泳いでいる小さな池、その奥には通行止めの看板。
 やはり橋を渡るしかない。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "misakubo-bridge-1", width: 1000, caption: "やすらぎの橋" },
@@ -100,7 +100,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 先程の上り列車と比べて一般客や観光客が多いように見える。
 駅前の男性もこれに乗り込んでいたが、列車の写真を撮っていたのでかなりニッチな旅行家かまたはその筋の人と思われる。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     {
@@ -137,14 +137,14 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 インクが乾いたり汚れたりしておらずむしろ非常に状態の良い部類に入る。
 感謝するとともに、この地域が何らかの発展を見ることを願われてならない。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "touei-1", width: 1200, caption: "ホーム側から見た東栄駅駅舎" },
     { name: "touei-2", width: 1200, caption: "駅舎内のスペース" },
   ]}
 />
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "touei-3", width: 1200, caption: "駅前のコンテナ" },
@@ -169,7 +169,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 とはいえ2020年まで営業していたようには見えない。2023-10-08追記）
 ちなみに向かいにある駐車場は完全に打ち捨てられたようである。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[{ name: "touei-hospital", width: 1200, caption: "国保東栄病院" }]}
 />
@@ -181,7 +181,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 じゃあねと言って坂を下っていくが、ふと振り向くと立ち上がってついてきてこちらの様子を伺っていた。
 視線というものは確かに存在する。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     {
@@ -206,7 +206,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 まもなく211系普通列車天竜峡行きが来、ボタンを押して乗り込む。
 ようやく一息である。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "touei-train", width: 1000, caption: "211系普通列車天竜峡行き" },
@@ -235,7 +235,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 ボックス席の同じ位置に似た鞄が置いてあり間違えたらしい。
 似たと言うが別にそっくりではないし鞄の数も違うので間違えるはずがないのだが、やはり相当疲れている。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "chubu-tenryu-1", width: 1200, caption: "中部天竜駅の駅前" },
@@ -271,7 +271,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 極めて狭いホームの向かい側は切り立った崖になっており非常に怖い。
 電車に乗っていて怖い思いをするとは。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "ozore", width: 1000, caption: "大嵐駅北方のトンネル" },
@@ -282,7 +282,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
     },
   ]}
 />
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "shiteguri-shinanokoishi", width: 1200, caption: "為栗駅と天竜川" },
@@ -314,7 +314,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 イベントグッズをもらうためにはここで降りなければならなかったが、停車時間は1分もない上にもう観光案内所は閉まっている。
 馬鹿なことをしたものだと思うが景色が楽しめるうちにここまで来られたので良いことにする。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "iida-city-landscape", width: 1500, caption: "飯田市の風景" },
@@ -367,7 +367,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 要するにもう少し遅かったら乗り遅れていたということであり、私の動きはこの時点で極めて鈍重になっていた。
 その時点ではわからないほど私は疲れていた。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     {
@@ -398,7 +398,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 宿に向かいたいが、時刻は20時半、そろそろ普通の飲食店は閉まり始めるため先に食事することにした。
 ホテルに連絡を入れてから飯屋を探す。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "", width: 1200, caption: "" },
@@ -430,7 +430,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 私はチーズハンバーグ定食を注文した。
 当たり障りないメニューだが存外に美味く、疲れもあってかなりの勢いで食べてしまった。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "moriyoshi", width: 900, caption: "盛よし" },
@@ -451,7 +451,7 @@ export const ARTICLE_ID = "20230820-18kippu-1-3";
 ところで風呂に入ったあと、明日乗る予定の大糸線について何気なく調べていると、大雨のため現在運休とのこと。
 どうなることやら...。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[{ name: "path", width: 400, caption: "今日の移動経路" }]}
 />

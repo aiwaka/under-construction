@@ -13,7 +13,7 @@ tags:
   - "プログラミング"
 ---
 
-import BlogImagesLocal from "@components/blog/BlogImagesLocal.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 import HoverText from "@components/blog/HoverText.astro";
 
 ## 概要
@@ -238,7 +238,7 @@ Flex boxなので画面が小さい場合は自動的に縦並びになります
 これが&darr;
 
 ```jsx
-<BlogImagesLocal
+<BlogImagesList
   images={[
     {
       src: "sample.png",
@@ -256,7 +256,7 @@ Flex boxなので画面が小さい場合は自動的に縦並びになります
 
 こう&darr;
 
-<BlogImagesLocal
+<BlogImagesList
   images={[
     {
       src: "sample.png",
