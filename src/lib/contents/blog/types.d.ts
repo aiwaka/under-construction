@@ -1,6 +1,8 @@
+import type { TOCHeadingTagDepths } from "@lib/schema/blog/collectionSchema";
 import type { IsEntrySchema, ContentsImage } from "@lib/types";
 import type { MarkdownHeading } from "astro";
 import type { AstroComponentFactory } from "astro/dist/runtime/server";
+import type { DateTime } from "luxon";
 
 /**
  * ブログ記事のオブジェクト
@@ -24,13 +26,15 @@ export interface BlogPostEntry extends IsEntrySchema {
   wordCount: number | null;
   /** LaTeXを使用するか */
   latex: boolean;
+  /** 見出しを作成する対象の見出しタグレベル. デフォルトは [2, 3] */
+  tocTarget: TOCHeadingTagDepths[];
   /** 下書きならばtrue */
   draft: boolean;
 }
 export interface RelatedBlogPost {
   id: string;
   title: string;
-  date: Date;
+  date: DateTime;
   /** 関連するに至った理由となるタグ文字列, または指定されていることを示す */
   factor: string[] | "specified";
 }

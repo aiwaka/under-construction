@@ -7,7 +7,5 @@ export {
   getFilenameFromPath,
   dateText,
   timeText,
-  sortArrayByDate,
+  sortArrayByDateTime,
 } from "./misc";
-// export { downloadImage } from "./downloadImage";
-// export { convertImage } from "./convertImage";

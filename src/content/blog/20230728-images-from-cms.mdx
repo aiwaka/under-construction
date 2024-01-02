@@ -10,8 +10,7 @@ tags:
   - 運営
 ---
 
-import BlogImagesLocal from "@components/blog/BlogImagesLocal.astro";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 
 export const ARTICLE_ID = "20230728-images-from-cms";
 
@@ -80,7 +79,7 @@ Astroの画像インテグレーションはリモートURLを指定しても問
 色々脆弱だと思うので今後勉強したいところです。
 
 ```mdx
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "test", width: 1000, caption: "alt" },
@@ -92,7 +91,7 @@ Astroの画像インテグレーションはリモートURLを指定しても問
 このような形でブログ記事のMDXファイル内で利用すると、以下のように画像が生成されます。
 この画像はローカルには存在しませんが、大きさやキャプションも従来と同じように指定できています。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "test", width: 1000, caption: "alt" },

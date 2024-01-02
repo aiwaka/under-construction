@@ -6,10 +6,3 @@ export const MicroCMSImageSchema = z.object({
   width: z.number(),
   height: z.number(),
 });
-
-const ImageMetadataSchema = z.object({
-  src: z.string(),
-  width: z.number(),
-  height: z.number(),
-  format: z.union([z.literal("png"), z.literal("jpg")]),
-});

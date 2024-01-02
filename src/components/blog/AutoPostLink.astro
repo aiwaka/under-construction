@@ -2,12 +2,13 @@
 // 引数のブログIDが存在すればリンクとし、存在しなければ無効であることを示す。
 import { getCollection } from "astro:content";
 
-const allPosts = await getCollection("blog", (post) => !post.data.draft);
-const slugList = allPosts.map((post) => post.slug);
-
+// NOTE: await より後にProps定義を置くと拾ってもらえないらしい.
 interface Props {
   slug: string;
 }
+
+const allPosts = await getCollection("blog", (post) => !post.data.draft);
+const slugList = allPosts.map((post) => post.slug);
 
 const { slug } = Astro.props;
 

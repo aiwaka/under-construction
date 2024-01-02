@@ -1,30 +1,30 @@
 ---
-import { Image } from "astro:assets";
-
-import type { BlogImageProps } from "@lib/contents/blog";
-
-interface Props extends BlogImageProps {}
-const { src, width, height, alt, caption, ...attrs } = Astro.props;
+interface Props {
+  src: string;
+  width: number | undefined;
+  height: number | undefined;
+  alt: string | undefined;
+  caption: string | undefined;
+  attrs?: Record<string, any>;
+}
+const { src, width, height, alt, caption, attrs } = Astro.props;
 // altがなければキャプションを使い, それもなければ適当に設定するが警告を出す.
-const resultAlt = alt !== undefined ? alt : caption ? caption : "_";
+const resultAlt = alt !== undefined ? alt : caption ? caption : "no alt text";
 if (!caption && !alt) {
   console.warn(
-    `\n[BlogImage.astro] in "${src}", "alt" text was not provided for an <Image> component.\n`,
+    `\n[ImageComponent.astro] in "${src}", "alt" text was not provided for an <Image> component.\n`,
   );
 }
 ---
 
 <div class="figure-container">
   <figure>
-    <Image
-      src={src}
-      width={width}
-      height={height}
-      format="webp"
-      alt={resultAlt}
-      {...attrs}
-    />
-    {caption ? <figcaption>{caption}</figcaption> : null}
+    <img src={src} width={width} height={height!} alt={resultAlt} {...attrs} />
+    {
+      caption ? (
+        <figcaption style={`max-width: ${width}px`}>{caption}</figcaption>
+      ) : null
+    }
   </figure>
 </div>
 

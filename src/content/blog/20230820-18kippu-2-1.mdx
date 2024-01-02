@@ -14,7 +14,7 @@ related:
 ---
 
 import AutoPostLink from "@components/blog/AutoPostLink.astro";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 export const ARTICLE_ID = "20230820-18kippu-2-1";
 
 ## 概要
@@ -46,7 +46,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 500メートルほど歩いた大手一丁目交差点では国宝松本城が遠くに見える。
 観光地として松本にも訪れてみたいものだが駅前の空気は非常に悪かったので私としては優先度が下がってしまった。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "matsumoto-castle", width: 600, caption: "松本城の天守" },
@@ -63,7 +63,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 いわゆるストリートピアノで、スッキリした青年がショパンの華麗なる大円舞曲を弾いていた。
 多分私よりちょっと上手い程度なのと、どういうことか美人に囲まれていてなんとも言えない気分になった。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     {
@@ -96,7 +96,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 9時20分に出発。
 松本を出る列車は朝にはかなりの本数があるが、この列車までどの列車に乗ろうが糸魚川にたどり着く時間は変化しないという残念なダイヤになっている。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     {
@@ -125,7 +125,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 山小屋風の駅舎は高山の雰囲気が出ておりなかなか洒落ている。
 スタンプを押したり民話の看板を読んだりしているとすぐに時間がたっていた。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "shinano-omachi-sta", width: 1200, caption: "信濃大町駅" },
@@ -144,7 +144,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 もし考えてやっているのならJR東日本には脱帽である。
 木崎駅を過ぎて最初に見える木崎湖では、一定した風にあおられた湖面の波が縞模様を作っており、アルプスの稜線と針葉樹と合わせた車窓が非常に美しかった。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "kizaki-lake", width: 1200, caption: "木崎湖" },
@@ -179,7 +179,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 駅の待合室は畳敷きで過ごしやすそうだ。
 冬はここに炬燵が出されるらしいが、厳冬の中ここで何時間も待たされることを考えるとぞっとしない。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "minamiotari-trains", width: 1200, caption: "ホーム上" },
@@ -190,7 +190,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
     },
   ]}
 />
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "minamiotari-front", width: 1200, caption: "駅前" },
@@ -231,7 +231,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 
 [^study]: なお、隣の席の学生が熱心に見ていた教材の内容がどう見ても医学系の大学レベルのものだったのだがその正体は不明。専門学校にしては全体のレベルが幼い。さらにどうでもいいが3DSをプレイしている人も居て逆に驚いてしまった。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     {
@@ -281,7 +281,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 その場の説明をゆっくり読みたかったがあまり余裕があるわけでもないので帰ってから調べたいと思う。
 地元で作っているらしい飴を買って店を出る。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[{ name: "jade-stone", width: 2500, caption: "翡翠の原石らしい" }]}
 />
@@ -299,7 +299,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 駅の規模の問題か自動車も殆ど通らないが、それに加えてこの暑さでは歩こうという人はいないのかもしれなかった。
 なおこの日の北陸地方の猛暑は異常であり、富山県では川が干上がるなど全国ニュースでも報道された。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "itoigawa-sta", width: 1200, caption: "糸魚川駅（日本海口）" },
@@ -320,7 +320,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 やはり私は奈良県民のためか海となると普通ではない感慨を覚えるようだ。
 展望台には一組の孫連れがいて写真を撮っていた。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "itoigawa-nihonkai", width: 1000, caption: "展望台からの日本海" },
@@ -343,7 +343,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 一通り見ると良い時間になったため、ロッカーから荷物を取り出して切符を買う。
 そう、ここからはJRではないため切符を買わなければならない。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     {
@@ -367,7 +367,7 @@ export const ARTICLE_ID = "20230820-18kippu-2-1";
 最近は大きな鞄で席を取るか悩みどころなのだが、過去の過ちのトラウマ故に荷物棚に置く気にどうしてもなれない。
 今回も駅メモイベントで失敗している手前自分に自信を持つ方が無理である。
 
-<BlogImagesRemote
+<BlogImagesList
   baseName={ARTICLE_ID}
   images={[
     { name: "itoigawa-train", width: 1200, caption: "ET122系普通列車泊行き" },

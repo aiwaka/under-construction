@@ -12,7 +12,7 @@ tags:
 ---
 
 export const ARTICLE_ID = "20231129-image-utilities";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 
 ## 概要
 
@@ -40,7 +40,7 @@ HEIC形式含む画像を処理できます。
 残念...
 （20231218追記ここまで）
 
-<BlogImagesRemote
+<BlogImagesList
 baseName={ARTICLE_ID}
 images={[
 { name: "original", width: 1200, caption: "処理前" },

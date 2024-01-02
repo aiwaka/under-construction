@@ -24,7 +24,6 @@ function findTargetNodeRecursive(node, targetNodes, typeGuard) {
   }
 
   if (node.children) {
-    /** @type {Parent} */
     let parent = node;
     for (let child of parent.children) {
       findTargetNodeRecursive(child, targetNodes, typeGuard);

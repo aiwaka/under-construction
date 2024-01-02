@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import type { BlogPostEntry } from "./types";
 
 import { CollectionsBlogPostEntry } from "@lib/schema/blog";
-import { sortArrayByDate } from "@lib/utils";
+import { sortArrayByDateTime } from "@lib/utils";
 
 interface FetchPostsOptions {
   tag?: string;
@@ -38,7 +38,7 @@ export const getBlogPostEntries = async (
     }),
   );
   // 日付順にソート
-  sortArrayByDate(postEntries);
+  sortArrayByDateTime(postEntries);
   // タグを集め, 一覧をセットする.
   const tagSet = new Set<string>();
   postEntries.forEach((post) => {

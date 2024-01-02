@@ -1,3 +1,4 @@
+import type { TOCHeadingTagDepths } from "@lib/schema/blog/collectionSchema";
 import type { MarkdownHeading } from "astro";
 
 class TOCHeadingNode {
@@ -12,10 +13,8 @@ class TOCHeadingNode {
   }
 }
 
-// h1を目次に入れるのは禁止する（ルートの深さを1とするため）.
-type HeadingTagDepths = 2 | 3 | 4 | 5 | 6;
 interface TOCOptions {
-  target?: HeadingTagDepths[];
+  target?: TOCHeadingTagDepths[];
 }
 
 const createTOCTree = (headings: MarkdownHeading[], options?: TOCOptions) => {

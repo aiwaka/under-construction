@@ -11,7 +11,7 @@ tags:
 ---
 
 export const ARTICLE_ID = "20231020-hokuriku-1-1";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 import AutoPostLink from "@components/blog/AutoPostLink.astro";
 
 ## 概要
@@ -54,7 +54,7 @@ import AutoPostLink from "@components/blog/AutoPostLink.astro";
 JR西日本も少しは見習ってほしいものである。
 くろしおを始めとする最後尾座席のみコンセントありという特急サービスを履き違えた仕様は未だに納得していない。
 
-<BlogImagesRemote
+<BlogImagesList
 baseName={ARTICLE_ID}
 images={[
   { name: "hida-5", width: 2000, caption: "HC85系 特急ひだ5号" },
@@ -167,7 +167,7 @@ images={[
 縦に割れている岩が切り立った崖を作っており、川の浸食により形成されたのが見て取れる。
 特急南風の車窓を思い出した。
 
-<BlogImagesRemote
+<BlogImagesList
 baseName={ARTICLE_ID}
 images={[
 { name: "canyon", width: 1500, caption: "飛騨川の渓谷" },

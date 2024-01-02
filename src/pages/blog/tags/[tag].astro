@@ -2,7 +2,7 @@
 import type { InferGetStaticParamsType, InferGetStaticPropsType } from "astro";
 
 import { getBlogPostEntries } from "@lib/contents/blog";
-import { POST_PER_PAGE, sortArrayByDate } from "@lib/utils";
+import { POST_PER_PAGE, sortArrayByDateTime } from "@lib/utils";
 
 import BlogLayout from "@layouts/BlogLayout.astro";
 import BlogPageCardContainer from "@components/blog/BlogPageCardContainer.astro";
@@ -30,7 +30,7 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { tag } = Astro.params as Params;
 const { blogPostEntries } = Astro.props as Props;
-sortArrayByDate(blogPostEntries);
+sortArrayByDateTime(blogPostEntries);
 
 const pageNum = Math.ceil(blogPostEntries.length / POST_PER_PAGE);
 const propTitle = `#${tag}の検索結果`;

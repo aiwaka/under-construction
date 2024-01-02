@@ -10,7 +10,7 @@ tags:
 ---
 
 export const ARTICLE_ID = "20231129-live";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 
 import EmbedYoutube from "@components/works/EmbedYoutube.astro";
 
@@ -47,7 +47,7 @@ MCは考えていたのが飛んでしまってひたすら間延びし、後で
 
 YouTubeのシークバー上に表示される再生密度が最も高いところに近づくと全員で固唾をのんで見守り、そこが極めて普通なサウンドで爆笑したところが素晴らしく最悪でした。
 
-<BlogImagesRemote
+<BlogImagesList
 baseName={ARTICLE_ID}
 images={[
 { name: "lamp", width: 1500, caption: "卓上" },
@@ -60,7 +60,7 @@ images={[
 帰宅後は一眠りしたあと、数年使った祖父の形見である車を廃車にしに行きました。
 ちょっと忙しなさすぎた感が否めませんが、起伏に満ちた一日だったと思います。
 
-<BlogImagesRemote
+<BlogImagesList
 baseName={ARTICLE_ID}
 images={[
 { name: "morning", width: 1500, caption: "帰宅途中の京橋駅、空" },

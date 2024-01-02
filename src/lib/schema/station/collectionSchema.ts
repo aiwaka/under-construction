@@ -1,4 +1,3 @@
-import { stationImageTypeOptionsZodSchema } from "./image";
 import { z } from "zod";
 
 /** 鉄道駅コレクションコンテンツのスキーマ */
@@ -6,7 +5,7 @@ export const CollectionStationZodSchema = z.object({
   name: z.string(),
   lines: z.string().array(),
   firstVisitDate: z.date().optional(),
-  comment: z.string().optional(),
+  localUpdatedAt: z.date().optional(),
 });
 
 /**

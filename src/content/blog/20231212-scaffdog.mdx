@@ -99,7 +99,7 @@ draft: true
 ---
 
 export const ARTICLE_ID = "{{ inputs.slug }}";
-import BlogImagesRemote from "@components/blog/BlogImagesRemote.astro";
+import BlogImagesList from "@components/blog/BlogImagesList.astro";
 {{ if inputs.useAutoPostLink }}import AutoPostLink from "@components/blog/AutoPostLink.astro";{{ end }}
 {{ if inputs.useEmbedYoutube }}import EmbedYoutube from "@components/works/EmbedYoutube.astro";{{ end }}
 

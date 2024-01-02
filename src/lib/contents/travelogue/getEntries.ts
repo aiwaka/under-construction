@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import type { TravelogueEntry } from "./types";
 
 import { CollectionsTravelogueEntry } from "@lib/schema/travelogue";
-import { sortArrayByDate } from "@lib/utils";
+import { sortArrayByDateTime } from "@lib/utils";
 
 interface FetchPostsOptions {
   tag?: string;
@@ -31,6 +31,6 @@ export const getTravelogueEntries = async (
     }),
   );
   // 日付順にソート
-  sortArrayByDate(postEntries);
+  sortArrayByDateTime(postEntries);
   return postEntries;
 };
