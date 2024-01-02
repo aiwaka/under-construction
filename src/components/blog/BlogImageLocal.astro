@@ -2,7 +2,6 @@
 import type { ImageMetadata } from "astro";
 
 import ImageComponent from "@components/utils/ImageComponent.astro";
-import type { BlogImageProps } from "@lib/contents/blog";
 import { getImage } from "astro:assets";
 
 type AllowedImageExtension = "jpg" | "jpeg" | "png";
@@ -40,7 +39,7 @@ const imageResult = await getImage(
     return {
       src: localImageMetaData,
       ...rest,
-    } satisfies BlogImageProps;
+    };
   })(),
 );
 ---

@@ -1,26 +1,34 @@
 ---
 // ほぼブログ用のコピペだがマイナーチェンジもあり
-import { Image } from "astro:assets";
+import { getImage } from "astro:assets";
 
-import type { BlogImageProps } from "@lib/contents/blog";
+import type { StationImage } from "@lib/other/station-collections";
 
-interface Props extends Required<BlogImageProps> {}
-const { src, width, height, alt, caption, ...attrs } = Astro.props;
+interface Props {
+  image: StationImage;
+}
+const { image } = Astro.props;
+
+const imageResult = await getImage({
+  src: image.src,
+  width: image.width,
+  height: image.height,
+});
 ---
 
 <div class="figure-container">
   <figure>
-    <Image
-      src={src}
-      width={width}
-      height={height}
-      format="webp"
-      alt={alt}
-      {...attrs}
+    <img
+      src={imageResult.src}
+      width={image.width}
+      height={image.height}
+      alt={image.alt}
     />
     {
-      caption ? (
-        <figcaption style={`max-width: ${width}px`}>{caption}</figcaption>
+      image.caption ? (
+        <figcaption style={`max-width: ${image.width}px`}>
+          {image.caption}
+        </figcaption>
       ) : null
     }
   </figure>

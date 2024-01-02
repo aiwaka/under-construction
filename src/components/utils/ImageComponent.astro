@@ -20,7 +20,11 @@ if (!caption && !alt) {
 <div class="figure-container">
   <figure>
     <img src={src} width={width} height={height!} alt={resultAlt} {...attrs} />
-    {caption ? <figcaption>{caption}</figcaption> : null}
+    {
+      caption ? (
+        <figcaption style={`max-width: ${width}px`}>{caption}</figcaption>
+      ) : null
+    }
   </figure>
 </div>
 
