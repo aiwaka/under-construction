@@ -24,14 +24,8 @@ const available = (slugList as string[]).includes(slug);
       <slot />
     </a>
   ) : (
-    <span class="disabled-link">
+    <>
       <slot />
-    </span>
+    </>
   )
 }
-
-<style>
-  .disabled-link {
-    color: rgba(var(--main-font-color-params), 0.3);
-  }
-</style>

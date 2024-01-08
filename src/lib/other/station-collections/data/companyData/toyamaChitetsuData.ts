@@ -6,6 +6,22 @@ const toyamaChitetsuData = createCompanyData(
   ["private"],
 );
 
+toyamaChitetsuData.addLineData(
+  "chitetsu-main",
+  ["富山地方鉄道本線", "本線"],
+  ["dentetsu-toyama"],
+);
+toyamaChitetsuData.addLineData(
+  "fujikoshi",
+  ["富山地鉄不二越線", "不二越線"],
+  ["dentetsu-toyama", "minamitoyama"],
+);
+toyamaChitetsuData.addLineData(
+  "kamidaki",
+  ["富山地鉄上滝線", "上滝線"],
+  ["minamitoyama"],
+);
+
 toyamaChitetsuData.addLineData("toyama-tram-main", "富山軌道線本線", [
   "minamitoyamaeki-mae",
   "nishicho",
@@ -28,15 +44,5 @@ toyamaChitetsuData.addLineData(
 toyamaChitetsuData.addLineData("toyama-tram-toyama-port", "富山港線", [
   "toyama-sta",
 ]);
-toyamaChitetsuData.addLineData(
-  "fujikoshi",
-  ["富山地鉄不二越線", "不二越線"],
-  ["minamitoyama"],
-);
-toyamaChitetsuData.addLineData(
-  "kamidaki",
-  ["富山地鉄上滝線", "上滝線"],
-  ["minamitoyama"],
-);
 
 export default toyamaChitetsuData;
