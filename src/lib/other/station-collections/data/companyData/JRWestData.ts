@@ -101,6 +101,7 @@ JRWestData.addLineData("geibi", "芸備線", [
 JRWestData.addLineData("kosei", "湖西線", [
   "kyoto",
   "yamashina",
+  "katata",
   "omi-maiko",
   "omi-imazu",
   "makino--shiga",
@@ -192,7 +193,11 @@ JRWestData.addLineData("tokaido", "東海道本線", [
   "nishinomiya",
   "sannnomiya--jr",
 ]);
-JRWestData.addLineData("nanao", "七尾線", ["kanazawa", "wakura-onsen"]);
+JRWestData.addLineData("nanao", "七尾線", [
+  "kanazawa",
+  "nanao",
+  "wakura-onsen",
+]);
 JRWestData.addLineData("nara", "奈良線", [
   "nara",
   "kizu",

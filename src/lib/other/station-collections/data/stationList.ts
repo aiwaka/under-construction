@@ -25,6 +25,7 @@ import nankaiData from "./companyData/nankaiData";
 import hanshinData from "./companyData/hanshinData";
 import hankyuData from "./companyData/hankyuData";
 import toyamaChitetsuData from "./companyData/toyamaChitetsuData";
+import notoRailwayData from "./companyData/notoRailwayData";
 
 const stationList: { [companyId: string]: CompanyDataSchema } = {};
 
@@ -41,6 +42,7 @@ addCompanyData(JRShikokuData);
 addCompanyData(JRKyushuData);
 addCompanyData(ainokazeData);
 addCompanyData(tokitetsuData);
+addCompanyData(notoRailwayData);
 addCompanyData(hankyuData);
 addCompanyData(kintetsuData);
 addCompanyData(keihanData);

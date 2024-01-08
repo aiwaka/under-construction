@@ -33,6 +33,7 @@ JRCentralData.addLineData("takayama", "高山本線", [
   "hida-furukawa",
   "inotani",
 ]);
+JRCentralData.addLineData("chuo", "中央本線", ["shiojiri", "nagoya"]);
 JRCentralData.addLineData("tokaido-shinkansen", "東海道新幹線", [
   "tokyo",
   "shinagawa",
