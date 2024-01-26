@@ -6,6 +6,7 @@ export const CollectionStationZodSchema = z.object({
   lines: z.string().array(),
   firstVisitDate: z.date().optional(),
   localUpdatedAt: z.date().optional(),
+  // TODO: 住所表記
 });
 
 /**

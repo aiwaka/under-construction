@@ -45,7 +45,14 @@ osakaMetroData.addLineData(
 osakaMetroData.addLineData(
   "osaka-metro-chuo",
   ["大阪メトロ中央線", "中央線"],
-  ["bentencho", "hommachi", "morinomiya", "midoribashi", "takaida", "ikoma"],
+  [
+    "bentencho",
+    "hommachi",
+    "morinomiya",
+    "midoribashi",
+    "takaida--metro",
+    "ikoma",
+  ],
 );
 osakaMetroData.addLineData(
   "sennnichimae",
@@ -66,7 +73,7 @@ osakaMetroData.addLineData(
 osakaMetroData.addLineData(
   "nagahori-tsurumiryokuchi",
   ["大阪メトロ長堀鶴見緑地線", "長堀鶴見緑地線"],
-  ["taisho", "shinsaibashi", "morinomiya", "kyobashi"],
+  ["taisho", "shinsaibashi", "tamatsukuri", "morinomiya", "kyobashi"],
 );
 osakaMetroData.addLineData(
   "imazatosuji",
