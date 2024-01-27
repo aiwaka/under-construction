@@ -156,9 +156,29 @@ const ogp = {
   >
   {/* TODO: 駅名標っぽくしたい */}
   <h1>{name}</h1>
+
+  {
+    thumbnail !== null && (
+      <div class="img-container">
+        <img
+          src={thumbnail.src}
+          width={thumbnail.attributes.width}
+          height={thumbnail.attributes.height}
+          alt={thumbnail.attributes.alt}
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    )
+  }
   <div class="update-date-block">
     <span>
       {dateText(updatedAt)}更新
+    </span>
+  </div>
+  <div class="date-block">
+    <span>
+      初訪問日：{firstVisitDate ? dateText(new Date(firstVisitDate)) : "不明"}
     </span>
   </div>
   <div class="station-lines-block">
@@ -227,25 +247,6 @@ const ogp = {
             </ul>
           </div>
         )}
-      </div>
-    )
-  }
-  <div class="date-block">
-    <span>
-      初訪問日：{firstVisitDate ? dateText(new Date(firstVisitDate)) : "不明"}
-    </span>
-  </div>
-  {
-    thumbnail !== null && (
-      <div class="img-container">
-        <img
-          src={thumbnail.src}
-          width={thumbnail.attributes.width}
-          height={thumbnail.attributes.height}
-          alt={thumbnail.attributes.alt}
-          loading="eager"
-          decoding="async"
-        />
       </div>
     )
   }
