@@ -14,6 +14,7 @@ import type {
 } from "@lib/other/station-collections";
 import type { ToEntryObject } from "@lib/types";
 import { dateText } from "@lib/utils";
+import { Address, addressFromStr } from "@lib/utils/address";
 
 /** Collectionsから受け取ったデータを保持し, `BlogPostEntry`に変換可能なクラス */
 export class CollectionsStationEntry
@@ -28,6 +29,7 @@ export class CollectionsStationEntry
   public createdAt!: DateTime;
   public updatedAt!: DateTime;
   public images!: DownloadedStationImage[];
+  public address?: string | Record<string, string>;
   public CommentContent!: AstroComponentFactory;
 
   public localUpdatedAt?: Date;
@@ -37,6 +39,7 @@ export class CollectionsStationEntry
     const data = rawEntry.data;
     this.name = data.name;
     this.lines = data.lines;
+    this.address = data.address;
     this.firstVisitDate = data.firstVisitDate;
     this.localUpdatedAt = data.localUpdatedAt;
   }
@@ -88,6 +91,7 @@ export class CollectionsStationEntry
       createdAt,
       lines,
       images: microCMSImages,
+      address,
       ...rest
     } = this;
     const images = microCMSImages.map((img) => {
@@ -106,8 +110,21 @@ export class CollectionsStationEntry
         date: img.date,
       } satisfies StationImage;
     });
+    const addressRecord: StationEntry["address"] = {};
+    if (typeof address !== "undefined") {
+      if (typeof address === "string") {
+        const obj = addressFromStr(address);
+        addressRecord["_"] = obj === null ? null : new Address(obj);
+      } else {
+        Object.entries(address).forEach(([key, value]) => {
+          const obj = addressFromStr(value);
+          addressRecord[key] = obj === null ? null : new Address(obj);
+        });
+      }
+    }
     return {
       lineIds: lines,
+      address: addressRecord,
       createdAt,
       updatedAt,
       images,
