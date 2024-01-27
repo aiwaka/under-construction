@@ -116,7 +116,10 @@ export const getStaticPaths = async () => {
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { entry, siblingsData } = Astro.props as Props;
-const { name, CommentContent, updatedAt, images, firstVisitDate } = entry;
+const { name, CommentContent, updatedAt, images, address, firstVisitDate } =
+  entry;
+
+const addressNum = Object.keys(address).length;
 
 // typeが駅舎のものを探す。無ければのものを使う
 const thumbImage: (typeof images)[number] | null =
@@ -153,6 +156,11 @@ const ogp = {
   >
   {/* TODO: 駅名標っぽくしたい */}
   <h1>{name}</h1>
+  <div class="update-date-block">
+    <span>
+      {dateText(updatedAt)}更新
+    </span>
+  </div>
   <div class="station-lines-block">
     <p>
       所属路線：{
@@ -191,14 +199,40 @@ const ogp = {
       }
     </p>
   </div>
+  {
+    addressNum > 0 && (
+      <div class="address-block">
+        {addressNum === 1 ? (
+          <div class="address-block">
+            <span>
+              所在地：
+              {Object.entries(address).map(([key, obj]) => obj?.toString())}
+            </span>
+          </div>
+        ) : (
+          <div class="address-block">
+            所在地
+            <ul>
+              {Object.entries(address).map(([key, obj]) => {
+                if (key === "_") {
+                  return <li>{obj?.toString()}</li>;
+                } else {
+                  return (
+                    <li>
+                      {key}：{obj?.toString()}
+                    </li>
+                  );
+                }
+              })}
+            </ul>
+          </div>
+        )}
+      </div>
+    )
+  }
   <div class="date-block">
     <span>
       初訪問日：{firstVisitDate ? dateText(new Date(firstVisitDate)) : "不明"}
-    </span>
-  </div>
-  <div class="update-date-block">
-    <span>
-      {dateText(updatedAt)}更新
     </span>
   </div>
   {
@@ -293,5 +327,8 @@ const ogp = {
   p.comment {
     margin: 1.2rem auto;
     margin-left: 0.4rem;
+  }
+  .address-block li {
+    list-style: circle inside;
   }
 </style>

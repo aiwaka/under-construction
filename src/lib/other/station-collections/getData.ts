@@ -33,7 +33,7 @@ const getDownloadedStationCollectionsPath = () => {
   // ファイル読み込み作業
   const dataDir = import.meta.env.DEV
     ? "../../../generated/station-collections.json"
-    : "../../../dist/generated/station-collections.json";
+    : "../../dist/generated/station-collections.json";
   const resolvedDataPath = new URL(dataDir, import.meta.url);
   if (!fs.existsSync(resolvedDataPath)) {
     const errorMessage =
