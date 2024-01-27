@@ -20,6 +20,16 @@ export class Address implements AddressSchema {
     this.ward = address.ward;
     this.remainder = address.remainder;
   }
+
+  public toString() {
+    return (
+      this.prefecture +
+      (this.county ?? "") +
+      this.municipality +
+      (this.ward ?? "") +
+      this.remainder
+    );
+  }
 }
 
 /**

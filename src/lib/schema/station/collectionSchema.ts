@@ -6,8 +6,8 @@ export const CollectionStationZodSchema = z.object({
   lines: z.string().array(),
   firstVisitDate: z.date().optional(),
   localUpdatedAt: z.date().optional(),
-  /** フロントマターには文字列で書く。頑張ってパースして住所オブジェクトにする。 */
-  address: z.string(),
+  /** フロントマターには住所を文字列で書く。頑張ってパースして住所オブジェクトにする。 */
+  address: z.union([z.string(), z.record(z.string())]).optional(),
 });
 
 /**
