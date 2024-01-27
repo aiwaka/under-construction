@@ -7,6 +7,7 @@ import type {
 import type { IsEntrySchema } from "@lib/types";
 import type { MicroCMSImageComplete } from "@lib/contents/types";
 import type { CollectionTravelRouteSchema } from "@lib/schema/travelRoute";
+import type { AddressSchema } from "@lib/utils/address";
 
 export interface StationImage {
   src: string | ImageMetadata;
@@ -26,6 +27,8 @@ export interface StationEntry extends IsEntrySchema {
   lineIds: string[];
   /** 画像・タイプ・コメントデータ */
   images: StationImage[];
+  /** 所在地 */
+  address: AddressSchema | null;
   /** 初訪問日 */
   firstVisitDate?: Date;
   /** 駅の説明文. コンポーネントまたはHTML文字列とし, そのままページに埋め込む. */
