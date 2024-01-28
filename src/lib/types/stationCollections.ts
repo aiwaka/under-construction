@@ -29,8 +29,6 @@ export interface LineDataSchema {
 export interface CompanyDataSchema {
   companyId: string;
   companyName: string;
-  lines: {
-    [lineId: string]: LineDataSchema;
-  };
+  lines: Record<string, LineDataSchema>;
   tag: Set<string>;
 }

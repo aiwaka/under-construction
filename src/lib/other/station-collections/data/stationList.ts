@@ -27,7 +27,8 @@ import hankyuData from "./companyData/hankyuData";
 import toyamaChitetsuData from "./companyData/toyamaChitetsuData";
 import notoRailwayData from "./companyData/notoRailwayData";
 
-const stationList: { [companyId: string]: CompanyDataSchema } = {};
+/** companyIdをkeyとしたレコード */
+const stationList: Record<string, CompanyDataSchema> = {};
 
 const addCompanyData = (...companyData: CompanyData[]) => {
   for (const data of companyData) {
