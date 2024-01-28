@@ -9,5 +9,5 @@ export interface ImagesInArticle extends IsEntrySchema {
   /** サムネイルは存在しなくてもよいとする */
   thumbnail: ContentsImage | null;
   /** 一意な名前と画像情報を紐付ける形（辞書形式）で保存する */
-  images: { [name: string]: ContentsImage };
+  images: Record<string, ContentsImage>;
 }

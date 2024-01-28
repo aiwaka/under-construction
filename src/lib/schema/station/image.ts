@@ -48,7 +48,10 @@ export interface DownloadedStationImage {
   comment?: string;
 }
 
-/** 利用したい形式の鉄道駅コレクションのスキーマ */
+/**
+ * CMSから取得した鉄道駅コレクションデータを表すレコード.
+ * 駅IDをkeyとする.
+ */
 export interface DownloadedStationCollection {
   [id: string]: {
     id: string;

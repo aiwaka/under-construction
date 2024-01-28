@@ -2,7 +2,7 @@
 import fs from "node:fs";
 
 import ImageComponent from "@components/utils/ImageComponent.astro";
-import type { ImagesStorageSchema } from "@lib/schema/blog";
+import type { RemoteBlogImageDataSchema } from "@lib/schema/blog";
 import { getImage } from "astro:assets";
 import type { GetImageResult } from "astro";
 
@@ -37,11 +37,11 @@ if (!fs.existsSync(resolvedDataPath)) {
   imagesDataFetchFailed = true;
 }
 
-let allImagesData: ImagesStorageSchema | null = null;
+let allImagesData: RemoteBlogImageDataSchema | null = null;
 if (!imagesDataFetchFailed) {
   allImagesData = JSON.parse(
     fs.readFileSync(resolvedDataPath, "utf8"),
-  ) as ImagesStorageSchema;
+  ) as RemoteBlogImageDataSchema;
 }
 
 const {

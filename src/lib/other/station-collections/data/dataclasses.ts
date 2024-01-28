@@ -1,16 +1,12 @@
 import type { CollectionStationSchema } from "@lib/schema/station";
 import type { LineDataSchema, CompanyDataSchema } from "@lib/types";
 
-export interface StationDict {
-  [id: string]: CollectionStationSchema;
-}
+export type StationDict = Record<string, CollectionStationSchema>;
 
 export class CompanyData implements CompanyDataSchema {
   companyId: string;
   companyName: string;
-  lines: {
-    [lineId: string]: LineDataSchema;
-  };
+  lines: Record<string, LineDataSchema>;
   stationDict: StationDict;
   tag: Set<string>;
 

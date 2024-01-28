@@ -4,7 +4,7 @@ import { z } from "astro/zod";
 import { createClient } from "microcms-js-sdk";
 import {
   MicroCMSBlogImagesDataZod,
-  type ImagesStorageSchema,
+  type RemoteBlogImageDataSchema,
 } from "../../lib/schema/blog/image";
 
 const PKG_NAME = "load-microcms-image";
@@ -121,7 +121,7 @@ export default function loadMicroCMSImageData(
           const contents = MicroCMSBlogImagesDataZod.parse(
             imageDataFromMicroCMS,
           );
-          const resultContents: ImagesStorageSchema = {};
+          const resultContents: RemoteBlogImageDataSchema = {};
           contents.forEach((content) => {
             resultContents[content.id] = {
               thumbnail: content.thumbnail,

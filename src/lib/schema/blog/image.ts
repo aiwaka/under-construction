@@ -18,13 +18,14 @@ export const MicroCMSBlogImagesDataZod = z.array(
     ),
   }),
 );
-/** このブログプロジェクトで利用したい形式のスキーマ */
-export interface ImagesStorageSchema {
+/**
+ * CMSから取得したブログ画像データ.
+ * ブログ記事IDをkeyとする.
+ */
+export interface RemoteBlogImageDataSchema {
   [id: string]: {
     thumbnail: z.infer<typeof MicroCMSImageSchema>;
-    images: {
-      [name: string]: z.infer<typeof MicroCMSImageSchema>;
-    };
+    images: Record<string, z.infer<typeof MicroCMSImageSchema>>;
   };
 }
 
@@ -40,7 +41,7 @@ export const getAllImagesData = (
       `\nreferencing path (\`path.href\`) : ${resolvedDataPath.href}`;
     throw Error(errorMessage);
   }
-  const allImagesData: ImagesStorageSchema = JSON.parse(
+  const allImagesData: RemoteBlogImageDataSchema = JSON.parse(
     fs.readFileSync(resolvedDataPath, "utf8"),
   );
   return allImagesData;
