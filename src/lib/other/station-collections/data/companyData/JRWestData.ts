@@ -18,8 +18,11 @@ JRWestData.addLineData("oito", "大糸線", ["minamiotari", "itoigawa"]);
 JRWestData.addLineData("osaka-loop", "大阪環状線", [
   "tennnoji",
   "teradacho",
+  "momodani",
   "tsuruhashi",
+  "tamatsukuri",
   "morinomiya",
+  "osakajokoen",
   "kyobashi",
   "temma",
   "osaka",

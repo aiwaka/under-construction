@@ -18,9 +18,9 @@ const lineHref = createHrefToLineSlug(
 <>
   {
     siblings.companies.length === 1 ? (
-      <a href={lineHref}>
-        <h3>{siblings.lineName}</h3>
-      </a>
+      <h3>
+        <a href={lineHref}>{siblings.lineName}</a>
+      </h3>
     ) : (
       <>
         <h3>
