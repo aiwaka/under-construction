@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import { CompanyData } from "./dataclasses";
 
 /** 全駅のIDと駅名対応マップ */
-// const stationDict: { [id: string]: string } = yaml.parse(
+// const stationDict: Record<string, string> = yaml.parse(
 //   fs.readFileSync("src/pages/station-collections/stationDict.yaml", "utf8"),
 // );
 const stationCollections = await getCollection("station");

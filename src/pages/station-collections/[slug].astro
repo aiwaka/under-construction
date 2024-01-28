@@ -206,7 +206,7 @@ const ogp = {
           <div class="address-block">
             <span>
               所在地：
-              {Object.entries(address).map(([key, obj]) => obj?.toString())}
+              {Object.values(address).map((obj) => obj?.toString())}
             </span>
           </div>
         ) : (
