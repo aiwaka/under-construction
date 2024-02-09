@@ -13,14 +13,14 @@
     "newpost": "scaffdog generate"
   },
   "dependencies": {
-    "@astrojs/mdx": "^2.1.0",
+    "@astrojs/mdx": "^2.1.1",
     "@astrojs/partytown": "^2.0.4",
     "@astrojs/sitemap": "^3.0.5",
     "@astrojs/svelte": "^5.0.3",
     "@fontsource/noto-sans-jp": "^5.0.17",
     "@fontsource/noto-sans-mono": "^5.0.18",
     "@fontsource/noto-serif-jp": "^5.0.11",
-    "astro": "^4.2.6",
+    "astro": "^4.3.5",
     "autoprefixer": "^10.4.17",
     "dotenv": "^16.4.1",
     "luxon": "^3.4.4",
@@ -34,19 +34,23 @@
     "remark-jaruby": "^0.1.0",
     "remark-math": "^6.0.0",
     "sharp": "0.32.6",
-    "svelte": "^4.2.9",
+    "svelte": "^4.2.10",
     "yaml": "^2.3.4"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.4.1",
+    "@astrojs/check": "^0.5.2",
     "@types/luxon": "^3.4.2",
     "eslint": "^8.56.0",
-    "eslint-plugin-astro": "^0.31.3",
-    "prettier": "^3.2.4",
+    "eslint-plugin-astro": "^0.31.4",
+    "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "prettier-plugin-svelte": "^3.1.2",
     "scaffdog": "^3.0.0",
     "typescript": "^5.3.3",
     "vitest": "^1.2.2"
+  },
+  "volta": {
+    "node": "20.11.0",
+    "npm": "10.4.0"
   }
 }

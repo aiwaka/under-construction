@@ -122,18 +122,24 @@ const { name, CommentContent, updatedAt, images, address, firstVisitDate } =
 // console.log(address);
 const addressNum = Object.keys(address).length;
 
-// typeが駅舎のものを探す。無ければのものを使う
-const thumbImage: (typeof images)[number] | null =
-  images.length === 0
-    ? null
-    : images.find((img) => img.type.includes("駅舎")) || images[0];
-const thumbnail =
-  thumbImage === null
+// サムネイルとして使う写真を決める。
+// commentの最初に`[isThumb]`という接頭辞（9文字）がある場合はこれをサムネイルとして使う。
+// そうでなければtypeが駅舎のものを探す。いずれも無ければ最初の写真を使う
+const thumbImageData =
+  images.length > 0
+    ? images.find((img) => img.isThumb) ??
+      images.find((img) => {
+        return img.type.includes("駅舎");
+      }) ??
+      images[0]
+    : null;
+const thumbImageResult =
+  thumbImageData === null
     ? null
     : await getImage({
-        src: thumbImage.src,
-        height: thumbImage.height,
-        width: thumbImage.width,
+        src: thumbImageData.src,
+        height: thumbImageData.height,
+        width: thumbImageData.width,
       });
 
 const PAGE_NAME = `Under Construction | 鉄道駅コレクション ${name}` as const;
@@ -146,7 +152,7 @@ const ogp = {
   siteName: "Under Construction",
   image:
     "https://aiwaka.github.io" +
-    (thumbnail?.src ?? "/under-construction/img/blue_2.png"),
+    (thumbImageResult?.src ?? "/under-construction/img/blue_2.png"),
 };
 ---
 
@@ -159,13 +165,13 @@ const ogp = {
   <h1>{name}</h1>
 
   {
-    thumbnail !== null && (
+    thumbImageResult !== null && (
       <div class="img-container">
         <img
-          src={thumbnail.src}
-          width={thumbnail.attributes.width}
-          height={thumbnail.attributes.height}
-          alt={thumbnail.attributes.alt}
+          src={thumbImageResult.src}
+          width={thumbImageResult.attributes.width}
+          height={thumbImageResult.attributes.height}
+          alt={thumbImageResult.attributes.alt}
           loading="eager"
           decoding="async"
         />

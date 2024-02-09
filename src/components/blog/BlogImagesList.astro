@@ -5,14 +5,13 @@
  * それらのコンポーネントでは画像を取得・最適化する処理を行い、同一のコンポーネントに情報を渡して描画する。
  */
 
-import BlogImageRemote, {
-  type NamedRemoteImageType,
-} from "./BlogImageRemote.astro";
-import BlogImageLocal, {
-  type LocalBlogImageType,
-} from "./BlogImageLocal.astro";
+import type { ComponentProps } from "astro/types";
+import BlogImageRemote from "./BlogImageRemote.astro";
+import BlogImageLocal from "./BlogImageLocal.astro";
 
-// station collectionsでも同様の画像コンポーネントを使うよう修正
+// TODO: station collectionsでも同様の画像コンポーネントを使うよう修正
+type LocalBlogImageType = ComponentProps<typeof BlogImageLocal>["image"];
+type NamedRemoteImageType = ComponentProps<typeof BlogImageRemote>["image"];
 type BlogImage =
   | LocalBlogImageType
   | (NamedRemoteImageType & {
