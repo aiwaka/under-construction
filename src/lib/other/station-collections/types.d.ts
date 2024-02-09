@@ -18,6 +18,8 @@ export interface StationImage {
   type: StationImageTypeOptionsType[];
   date?: string;
   comment?: string;
+  /** `true`の場合強制的にサムネイルにする. */
+  isThumb?: boolean;
 }
 
 export interface StationEntry extends IsEntrySchema {

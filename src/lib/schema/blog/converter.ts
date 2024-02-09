@@ -66,7 +66,7 @@ export class CollectionsBlogPostEntry
       // `dist/generated/`にはintegrationにより`images-data.json`がコピーされているものとする.
       const dataDir = import.meta.env.DEV
         ? "../../../generated/images-data.json"
-        : "../../../dist/generated/images-data.json";
+        : "../generated/images-data.json";
       // TODO: new URLではなくpathToFileURLを使う
       const resolvedDataPath = new URL(dataDir, import.meta.url);
       const allImagesData = getAllImagesData(

@@ -94,11 +94,20 @@ export class CollectionsStationEntry
       address,
       ...rest
     } = this;
+    /** サムネイルであるという指定がなされた画像の数. 0か1であるべきなので2以上の場合警告を出す */
+    let thumbImgNum = 0;
     const images = microCMSImages.map((img) => {
       const photoTypeText = img.type.includes("スタンプ") ? "押印" : "撮影";
       const photoDateText = img.date
         ? dateText(new Date(img.date), "Asia/Tokyo") + photoTypeText
         : `${photoTypeText}日不明`;
+      // commentがundefinedや空文字列の場合があるので、論理否定二回によってbooleanに変換している
+      const isThumb = !!img.comment?.startsWith("[isThumb]");
+      if (isThumb) {
+        // 接頭辞が検出された場合はそれを消しておく
+        img.comment = img.comment?.replace("[isThumb]", "");
+        thumbImgNum += 1;
+      }
       return {
         src: img.image.url,
         width: img.image.width,
@@ -108,8 +117,14 @@ export class CollectionsStationEntry
         type: img.type,
         comment: img.comment,
         date: img.date,
+        isThumb,
       } satisfies StationImage;
     });
+    if (thumbImgNum > 1) {
+      console.log(
+        "[station/converter]: Images including the string `[isThumb]` exist multiple.",
+      );
+    }
     const addressRecord: StationEntry["address"] = {};
     if (typeof address !== "undefined") {
       if (typeof address === "string") {
