@@ -43,7 +43,7 @@
       case "python":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg";
       case "rust":
-        return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg";
+        return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg";
       case "sass":
         return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg";
       case "shell":

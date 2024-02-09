@@ -6,7 +6,7 @@ import { getImage } from "astro:assets";
 
 type AllowedImageExtension = "jpg" | "jpeg" | "png";
 
-export interface LocalBlogImageType {
+interface LocalBlogImageType {
   src: `${string}.${AllowedImageExtension}`;
   width: number;
   height?: number;

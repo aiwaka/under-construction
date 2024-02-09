@@ -6,7 +6,7 @@ import type { RemoteBlogImageDataSchema } from "@lib/schema/blog";
 import { getImage } from "astro:assets";
 import type { GetImageResult } from "astro";
 
-export interface NamedRemoteImageType {
+interface NamedRemoteImageType {
   name: string;
   width: number;
   height?: number;
