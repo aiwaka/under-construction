@@ -1,0 +1,19 @@
+---
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
+import SkillSection from "@components/sections/SkillSection.astro";
+
+const ogp = {
+  url: Astro.request.url,
+  type: "blog",
+  title: "Under Construction",
+  description: "趣味のページです",
+  siteName: "Under Construction",
+  image: "https://aiwaka.github.io/under-construction/img/blue_2.png",
+};
+---
+
+<GeneralPageLayout title="Under Construction | ITスキル紹介" ogp={ogp}>
+  <h1 id="skill">ITスキル紹介</h1>
+  <p>私のIT関連のスキルについて掲載します。</p>
+  <SkillSection />
+</GeneralPageLayout>

@@ -1,6 +1,7 @@
 ---
 import LinkCard from "@components/other/LinkCard.astro";
 import testImg from "@assets/blue_2.png";
+import travelogueImage from "@assets/travelogue.jpg";
 import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
 
 const ogp = {
@@ -17,15 +18,15 @@ const ogp = {
   <h1>ページ一覧</h1>
   <p>趣味で作ったページをここに載せます。</p>
   <div class="card-container">
-    <LinkCard title="旅行記" image={testImg} href="travelogue">
-      <p>旅行記をまとめたページです。</p>
+    <LinkCard title="旅行記" image={travelogueImage} href="travelogue">
+      <p>私の旅行記をまとめたページです。</p>
     </LinkCard>
     <LinkCard
       title="鉄道駅コレクション"
       image={testImg}
       href="station-collections"
     >
-      <p>私が訪れたことのある鉄道駅について写真を載せるだけのページです。</p>
+      <p>私が訪れたことのある鉄道駅についてまとめたページです。</p>
     </LinkCard>
   </div>
 </GeneralPageLayout>
