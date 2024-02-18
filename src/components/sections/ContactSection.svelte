@@ -29,8 +29,6 @@
           >
             @aiwaka
           </a>
-          <br />
-          （ユーザー名を@littleIkawaから変更しました）
         </td>
       </tr>
     </tbody>
