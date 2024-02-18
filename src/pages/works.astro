@@ -1,0 +1,20 @@
+---
+import WorksSection from "@components/sections/WorksSection.astro";
+import GeneralPageLayout from "@layouts/GeneralPageLayout.astro";
+
+const pageTitle = "Under Construction | 作品紹介";
+const ogp = {
+  url: Astro.request.url,
+  type: "blog",
+  title: pageTitle,
+  description: "趣味のページです",
+  siteName: "Under Construction",
+  image: "https://aiwaka.github.io/under-construction/img/blue_2.png",
+};
+---
+
+<GeneralPageLayout title={pageTitle} ogp={ogp}>
+  <h1 id="works">作品紹介</h1>
+  <p>私が作ったものを紹介します。主にソフトウェアと音楽です。</p>
+  <WorksSection />
+</GeneralPageLayout>

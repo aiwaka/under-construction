@@ -3,10 +3,7 @@ import { Image } from "astro:assets";
 
 import BaseLayout from "@layouts/BaseLayout.astro";
 import ProfileSection from "@components/sections/ProfileSection.astro";
-import SkillSection from "@components/sections/SkillSection.astro";
-import WorksSection from "@components/sections/WorksSection.astro";
 import ContactSection from "@components/sections/ContactSection.svelte";
-// import "@fontsource/noto-sans-jp/700.css";
 
 import myIcon from "../assets/my-icon.png";
 import blueImage from "../assets/blue_2.png";
@@ -46,8 +43,6 @@ import SiteFooter from "@components/SiteFooter.astro";
   <main class="main-container">
     <div class="contents-container">
       <ProfileSection />
-      <SkillSection />
-      <WorksSection />
       <ContactSection />
     </div>
   </main>
