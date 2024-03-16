@@ -1,0 +1,103 @@
+name: 修善寺温泉家族旅行
+date: 2024-02-21
+route:
+  - name: 王寺駅
+    station: oji
+    nextTransport: 大和路線JR難波行き
+    arrivalTime: 2024-02-21T08:18:00
+    marker:
+      - type: single
+        label: primary
+  - name: 久宝寺駅
+    arrivalTime: 2024-02-21T08:41:00
+    departureTime: 2024-02-21T08:43:00
+    nextTransport: おおさか東線大阪行き
+  - name: 新大阪駅
+    station: shin-osaka
+    arrivalTime: 2024-02-21T09:18:00
+    departureTime: 2024-02-21T09:48:00
+    nextTransport: ひかり502号
+  - name: 三島駅
+    station: mishima
+    arrivalTime: 2024-02-21T11:57:00
+    nextTransport: onfoot
+    marker:
+      - type: single
+        label: primary
+  - name: うなぎの坂東
+    arrivalTime: 2024-02-21T12:00:00
+    nextTransport: onfoot
+  - name: 三島駅
+    arrivalTime: 2024-02-21T13:20:00
+    departureTime: 2024-02-21T13:40:00
+    nextTransport: 特急踊り子13号
+  - name: 修善寺駅
+    station: shuzenji
+    arrivalTime: 2024-02-21T14:06:00
+    departureTime: 2024-02-21T14:20:00
+    nextTransport: 東海バス
+  - name: 修善寺温泉駅
+    arrivalTime: 2024-02-21T14:30:00
+    nextTransport: onfoot
+  - name: 宿
+    arrivalTime: 2024-02-21T15:00:00
+    nextTransport: onfoot
+  - name: 修禅寺
+    arrivalTime: 2024-02-22T14:00:00
+    nextTransport: onfoot
+  - name: 竹林の小径
+    arrivalTime: 2024-02-22T22:22:00
+    nextTransport: onfoot
+  - name: 宿
+    arrivalTime: 2024-02-22T23:00:00
+    nextTransport: onfoot
+  - name: 梛屋
+    arrivalTime: 2024-02-23T11:15:00
+    nextTransport: onfoot
+  - name: 指月殿
+    arrivalTime: 2024-02-23T11:36:00
+    nextTransport: onfoot
+  - name: 一石庵
+    arrivalTime: 2024-02-23T12:00:00
+    nextTransport: onfoot
+  - name: 胡々
+    arrivalTime: 2024-02-23T12:30:00
+  - name: 修善寺駅
+    station: shuzenji
+    arrivalTime: 2024-02-23T13:38:00
+    departureTime: 2024-02-23T13:55:00
+    nextTransport: 駿豆線三島行き
+  - name: 三島駅
+    station: mishima
+    arrivalTime: 2024-02-23T14:30:00
+    departureTime: 2024-02-23T15:46:00
+    nextTransport: ひかり517号
+  - name: 新大阪駅
+    station: shin-osaka
+    arrivalTime: 2024-02-23T17:57:00
+    departureTime: 2024-02-23T18:08:00
+    nextTransport: 新三田行き
+  - name: 大阪駅
+    station: osaka
+    arrivalTime: 2024-02-23T18:12:00
+    departureTime: 2024-02-23T18:15:00
+    nextTransport: 関空快速関西空港行き
+  - name: 天王寺駅
+    station: tennnoji
+    arrivalTime: 2024-02-23T18:37:00
+    nextTransport: onfoot
+  - name: あべのハルカス
+    arrivalTime: 2024-02-23T19:00:00
+    nextTransport: onfoot
+  - name: 天王寺駅
+    station: tennnoji
+    arrivalTime: 2024-02-23T20:20:00
+    departureTIme: 2024-02-23T20:29:00
+    nextTransport: 大和路快速奈良行き
+    # メモ: 遅延27分
+  - name: 王寺
+    station: oji
+    arrivalTime: 2023-09-02T20:53:00
+    marker:
+      - type: single
+        label: primary
